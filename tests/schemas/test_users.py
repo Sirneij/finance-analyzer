@@ -1,4 +1,5 @@
 import unittest
+import uuid
 
 from pydantic import ValidationError
 
@@ -10,7 +11,7 @@ class TestUserSchemas(unittest.TestCase):
         self.valid_user_data = {
             'name': 'John Doe',
             'email': 'john@example.com',
-            'id': '123',
+            'id': uuid.uuid4(),
             'is_active': True,
             'is_superuser': False,
         }

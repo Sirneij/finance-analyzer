@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -14,13 +16,13 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: str
+    id: UUID
     is_active: bool
     is_superuser: bool
     hashed_password: str
 
 
 class UserRead(UserBase):
-    id: str
+    id: UUID
     is_active: bool
     is_superuser: bool

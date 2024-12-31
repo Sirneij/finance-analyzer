@@ -9,6 +9,24 @@ from app.schemas import users as users_schema
 router = APIRouter()
 
 
+@router.get('/', response_model=list[users_schema.UserRead])
+async def read_users(db: AsyncSession = Depends(get_async_session)) -> list[User]:
+    users = await User.get_all(db)
+    return users
+
+
+@router.get('/{user_id}', response_model=users_schema.UserRead)
+async def read_user(
+    user_id: str, db: AsyncSession = Depends(get_async_session)
+) -> User:
+    user = await User.get(db, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail='User not found'
+        )
+    return user
+
+
 @router.post(
     '/register',
     status_code=status.HTTP_201_CREATED,
