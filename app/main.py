@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.v1 import users
 from app.core.settings import settings
 from app.db.session import init_db
 
@@ -29,6 +30,8 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
+
+app.include_router(users.router, prefix='/api/v1/users', tags=['users'])
 
 
 @app.get('/', tags=['Health'])

@@ -4,7 +4,7 @@ from sqlalchemy import UUID, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
-from app.utils.passwords import get_password_hash, verify_password
+from app.utils.security import get_password_hash, verify_password
 
 
 class User(Base):
