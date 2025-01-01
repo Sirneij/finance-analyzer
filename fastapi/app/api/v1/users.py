@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import exc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,7 +19,7 @@ async def read_users(db: AsyncSession = Depends(get_async_session)) -> list[User
 
 @router.get('/{user_id}', response_model=users_schema.UserRead)
 async def read_user(
-    user_id: str, db: AsyncSession = Depends(get_async_session)
+    user_id: UUID, db: AsyncSession = Depends(get_async_session)
 ) -> User:
     user = await User.get(db, user_id)
     if user is None:

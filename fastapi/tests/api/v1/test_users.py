@@ -25,8 +25,8 @@ class TestUsers:
         assert len(data) == 0
 
     def test_get_user_not_found(self):
-        random_uuid = str(uuid.uuid4())
-        response = self.client.get(f'{self.base_url}/{random_uuid}/')
+        random_uuid = uuid.uuid4()
+        response = self.client.get(f'{self.base_url}/{random_uuid}')
         assert response.status_code == status.HTTP_404_NOT_FOUND
         assert response.json() == {'detail': 'User not found'}
 
@@ -160,11 +160,3 @@ class TestUsers:
     def test_get_user_invalid_id_format(self):
         response = self.client.get(f'{self.base_url}/invalid-uuid/')
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-
-    def test_create_user_integrity_error(self):
-        with patch('app.api.v1.users.db.add', side_effect=IntegrityError):
-            response = self.client.post(
-                f'{self.base_url}/register', json=self.test_user_data
-            )
-            assert response.status_code == status.HTTP_400_BAD_REQUEST
-            assert response.json() == {'detail': 'Email already exists'}

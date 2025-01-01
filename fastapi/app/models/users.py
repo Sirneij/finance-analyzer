@@ -35,7 +35,7 @@ class User(Base):
         return verify_password(password, self.hashed_password)
 
     @classmethod
-    async def get(cls, db: AsyncSession, id: str):
+    async def get(cls, db: AsyncSession, id: UUID):
         try:
             transaction = await db.get(cls, id)
         except NoResultFound:
