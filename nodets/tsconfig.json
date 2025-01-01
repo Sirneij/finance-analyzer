@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "paths": {
+      "$config/*": ["config/*"],
+      "$controllers/*": ["controllers/*"],
+      "$models/*": ["models/*"],
+      "$routes/*": ["routes/*"],
+      "$services/*": ["services/*"],
+      "$types/*": ["types/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
