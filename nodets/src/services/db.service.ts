@@ -1,44 +1,38 @@
-import { MongoClient } from "mongodb";
-import { dbConfig } from "$config/db.config.ts";
+import mongoose from "mongoose";
+import { baseConfig } from "$config/base.config.ts";
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // 2 seconds
+const RETRY_INTERVAL = 5000;
 
-function validateMongoUri(uri: string): boolean {
-  const mongoUrlPattern = /^mongodb(\+srv)?:\/\/.+/;
-  return mongoUrlPattern.test(uri);
-}
-
-async function retryConnection(
-  uri: string,
-  attempt: number = 1
-): Promise<MongoClient> {
+export async function connectToCluster(retryCount = 0) {
   try {
-    const client = new MongoClient(uri);
-    await client.connect();
-    return client;
+    await mongoose.connect(baseConfig.db.uri, {
+      dbName: baseConfig.db.dbName,
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
+    });
+
+    mongoose.connection.on("error", (err) => {
+      console.error("MongoDB connection error:", err);
+    });
+
+    mongoose.connection.once("open", () => {
+      console.log("✅ Connected to MongoDB");
+    });
+
+    return mongoose.connection;
   } catch (error) {
-    if (attempt >= MAX_RETRIES) throw error;
-    console.log(`Retry attempt ${attempt} of ${MAX_RETRIES}`);
-    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-    return retryConnection(uri, attempt + 1);
-  }
-}
+    console.error(
+      `❌ MongoDB connection attempt ${retryCount + 1} failed:`,
+      error
+    );
 
-export async function connectToCluster(uri: string = dbConfig.uri) {
-  let mongoClient: MongoClient | null = null;
+    if (retryCount < MAX_RETRIES) {
+      console.log(`Retrying in ${RETRY_INTERVAL / 1000} seconds...`);
+      await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL));
+      return connectToCluster(retryCount + 1);
+    }
 
-  if (!validateMongoUri(uri)) {
-    throw new Error("Invalid MongoDB connection string");
-  }
-
-  try {
-    console.log("Connecting to MongoDB Atlas cluster...");
-    mongoClient = await retryConnection(uri);
-    console.log("Successfully connected to MongoDB Atlas!");
-    return mongoClient;
-  } catch (error) {
-    console.error("Connection to MongoDB Atlas failed!", error);
     throw error;
   }
 }

@@ -1,53 +1,81 @@
 import express, { Application } from "express";
+import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import { connectToCluster } from "$services/db.service.ts";
-import { authConfig } from "$config/auth.config.ts";
+import { baseConfig } from "$config/base.config.ts";
 import { AuthService } from "$services/auth.service.ts";
 import authRoutes from "$routes/auth.routes.ts";
+import { Providers } from "$types/misc.types.ts";
+import { GitHubProfile } from "$types/auth.types.ts";
+import { handleAuthError } from "$middlewares/auth.middleware.ts";
+import { ProviderMismatchError } from "$types/error.types.ts";
 
 const app: Application = express();
 
 app.use(express.json());
 app.use(
+  cors({
+    origin: baseConfig.frontendUrl,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
   session({
-    secret: authConfig.session.secret,
+    secret: baseConfig.auth.session.secret,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      domain:
+        process.env.NODE_ENV === "production" ? ".yourdomain.com" : undefined,
+    },
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: Express.User, done) => {
   done(null, user);
 });
 
-passport.deserializeUser((user: any, done) => {
+passport.deserializeUser((user: Express.User, done) => {
   done(null, user);
 });
 
 passport.use(
   new GoogleStrategy(
-    authConfig.google,
-    async (accessToken, refreshToken, profile, done) => {
+    baseConfig.auth.google,
+    async (
+      accessToken: any,
+      refreshToken: any,
+      profile,
+      done: (error: any, user?: any, options?: { message: string }) => void
+    ) => {
       try {
-        console.log(`Google profile: ${JSON.stringify(profile)}`);
-
         const user = await AuthService.findOrCreateUser({
           id: profile.id,
           email: profile.emails![0].value,
           name: profile.displayName,
           provider: "google",
-          providerId: profile.id,
+          providerId: Providers.GOOGLE,
           avatar: profile.photos![0].value,
         });
         return done(null, user);
       } catch (error) {
-        return done(error as Error, undefined);
+        if ((error as Error).message.includes("Please login with")) {
+          return done(null, false, { message: (error as Error).message });
+        }
+        return done(error as Error);
       }
     }
   )
@@ -55,27 +83,35 @@ passport.use(
 
 passport.use(
   new GitHubStrategy(
-    authConfig.github,
-    async (accessToken: any, refreshToken: any, profile: any, done: any) => {
+    baseConfig.auth.github,
+    async (
+      accessToken: any,
+      refreshToken: any,
+      profile: GitHubProfile,
+      done: (error: any, user?: any, options?: { message: string }) => void
+    ) => {
       try {
-        console.log(`GitHub profile: ${JSON.stringify(profile)}`);
         const user = await AuthService.findOrCreateUser({
           id: profile.id,
-          email: profile.emails![0].value,
-          provider: "github",
-          providerId: profile.id,
-          avatar: profile.photos![0].value,
-          name: profile.username,
+          email: profile.emails?.[0].value,
+          provider: profile.provider,
+          providerId: Providers.GITHUB,
+          avatar: profile.photos?.[0].value,
+          name: profile.displayName,
         });
         return done(null, user);
       } catch (error) {
-        return done(error as Error, undefined);
+        if (error instanceof ProviderMismatchError) {
+          return done(null, false, { message: error.message });
+        }
+        return done(error);
       }
     }
   )
 );
 
 app.use("/api/v1/auth", authRoutes);
+app.use(handleAuthError);
 
 // Health check
 app.get("/api/v1/health", (req, res) => {
@@ -84,13 +120,18 @@ app.get("/api/v1/health", (req, res) => {
 
 const startServer = async () => {
   try {
-    await connectToCluster();
+    const db = await connectToCluster();
+
+    if (!db.readyState) {
+      throw new Error("MongoDB connection not ready");
+    }
+
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`✅ Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
 };

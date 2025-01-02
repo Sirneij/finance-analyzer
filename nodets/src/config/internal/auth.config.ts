@@ -1,4 +1,9 @@
-export const authConfig = {
+import { AuthConfig } from "$types/auth.types.ts";
+import { config } from "dotenv";
+
+config();
+
+export const authConfig: AuthConfig = {
   google: {
     clientID: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,

@@ -17,7 +17,8 @@
       "$models/*": ["models/*"],
       "$routes/*": ["routes/*"],
       "$services/*": ["services/*"],
-      "$types/*": ["types/*"]
+      "$types/*": ["types/*"],
+      "$middlewares/*": ["middlewares/*"]
     }
   },
   "include": ["src/**/*"],

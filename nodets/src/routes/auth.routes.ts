@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { AuthController } from "$controllers/auth.controller.ts";
+import { isAuthenticated } from "$middlewares/auth.middleware.ts";
 
 const authRouters = Router();
 
@@ -23,6 +24,10 @@ authRouters.get(
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),
   AuthController.loginSuccess
 );
+
+authRouters.get("/session", isAuthenticated, (req, res) => {
+  res.json({ user: req.user });
+});
 
 authRouters.get("/failure", AuthController.loginFailure);
 authRouters.get("/logout", AuthController.logout);

@@ -1,3 +1,11 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
-@import 'tailwindcss/utilities'
+@import 'tailwindcss/utilities';
+
+.logo-container svg {
+	transition: all 0.3s;
+}
+
+.dark .logo-container svg text {
+	fill: #ffffff;
+}

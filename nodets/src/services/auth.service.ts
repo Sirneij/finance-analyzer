@@ -1,24 +1,49 @@
 import { User } from "$models/user.model.ts";
 import { UserProfile } from "$types/auth.types.ts";
+import { ProviderMismatchError } from "$types/error.types.ts";
 
 export class AuthService {
   static async findOrCreateUser(profile: UserProfile) {
-    const user = await User.findOne({
-      email: profile.email,
-      provider: profile.provider,
-      providerId: profile.id,
-    });
+    try {
+      // First try to find user by email only
+      let user = await User.findOne({ email: profile.email }).exec();
 
-    if (user) {
+      if (user) {
+        // User exists, check provider
+        if (user.provider !== profile.provider) {
+          throw new ProviderMismatchError(user.provider);
+        }
+
+        // Check if any details need updating
+        const updates: Partial<UserProfile> = {};
+        if (user.name !== profile.name) updates.name = profile.name;
+        if (user.providerId !== profile.providerId)
+          updates.providerId = profile.providerId;
+        if (user.avatar !== profile.avatar) updates.avatar = profile.avatar;
+
+        // If updates needed, apply them
+        if (Object.keys(updates).length > 0) {
+          user = await User.findByIdAndUpdate(
+            user._id,
+            { $set: updates },
+            { new: true }
+          ).exec();
+        }
+      } else {
+        // Create new user if none exists
+        user = await User.create({
+          email: profile.email,
+          name: profile.name,
+          provider: profile.provider,
+          providerId: profile.providerId,
+          avatar: profile.avatar,
+        });
+      }
+
       return user;
+    } catch (error) {
+      console.error("Error in findOrCreateUser:", error);
+      throw error;
     }
-
-    return await User.create({
-      email: profile.email,
-      name: profile.name,
-      provider: profile.provider,
-      providerId: profile.id,
-      avatar: profile.avatar,
-    });
   }
 }

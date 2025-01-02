@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { getFirstName } from '$lib/utils/helpers/name.helpers';
+
 	interface FinancialStats {
 		total: number;
 		change: number;
@@ -43,22 +46,28 @@
 
 <div class="space-y-6">
 	<!-- Welcome Section -->
-	<div class="flex items-center justify-between rounded-lg bg-white p-6 dark:bg-gray-800">
-		<div class="flex items-center space-x-4">
+	<div
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 sm:p-6 md:flex-row md:items-center md:justify-between md:space-y-0 dark:bg-gray-800"
+	>
+		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img
-				src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-				alt="Profile"
-				class="h-16 w-16 rounded-full ring-2 ring-blue-500"
+				src={page.data.user?.avatar}
+				alt={page.data.user?.name}
+				class="h-12 w-12 rounded-full ring-2 ring-blue-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
 			/>
-			<div>
-				<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Welcome back, John!</h1>
-				<p class="text-gray-600 dark:text-gray-400">Here's your financial overview</p>
+			<div class="text-center sm:text-left">
+				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
+					Welcome back, {getFirstName(page.data.user?.name)}!
+				</h1>
+				<p class="text-sm text-gray-600 sm:text-base dark:text-gray-400">
+					Here's your financial overview
+				</p>
 			</div>
 		</div>
 
-		<div class="flex space-x-3">
+		<div class="flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
 			<button
-				class="flex items-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
+				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-blue-600 hover:bg-blue-100 sm:w-auto dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -72,7 +81,7 @@
 			</button>
 
 			<button
-				class="flex items-center space-x-2 rounded-lg bg-gray-50 px-4 py-2 text-gray-600 hover:bg-gray-100 dark:bg-gray-700/50 dark:text-gray-400 dark:hover:bg-gray-700"
+				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-gray-50 px-4 py-2 text-gray-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-700/50 dark:text-gray-400 dark:hover:bg-gray-700"
 			>
 				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -111,7 +120,7 @@
 							<p class="text-xs opacity-75">Valid Thru</p>
 							<p class="font-mono">{cardData.validThru}</p>
 						</div>
-						<p class="self-end font-semibold">{cardData.name}</p>
+						<p class="self-end font-semibold">{page.data.user?.name}</p>
 					</div>
 				</div>
 			</div>
