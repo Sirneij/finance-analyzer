@@ -4,15 +4,15 @@
 
 #### **Overview**
 
-The AI-Powered Financial Behavior Analyzer API is a backend service designed to analyze financial behavior patterns using modern web technologies. The app is built with **TypeScript**, **Node.js**, and **Express**, ensuring scalability, maintainability, and type safety.
+The AI-Powered Financial Behavior Analyzer API is a backend service designed to analyze financial behavior patterns using modern web technologies. The app is built with **TypeScript**, **Node.js**, and **Express**, ensuring scalability, maintainability, and type safety. The app integrates **MongoDB** for data persistence and supports authentication via **Google** and **GitHub** using **Passport.js**.
 
 ---
 
 #### **Features**
 
 - **User Authentication**:
-  - Secure password hashing with `bcrypt`
-  - Token-based authentication with `jsonwebtoken`
+  - Authentication via **Google** and **GitHub** using **Passport.js**
+  - Secure session management
 - **Data Analysis**:
   - Analyze financial behavior data (expandable functionality)
 - **Modular Design**:
@@ -20,38 +20,11 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
 
 ---
 
-#### **Project Structure**
-
-```
-.
-├── README.md
-├── package.json
-├── tsconfig.json
-├── src
-│   ├── app.ts            # Entry point of the application
-│   ├── routes            # API route definitions
-│   │   └── index.ts
-│   ├── controllers       # Handle request logic
-│   │   └── index.ts
-│   ├── services          # Business logic (e.g., authentication)
-│   │   └── index.ts
-│   ├── models            # Database models (expandable)
-│   │   └── index.ts
-│   └── utils             # Helper utilities
-│       └── index.ts
-├── tests
-│   └── unit              # Unit tests
-│       └── index.test.ts
-└── dist                  # Compiled JavaScript (after build)
-```
-
----
-
 #### **Requirements**
 
 - **Node.js**: v20+
 - **TypeScript**: v5+
-- **PostgreSQL**: Database for storing user and financial data
+- **MongoDB**: Database for storing user and financial data
 
 ---
 
@@ -64,6 +37,8 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
    cd ai-financial-analyzer
    ```
 
+````
+
 2. **Install dependencies**:
 
    ```bash
@@ -74,9 +49,14 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
    Create a `.env` file in the project root and add the following:
 
    ```env
-   PORT=3000
-   JWT_SECRET=your_jwt_secret
-   DATABASE_URL=your_database_url
+   DB_URI=your-mongodb-uri
+   DB_NAME=your-database-name
+   PORT=your-port
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+   GITHUB_CLIENT_ID=your-github-client-id
+   GITHUB_CLIENT_SECRET=your-github-client-secret
+   SESSION_SECRET=your-session-secret
    ```
 
 4. **Run the application**:
@@ -100,11 +80,11 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
 
 #### **API Endpoints**
 
-| Method | Endpoint                 | Description         |
-| ------ | ------------------------ | ------------------- |
-| GET    | `/api/v1/users`          | Get all users       |
-| GET    | `/api/v1/users/:id`      | Get a specific user |
-| POST   | `/api/v1/users/register` | Register a new user |
+| Method | Endpoint               | Description                 |
+| ------ | ---------------------- | --------------------------- |
+| GET    | `/api/v1/auth/session` | Get a specific user         |
+| POST   | `/api/v1/auth/login`   | Login with Google or GitHub |
+| GET    | `/api/v1/auth/logout`  | Logout the user             |
 
 ---
 
@@ -113,24 +93,10 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
 - **Node.js**: JavaScript runtime
 - **Express**: Web framework
 - **TypeScript**: Static typing
-- **PostgreSQL**: Database
+- **MongoDB**: NoSQL database
+- **Passport.js**: Authentication middleware
 - **Jest**: Testing framework
 - **ESLint & Prettier**: Linting and formatting
-
----
-
-#### **Contributing**
-
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-3. Commit your changes and push:
-   ```bash
-   git push origin feature/your-feature
-   ```
-4. Open a pull request.
 
 ---
 
@@ -139,9 +105,4 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
 This project is licensed under the MIT License.
 
 ---
-
-#### **Author**
-
-- **Your Name**
-- **Email**: your.email@example.com
-- **GitHub**: [yourusername](https://github.com/yourusername)
+````
