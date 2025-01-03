@@ -1,17 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-export interface ITransaction extends Document {
-  _id: string;
-  userId: mongoose.Types.ObjectId;
-  date: Date;
-  amount: number;
-  balance: number;
-  category: string;
-  description: string;
-  type: "income" | "expense";
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { ITransaction } from "$types/transaction.types.ts";
+import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = new Schema(
   {

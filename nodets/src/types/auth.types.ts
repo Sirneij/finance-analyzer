@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -8,7 +10,7 @@ export interface UserProfile {
 }
 
 export interface AuthUser {
-  _id?: string;
+  _id?: mongoose.Types.ObjectId;
   email: string;
   name?: string;
   provider: string;

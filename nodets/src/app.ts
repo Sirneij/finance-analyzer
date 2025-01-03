@@ -10,9 +10,11 @@ import { AuthService } from "$services/auth.service.ts";
 import authRoutes from "$routes/auth.routes.ts";
 import { Providers } from "$types/misc.types.ts";
 import { GitHubProfile } from "$types/auth.types.ts";
+import type { User } from "$types/passports.d.ts";
 import { handleAuthError } from "$middlewares/auth.middleware.ts";
 import { ProviderMismatchError } from "$types/error.types.ts";
 import { requestLogger } from "$middlewares/logger.middleware.ts";
+import transactionRoutes from "$routes/transaction.routes.ts";
 
 const app: Application = express();
 
@@ -46,11 +48,11 @@ app.use(requestLogger);
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user: Express.User, done) => {
+passport.deserializeUser<User>((user, done) => {
   done(null, user);
 });
 
-passport.deserializeUser((user: Express.User, done) => {
+passport.deserializeUser((user: User, done) => {
   done(null, user);
 });
 
@@ -112,8 +114,12 @@ passport.use(
   )
 );
 
+// Authentication routes
 app.use("/api/v1/auth", authRoutes);
 app.use(handleAuthError);
+
+// Transaction routes
+app.use("/api/v1/transactions", transactionRoutes);
 
 // Health check
 app.get("/api/v1/health", (req, res) => {
