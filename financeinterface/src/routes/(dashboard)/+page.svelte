@@ -111,7 +111,9 @@
 			<div class="relative flex h-full flex-col justify-between text-white">
 				<div>
 					<h3 class="text-lg font-medium opacity-75">Current Balance</h3>
-					<p class="text-3xl font-bold">${cardData.balance.toLocaleString()}</p>
+					<p class="text-3xl font-bold">
+						<span class="text-lg">$</span>{cardData.balance.toLocaleString()}
+					</p>
 				</div>
 				<div class="space-y-3">
 					<p class="font-mono text-lg tracking-widest opacity-75">{cardData.cardNumber}</p>
@@ -153,7 +155,7 @@
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				${userStats.income.total.toLocaleString()}
+				<span class="text-lg">$</span>{userStats.income.total.toLocaleString()}
 			</p>
 		</div>
 
@@ -167,7 +169,7 @@
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				${userStats.expenses.total.toLocaleString()}
+				<span class="text-lg">$</span>{userStats.expenses.total.toLocaleString()}
 			</p>
 		</div>
 
@@ -181,7 +183,7 @@
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				${userStats.savings.total.toLocaleString()}
+				<span class="text-lg">$</span>{userStats.savings.total.toLocaleString()}
 			</p>
 		</div>
 	</div>
@@ -262,16 +264,11 @@
 							</div>
 						</div>
 						<span
-							class={`font-medium ${
-								tx.amount > 0
-									? 'text-green-600 dark:text-green-400'
-									: 'text-red-600 dark:text-red-400'
-							}`}
+							class={`font-medium ${tx.amount > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
 						>
-							{tx.amount > 0 ? '+' : ''}{tx.amount.toLocaleString('en-US', {
-								style: 'currency',
-								currency: 'USD'
-							})}
+							{tx.amount > 0 ? '+' : ''}<span class="text-sm">$</span>{Math.abs(
+								tx.amount
+							).toLocaleString()}
 						</span>
 					</div>
 				{/each}

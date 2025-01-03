@@ -8,7 +8,11 @@ export default {
 	darkMode: 'class',
 
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				sans: ['Fira Sans', 'sans-serif']
+			}
+		}
 	},
 
 	plugins: [typography, forms, containerQueries]
