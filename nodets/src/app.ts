@@ -48,7 +48,7 @@ app.use(requestLogger);
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.deserializeUser<User>((user, done) => {
+passport.serializeUser<User>((user, done) => {
   done(null, user);
 });
 
