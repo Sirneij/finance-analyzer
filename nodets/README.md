@@ -37,8 +37,6 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
    cd ai-financial-analyzer
    ```
 
-````
-
 2. **Install dependencies**:
 
    ```bash
@@ -103,6 +101,3 @@ The AI-Powered Financial Behavior Analyzer API is a backend service designed to 
 #### **License**
 
 This project is licensed under the MIT License.
-
----
-````
