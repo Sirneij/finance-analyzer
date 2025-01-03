@@ -12,6 +12,7 @@ import { Providers } from "$types/misc.types.ts";
 import { GitHubProfile } from "$types/auth.types.ts";
 import { handleAuthError } from "$middlewares/auth.middleware.ts";
 import { ProviderMismatchError } from "$types/error.types.ts";
+import { requestLogger } from "$middlewares/logger.middleware.ts";
 
 const app: Application = express();
 
@@ -41,6 +42,7 @@ app.use(
   })
 );
 
+app.use(requestLogger);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -115,23 +117,27 @@ app.use(handleAuthError);
 
 // Health check
 app.get("/api/v1/health", (req, res) => {
+  baseConfig.logger.info("Health check endpoint called");
   res.status(200).json({ message: "Server is running" });
 });
 
 const startServer = async () => {
   try {
+    baseConfig.logger.info("Connecting to MongoDB cluster...");
     const db = await connectToCluster();
 
     if (!db.readyState) {
       throw new Error("MongoDB connection not ready");
     }
 
+    baseConfig.logger.info("Connected to MongoDB cluster");
+
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-      console.log(`✅ Server running on port ${PORT}`);
+      baseConfig.logger.info(`Server listening on port ${PORT}`);
     });
   } catch (error) {
-    console.error("❌ Failed to start server:", error);
+    baseConfig.logger.error("Error starting server:", error);
     process.exit(1);
   }
 };

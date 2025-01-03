@@ -13,22 +13,23 @@ export async function connectToCluster(retryCount = 0) {
     });
 
     mongoose.connection.on("error", (err) => {
-      console.error("MongoDB connection error:", err);
+      baseConfig.logger.error("❌ MongoDB connection error:", err);
     });
 
     mongoose.connection.once("open", () => {
-      console.log("✅ Connected to MongoDB");
+      baseConfig.logger.info("✅ MongoDB connection successful");
     });
 
     return mongoose.connection;
   } catch (error) {
-    console.error(
-      `❌ MongoDB connection attempt ${retryCount + 1} failed:`,
-      error
-    );
+    baseConfig.logger.error("❌ MongoDB connection error:", error);
 
     if (retryCount < MAX_RETRIES) {
-      console.log(`Retrying in ${RETRY_INTERVAL / 1000} seconds...`);
+      baseConfig.logger.info(
+        `Retrying connection to MongoDB cluster in ${
+          RETRY_INTERVAL / 1000
+        } seconds...`
+      );
       await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL));
       return connectToCluster(retryCount + 1);
     }

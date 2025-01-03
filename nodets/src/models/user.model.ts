@@ -6,7 +6,7 @@ const userSchema = new Schema<AuthUser>(
     email: { type: String, required: true, unique: true },
     name: { type: String },
     provider: { type: String, required: true },
-    providerId: { type: String, required: true },
+    providerId: { type: Number, required: true },
     avatar: { type: String, default: null },
   },
   {
