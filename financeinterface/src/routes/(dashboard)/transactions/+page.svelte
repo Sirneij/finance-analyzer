@@ -2,7 +2,11 @@
 	import type { PageData } from './$types';
 	import { formatMoney } from '$lib/utils/helpers/money.helpers';
 	import { formatDate, isSameDay } from '$lib/utils/helpers/date.helpers';
-	import type { Transaction } from '$lib/utils/types/transaction.types';
+	import type { Transaction } from '$lib/types/transaction.types';
+	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
+	import Balance from '$lib/components/icons/Balance.svelte';
+	import Amount from '$lib/components/icons/Amount.svelte';
+	import Calendar from '$lib/components/icons/Calendar.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -27,41 +31,20 @@
 						<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
 							<div class="flex items-center space-x-2">
 								<span>Date</span>
-								<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-									/>
-								</svg>
+								<Calendar class="h-4 w-4" />
 							</div>
 						</th>
 						<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">Description</th>
 						<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
 							<div class="flex items-center space-x-2">
 								<span>Amount</span>
-								<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-									/>
-								</svg>
+								<Amount class="h-4 w-4 " />
 							</div>
 						</th>
 						<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
 							<div class="flex items-center space-x-2">
 								<span>Balance</span>
-								<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-									/>
-								</svg>
+								<Balance class="h-4 w-4" />
 							</div>
 						</th>
 					</tr>
@@ -92,16 +75,7 @@
 												: 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'
 										}`}
 									>
-										<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d={transaction.type === 'income'
-													? 'M5 10l7-7m0 0l7 7m-7-7v18'
-													: 'M19 14l-7 7m0 0l-7-7m7 7V3'}
-											/>
-										</svg>
+										<MoneyArrow txType={transaction.type} />
 									</span>
 									<span class="font-medium text-gray-900 dark:text-white">
 										{transaction.description}

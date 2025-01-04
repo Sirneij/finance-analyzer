@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import Summary from '$lib/components/transactions/Summary.svelte';
 	import Transactions from '$lib/components/transactions/Transactions.svelte';
 	import type { FinancialStats, Transaction } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
@@ -127,49 +128,7 @@
 	</div>
 
 	<!-- Financial Summary Cards -->
-	<div class="grid gap-6 sm:grid-cols-3">
-		<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-			<div class="flex items-center justify-between">
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Income</h3>
-				<span
-					class={`text-sm ${transactionSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				>
-					{transactionSummaries.income.change}%
-				</span>
-			</div>
-			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{transactionSummaries.income.total.toLocaleString()}
-			</p>
-		</div>
-
-		<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-			<div class="flex items-center justify-between">
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Expenses</h3>
-				<span
-					class={`text-sm ${transactionSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
-				>
-					{transactionSummaries.expenses.change}%
-				</span>
-			</div>
-			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{transactionSummaries.expenses.total.toLocaleString()}
-			</p>
-		</div>
-
-		<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-			<div class="flex items-center justify-between">
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Savings</h3>
-				<span
-					class={`text-sm ${transactionSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				>
-					{transactionSummaries.savings.change}%
-				</span>
-			</div>
-			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{transactionSummaries.savings.total.toLocaleString()}
-			</p>
-		</div>
-	</div>
+	<Summary {transactionSummaries} />
 
 	<!-- Charts + Transactions Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">
@@ -203,7 +162,7 @@
 					View All
 				</a>
 			</div>
-			<Transactions transactions={data.transactions} />
+			<Transactions {transactions} />
 		</div>
 	</div>
 </div>
