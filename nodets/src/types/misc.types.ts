@@ -12,4 +12,5 @@ export interface BaseConfig {
   db: DbConfig;
   frontendUrl: string;
   logger: winston.Logger;
+  utility_service_url: string;
 }

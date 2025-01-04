@@ -8,4 +8,6 @@ export const baseConfig: BaseConfig = {
   db: dbConfig,
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000",
   logger: logger,
+  utility_service_url:
+    process.env.UTILITY_SERVICE_URL || "http://localhost:5173",
 };

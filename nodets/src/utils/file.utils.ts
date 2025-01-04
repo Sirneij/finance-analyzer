@@ -1,7 +1,7 @@
+import { baseConfig } from "$config/base.config.ts";
 import { IFileParser, SupportedFileTypes } from "$types/files.types.ts";
 import { ITransaction, RawTransaction } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
-import pdf from "pdf-parse";
 
 export abstract class BaseParser implements IFileParser {
   constructor(protected userId: mongoose.Types.ObjectId) {}
@@ -14,7 +14,6 @@ export abstract class BaseParser implements IFileParser {
       date: new Date(raw.date),
       amount: Number(raw.amount),
       balance: Number(raw.balance),
-      category: raw.category || "uncategorized",
       description: raw.description,
       type: raw.type.toLowerCase() === "income" ? "income" : "expense",
     };
@@ -23,25 +22,47 @@ export abstract class BaseParser implements IFileParser {
 
 export class PDFParser extends BaseParser {
   private static readonly TRANSACTION_PATTERN =
-    /(\d{2}[-/]\d{2}[-/]\d{4})\s+([-]?\d+\.?\d*)\s+([^0-9]+?)\s+([-]?\d+\.?\d*)/;
+    /(\d{2}\/\d{2})(?!.*Page)\s*([^-\d].*?)\s*(-\s*|\s+)?(\d{1,3}(?:,\d{3})*|\d+)\.(\d{2})\s*([\d,]+\.\d{2})?/;
 
   async parse(buffer: Buffer): Promise<Partial<ITransaction>[]> {
-    const data = await pdf(buffer);
-    const lines = data.text.split("\n").filter((line) => line.trim());
+    const formData = new FormData();
+    formData.append("file", new Blob([buffer]), "document.pdf");
+
+    const response = await fetch(
+      `${baseConfig.utility_service_url}/extract-text`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    const extractedText = data.text;
+
+    const lines = extractedText.split("\n");
+
     const transactions: Partial<ITransaction>[] = [];
 
-    for (const line of lines) {
-      const match = line.match(PDFParser.TRANSACTION_PATTERN);
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      const match = PDFParser.TRANSACTION_PATTERN.exec(line);
+
       if (match) {
-        const [, date, amount, description, balance] = match;
+        const [, date, description, negative, whole, decimal, balance] = match;
+        const amountStr = `${negative || ""}${whole}.${decimal}`;
+        const parsedAmount = parseFloat(amountStr.replace(/[\s,]/g, ""));
+        const parsedBalance = balance
+          ? parseFloat(balance.replace(/,/g, ""))
+          : 0.0;
+
         transactions.push(
           this.mapToTransaction({
             userId: this.userId,
             date,
-            amount,
             description: description.trim(),
-            balance,
-            type: Number(amount) >= 0 ? "income" : "expense",
+            amount: parsedAmount,
+            balance: parsedBalance,
+            type: parsedAmount < 0 ? "expense" : "income",
           })
         );
       }

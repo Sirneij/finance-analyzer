@@ -6,7 +6,6 @@ export interface ITransaction extends Document {
   date: Date;
   amount: number;
   balance: number;
-  category: string;
   description: string;
   type: "income" | "expense";
   createdAt: Date;
@@ -16,9 +15,8 @@ export interface ITransaction extends Document {
 export interface RawTransaction {
   userId: mongoose.Types.ObjectId;
   date: string | Date;
-  amount: string | number;
-  balance: string | number;
-  category?: string;
+  amount: number;
+  balance: number;
   description: string;
   type: string;
 }
