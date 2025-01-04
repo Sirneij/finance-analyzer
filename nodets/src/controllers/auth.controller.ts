@@ -1,5 +1,4 @@
 import { baseConfig } from "$config/base.config.ts";
-import { log } from "console";
 import { Request, Response } from "express";
 
 export class AuthController {

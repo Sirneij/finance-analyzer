@@ -38,13 +38,21 @@ export class PDFParser extends BaseParser {
 
     const data = await response.json();
     const extractedText = data.text;
-
     const lines = extractedText.split("\n");
+
+    const dateHeaderPattern = /([A-Za-z]+ \d{2}, (\d{4})) through/;
+    let currentYear = new Date().getFullYear();
 
     const transactions: Partial<ITransaction>[] = [];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
+
+      const headerMatch = dateHeaderPattern.exec(line);
+      if (headerMatch) {
+        currentYear = parseInt(headerMatch[2]);
+      }
+
       const match = PDFParser.TRANSACTION_PATTERN.exec(line);
 
       if (match) {
@@ -55,10 +63,12 @@ export class PDFParser extends BaseParser {
           ? parseFloat(balance.replace(/,/g, ""))
           : 0.0;
 
+        const fullDate = `${date}/${currentYear}`;
+
         transactions.push(
           this.mapToTransaction({
             userId: this.userId,
-            date,
+            date: fullDate,
             description: description.trim(),
             amount: parsedAmount,
             balance: parsedBalance,

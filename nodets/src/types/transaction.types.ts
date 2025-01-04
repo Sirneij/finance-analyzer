@@ -31,3 +31,9 @@ export interface FileUploadResult {
   transactions: Partial<ITransaction>[];
   mimeType: string;
 }
+
+export interface FinancialStats {
+  total: number;
+  change: number;
+  trend: "up" | "down" | "neutral";
+}

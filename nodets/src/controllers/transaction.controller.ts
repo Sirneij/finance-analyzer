@@ -1,8 +1,8 @@
-import { UploadService } from "$services/transaction.service.ts";
+import { TransactionService } from "$services/transaction.service.ts";
 import busboy from "busboy";
 import { Request, Response } from "express";
 
-export class UploadController {
+export class TransactionController {
   static async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
@@ -27,7 +27,7 @@ export class UploadController {
           file.on("end", async () => {
             try {
               const buffer = Buffer.concat(chunks);
-              const result = await UploadService.processFile(
+              const result = await TransactionService.processFile(
                 buffer,
                 info.mimeType,
                 userId
@@ -51,6 +51,65 @@ export class UploadController {
       res.status(400).json({
         success: false,
         error: error instanceof Error ? error.message : "Upload failed",
+      });
+    }
+  }
+
+  static async getTransactions(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?._id;
+
+      if (!userId) {
+        res.status(401).json({
+          success: false,
+          error: "User ID not found",
+        });
+        return;
+      }
+
+      const transactions = await TransactionService.findTransactionsByUserId(
+        userId,
+        parseInt(req.query.limit as string) || undefined
+      );
+
+      res.json(transactions);
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch transactions",
+      });
+    }
+  }
+
+  static async getIncomeExpensesSavings(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const userId = req.user?._id;
+
+      if (!userId) {
+        res.status(401).json({
+          success: false,
+          error: "User ID not found",
+        });
+        return;
+      }
+
+      const { income, expenses, savings } =
+        await TransactionService.findIncomeExpensesSavingsByUserId(userId);
+
+      res.json({ income, expenses, savings });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch income/expenses/savings",
       });
     }
   }

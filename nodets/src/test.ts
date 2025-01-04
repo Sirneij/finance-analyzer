@@ -2,7 +2,7 @@ import fs from "fs";
 import { promises as fsPromises } from "fs";
 
 interface Transaction {
-  date: string;
+  date: Date;
   description: string;
   amount: number;
   balance?: number;
@@ -31,10 +31,18 @@ async function extractTransactionsFromPDF(
 
   const lines = extractedText.split("\n");
 
+  const dateHeaderPattern = /([A-Za-z]+ \d{2}, (\d{4})) through/;
+  let currentYear = new Date().getFullYear();
+
+  // In the main loop
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    const match = transactionPattern.exec(line);
+    const headerMatch = dateHeaderPattern.exec(line);
+    if (headerMatch) {
+      currentYear = parseInt(headerMatch[2]);
+    }
 
+    const match = transactionPattern.exec(line);
     if (match) {
       const [, date, description, negative, whole, decimal, balance] = match;
       const amountStr = `${negative || ""}${whole}.${decimal}`;
@@ -43,8 +51,15 @@ async function extractTransactionsFromPDF(
         ? parseFloat(balance.replace(/,/g, ""))
         : undefined;
 
+      const [day, month] = date.split("/");
+      const fullDate = new Date(
+        currentYear,
+        parseInt(month) - 1,
+        parseInt(day)
+      );
+
       transactions.push({
-        date,
+        date: fullDate,
         description: description.trim(),
         amount: parsedAmount,
         balance: parsedBalance,

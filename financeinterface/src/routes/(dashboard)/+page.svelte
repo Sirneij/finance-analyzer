@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import Transactions from '$lib/components/transactions/Transactions.svelte';
+	import type { FinancialStats, Transaction } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
+	import type { PageData } from './$types';
 
-	interface FinancialStats {
-		total: number;
-		change: number;
-		trend: 'up' | 'down';
-	}
 	const cardData = {
 		balance: 7250.0,
 		cardNumber: '**** **** **** 4242',
@@ -14,34 +12,19 @@
 		name: 'John Doe'
 	};
 
-	const userStats = {
-		income: { total: 5000, change: 8.2, trend: 'up' } as FinancialStats,
-		expenses: { total: 3200, change: -2.4, trend: 'down' } as FinancialStats,
-		savings: { total: 1800, change: 12.5, trend: 'up' } as FinancialStats
-	};
-
 	const insights = [
 		{ title: 'Subscription Spending', value: '40%', description: 'of monthly expenses' },
 		{ title: 'Entertainment Trend', value: '↑15%', description: 'increase this month' }
 	];
-	const transactions = [
-		{
-			id: 1,
-			name: 'Netflix Subscription',
-			amount: -15.99,
-			date: '2024-02-20',
-			type: 'subscription'
-		},
-		{ id: 2, name: 'Salary Deposit', amount: 5000.0, date: '2024-02-19', type: 'income' },
-		{ id: 3, name: 'Grocery Store', amount: -85.5, date: '2024-02-18', type: 'expense' },
-		{ id: 4, name: 'Freelance Payment', amount: 750.0, date: '2024-02-17', type: 'income' }
-	];
 
-	const chartData = {
-		labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-		income: [4200, 4500, 4800, 5000, 5200],
-		expenses: [3000, 3200, 3100, 3200, 3400]
-	};
+	let { data }: { data: PageData } = $props();
+
+	const transactions: Transaction[] = data.transactions;
+	const transactionSummaries: {
+		income: FinancialStats;
+		expenses: FinancialStats;
+		savings: FinancialStats;
+	} = data.summary;
 </script>
 
 <div class="space-y-6">
@@ -149,13 +132,13 @@
 			<div class="flex items-center justify-between">
 				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Income</h3>
 				<span
-					class={`text-sm ${userStats.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${transactionSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{userStats.income.change}%
+					{transactionSummaries.income.change}%
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{userStats.income.total.toLocaleString()}
+				<span class="text-lg">$</span>{transactionSummaries.income.total.toLocaleString()}
 			</p>
 		</div>
 
@@ -163,13 +146,13 @@
 			<div class="flex items-center justify-between">
 				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Expenses</h3>
 				<span
-					class={`text-sm ${userStats.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					class={`text-sm ${transactionSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
 				>
-					{userStats.expenses.change}%
+					{transactionSummaries.expenses.change}%
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{userStats.expenses.total.toLocaleString()}
+				<span class="text-lg">$</span>{transactionSummaries.expenses.total.toLocaleString()}
 			</p>
 		</div>
 
@@ -177,13 +160,13 @@
 			<div class="flex items-center justify-between">
 				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Savings</h3>
 				<span
-					class={`text-sm ${userStats.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${transactionSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{userStats.savings.change}%
+					{transactionSummaries.savings.change}%
 				</span>
 			</div>
 			<p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-				<span class="text-lg">$</span>{userStats.savings.total.toLocaleString()}
+				<span class="text-lg">$</span>{transactionSummaries.savings.total.toLocaleString()}
 			</p>
 		</div>
 	</div>
@@ -213,66 +196,14 @@
 		<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
-				<button class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
-					>View All</button
+				<a
+					class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+					href="/transactions"
 				>
+					View All
+				</a>
 			</div>
-			<div class="space-y-4">
-				{#each transactions as tx}
-					<div
-						class="flex items-center justify-between rounded-lg border border-gray-100 p-4 dark:border-gray-700"
-					>
-						<div class="flex items-center space-x-3">
-							<div
-								class={`rounded-full p-2 ${
-									tx.type === 'income'
-										? 'bg-green-100 dark:bg-green-900/20'
-										: tx.type === 'expense'
-											? 'bg-red-100 dark:bg-red-900/20'
-											: 'bg-blue-100 dark:bg-blue-900/20'
-								}`}
-							>
-								<svg
-									class={`h-5 w-5 ${
-										tx.type === 'income'
-											? 'text-green-600 dark:text-green-400'
-											: tx.type === 'expense'
-												? 'text-red-600 dark:text-red-400'
-												: 'text-blue-600 dark:text-blue-400'
-									}`}
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d={tx.type === 'income'
-											? 'M5 10l7-7m0 0l7 7m-7-7v18'
-											: tx.type === 'expense'
-												? 'M19 14l-7 7m0 0l-7-7m7 7V3'
-												: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'}
-									/>
-								</svg>
-							</div>
-							<div>
-								<p class="font-medium text-gray-900 dark:text-white">{tx.name}</p>
-								<p class="text-sm text-gray-500 dark:text-gray-400">
-									{new Date(tx.date).toLocaleDateString()}
-								</p>
-							</div>
-						</div>
-						<span
-							class={`font-medium ${tx.amount > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
-						>
-							{tx.amount > 0 ? '+' : ''}<span class="text-sm">$</span>{Math.abs(
-								tx.amount
-							).toLocaleString()}
-						</span>
-					</div>
-				{/each}
-			</div>
+			<Transactions transactions={data.transactions} />
 		</div>
 	</div>
 </div>
