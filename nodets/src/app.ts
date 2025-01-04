@@ -4,7 +4,7 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github2";
-import { connectToCluster } from "$services/db.service.ts";
+import { connectToCluster, connectToRedis } from "$services/db.service.ts";
 import { baseConfig } from "$config/base.config.ts";
 import { AuthService } from "$services/auth.service.ts";
 import authRoutes from "$routes/auth.routes.ts";
@@ -30,6 +30,7 @@ app.use(
 
 app.use(
   session({
+    store: baseConfig.redis_url ? connectToRedis() : new session.MemoryStore(),
     secret: baseConfig.auth.session.secret,
     resave: false,
     saveUninitialized: false,

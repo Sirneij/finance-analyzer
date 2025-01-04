@@ -13,4 +13,5 @@ export interface BaseConfig {
   frontendUrl: string;
   logger: winston.Logger;
   utility_service_url: string;
+  redis_url: string;
 }

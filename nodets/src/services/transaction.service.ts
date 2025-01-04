@@ -95,12 +95,12 @@ export class TransactionService {
       const getCurrentTotal = (type: string) =>
         currentTransactions
           .filter((t) => t.type === type)
-          .reduce((acc, t) => acc + t.amount, 0);
+          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
 
       const getPreviousTotal = (type: string) =>
         previousTransactions
           .filter((t) => t.type === type)
-          .reduce((acc, t) => acc + t.amount, 0);
+          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
 
       const currentIncome = getCurrentTotal("income");
       const previousIncome = getPreviousTotal("income");

@@ -10,4 +10,6 @@ export const baseConfig: BaseConfig = {
   logger: logger,
   utility_service_url:
     process.env.UTILITY_SERVICE_URL || "http://localhost:5173",
+
+  redis_url: process.env.REDIS_URL || "redis://localhost:6379",
 };

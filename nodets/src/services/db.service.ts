@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { baseConfig } from "$config/base.config.ts";
+import { RedisStore } from "connect-redis";
+import { createClient } from "redis";
 
 const MAX_RETRIES = 3;
 const RETRY_INTERVAL = 5000;
@@ -37,3 +39,15 @@ export async function connectToCluster(retryCount = 0) {
     throw error;
   }
 }
+
+export const connectToRedis = (): RedisStore => {
+  const redisClient = createClient({
+    url: baseConfig.redis_url,
+  });
+
+  redisClient.connect().catch((error) => {
+    baseConfig.logger.error("❌ Redis connection error:", error);
+  });
+
+  return new RedisStore({ client: redisClient, prefix: "session:" });
+};

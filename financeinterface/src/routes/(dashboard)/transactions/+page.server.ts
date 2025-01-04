@@ -6,8 +6,10 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
 		throw redirect(302, '/auth/login');
 	}
-	const res = await fetch(`${BASE_API_URI}/v1/transactions`);
-	const transactions = await res.json();
+
+	const [transactions] = await Promise.all([
+		fetch(`${BASE_API_URI}/v1/transactions`).then((res) => res.json())
+	]);
 
 	return { transactions };
 };
