@@ -125,7 +125,7 @@ async def detect_anomalies(transactions: list[Transaction]) -> list[dict]:
 
 
 async def analyze_spending(transactions: list[Transaction]) -> dict:
-    """Generate spending analysis"""
+    """Generate spending analysis with cumulative balance"""
     total_spent = sum(tx.amount for tx in transactions if tx.amount < 0)
     total_income = sum(tx.amount for tx in transactions if tx.amount > 0)
 
@@ -138,8 +138,20 @@ async def analyze_spending(transactions: list[Transaction]) -> dict:
     # Group by the date and calculate daily totals
     daily_summary = df.groupby(df['date'].dt.date)['amount'].sum()
 
+    # Sort by date to ensure cumulative calculations are correct
+    df = df.sort_values(by='date')
+
+    # Calculate the cumulative balance
+    df['cumulative_balance'] = df['balance']
+
     # Convert daily_summary to JSON-serializable format
     daily_summary = {str(date): float(amount) for date, amount in daily_summary.items()}
+
+    # Prepare cumulative balance as JSON-serializable format
+    cumulative_balance = {
+        row['date'].strftime('%Y-%m-%d'): row['cumulative_balance']
+        for _, row in df.iterrows()
+    }
 
     return {
         'total_spent': abs(total_spent),
@@ -148,6 +160,7 @@ async def analyze_spending(transactions: list[Transaction]) -> dict:
             (total_income + total_spent) / total_income if total_income else 0
         ),
         'daily_summary': daily_summary,
+        'cumulative_balance': cumulative_balance,
     }
 
 

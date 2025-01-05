@@ -39,7 +39,11 @@ async def extract_text(request: Request) -> Response:
 async def analyze(request: web.Request) -> web.Response:
     try:
         data = await request.json()
+        base_settings.logger.info('Received analysis request')
         if not isinstance(data, list):
+            base_settings.logger.warning(
+                'Invalid input - expected list of transactions'
+            )
             return web.json_response(
                 {'error': 'Invalid input - expected list of transactions'}, status=400
             )
