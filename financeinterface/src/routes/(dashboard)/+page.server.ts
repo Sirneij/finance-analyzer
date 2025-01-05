@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	}
 
 	const [transactions, summary] = await Promise.all([
-		fetch(`${BASE_API_URI}/v1/transactions?limit=4`).then((res) => res.json()),
+		fetch(`${BASE_API_URI}/v1/transactions?limit=3`).then((res) => res.json()),
 		fetch(`${BASE_API_URI}/v1/transactions/summary`).then((res) => res.json())
 	]);
 

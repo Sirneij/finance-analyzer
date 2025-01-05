@@ -11,8 +11,6 @@
 	let { data }: { data: PageData } = $props();
 
 	const transactions: Transaction[] = data.transactions;
-
-	$inspect(transactions);
 </script>
 
 <div class="w-full space-y-4">

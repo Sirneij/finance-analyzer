@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import FinanceChart from '$lib/components/transactions/FinanceChart.svelte';
 	import Summary from '$lib/components/transactions/Summary.svelte';
 	import Transactions from '$lib/components/transactions/Transactions.svelte';
-	import type { FinancialStats, Transaction } from '$lib/types/transaction.types';
+	import type { FinancialStats, SpendingReport, Transaction } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
+	import {
+		getTransactionAnalysis,
+		transformCategoriesToArray
+	} from '$lib/utils/helpers/transactions.helpers';
 	import type { PageData } from './$types';
 
 	const cardData = {
@@ -13,11 +18,6 @@
 		name: 'John Doe'
 	};
 
-	const insights = [
-		{ title: 'Subscription Spending', value: '40%', description: 'of monthly expenses' },
-		{ title: 'Entertainment Trend', value: '↑15%', description: 'increase this month' }
-	];
-
 	let { data }: { data: PageData } = $props();
 
 	const transactions: Transaction[] = data.transactions;
@@ -26,6 +26,17 @@
 		expenses: FinancialStats;
 		savings: FinancialStats;
 	} = data.summary;
+
+	let transAnalysis: SpendingReport = $state({} as SpendingReport),
+		loading = $state(true);
+
+	$effect(() => {
+		const loadData = async () => {
+			transAnalysis = await getTransactionAnalysis();
+			loading = false;
+		};
+		loadData();
+	});
 </script>
 
 <div class="space-y-6">
@@ -113,16 +124,34 @@
 		</div>
 
 		<!-- Behavioral Insights -->
-		<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+		<div class="h-[220px] rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
 			<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Behavioral Insights</h2>
-			<div class="grid gap-4 sm:grid-cols-2">
-				{#each insights as insight}
-					<div class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-						<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">{insight.title}</h3>
-						<p class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">{insight.value}</p>
-						<p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{insight.description}</p>
-					</div>
-				{/each}
+			<div class="overflow-x-auto">
+				<div class="flex gap-4 pb-2">
+					{#if loading}
+						{#each Array(4) as _, i}
+							<div
+								class="min-w-[200px] animate-pulse rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+							>
+								<div class="h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-700"></div>
+								<div class="mt-2 h-4 w-1/3 rounded bg-gray-200 dark:bg-gray-700"></div>
+								<div class="mt-2 h-4 w-2/3 rounded bg-gray-200 dark:bg-gray-700"></div>
+							</div>
+						{/each}
+					{:else}
+						{#each transformCategoriesToArray(transAnalysis.categories.percentages) as analysis}
+							<div class="min-w-[200px] rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+								<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">
+									{analysis.title}
+								</h3>
+								<p class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
+									{analysis.value}
+								</p>
+								<p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{analysis.description}</p>
+							</div>
+						{/each}
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -133,23 +162,7 @@
 	<!-- Charts + Transactions Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">
 		<!-- Financial Charts -->
-		<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
-			<div class="mb-4 flex items-center justify-between">
-				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financial Trends</h3>
-				<div class="flex items-center gap-4">
-					<span class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-						<span class="mr-1 h-3 w-3 rounded-full bg-blue-500"></span> Income
-					</span>
-					<span class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-						<span class="mr-1 h-3 w-3 rounded-full bg-red-500"></span> Expenses
-					</span>
-				</div>
-			</div>
-			<div class="h-64">
-				<!-- Chart canvas will be mounted here -->
-				<canvas id="financialTrends"></canvas>
-			</div>
-		</div>
+		<FinanceChart {loading} spending_analysis={transAnalysis.spending_analysis} />
 
 		<!-- Recent Transactions -->
 		<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">

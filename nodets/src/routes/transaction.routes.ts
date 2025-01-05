@@ -22,4 +22,10 @@ transactionRouters.get(
   TransactionController.getIncomeExpensesSavings
 );
 
+transactionRouters.get(
+  "/analyze",
+  isAuthenticated,
+  TransactionController.analyzeTransactions
+);
+
 export default transactionRouters;

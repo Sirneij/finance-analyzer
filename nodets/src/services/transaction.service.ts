@@ -4,6 +4,7 @@ import {
   FileUploadResult,
   FinancialStats,
   ITransaction,
+  SpendingReport,
 } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
 import { ParserFactory } from "utils/file.utils.ts";
@@ -116,6 +117,32 @@ export class TransactionService {
       };
     } catch (error) {
       throw new Error("Failed to fetch income/expenses/savings");
+    }
+  }
+
+  static async analyzeTransactionsByUserId(
+    userId: mongoose.Types.ObjectId
+  ): Promise<SpendingReport> {
+    try {
+      const transactions = await Transaction.find({ userId });
+      const response = await fetch(
+        `${baseConfig.utility_service_url}/analyze`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transactions),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to analyze transactions");
+      }
+
+      return response.json();
+    } catch (error) {
+      throw new Error("Failed to analyze transactions");
     }
   }
 }

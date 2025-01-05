@@ -113,4 +113,30 @@ export class TransactionController {
       });
     }
   }
+
+  static async analyzeTransactions(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?._id;
+
+      if (!userId) {
+        res.status(401).json({
+          success: false,
+          error: "User ID not found",
+        });
+        return;
+      }
+
+      const data = await TransactionService.analyzeTransactionsByUserId(userId);
+
+      res.json(data);
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to analyze transactions",
+      });
+    }
+  }
 }

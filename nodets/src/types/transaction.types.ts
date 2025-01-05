@@ -37,3 +37,53 @@ export interface FinancialStats {
   change: number;
   trend: "up" | "down" | "neutral";
 }
+
+interface Categories {
+  groceries: number;
+  housing: number;
+  transportation: number;
+  entertainment: number;
+  utilities: number;
+  other: number;
+}
+
+interface CategoriesData {
+  categories: Categories;
+  percentages: Categories;
+}
+
+interface Anomaly {
+  date: string;
+  description: string;
+  amount: number;
+  reason: string;
+}
+
+interface DailySummary {
+  [key: string]: number;
+}
+
+interface CommulativeBalance {
+  [key: string]: number;
+}
+
+interface SpendingAnalysis {
+  total_spent: number;
+  total_income: number;
+  savings_rate: number;
+  daily_summary: DailySummary;
+  cumulative_balance: CommulativeBalance;
+}
+
+interface SpendingTrends {
+  trend: "increasing" | "decreasing" | "stable";
+  trend_slope: number;
+  estimated_monthly_spend: number;
+}
+
+export interface SpendingReport {
+  categories: CategoriesData;
+  anomalies: Anomaly[];
+  spending_analysis: SpendingAnalysis;
+  spending_trends: SpendingTrends;
+}

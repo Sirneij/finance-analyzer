@@ -47,7 +47,7 @@
 			class="group relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-all hover:border-blue-500 hover:bg-blue-50 dark:border-gray-600 dark:bg-gray-700/50 dark:hover:border-blue-400 dark:hover:bg-gray-700"
 		>
 			{#if isUploading}
-				<Loader width={20} message="Uploading..." />
+				<Loader width={20} message="Extracting..." />
 			{:else}
 				<div class="flex flex-col items-center justify-center pb-6 pt-5">
 					<Upload />
