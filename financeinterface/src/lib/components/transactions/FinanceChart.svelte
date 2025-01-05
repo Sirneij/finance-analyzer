@@ -3,6 +3,7 @@
 	import { financialChartConfig } from '$lib/utils/helpers/charts.helpers';
 	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
+	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
 
 	let { spending_analysis, loading }: { spending_analysis: SpendingAnalysis; loading: boolean } =
 		$props();
@@ -92,14 +93,7 @@
 	</div>
 	<div class="h-64">
 		{#if loading}
-			<div class="flex h-full w-full items-end justify-between gap-2 px-4">
-				{#each Array(12) as _, i}
-					<div
-						class="w-full animate-pulse bg-gray-200 dark:bg-gray-700"
-						style="height: {Math.random() * 60 + 20}%; animation-delay: {i * 100}ms;"
-					></div>
-				{/each}
-			</div>
+			<LoadingChart />
 		{:else}
 			<canvas bind:this={financialTrendsCanvas}></canvas>
 		{/if}

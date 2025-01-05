@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import BehaviouralInsights from '$lib/components/transactions/BehaviouralInsights.svelte';
 	import FinanceChart from '$lib/components/transactions/FinanceChart.svelte';
 	import Summary from '$lib/components/transactions/Summary.svelte';
 	import Transactions from '$lib/components/transactions/Transactions.svelte';
 	import type { FinancialStats, SpendingReport, Transaction } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
-	import {
-		getTransactionAnalysis,
-		transformCategoriesToArray
-	} from '$lib/utils/helpers/transactions.helpers';
+	import { getTransactionAnalysis } from '$lib/utils/helpers/transactions.helpers';
 	import type { PageData } from './$types';
 
 	const cardData = {
@@ -124,36 +122,7 @@
 		</div>
 
 		<!-- Behavioral Insights -->
-		<div class="h-[220px] rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-			<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Behavioral Insights</h2>
-			<div class="overflow-x-auto">
-				<div class="flex gap-4 pb-2">
-					{#if loading}
-						{#each Array(4) as _, i}
-							<div
-								class="min-w-[200px] animate-pulse rounded-lg border border-gray-200 p-4 dark:border-gray-700"
-							>
-								<div class="h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-700"></div>
-								<div class="mt-2 h-4 w-1/3 rounded bg-gray-200 dark:bg-gray-700"></div>
-								<div class="mt-2 h-4 w-2/3 rounded bg-gray-200 dark:bg-gray-700"></div>
-							</div>
-						{/each}
-					{:else}
-						{#each transformCategoriesToArray(transAnalysis.categories.percentages) as analysis}
-							<div class="min-w-[200px] rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-								<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">
-									{analysis.title}
-								</h3>
-								<p class="mt-1 text-2xl font-semibold text-gray-900 dark:text-white">
-									{analysis.value}
-								</p>
-								<p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{analysis.description}</p>
-							</div>
-						{/each}
-					{/if}
-				</div>
-			</div>
-		</div>
+		<BehaviouralInsights categories={transAnalysis.categories} {loading} />
 	</div>
 
 	<!-- Financial Summary Cards -->

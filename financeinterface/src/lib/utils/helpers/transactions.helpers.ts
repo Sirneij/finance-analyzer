@@ -1,12 +1,12 @@
-import type { Categories, SpendingReport } from '$lib/types/transaction.types';
+import type { Categories, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
 
 export function transformCategoriesToArray(categories: Categories) {
 	return Object.entries(categories)
 		.filter(([_, value]) => value > 0)
 		.map(([key, value]) => ({
 			title: key.charAt(0).toUpperCase() + key.slice(1),
-			value: `${(value * 100).toFixed(1)}%`,
-			description: `${(value * 100).toFixed(1)}% of total spending`
+			value: `${value.toFixed(2)}%`,
+			description: `${value.toFixed(2)}% of total spending`
 		}));
 }
 
@@ -46,4 +46,21 @@ export async function getTransactionAnalysis(): Promise<SpendingReport> {
 		console.error('Error fetching transaction analysis:', error);
 		return {} as SpendingReport;
 	}
+}
+
+export function getFinancialInsights(data: SpendingReport): InsightMetric[] {
+	return [
+		{
+			title: 'Spending Trend',
+			value: Math.abs(data.spending_trends.trend_slope).toFixed(2),
+			trend: data.spending_trends.trend === 'increasing' ? 'negative' : 'positive',
+			description: `Your spending is ${data.spending_trends.trend}. On average, it changes by $${Math.abs(data.spending_trends.trend_slope).toFixed(2)} per day.`
+		},
+		{
+			title: 'Saving Rate',
+			value: Math.abs(data.spending_analysis.savings_rate).toFixed(2),
+			trend: data.spending_analysis.savings_rate > 0 ? 'positive' : 'negative',
+			description: 'Your saving rate is the percentage of your income that you save each month.'
+		}
+	];
 }

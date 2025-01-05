@@ -65,3 +65,10 @@ export interface SpendingReport {
 	spending_analysis: SpendingAnalysis;
 	spending_trends: SpendingTrends;
 }
+
+export interface InsightMetric {
+	title: string;
+	value: string;
+	trend: 'positive' | 'negative' | 'neutral';
+	description: string;
+}

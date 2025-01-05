@@ -4,6 +4,7 @@
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import CircledSum from '$lib/components/icons/CircledSum.svelte';
 	import ExpenseList from '$lib/components/icons/ExpenseList.svelte';
+	import { createCountAnimation } from '$lib/states/counter.svelte';
 
 	let {
 		transactionSummaries
@@ -14,6 +15,23 @@
 			savings: FinancialStats;
 		};
 	} = $props();
+
+	const incomeCounter = createCountAnimation(0, transactionSummaries.income.total);
+	const expensesCounter = createCountAnimation(0, transactionSummaries.expenses.total);
+	const savingsCounter = createCountAnimation(0, transactionSummaries.savings.total);
+
+	$effect.root(() => {
+		// Start animations immediately
+		incomeCounter.startAnimation();
+		expensesCounter.startAnimation();
+		savingsCounter.startAnimation();
+
+		return () => {
+			incomeCounter.cleanup();
+			expensesCounter.cleanup();
+			savingsCounter.cleanup();
+		};
+	});
 </script>
 
 <div class="grid gap-6 sm:grid-cols-3">
@@ -38,7 +56,7 @@
 			</div>
 		</div>
 		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{transactionSummaries.income.total.toLocaleString()}
+			<span class="text-lg">$</span>{incomeCounter.value.toLocaleString()}
 		</p>
 	</div>
 
@@ -63,7 +81,7 @@
 			</div>
 		</div>
 		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{transactionSummaries.expenses.total.toLocaleString()}
+			<span class="text-lg">$</span>{expensesCounter.value.toLocaleString()}
 		</p>
 	</div>
 
@@ -88,7 +106,7 @@
 			</div>
 		</div>
 		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{transactionSummaries.savings.total.toLocaleString()}
+			<span class="text-lg">$</span>{savingsCounter.value.toLocaleString()}
 		</p>
 	</div>
 </div>

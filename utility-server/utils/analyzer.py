@@ -72,10 +72,17 @@ def validate_transaction(t: dict) -> bool:
 
 
 async def classify_transactions(transactions: list[Transaction]) -> dict:
-    """Classify transactions using an async lightweight text classification pipeline."""
+    """
+    Classify transactions using FinBERT.
+    """
+    # Load FinBERT classification pipeline
     classifier = pipeline(
-        'zero-shot-classification', model='distilbert-base-uncased', device=-1
+        'zero-shot-classification',
+        model='yiyanghkust/finbert-tone',  # Replace with FinBERT model
+        device=-1,  # Use CPU (set to 0 for GPU)
     )
+
+    # Define financial categories
     labels = [
         'groceries',
         'housing',
@@ -85,11 +92,18 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
         'other',
     ]
 
+    # Initialize category totals
     categories = {label: 0 for label in labels}
 
+    # Process each transaction asynchronously
     for tx in transactions:
-        result = await asyncio.to_thread(classifier, tx.description, labels)
+        # Run FinBERT classification in a thread-safe way
+        result = await asyncio.to_thread(classifier, tx.description.lower(), labels)
+
+        # Get the top category prediction
         category = result['labels'][0]
+
+        # Add the transaction amount to the relevant category
         categories[category] += abs(tx.amount)
 
     # Calculate total spending
@@ -109,19 +123,52 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
 
 
 async def detect_anomalies(transactions: list[Transaction]) -> list[dict]:
+    """Detect anomalies in transactions and provide specific reasons."""
+    # Extract transaction amounts and reshape for Isolation Forest
     amounts = np.array([tx.amount for tx in transactions]).reshape(-1, 1)
     model = IsolationForest(contamination=0.05, random_state=42)
     anomalies = model.fit_predict(amounts)
-    return [
-        {
-            'date': tx.date.isoformat(),
-            'description': tx.description,
-            'amount': tx.amount,
-            'reason': 'Anomaly detected by Isolation Forest',
-        }
-        for tx, anomaly in zip(transactions, anomalies)
-        if anomaly == -1
-    ]
+
+    # Calculate mean and standard deviation for dynamic reason generation
+    mean = np.mean(amounts)
+    std = np.std(amounts)
+
+    # Detect anomalies and generate specific reasons
+    anomaly_details = []
+    for tx, anomaly in zip(transactions, anomalies):
+        if anomaly == -1:  # Anomaly detected
+            # Calculate the Z-score for the transaction
+            z_score = (tx.amount - mean) / std
+
+            # Generate a dynamic reason
+            if tx.amount > 0:
+                reason = (
+                    f'Unusually high income of {tx.amount} detected '
+                    f'(Z-score: {z_score:.2f}).'
+                )
+            elif tx.amount < 0 and abs(tx.amount) > abs(mean) + 2 * std:
+                reason = (
+                    f'Unusually large expense of {tx.amount} detected '
+                    f'(Z-score: {z_score:.2f}).'
+                )
+            elif tx.amount < 0 and 'luxury' in tx.description.lower():
+                reason = 'Uncommon luxury expense detected.'
+            elif tx.amount < 0 and 'groceries' in tx.description.lower():
+                reason = 'Unusually high grocery expense detected.'
+            else:
+                reason = f'Outlier transaction with amount {tx.amount} (Z-score: {z_score:.2f}).'
+
+            # Append the anomaly details
+            anomaly_details.append(
+                {
+                    'date': tx.date.isoformat(),
+                    'description': tx.description,
+                    'amount': tx.amount,
+                    'reason': reason,
+                }
+            )
+
+    return anomaly_details
 
 
 async def analyze_spending(transactions: list[Transaction]) -> dict:
@@ -157,7 +204,7 @@ async def analyze_spending(transactions: list[Transaction]) -> dict:
         'total_spent': abs(total_spent),
         'total_income': total_income,
         'savings_rate': (
-            (total_income + total_spent) / total_income if total_income else 0
+            ((total_income + total_spent) / total_income) * 100 if total_income else 0
         ),
         'daily_summary': daily_summary,
         'cumulative_balance': cumulative_balance,
