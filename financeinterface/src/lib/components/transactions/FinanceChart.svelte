@@ -5,13 +5,21 @@
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
 	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
 	import Empty from '$lib/components/resuables/Empty.svelte';
+	import Expand from '$lib/components/icons/Expand.svelte';
+	import Minimize from '$lib/components/icons/Minimize.svelte';
 
 	let { spending_analysis, loading }: { spending_analysis: SpendingAnalysis; loading: boolean } =
 		$props();
 
 	let financialTrendsCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
-		financialTrendChart: Chart | null = null;
+		financialTrendChart: Chart | null = null,
+		isFullscreen = $state(false),
+		chartContainer = $state<HTMLDivElement>();
+
+	function toggleFullscreen() {
+		isFullscreen = !isFullscreen;
+	}
 	$effect(() => {
 		if (!financialTrendsCanvas || chartInitialized) return;
 
@@ -77,7 +85,27 @@
 	});
 </script>
 
-<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
+<div
+	class="group relative rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800"
+	class:fixed={isFullscreen}
+	class:inset-0={isFullscreen}
+	class:z-50={isFullscreen}
+	bind:this={chartContainer}
+>
+	<!-- Fullscreen button -->
+	<button
+		class="absolute right-2 top-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
+		onclick={toggleFullscreen}
+	>
+		{#if isFullscreen}
+			<!-- Minimize icon -->
+			<Minimize class="h-5 w-5" />
+		{:else}
+			<!-- Expand icon -->
+			<Expand class="h-5 w-5" />
+		{/if}
+	</button>
+
 	<div class="mb-4 flex items-center justify-between">
 		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financials</h3>
 		<div class="flex items-center gap-4">
@@ -92,7 +120,8 @@
 			</span>
 		</div>
 	</div>
-	<div class="h-64">
+
+	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
 			<LoadingChart />
 		{:else if !spending_analysis}
@@ -105,3 +134,35 @@
 		{/if}
 	</div>
 </div>
+
+{#if isFullscreen}
+	<button
+		type="button"
+		class="fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-sm"
+		onclick={toggleFullscreen}
+		onkeydown={(e) => e.key === 'Escape' && toggleFullscreen()}
+		aria-label="Close fullscreen view"
+	></button>
+{/if}
+
+<style>
+	.fixed {
+		animation: zoom-in 0.2s ease-out;
+		position: fixed;
+		max-width: calc(100vw - 2rem);
+		max-height: calc(100vh - 2rem);
+		width: 100%;
+		margin: auto;
+	}
+
+	@keyframes zoom-in {
+		from {
+			transform: scale(0.95);
+			opacity: 0;
+		}
+		to {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+</style>

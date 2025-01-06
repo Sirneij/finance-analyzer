@@ -4,11 +4,27 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+import torch
 from sklearn.ensemble import IsolationForest
 from transformers import pipeline
 
 from models.base import Transaction
 from utils.settings import base_settings as settings
+
+
+def get_device() -> tuple[torch.device, str]:
+    """
+    Detect the best available device (GPU, MPS, or CPU) for PyTorch computations.
+    """
+    if torch.cuda.is_available():
+        # Check if CUDA (NVIDIA GPU) is available
+        return torch.device('cuda'), 'CUDA (NVIDIA GPU)'
+    elif torch.backends.mps.is_available():
+        # Check if MPS (Metal Performance Shaders on Apple Silicon) is available
+        return torch.device('mps'), 'MPS (Apple Metal)'
+    else:
+        # Default to CPU
+        return torch.device('cpu'), 'CPU'
 
 
 async def analyze_transactions(transactions: list[dict]) -> dict:
@@ -76,11 +92,14 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
     """
     Classify transactions using FinBERT.
     """
+    # Get device (GPU if available, otherwise CPU)
+    device, device_name = get_device()
+    settings.logger.info(f'Using device for classification: {device_name}')
     # Load FinBERT classification pipeline
     classifier = pipeline(
         'zero-shot-classification',
-        model='yiyanghkust/finbert-tone',  # Replace with FinBERT model
-        device=-1,  # Use CPU (set to 0 for GPU)
+        model='yiyanghkust/finbert-tone',
+        device=0 if device.type in ['cuda', 'mps'] else -1,  # Use GPU if available
     )
 
     # Define financial categories
@@ -90,34 +109,31 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
 
     settings.logger.info(f'Classifying transactions with labels: {labels}')
 
-    # Initialize category totals
+    # Prepare transaction descriptions for classification
+    descriptions = [tx.description.lower() for tx in transactions]
+
+    # Batch classify descriptions (Improves performance)
+    results = await asyncio.to_thread(
+        classifier, descriptions, labels, truncation=True, max_length=128
+    )
+
+    # Initialize categories and percentages
     categories = {label: 0 for label in labels}
 
-    # Process each transaction asynchronously
-    for tx in transactions:
-        # Run FinBERT classification in a thread-safe way
-        result = await asyncio.to_thread(classifier, tx.description.lower(), labels)
-
-        # Get the top category prediction
+    # Aggregate classification results
+    for tx, result in zip(transactions, results):
         category = result['labels'][0]
-
-        # Add the transaction amount to the relevant category
         categories[category] += abs(tx.amount)
 
-    # Calculate total spending
     total_spent = sum(categories.values())
 
-    # Calculate percentage for each category
+    # Calculate percentages
     percentages = {
         category: (amount / total_spent) * 100 if total_spent > 0 else 0
         for category, amount in categories.items()
     }
 
-    # Combine absolute values and percentages into a single dictionary
-    return {
-        'categories': categories,
-        'percentages': percentages,
-    }
+    return {'categories': categories, 'percentages': percentages}
 
 
 async def detect_anomalies(transactions: list[Transaction]) -> list[dict]:
@@ -179,6 +195,7 @@ async def analyze_spending(transactions: list[Transaction]) -> dict:
 
     # Ensure date parsing is correct
     df['date'] = pd.to_datetime(df['date'])
+    df['date'] = df['date'].dt.tz_localize(None)
 
     # Group by the date and calculate daily totals
     daily_summary = df.groupby(df['date'].dt.date)['amount'].sum()
@@ -229,6 +246,7 @@ async def predict_trends(transactions: list[Transaction]) -> dict:
     # Estimated monthly spend
     df = pd.DataFrame([t.__dict__ for t in transactions])
     df['date'] = pd.to_datetime(df['date'])
+    df['date'] = df['date'].dt.tz_localize(None)
     months = len(df['date'].dt.to_period('M').unique())
 
     return {
