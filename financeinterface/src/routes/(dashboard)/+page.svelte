@@ -8,19 +8,16 @@
 	import type { SpendingReport, Transaction, FinancialSummary } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
 	import { getTransactionAnalysis } from '$lib/utils/helpers/transactions.helpers';
+	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-
-	const cardData = {
-		balance: 7250.0,
-		cardNumber: '**** **** **** 4242',
-		validThru: '12/25',
-		name: 'John Doe'
-	};
+	import MonthlySummary from '$lib/components/transactions/MonthlySummary.svelte';
+	import Add from '$lib/components/icons/Add.svelte';
+	import Bar from '$lib/components/icons/Bar.svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	const transactions: Transaction[] = data.transactions;
-	const financialSummaries: FinancialSummary = data.summary;
+	const transactions: Transaction[] = data.transactions || [];
+	const financialSummaries: FinancialSummary = data.summary || {};
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
 		loading = $state(true);
@@ -38,15 +35,13 @@
 			}
 		};
 
-		fetchAnalysis();
+		onMount(async () => await fetchAnalysis());
 	});
 </script>
 
 <div class="space-y-6">
 	<!-- Welcome Section -->
-	<div
-		class="flex flex-col space-y-4 rounded-lg bg-white p-4 sm:p-6 md:flex-row md:items-center md:justify-between md:space-y-0 dark:bg-gray-800"
-	>
+	<div class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
 		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img
 				src={page.data.user?.avatar}
@@ -63,75 +58,33 @@
 			</div>
 		</div>
 
-		<div class="flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-			<button
+		<div class="flex flex-col gap-2 sm:flex-row sm:gap-3">
+			<a
 				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-blue-600 hover:bg-blue-100 sm:w-auto dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
+				href="/transactions/add"
 			>
-				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-					/>
-				</svg>
+				<Add class="h-5 w-5" />
 				<span>Add Transaction</span>
-			</button>
+			</a>
 
 			<button
 				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-gray-50 px-4 py-2 text-gray-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-700/50 dark:text-gray-400 dark:hover:bg-gray-700"
 			>
-				<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-					/>
-				</svg>
+				<Bar class="h-5 w-5" />
 				<span>Reports</span>
 			</button>
 		</div>
 	</div>
-	<!-- Card and Insights Grid -->
-	<div class="grid gap-6 lg:grid-cols-2">
-		<!-- Credit Card -->
-		<div
-			class="relative h-[220px] w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-blue-800 p-6"
-		>
-			<div class="absolute left-0 top-0 h-full w-full">
-				<!-- Card Chip -->
-				<div class="absolute left-6 top-12 h-10 w-12 rounded-md bg-yellow-400/80"></div>
-				<!-- Decorative circles -->
-				<div class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10"></div>
-				<div class="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-white/10"></div>
-			</div>
-			<div class="relative flex h-full flex-col justify-between text-white">
-				<div>
-					<h3 class="text-lg font-medium opacity-75">Current Balance</h3>
-					<p class="text-3xl font-bold">
-						<span class="text-lg">$</span>{cardData.balance.toLocaleString()}
-					</p>
-				</div>
-				<div class="space-y-3">
-					<p class="font-mono text-lg tracking-widest opacity-75">{cardData.cardNumber}</p>
-					<div class="flex justify-between">
-						<div>
-							<p class="text-xs opacity-75">Valid Thru</p>
-							<p class="font-mono">{cardData.validThru}</p>
-						</div>
-						<p class="self-end font-semibold">{page.data.user?.name}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Behavioral Insights -->
-		<BehaviouralInsights categories={transAnalysis.categories} {loading} />
-	</div>
-
 	<!-- Financial Summary Cards -->
 	<Summary {financialSummaries} />
+
+	<!-- Card and Insights Grid -->
+	<div class="grid gap-4 sm:gap-6 md:grid-cols-1 lg:grid-cols-2">
+		<!-- Behavioral Insights -->
+		<BehaviouralInsights categories={transAnalysis.categories} {loading} />
+		<!-- Monthly summary -->
+		<MonthlySummary {financialSummaries} {loading} />
+	</div>
 
 	<!-- Charts + Transactions Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">

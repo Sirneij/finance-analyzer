@@ -19,16 +19,16 @@
 <aside
 	class:w-64={isSidebarOpen}
 	class:w-20={!isSidebarOpen}
-	class="fixed inset-y-0 left-0 z-50 transform bg-white transition-all duration-300 dark:bg-gray-800"
+	class="fixed inset-y-0 left-0 z-30 transform bg-white transition-all duration-300 dark:bg-gray-800"
 >
 	<div class="flex h-16 items-center justify-between px-4">
-		<div class="logo-container">
+		<a class="logo-container" href="/">
 			{#if isSidebarOpen}
-				<Logo {isSmall} />
+				<Logo {isSmall} class="h-12 w-auto" />
 			{:else}
-				<Logo {isSmall} />
+				<Logo {isSmall} class="h-8 w-auto" />
 			{/if}
-		</div>
+		</a>
 		<button
 			onclick={toggleSidebar}
 			class="rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-700"

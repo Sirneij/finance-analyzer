@@ -89,6 +89,15 @@ async def summarize_transactions(transactions: list[dict]) -> dict:
             ((total_income + total_spent) / total_income) * 100 if total_income else 0
         )
 
+        monthly_summary = {
+            str(month): {
+                'income': float(monthly_income.get(month, 0)),
+                'expenses': float(monthly_expense.get(month, 0)),
+                'savings': float(monthly_savings.get(month, 0)),
+            }
+            for month in monthly_income.index.union(monthly_expense.index)
+        }
+
         # Prepare summary
         summary = {
             'income': {
@@ -116,9 +125,7 @@ async def summarize_transactions(transactions: list[dict]) -> dict:
             'largest_expense': largest_expense,
             'largest_income': largest_income,
             'savings_rate': savings_rate,
-            'monthly_summary': {
-                str(month): float(value) for month, value in monthly_summary.items()
-            },
+            'monthly_summary': monthly_summary,
         }
 
         settings.logger.info('Transaction summarization completed successfully')

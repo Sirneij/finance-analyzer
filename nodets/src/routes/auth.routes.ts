@@ -15,10 +15,16 @@ authRouters.get(
   AuthController.loginSuccess
 );
 
-authRouters.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
+authRouters.get("/github", (req, res, next) => {
+  const state = req.query.next
+    ? Buffer.from(req.query.next as string).toString("base64")
+    : "";
+  passport.authenticate("github", {
+    scope: ["user:email"],
+    state,
+  })(req, res, next);
+});
+
 authRouters.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),

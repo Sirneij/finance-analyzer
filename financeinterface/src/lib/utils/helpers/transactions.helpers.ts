@@ -1,4 +1,9 @@
-import type { CategoriesData, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
+import type {
+	Categories,
+	CategoriesData,
+	InsightMetric,
+	SpendingReport
+} from '$lib/types/transaction.types';
 
 export function transformCategoriesToArray(categoryData: CategoriesData) {
 	return Object.entries(categoryData.percentages)
@@ -34,6 +39,28 @@ export function transformChartData(
 		income: chartData.map((item) => item.income),
 		expenses: chartData.map((item) => item.expenses),
 		balances: chartData.map((item) => item.balance)
+	};
+}
+
+export function transformMonthlyChartData(monthlySummary: Record<string, any>) {
+	const labels: string[] = [];
+	const incomeData: number[] = [];
+	const expensesData: number[] = [];
+	const savingsData: number[] = [];
+
+	// Iterate through the monthly summary data
+	for (const [month, data] of Object.entries(monthlySummary)) {
+		labels.push(month); // Use the month (e.g., "2023-01") as the label
+		incomeData.push(data.income || 0);
+		expensesData.push(data.expenses || 0);
+		savingsData.push(data.savings || 0);
+	}
+
+	return {
+		labels,
+		incomeData,
+		expensesData,
+		savingsData
 	};
 }
 

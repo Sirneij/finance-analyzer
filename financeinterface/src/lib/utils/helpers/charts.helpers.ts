@@ -14,26 +14,11 @@ const options: ChartOptions = {
 		tooltip: {
 			callbacks: {
 				label: function (context) {
-					const value = context.parsed.y;
-					const dataset = context.dataset;
-					// Ensure we have a valid array with numbers
-					if (!dataset.data?.length) {
-						return `Amount: $${value.toLocaleString()} (0%)`;
+					const label = context.dataset.label || '';
+					if (label) {
+						return `${label}: $${context.parsed.y.toLocaleString()}`;
 					}
-
-					const total: number = dataset.data.reduce((sum: number, current) => {
-						// Handle different possible data types
-						const currentValue = typeof current === 'number' ? current : ((current as any)?.y ?? 0);
-						return sum + currentValue;
-					}, 0);
-
-					// Guard against division by zero
-					if (total === 0) {
-						return `Amount: $${value.toLocaleString()} (0%)`;
-					}
-
-					const percentage = ((value / total) * 100).toFixed(1);
-					return `Amount: $${value.toLocaleString()} (${percentage}%)`;
+					return `$${context.parsed.y.toLocaleString()}`;
 				},
 				title: function (context) {
 					return context[0]?.label ?? '';
@@ -91,3 +76,14 @@ export function generateChartColors(count: number) {
 
 	return { backgroundColors, borderColors };
 }
+
+export const monthlySummariesChartConfig: ChartConfiguration = {
+	type: 'line',
+	data: {
+		labels: [],
+		datasets: []
+	},
+	options: {
+		...options
+	}
+};

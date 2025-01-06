@@ -3,7 +3,6 @@
 </script>
 
 <svg
-	class="h-12 w-auto"
 	viewBox={isSmall ? '0 0 40 40' : '0 0 100 40'}
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"

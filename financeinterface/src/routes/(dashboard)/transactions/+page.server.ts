@@ -4,7 +4,7 @@ import { BASE_API_URI } from '$lib/utils/contants';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
-		throw redirect(302, '/auth/login');
+		throw redirect(302, '/auth/login?next=/transactions');
 	}
 
 	const [transactions] = await Promise.all([

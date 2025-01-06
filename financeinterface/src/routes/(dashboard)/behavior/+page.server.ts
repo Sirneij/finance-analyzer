@@ -5,7 +5,7 @@ import type { CustomError } from '$lib/types/errors.types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.user) {
-		throw redirect(302, '/auth/login');
+		throw redirect(302, '/auth/login?next=/behavior');
 	}
 };
 

@@ -5,15 +5,24 @@ export class AuthController {
   static async loginSuccess(req: Request, res: Response) {
     if (req.user) {
       if (req.xhr || req.headers.accept?.includes("application/json")) {
-        // API request - return JSON
         res.status(200).json({
           success: true,
           message: "Login successful",
           user: req.user,
         });
       } else {
-        // Browser request - redirect
-        res.redirect(`${baseConfig.frontendUrl}`);
+        const state = req.query.state;
+        let redirectPath = "/";
+
+        if (state) {
+          try {
+            redirectPath = Buffer.from(state as string, "base64").toString();
+          } catch (error) {
+            baseConfig.logger.error("Failed to decode state parameter:", error);
+          }
+        }
+
+        res.redirect(`${baseConfig.frontendUrl}${redirectPath}`);
       }
     }
   }

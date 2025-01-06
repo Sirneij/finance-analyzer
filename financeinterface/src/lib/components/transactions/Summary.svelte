@@ -10,9 +10,9 @@
 
 	let { financialSummaries }: { financialSummaries: FinancialSummary } = $props();
 
-	const incomeCounter = createCountAnimation(0, financialSummaries.income.total);
-	const expensesCounter = createCountAnimation(0, financialSummaries.expenses.total);
-	const savingsCounter = createCountAnimation(0, financialSummaries.savings.total);
+	const incomeCounter = createCountAnimation(0, financialSummaries?.income?.total || 0);
+	const expensesCounter = createCountAnimation(0, financialSummaries?.expenses?.total || 0);
+	const savingsCounter = createCountAnimation(0, financialSummaries?.savings?.total || 0);
 
 	$effect.root(() => {
 		// Start animations immediately
@@ -39,13 +39,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={financialSummaries.income.trend}
-					class={`h-4 w-4 ${financialSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					trend={financialSummaries?.income?.trend ?? 'up'}
+					class={`h-4 w-4 ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				/>
 				<span
-					class={`text-sm ${financialSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{financialSummaries.income.change.toFixed(2)}%
+					{(financialSummaries?.income?.change ?? 0).toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -64,13 +64,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={financialSummaries.expenses.trend}
-					class={`h-4 w-4 ${financialSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					trend={financialSummaries?.expenses?.trend ?? 'up'}
+					class={`h-4 w-4 ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
 				/>
 				<span
-					class={`text-sm ${financialSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					class={`text-sm ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
 				>
-					{financialSummaries.expenses.change.toFixed(2)}%
+					{(financialSummaries?.expenses?.change ?? 0).toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -89,13 +89,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={financialSummaries.savings.trend}
-					class={`h-4 w-4 ${financialSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					trend={financialSummaries?.savings?.trend ?? 'up'}
+					class={`h-4 w-4 ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				/>
 				<span
-					class={`text-sm ${financialSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{financialSummaries.savings.change.toFixed(2)}%
+					{(financialSummaries?.savings?.change ?? 0).toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -121,51 +121,55 @@
 	{/if}
 
 	<!-- Averages -->
-	<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
-		<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Average Transaction</h4>
-		<div class="mt-2 flex flex-col gap-1">
-			{#if financialSummaries.avg_income}
-				<div class="flex justify-between">
-					<span class="text-xs text-gray-500">Income</span>
-					<span class="text-sm font-semibold text-gray-900 dark:text-white">
-						{formatMoney(financialSummaries.avg_income)}
-					</span>
-				</div>
-			{/if}
+	{#if financialSummaries.avg_income || financialSummaries.avg_expense}
+		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Average Transaction</h4>
+			<div class="mt-2 flex flex-col gap-1">
+				{#if financialSummaries.avg_income}
+					<div class="flex justify-between">
+						<span class="text-xs text-gray-500">Income</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-white">
+							{formatMoney(financialSummaries.avg_income)}
+						</span>
+					</div>
+				{/if}
 
-			{#if financialSummaries.avg_expense}
-				<div class="flex justify-between">
-					<span class="text-xs text-gray-500">Expense</span>
-					<span class="text-sm font-semibold text-gray-900 dark:text-white">
-						{formatMoney(financialSummaries.avg_expense)}
-					</span>
-				</div>
-			{/if}
+				{#if financialSummaries.avg_expense}
+					<div class="flex justify-between">
+						<span class="text-xs text-gray-500">Expense</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-white">
+							{formatMoney(financialSummaries.avg_expense)}
+						</span>
+					</div>
+				{/if}
+			</div>
 		</div>
-	</div>
+	{/if}
 	<!-- Date Range -->
-	<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
-		<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Period</h4>
-		<div class="mt-2 flex flex-col gap-1">
-			{#if financialSummaries.start_date}
-				<div class="flex justify-between">
-					<span class="text-xs text-gray-500">From</span>
-					<span class="text-sm font-semibold text-gray-900 dark:text-white">
-						{formatDate(financialSummaries.start_date)}
-					</span>
-				</div>
-			{/if}
+	{#if financialSummaries.start_date || financialSummaries.end_date}
+		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Period</h4>
+			<div class="mt-2 flex flex-col gap-1">
+				{#if financialSummaries.start_date}
+					<div class="flex justify-between">
+						<span class="text-xs text-gray-500">From</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-white">
+							{formatDate(financialSummaries.start_date)}
+						</span>
+					</div>
+				{/if}
 
-			{#if financialSummaries.end_date}
-				<div class="flex justify-between">
-					<span class="text-xs text-gray-500">To</span>
-					<span class="text-sm font-semibold text-gray-900 dark:text-white">
-						{formatDate(financialSummaries.end_date)}
-					</span>
-				</div>
-			{/if}
+				{#if financialSummaries.end_date}
+					<div class="flex justify-between">
+						<span class="text-xs text-gray-500">To</span>
+						<span class="text-sm font-semibold text-gray-900 dark:text-white">
+							{formatDate(financialSummaries.end_date)}
+						</span>
+					</div>
+				{/if}
+			</div>
 		</div>
-	</div>
+	{/if}
 
 	<!-- Savings Rate -->
 	{#if financialSummaries.savings_rate}

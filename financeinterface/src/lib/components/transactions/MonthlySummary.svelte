@@ -1,85 +1,79 @@
 <script lang="ts">
+	import type { FinancialSummary } from '$lib/types/transaction.types';
+	import { monthlySummariesChartConfig } from '$lib/utils/helpers/charts.helpers';
 	import Chart from 'chart.js/auto';
-	import { financialChartConfig } from '$lib/utils/helpers/charts.helpers';
-	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
-	import type { SpendingAnalysis } from '$lib/types/transaction.types';
-	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
-	import Expand from '$lib/components/icons/Expand.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
+	import Expand from '$lib/components/icons/Expand.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
+	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
+	import { transformMonthlyChartData } from '$lib/utils/helpers/transactions.helpers';
 	import { COLORS } from '$lib/utils/contants';
 
-	let { spending_analysis, loading }: { spending_analysis: SpendingAnalysis; loading: boolean } =
+	let { financialSummaries, loading }: { financialSummaries: FinancialSummary; loading: boolean } =
 		$props();
 
-	let financialTrendsCanvas = $state<HTMLCanvasElement>(),
+	let monthlySummariesCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
-		financialTrendChart: Chart | null = null,
-		isFullscreen = $state(false),
-		chartContainer = $state<HTMLDivElement>();
+		monthlySummariesChart: Chart | null = null,
+		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
 	}
 	$effect(() => {
-		if (!financialTrendsCanvas || chartInitialized) return;
+		if (!monthlySummariesCanvas || chartInitialized) return;
 
-		const financialTrendCtx = financialTrendsCanvas.getContext('2d');
-		if (!financialTrendCtx) return;
+		const nonthlySummariesCtx = monthlySummariesCanvas.getContext('2d');
+		if (!nonthlySummariesCtx) return;
 
 		// Cleanup previous instance
-		if (financialTrendChart) {
-			financialTrendChart.destroy();
+		if (monthlySummariesChart) {
+			monthlySummariesChart.destroy();
 		}
 
-		const financialChartData = transformChartData(
-			spending_analysis.daily_summary,
-			spending_analysis.cumulative_balance
+		const monthlySummariesChartData = transformMonthlyChartData(
+			financialSummaries?.monthly_summary || {}
 		);
-		financialChartConfig.data = {
-			labels: financialChartData.labels,
+		monthlySummariesChartConfig.data = {
+			labels: monthlySummariesChartData.labels,
 			datasets: [
 				{
 					label: 'Income',
-					data: financialChartData.income,
+					data: monthlySummariesChartData.incomeData,
 					borderColor: COLORS.income.chart,
+					backgroundColor: 'rgba(34, 197, 94, 0.2)',
 					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					}
+					fill: true, // Show the area under the line
+					borderWidth: 2
 				},
 				{
 					label: 'Expenses',
-					data: financialChartData.expenses,
-					borderColor: COLORS.expense.chart,
+					data: monthlySummariesChartData.expensesData,
+					borderColor: COLORS.expense.chart, // Red for expenses
+					backgroundColor: 'rgba(239, 68, 68, 0.2)',
 					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					}
+					fill: true,
+					borderWidth: 2
 				},
 				{
-					label: 'Balance',
-					data: financialChartData.balances,
-					borderColor: COLORS.balance.chart,
-					borderDash: [5, 5],
+					label: 'Savings',
+					data: monthlySummariesChartData.savingsData,
+					borderColor: COLORS.savings.chart, // Blue for savings
+					backgroundColor: 'rgba(59, 130, 246, 0.2)',
 					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					}
+					fill: true,
+					borderWidth: 2
 				}
 			]
 		};
 
-		financialTrendChart = new Chart(financialTrendCtx, financialChartConfig);
+		monthlySummariesChart = new Chart(nonthlySummariesCtx, monthlySummariesChartConfig);
 		chartInitialized = true;
 
 		// Cleanup on component destruction
 		return () => {
-			if (financialTrendChart) {
-				financialTrendChart.destroy();
+			if (monthlySummariesChart) {
+				monthlySummariesChart.destroy();
 				chartInitialized = false;
 			}
 		};
@@ -91,7 +85,6 @@
 	class:fixed={isFullscreen}
 	class:inset-0={isFullscreen}
 	class:z-50={isFullscreen}
-	bind:this={chartContainer}
 >
 	<!-- Fullscreen button -->
 	<button
@@ -108,7 +101,7 @@
 	</button>
 
 	<div class="mb-4 flex items-center justify-between">
-		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Financials</h3>
+		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Monthly Summary</h3>
 		<div class="flex items-center gap-4">
 			<span class="flex items-center text-sm text-gray-500 dark:text-gray-400">
 				<span class="mr-1 h-3 w-3 rounded-full {COLORS.income.background}"></span> Income
@@ -117,7 +110,7 @@
 				<span class="mr-1 h-3 w-3 rounded-full {COLORS.expense.background}"></span> Expenses
 			</span>
 			<span class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-				<span class="mr-1 h-3 w-3 rounded-full {COLORS.balance.background}"></span> Balance
+				<span class="mr-1 h-3 w-3 rounded-full {COLORS.savings.background}"></span> Savings
 			</span>
 		</div>
 	</div>
@@ -125,13 +118,13 @@
 	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
 			<LoadingChart />
-		{:else if !spending_analysis}
+		{:else if !financialSummaries?.monthly_summary}
 			<Empty
 				title="No financial data available"
 				description="Financial data will be available once you have made a few transactions."
 			/>
 		{:else}
-			<canvas bind:this={financialTrendsCanvas}></canvas>
+			<canvas bind:this={monthlySummariesCanvas}></canvas>
 		{/if}
 	</div>
 </div>

@@ -74,5 +74,5 @@ export interface FinancialSummary {
 	largest_expense: number;
 	largest_income: number;
 	savings_rate: number;
-	monthly_summary: Categories;
+	monthly_summary: Record<string, any>;
 }
