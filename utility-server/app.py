@@ -6,6 +6,7 @@ from aiohttp.web import Application, Request, Response
 from utils.analyzer import analyze_transactions
 from utils.extract_text import extract_text_from_pdf
 from utils.settings import base_settings
+from utils.summarize import summarize_transactions
 
 routes = web.RouteTableDef()
 
@@ -54,6 +55,29 @@ async def analyze(request: web.Request) -> web.Response:
     except Exception as e:
         base_settings.logger.error(f'Analysis error: {str(e)}', exc_info=True)
         return web.json_response({'error': 'Analysis failed: ' + str(e)}, status=500)
+
+
+@routes.post('/summarize')
+async def summarize(request: web.Request) -> web.Response:
+    try:
+        data = await request.json()
+        base_settings.logger.info('Received summarization request')
+        if not isinstance(data, list):
+            base_settings.logger.warning(
+                'Invalid input - expected list of transactions'
+            )
+            return web.json_response(
+                {'error': 'Invalid input - expected list of transactions'}, status=400
+            )
+
+        result = await summarize_transactions(data)
+        return web.json_response(result)
+
+    except Exception as e:
+        base_settings.logger.error(f'Summarization error: {str(e)}', exc_info=True)
+        return web.json_response(
+            {'error': 'Summarization failed: ' + str(e)}, status=500
+        )
 
 
 async def create_app() -> Application:

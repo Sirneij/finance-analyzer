@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Anomaly from '$lib/components/behavior/Anomaly.svelte';
 	import Insight from '$lib/components/behavior/Insight.svelte';
 	import SpendingCategories from '$lib/components/behavior/SpendingCategories.svelte';
@@ -15,26 +16,23 @@
 
 	const { form }: { form: ActionData } = $props();
 
-	const categories = [
-		'Housing',
-		'Transportation',
-		'Food',
-		'Utilities',
-		'Entertainment',
-		'Healthcare',
-		'Shopping',
-		'Other'
-	];
-
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
 		loading = $state(true);
 
 	$effect(() => {
-		const loadData = async () => {
-			transAnalysis = await getTransactionAnalysis();
-			loading = false;
+		if (!browser) return;
+		const fetchAnalysis = async () => {
+			try {
+				loading = true;
+				transAnalysis = await getTransactionAnalysis();
+			} catch (e) {
+				console.error(e);
+			} finally {
+				loading = false;
+			}
 		};
-		loadData();
+
+		fetchAnalysis();
 	});
 </script>
 
@@ -85,20 +83,6 @@
 							id="amount"
 							class="block w-full rounded-md border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800"
 						/>
-					</div>
-					<div class="space-y-1">
-						<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="category"
-							>Category</label
-						>
-						<select
-							id="category"
-							class="block w-full rounded-md border-gray-300 bg-white px-4 py-2 text-gray-900 shadow-sm transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800"
-						>
-							<option value="">Select a category</option>
-							{#each categories as category}
-								<option value={category}>{category}</option>
-							{/each}
-						</select>
 					</div>
 
 					<button

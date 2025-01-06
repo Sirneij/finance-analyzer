@@ -2,9 +2,9 @@ import { baseConfig } from "$config/base.config.ts";
 import { Transaction } from "$models/transaction.model.ts";
 import {
   FileUploadResult,
-  FinancialStats,
   ITransaction,
   SpendingReport,
+  FinancialSummary,
 } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
 import { ParserFactory } from "$utils/parsers/factory.parsers.ts";
@@ -48,73 +48,27 @@ export class TransactionService {
     }
   }
 
-  static async findIncomeExpensesSavingsByUserId(
+  static async summarizeTransactionsbyUserId(
     userId: mongoose.Types.ObjectId
-  ): Promise<{
-    income: FinancialStats;
-    expenses: FinancialStats;
-    savings: FinancialStats;
-  }> {
+  ): Promise<FinancialSummary> {
     try {
-      const currentDate = new Date();
-      const currentMonth = currentDate.getMonth();
-      const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      const currentYear = currentDate.getFullYear();
-      const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+      const transactions = await this.findTransactionsByUserId(userId);
+      const response = await fetch(
+        `${baseConfig.utility_service_url}/summarize`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transactions),
+        }
+      );
 
-      // Current month transactions
-      const currentTransactions = await Transaction.find({
-        userId,
-        createdAt: {
-          $gte: new Date(currentYear, currentMonth, 1),
-          $lt: new Date(currentYear, currentMonth + 1, 1),
-        },
-      });
+      if (!response.ok) {
+        throw new Error("Failed to summarize transactions");
+      }
 
-      // Previous month transactions
-      const previousTransactions = await Transaction.find({
-        userId,
-        createdAt: {
-          $gte: new Date(previousYear, previousMonth, 1),
-          $lt: new Date(previousYear, previousMonth + 1, 1),
-        },
-      });
-
-      const calculateStats = (
-        current: number,
-        previous: number
-      ): FinancialStats => {
-        const change =
-          previous === 0 ? 0 : ((current - previous) / previous) * 100;
-        return {
-          total: current,
-          change: Number(change.toFixed(1)),
-          trend: change > 0 ? "up" : change < 0 ? "down" : "neutral",
-        };
-      };
-
-      const getCurrentTotal = (type: string) =>
-        currentTransactions
-          .filter((t) => t.type === type)
-          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
-
-      const getPreviousTotal = (type: string) =>
-        previousTransactions
-          .filter((t) => t.type === type)
-          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
-
-      const currentIncome = getCurrentTotal("income");
-      const previousIncome = getPreviousTotal("income");
-      const currentExpenses = getCurrentTotal("expense");
-      const previousExpenses = getPreviousTotal("expense");
-      const currentSavings = currentIncome - currentExpenses;
-      const previousSavings = previousIncome - previousExpenses;
-
-      return {
-        income: calculateStats(currentIncome, previousIncome),
-        expenses: calculateStats(currentExpenses, previousExpenses),
-        savings: calculateStats(currentSavings, previousSavings),
-      };
+      return response.json();
     } catch (error) {
       throw new Error("Failed to fetch income/expenses/savings");
     }

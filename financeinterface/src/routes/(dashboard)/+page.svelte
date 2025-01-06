@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import BehaviouralInsights from '$lib/components/transactions/BehaviouralInsights.svelte';
 	import FinanceChart from '$lib/components/transactions/FinanceChart.svelte';
 	import Summary from '$lib/components/transactions/Summary.svelte';
 	import Transactions from '$lib/components/transactions/Transactions.svelte';
-	import type { FinancialStats, SpendingReport, Transaction } from '$lib/types/transaction.types';
+	import type { SpendingReport, Transaction, FinancialSummary } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
 	import { getTransactionAnalysis } from '$lib/utils/helpers/transactions.helpers';
 	import type { PageData } from './$types';
@@ -19,21 +20,25 @@
 	let { data }: { data: PageData } = $props();
 
 	const transactions: Transaction[] = data.transactions;
-	const transactionSummaries: {
-		income: FinancialStats;
-		expenses: FinancialStats;
-		savings: FinancialStats;
-	} = data.summary;
+	const financialSummaries: FinancialSummary = data.summary;
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
 		loading = $state(true);
 
 	$effect(() => {
-		const loadData = async () => {
-			transAnalysis = await getTransactionAnalysis();
-			loading = false;
+		if (!browser) return;
+		const fetchAnalysis = async () => {
+			try {
+				loading = true;
+				transAnalysis = await getTransactionAnalysis();
+			} catch (e) {
+				console.error(e);
+			} finally {
+				loading = false;
+			}
 		};
-		loadData();
+
+		fetchAnalysis();
 	});
 </script>
 
@@ -126,7 +131,7 @@
 	</div>
 
 	<!-- Financial Summary Cards -->
-	<Summary {transactionSummaries} />
+	<Summary {financialSummaries} />
 
 	<!-- Charts + Transactions Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">

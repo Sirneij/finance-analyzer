@@ -107,8 +107,6 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
         'LABELS', 'groceries,housing,transportation,entertainment,utilities,other'
     ).split(',')
 
-    settings.logger.info(f'Classifying transactions with labels: {labels}')
-
     # Prepare transaction descriptions for classification
     descriptions = [tx.description.lower() for tx in transactions]
 

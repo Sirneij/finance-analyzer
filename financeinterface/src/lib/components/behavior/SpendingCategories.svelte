@@ -15,8 +15,7 @@
 	let spendingCategoriesCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
 		spendingCategoriesChart: Chart | null = null,
-		isFullscreen = $state(false),
-		chartContainer = $state<HTMLDivElement>();
+		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
@@ -69,7 +68,6 @@
 	class:inset-0={isFullscreen}
 	class:z-50={isFullscreen}
 	class:!m-4={isFullscreen}
-	bind:this={chartContainer}
 >
 	<!-- Fullscreen button -->
 	<button

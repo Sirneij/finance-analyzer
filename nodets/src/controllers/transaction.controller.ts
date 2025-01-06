@@ -99,10 +99,11 @@ export class TransactionController {
         return;
       }
 
-      const { income, expenses, savings } =
-        await TransactionService.findIncomeExpensesSavingsByUserId(userId);
+      const summary = await TransactionService.summarizeTransactionsbyUserId(
+        userId
+      );
 
-      res.json({ income, expenses, savings });
+      res.json(summary);
     } catch (error) {
       res.status(400).json({
         success: false,

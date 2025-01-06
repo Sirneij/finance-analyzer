@@ -32,20 +32,12 @@ export interface Anomaly {
 	reason: string;
 }
 
-export interface DailySummary {
-	[key: string]: number;
-}
-
-export interface CommulativeBalance {
-	[key: string]: number;
-}
-
 export interface SpendingAnalysis {
 	total_spent: number;
 	total_income: number;
 	savings_rate: number;
-	daily_summary: DailySummary;
-	cumulative_balance: CommulativeBalance;
+	daily_summary: Categories;
+	cumulative_balance: Categories;
 }
 
 export interface SpendingTrends {
@@ -66,4 +58,21 @@ export interface InsightMetric {
 	value: string;
 	trend: 'positive' | 'negative' | 'neutral';
 	description: string;
+}
+
+export interface FinancialSummary {
+	income: FinancialStats;
+	expenses: FinancialStats;
+	savings: FinancialStats;
+	total_transactions: number;
+	expense_count: number;
+	income_count: number;
+	avg_expense: number;
+	avg_income: number;
+	start_date: string;
+	end_date: string;
+	largest_expense: number;
+	largest_income: number;
+	savings_rate: number;
+	monthly_summary: Categories;
 }

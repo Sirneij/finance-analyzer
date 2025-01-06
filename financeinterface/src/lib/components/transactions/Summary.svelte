@@ -1,24 +1,18 @@
 <script lang="ts">
-	import type { FinancialStats } from '$lib/types/transaction.types';
+	import type { FinancialSummary } from '$lib/types/transaction.types';
 	import Amount from '$lib/components/icons/Amount.svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import CircledSum from '$lib/components/icons/CircledSum.svelte';
 	import ExpenseList from '$lib/components/icons/ExpenseList.svelte';
 	import { createCountAnimation } from '$lib/states/counter.svelte';
+	import { formatMoney } from '$lib/utils/helpers/money.helpers';
+	import { formatDate } from '$lib/utils/helpers/date.helpers';
 
-	let {
-		transactionSummaries
-	}: {
-		transactionSummaries: {
-			income: FinancialStats;
-			expenses: FinancialStats;
-			savings: FinancialStats;
-		};
-	} = $props();
+	let { financialSummaries }: { financialSummaries: FinancialSummary } = $props();
 
-	const incomeCounter = createCountAnimation(0, transactionSummaries.income.total);
-	const expensesCounter = createCountAnimation(0, transactionSummaries.expenses.total);
-	const savingsCounter = createCountAnimation(0, transactionSummaries.savings.total);
+	const incomeCounter = createCountAnimation(0, financialSummaries.income.total);
+	const expensesCounter = createCountAnimation(0, financialSummaries.expenses.total);
+	const savingsCounter = createCountAnimation(0, financialSummaries.savings.total);
 
 	$effect.root(() => {
 		// Start animations immediately
@@ -45,13 +39,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={transactionSummaries.income.trend}
-					class={`h-4 w-4 ${transactionSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					trend={financialSummaries.income.trend}
+					class={`h-4 w-4 ${financialSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				/>
 				<span
-					class={`text-sm ${transactionSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${financialSummaries.income.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{transactionSummaries.income.change}%
+					{financialSummaries.income.change.toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -70,13 +64,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={transactionSummaries.expenses.trend}
-					class={`h-4 w-4 ${transactionSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					trend={financialSummaries.expenses.trend}
+					class={`h-4 w-4 ${financialSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
 				/>
 				<span
-					class={`text-sm ${transactionSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					class={`text-sm ${financialSummaries.expenses.trend === 'up' ? 'text-red-500' : 'text-green-500'}`}
 				>
-					{transactionSummaries.expenses.change}%
+					{financialSummaries.expenses.change.toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -95,13 +89,13 @@
 			</div>
 			<div class="flex items-center gap-1">
 				<Caret
-					trend={transactionSummaries.savings.trend}
-					class={`h-4 w-4 ${transactionSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					trend={financialSummaries.savings.trend}
+					class={`h-4 w-4 ${financialSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				/>
 				<span
-					class={`text-sm ${transactionSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					class={`text-sm ${financialSummaries.savings.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}
 				>
-					{transactionSummaries.savings.change}%
+					{financialSummaries.savings.change.toFixed(2)}%
 				</span>
 			</div>
 		</div>
@@ -109,4 +103,96 @@
 			<span class="text-lg">$</span>{savingsCounter.value.toLocaleString()}
 		</p>
 	</div>
+</div>
+
+<div class="mt-6 grid gap-4 sm:grid-cols-4">
+	<!-- Transaction Counts -->
+	{#if financialSummaries.total_transactions}
+		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Transactions</h4>
+			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
+				{financialSummaries.total_transactions}
+			</p>
+			<div class="mt-1 flex gap-2">
+				<span class="text-xs text-gray-500">↑ {financialSummaries.income_count} Income</span>
+				<span class="text-xs text-gray-500">↓ {financialSummaries.expense_count} Expenses</span>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Averages -->
+	<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Average Transaction</h4>
+		<div class="mt-2 flex flex-col gap-1">
+			{#if financialSummaries.avg_income}
+				<div class="flex justify-between">
+					<span class="text-xs text-gray-500">Income</span>
+					<span class="text-sm font-semibold text-gray-900 dark:text-white">
+						{formatMoney(financialSummaries.avg_income)}
+					</span>
+				</div>
+			{/if}
+
+			{#if financialSummaries.avg_expense}
+				<div class="flex justify-between">
+					<span class="text-xs text-gray-500">Expense</span>
+					<span class="text-sm font-semibold text-gray-900 dark:text-white">
+						{formatMoney(financialSummaries.avg_expense)}
+					</span>
+				</div>
+			{/if}
+		</div>
+	</div>
+	<!-- Date Range -->
+	<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Period</h4>
+		<div class="mt-2 flex flex-col gap-1">
+			{#if financialSummaries.start_date}
+				<div class="flex justify-between">
+					<span class="text-xs text-gray-500">From</span>
+					<span class="text-sm font-semibold text-gray-900 dark:text-white">
+						{formatDate(financialSummaries.start_date)}
+					</span>
+				</div>
+			{/if}
+
+			{#if financialSummaries.end_date}
+				<div class="flex justify-between">
+					<span class="text-xs text-gray-500">To</span>
+					<span class="text-sm font-semibold text-gray-900 dark:text-white">
+						{formatDate(financialSummaries.end_date)}
+					</span>
+				</div>
+			{/if}
+		</div>
+	</div>
+
+	<!-- Savings Rate -->
+	{#if financialSummaries.savings_rate}
+		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Savings Rate</h4>
+			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
+				{financialSummaries.savings_rate.toFixed(1)}%
+			</p>
+		</div>
+	{/if}
+
+	<!-- Largest Transactions -->
+	{#if financialSummaries.largest_income}
+		<div class="col-span-2 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Income</h4>
+			<p class="mt-2 text-xl font-semibold text-green-500">
+				{formatMoney(financialSummaries.largest_income)}
+			</p>
+		</div>
+	{/if}
+
+	{#if financialSummaries.largest_expense}
+		<div class="col-span-2 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Expense</h4>
+			<p class="mt-2 text-xl font-semibold text-red-500">
+				{formatMoney(financialSummaries.largest_expense)}
+			</p>
+		</div>
+	{/if}
 </div>
