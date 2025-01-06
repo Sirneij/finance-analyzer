@@ -16,6 +16,12 @@ transactionRouters.get(
   TransactionController.getTransactions
 );
 
+transactionRouters.post(
+  "/",
+  isAuthenticated,
+  TransactionController.createTransactions
+);
+
 transactionRouters.get(
   "/summary",
   isAuthenticated,

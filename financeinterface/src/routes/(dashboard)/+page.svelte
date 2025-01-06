@@ -35,6 +35,8 @@
 		};
 		loadData();
 	});
+
+	$inspect(transAnalysis);
 </script>
 
 <div class="space-y-6">

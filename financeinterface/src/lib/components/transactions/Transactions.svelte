@@ -2,6 +2,7 @@
 	import { truncateText } from '$lib/utils/helpers/text.helpers';
 	import type { Transaction } from '$lib/types/transaction.types';
 	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { transactions }: { transactions: Transaction[] } = $props();
 </script>
@@ -39,6 +40,13 @@
 					tx.amount
 				).toLocaleString()}
 			</span>
+		</div>
+	{:else}
+		<div class="flex items-center justify-center p-4">
+			<Empty
+				title="No transactions available"
+				description="You have not made any transactions yet."
+			/>
 		</div>
 	{/each}
 </div>

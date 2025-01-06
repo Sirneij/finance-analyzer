@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import datetime
 
 import numpy as np
@@ -83,14 +84,11 @@ async def classify_transactions(transactions: list[Transaction]) -> dict:
     )
 
     # Define financial categories
-    labels = [
-        'groceries',
-        'housing',
-        'transportation',
-        'entertainment',
-        'utilities',
-        'other',
-    ]
+    labels = os.getenv(
+        'LABELS', 'groceries,housing,transportation,entertainment,utilities,other'
+    ).split(',')
+
+    settings.logger.info(f'Classifying transactions with labels: {labels}')
 
     # Initialize category totals
     categories = {label: 0 for label in labels}

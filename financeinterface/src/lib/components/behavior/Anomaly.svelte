@@ -2,6 +2,7 @@
 	import type { Anomaly } from '$lib/types/transaction.types';
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { anomalies, loading }: { anomalies: Anomaly[]; loading: boolean } = $props();
 </script>
@@ -13,6 +14,11 @@
 			{#each new Array(3) as _, i}
 				<LoadingInsight />
 			{/each}
+		{:else if !anomalies}
+			<Empty
+				title="No anomalies found"
+				description="No suspicious transactions found in your account."
+			/>
 		{:else}
 			{#each anomalies as anomaly}
 				<div class="rounded border-l-4 border-red-500 bg-red-50 p-4 dark:bg-gray-700">

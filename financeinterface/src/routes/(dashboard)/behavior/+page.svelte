@@ -2,6 +2,7 @@
 	import Anomaly from '$lib/components/behavior/Anomaly.svelte';
 	import Insight from '$lib/components/behavior/Insight.svelte';
 	import SpendingCategories from '$lib/components/behavior/SpendingCategories.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 	import FormError from '$lib/components/resuables/FormError.svelte';
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
 	import FileInput from '$lib/components/transactions/FileInput.svelte';
@@ -127,6 +128,13 @@
 			{#each new Array(2) as _, i}
 				<LoadingInsight />
 			{/each}
+		{:else if !transAnalysis.spending_trends}
+			<div class="col-span-2 flex min-h-[200px] items-center justify-center">
+				<Empty
+					title="No insights available"
+					description="No insights available for your account."
+				/>
+			</div>
 		{:else}
 			{#each getFinancialInsights(transAnalysis) as insight}
 				<Insight {insight} />

@@ -1,12 +1,12 @@
-import type { Categories, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
+import type { CategoriesData, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
 
-export function transformCategoriesToArray(categories: Categories) {
-	return Object.entries(categories)
+export function transformCategoriesToArray(categoryData: CategoriesData) {
+	return Object.entries(categoryData.percentages)
 		.filter(([_, value]) => value > 0)
-		.map(([key, value]) => ({
+		.map(([key, percentage]) => ({
 			title: key.charAt(0).toUpperCase() + key.slice(1),
-			value: `${value.toFixed(2)}%`,
-			description: `${value.toFixed(2)}% of total spending`
+			value: `${percentage.toFixed(2)}%`,
+			description: `$${categoryData.categories[key].toLocaleString()} (${percentage.toFixed(2)}% of total spending)`
 		}));
 }
 

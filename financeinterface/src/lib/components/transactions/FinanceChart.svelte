@@ -4,6 +4,7 @@
 	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
 	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { spending_analysis, loading }: { spending_analysis: SpendingAnalysis; loading: boolean } =
 		$props();
@@ -94,6 +95,11 @@
 	<div class="h-64">
 		{#if loading}
 			<LoadingChart />
+		{:else if !spending_analysis}
+			<Empty
+				title="No financial data available"
+				description="Financial data will be available once you have made a few transactions."
+			/>
 		{:else}
 			<canvas bind:this={financialTrendsCanvas}></canvas>
 		{/if}

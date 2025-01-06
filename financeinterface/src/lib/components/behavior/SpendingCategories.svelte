@@ -6,6 +6,7 @@
 		generateChartColors,
 		spendingCategoriesChartConfig
 	} from '$lib/utils/helpers/charts.helpers';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { categories, loading }: { categories: CategoriesData; loading: boolean } = $props();
 
@@ -59,6 +60,8 @@
 	<div class="h-64">
 		{#if loading}
 			<LoadingChart />
+		{:else if !categories || !Object.keys(categories.categories).length}
+			<Empty title="No data found" description="No spending categories found in your account." />
 		{:else}
 			<canvas bind:this={spendingCategoriesCanvas}></canvas>
 		{/if}

@@ -7,7 +7,7 @@ import {
   SpendingReport,
 } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
-import { ParserFactory } from "utils/file.utils.ts";
+import { ParserFactory } from "$utils/parsers/factory.parsers.ts";
 
 export class TransactionService {
   static async processFile(
@@ -143,6 +143,17 @@ export class TransactionService {
       return response.json();
     } catch (error) {
       throw new Error("Failed to analyze transactions");
+    }
+  }
+
+  static async createTransactionsByUserId(
+    userId: mongoose.Types.ObjectId,
+    transactions: ITransaction[]
+  ): Promise<void> {
+    try {
+      await Transaction.insertMany(transactions.map((t) => ({ ...t, userId })));
+    } catch (error) {
+      throw new Error("Failed to create transactions");
     }
   }
 }

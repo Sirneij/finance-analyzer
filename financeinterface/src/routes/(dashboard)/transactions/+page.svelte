@@ -7,6 +7,7 @@
 	import Balance from '$lib/components/icons/Balance.svelte';
 	import Amount from '$lib/components/icons/Amount.svelte';
 	import Calendar from '$lib/components/icons/Calendar.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -99,6 +100,17 @@
 								<span class="font-medium text-gray-900 dark:text-white">
 									{formatMoney(transaction.balance)}
 								</span>
+							</td>
+						</tr>
+					{:else}
+						<tr class="group transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50">
+							<td class="px-6 py-4" colspan="4">
+								<div class="flex items-center justify-center p-4">
+									<Empty
+										title="No transactions available"
+										description="You have not made any transactions yet."
+									/>
+								</div>
 							</td>
 						</tr>
 					{/each}

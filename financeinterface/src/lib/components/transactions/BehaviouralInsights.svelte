@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { Categories, CategoriesData } from '$lib/types/transaction.types';
+	import type { CategoriesData } from '$lib/types/transaction.types';
 	import { transformCategoriesToArray } from '$lib/utils/helpers/transactions.helpers';
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
+	import Empty from '$lib/components/resuables/Empty.svelte';
 
 	let { categories, loading }: { categories: CategoriesData; loading: boolean } = $props();
 
@@ -13,7 +14,8 @@
 
 	$effect(() => {
 		if (loading) return;
-		percentageValues = transformCategoriesToArray(categories.percentages);
+		if (!categories) return;
+		percentageValues = transformCategoriesToArray(categories);
 	});
 </script>
 
@@ -25,6 +27,11 @@
 				{#each Array(4) as _, i}
 					<LoadingInsight />
 				{/each}
+			{:else if percentageValues.length === 0}
+				<Empty
+					title="No insights available yet"
+					description="Behavioral insights will be available once you have made a few transactions."
+				/>
 			{:else}
 				{#each percentageValues as pv}
 					<div class="min-w-[200px] rounded-lg border border-gray-200 p-4 dark:border-gray-700">

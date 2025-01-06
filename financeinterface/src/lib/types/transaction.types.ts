@@ -17,12 +17,7 @@ export interface FinancialStats {
 }
 
 export interface Categories {
-	groceries: number;
-	housing: number;
-	transportation: number;
-	entertainment: number;
-	utilities: number;
-	other: number;
+	[key: string]: number;
 }
 
 export interface CategoriesData {
