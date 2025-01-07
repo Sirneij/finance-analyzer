@@ -4,12 +4,6 @@ import { Router } from "express";
 
 const transactionRouters = Router();
 
-transactionRouters.post(
-  "/upload",
-  isAuthenticated,
-  TransactionController.handleFileUpload
-);
-
 transactionRouters.get(
   "/",
   isAuthenticated,
@@ -20,6 +14,18 @@ transactionRouters.post(
   "/",
   isAuthenticated,
   TransactionController.createTransactions
+);
+
+transactionRouters.delete(
+  "/",
+  isAuthenticated,
+  TransactionController.deleteTransactions
+);
+
+transactionRouters.post(
+  "/upload",
+  isAuthenticated,
+  TransactionController.handleFileUpload
 );
 
 transactionRouters.get(

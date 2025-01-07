@@ -1,3 +1,4 @@
+import { baseConfig } from "$config/base.config.ts";
 import { TransactionService } from "$services/transaction.service.ts";
 import busboy from "busboy";
 import { Request, Response } from "express";
@@ -177,6 +178,37 @@ export class TransactionController {
           error instanceof Error
             ? error.message
             : "Failed to create transactions",
+      });
+    }
+  }
+
+  static async deleteTransactions(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?._id;
+
+      if (!userId) {
+        res.status(401).json({
+          success: false,
+          error: "User ID not found",
+        });
+        return;
+      }
+
+      const transactionIds = req.body;
+
+      await TransactionService.deleteTransactionsByUserId(
+        userId,
+        transactionIds
+      );
+
+      res.json({ success: true });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to delete transactions",
       });
     }
   }

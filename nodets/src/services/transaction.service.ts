@@ -126,4 +126,15 @@ export class TransactionService {
       throw new Error("Failed to create transactions");
     }
   }
+
+  static async deleteTransactionsByUserId(
+    userId: mongoose.Types.ObjectId,
+    transactionIds: mongoose.Types.ObjectId[]
+  ): Promise<void> {
+    try {
+      await Transaction.deleteMany({ userId, _id: { $in: transactionIds } });
+    } catch (error) {
+      throw new Error("Failed to delete transactions");
+    }
+  }
 }
