@@ -12,6 +12,13 @@ export interface ITransaction extends Document {
   updatedAt: Date;
 }
 
+export interface PaginatedTransactions {
+  transactions: ITransaction[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface RawTransaction {
   userId: mongoose.Types.ObjectId;
   date: string | Date;

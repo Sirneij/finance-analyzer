@@ -41,12 +41,13 @@
 		</header>
 
 		<main class="h-[calc(100vh-4rem)] overflow-y-auto p-6">
-			{@render children()}}
+			{@render children()}
 		</main>
 	</div>
 
 	<!-- Mobile Overlay -->
-	{#if isMobile && isSidebarOpen}}<button
+	{#if isMobile && isSidebarOpen}
+		<button
 			class="fixed inset-0 z-20 bg-gray-900/50 backdrop-blur-sm"
 			onclick={() => (isSidebarOpen = false)}
 			aria-label="Close Sidebar"

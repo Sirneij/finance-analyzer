@@ -12,5 +12,5 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		fetch(`${BASE_API_URI}/v1/transactions/summary`).then((res) => res.json())
 	]);
 
-	return { transactions, summary };
+	return { transactions: transactions.data, summary };
 };

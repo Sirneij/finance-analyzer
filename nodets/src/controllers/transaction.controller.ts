@@ -67,12 +67,24 @@ export class TransactionController {
         return;
       }
 
-      const transactions = await TransactionService.findTransactionsByUserId(
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 9;
+
+      const result = await TransactionService.findTransactionsByUserId(
         userId,
-        parseInt(req.query.limit as string) || undefined
+        page,
+        limit
       );
 
-      res.json(transactions);
+      res.json({
+        data: result.transactions,
+        metadata: {
+          total: result.total,
+          page: result.page,
+          limit: result.limit,
+          totalPages: Math.ceil(result.total / result.limit),
+        },
+      });
     } catch (error) {
       res.status(400).json({
         success: false,

@@ -5,6 +5,7 @@ import {
   ITransaction,
   SpendingReport,
   FinancialSummary,
+  PaginatedTransactions,
 } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
 import { ParserFactory } from "$utils/parsers/factory.parsers.ts";
@@ -34,15 +35,30 @@ export class TransactionService {
 
   static async findTransactionsByUserId(
     userId: mongoose.Types.ObjectId,
-    limit?: number
-  ): Promise<ITransaction[]> {
+    page: number = 1,
+    limit: number = 9
+  ): Promise<PaginatedTransactions> {
     try {
-      const query = Transaction.find({ userId }).sort({ date: -1 });
-      if (limit) {
-        query.limit(limit);
-      }
-      const transactions = await query;
-      return transactions;
+      // If limit is -1, fetch all transactions
+      const shouldFetchAll = limit === -1;
+      const skip = shouldFetchAll ? 0 : (page - 1) * limit;
+
+      const [transactions, total] = await Promise.all([
+        shouldFetchAll
+          ? Transaction.find({ userId }).sort({ date: -1 })
+          : Transaction.find({ userId })
+              .sort({ date: -1 })
+              .skip(skip)
+              .limit(limit),
+        Transaction.countDocuments({ userId }),
+      ]);
+
+      return {
+        transactions,
+        total,
+        page: shouldFetchAll ? 1 : page,
+        limit: shouldFetchAll ? total : limit,
+      };
     } catch (error) {
       throw new Error("Failed to fetch transactions");
     }
@@ -52,7 +68,7 @@ export class TransactionService {
     userId: mongoose.Types.ObjectId
   ): Promise<FinancialSummary> {
     try {
-      const transactions = await this.findTransactionsByUserId(userId);
+      const results = await this.findTransactionsByUserId(userId, 1, -1);
       const response = await fetch(
         `${baseConfig.utility_service_url}/summarize`,
         {
@@ -60,7 +76,7 @@ export class TransactionService {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(transactions),
+          body: JSON.stringify(results.transactions),
         }
       );
 
