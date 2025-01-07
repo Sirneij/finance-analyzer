@@ -15,6 +15,7 @@ import { handleAuthError } from "$middlewares/auth.middleware.ts";
 import { ProviderMismatchError } from "$types/error.types.ts";
 import { requestLogger } from "$middlewares/logger.middleware.ts";
 import transactionRoutes from "$routes/transaction.routes.ts";
+import { ApiDocumentationGenerator } from "$services/docs.services.ts";
 
 const app: Application = express();
 
@@ -126,6 +127,11 @@ app.use("/api/v1/transactions", transactionRoutes);
 app.get("/api/v1/health", (req, res) => {
   baseConfig.logger.info("Health check endpoint called");
   res.status(200).json({ message: "Server is running" });
+});
+
+app.get("/api/docs", (req, res) => {
+  const docs = ApiDocumentationGenerator.generate(app);
+  res.json(docs);
 });
 
 const startServer = async () => {

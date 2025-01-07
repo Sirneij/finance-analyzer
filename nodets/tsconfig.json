@@ -21,7 +21,9 @@
       "$types/*": ["types/*"],
       "$middlewares/*": ["middlewares/*"],
       "$utils/*": ["utils/*"]
-    }
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

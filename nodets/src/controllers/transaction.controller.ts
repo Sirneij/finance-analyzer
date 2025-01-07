@@ -1,9 +1,17 @@
-import { baseConfig } from "$config/base.config.ts";
 import { TransactionService } from "$services/transaction.service.ts";
+import { RouteDoc } from "$utils/docs.utils.ts";
 import busboy from "busboy";
 import { Request, Response } from "express";
 
 export class TransactionController {
+  @RouteDoc({
+    description: "Upload a file containing transactions",
+    responses: {
+      "200": { description: "Success" },
+      "400": { description: "Failed to upload file" },
+      "401": { description: "User ID not found" },
+    },
+  })
   static async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
