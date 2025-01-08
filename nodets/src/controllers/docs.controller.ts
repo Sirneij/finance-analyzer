@@ -30,6 +30,15 @@ export class EndpointController {
     }
   };
 
+  getAll: RequestHandler = async (req, res, next): Promise<void> => {
+    try {
+      const endpoints = await this.endpointService.getAllEndpoints();
+      res.json(endpoints);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   update: RequestHandler = async (req, res, next): Promise<void> => {
     try {
       const updated = await this.endpointService.updateEndpoint(

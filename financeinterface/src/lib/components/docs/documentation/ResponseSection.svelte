@@ -70,7 +70,7 @@
 					id="example"
 					rows={4}
 					placeholder={`{"message": "Resource created successfully"}`}
-					required={true}
+					required={false}
 				>
 					<label class="text-sm font-medium text-gray-700 dark:text-gray-300" for="example">
 						Example JSON

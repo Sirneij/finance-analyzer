@@ -131,7 +131,7 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 // API documentation routes
-app.get("/api/v1/docs", endpointRouters);
+app.use("/api/v1/docs", endpointRouters);
 
 // Endpoint to generate API documentation
 app.get("/api/docs", (req, res) => {

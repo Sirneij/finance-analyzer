@@ -26,6 +26,8 @@
 	</label>
 	<input
 		required
+		type="text"
+		bind:value={formState.category}
 		id="category"
 		name="category"
 		class="mt-1 block w-full px-3 py-2 outline-none dark:bg-gray-700 dark:text-white"

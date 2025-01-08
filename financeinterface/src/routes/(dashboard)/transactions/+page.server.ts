@@ -1,6 +1,7 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
+import type { CustomError } from '$lib/types/errors.types';
 
 export const load: PageServerLoad = async ({ fetch, locals, url }) => {
 	if (!locals.user) {
@@ -39,7 +40,8 @@ export const actions: Actions = {
 
 		if (!res.ok) {
 			const response = await res.json();
-			const errors = response.errors;
+			const errors: Array<CustomError> = [];
+			errors.push({ error: response.error, id: Math.floor(Math.random() * 100) });
 			return fail(400, { errors });
 		}
 

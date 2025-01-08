@@ -129,8 +129,6 @@ export const actions: Actions = {
 
 		const response = await res.json();
 
-		console.log(response);
-
 		return {
 			sucess: true,
 			data: response

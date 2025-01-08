@@ -15,6 +15,7 @@
 	} from '$lib/utils/helpers/transactions.helpers';
 	import { onMount } from 'svelte';
 	import type { ActionData } from './$types';
+	import { addNotification } from '$lib/states/notification';
 
 	const { form }: { form: ActionData } = $props();
 
@@ -30,6 +31,11 @@
 			} catch (e) {
 				console.error(e);
 			} finally {
+				if (transAnalysis.spending_trends) {
+					addNotification('Financial insights loaded successfully', 'success');
+				} else {
+					addNotification('No insights available', 'info');
+				}
 				loading = false;
 			}
 		};

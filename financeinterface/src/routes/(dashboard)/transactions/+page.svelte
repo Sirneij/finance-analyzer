@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
-	import { fade } from 'svelte/transition';
 	import TransactionTable from '$lib/components/transactions/TransactionTable.svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	let visiblePages = $state<(number | string)[]>([]);
+	let visiblePages = $state<(number | string)[]>([]),
+		transactions = $state(data.transactions);
 
 	function calculateVisiblePages(currentPage: number, total: number) {
 		if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -23,12 +23,16 @@
 	}
 
 	$effect(() => {
+		transactions = data.transactions;
+	});
+
+	$effect(() => {
 		visiblePages = calculateVisiblePages(data.metadata.page, data.metadata.totalPages);
 	});
 </script>
 
 <div class="w-full space-y-4">
-	<TransactionTable bind:transactions={data.transactions} />
+	<TransactionTable bind:transactions />
 	<div class="mt-4 rounded-lg bg-white shadow-sm dark:bg-gray-800">
 		<div class="flex flex-col items-center justify-between gap-4 p-4 sm:flex-row">
 			<!-- Results counter -->

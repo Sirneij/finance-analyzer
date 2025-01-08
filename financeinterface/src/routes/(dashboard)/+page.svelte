@@ -13,6 +13,7 @@
 	import MonthlySummary from '$lib/components/transactions/MonthlySummary.svelte';
 	import Add from '$lib/components/icons/Add.svelte';
 	import Bar from '$lib/components/icons/Bar.svelte';
+	import { addNotification } from '$lib/states/notification';
 
 	let { data }: { data: PageData } = $props();
 
@@ -31,6 +32,11 @@
 			} catch (e) {
 				console.error(e);
 			} finally {
+				if (transAnalysis.spending_trends) {
+					addNotification('Financial insights loaded successfully', 'success');
+				} else {
+					addNotification('No insights available', 'info');
+				}
 				loading = false;
 			}
 		};

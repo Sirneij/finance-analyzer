@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
+	import Notifications from '$lib/components/resuables/Notifications.svelte';
 	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
 
 	let isMobile = $state(false);
@@ -24,6 +25,7 @@
 </script>
 
 <div class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
+	<Notifications />
 	<!-- Sidebar -->
 	<Sidebar bind:isSidebarOpen {toggleSidebar} />
 
