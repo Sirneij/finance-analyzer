@@ -78,3 +78,42 @@ export class ApiDocumentationGenerator {
     );
   }
 }
+
+import { EndpointModel, IEndpoint } from "$models/docs.model.ts";
+
+export class EndpointService {
+  async createEndpoint(
+    data: Omit<IEndpoint, "id" | "createdAt" | "updatedAt">
+  ): Promise<IEndpoint> {
+    const endpoint = new EndpointModel(data);
+    return await endpoint.save();
+  }
+
+  async getEndpoint(id: string): Promise<IEndpoint | null> {
+    return await EndpointModel.findById(id);
+  }
+
+  async updateEndpoint(
+    id: string,
+    data: Partial<IEndpoint>
+  ): Promise<IEndpoint | null> {
+    return await EndpointModel.findByIdAndUpdate(
+      id,
+      { ...data, updatedAt: new Date() },
+      { new: true }
+    );
+  }
+
+  async deleteEndpoint(id: string): Promise<boolean> {
+    const result = await EndpointModel.findByIdAndDelete(id);
+    return !!result;
+  }
+
+  async getAllEndpoints(): Promise<IEndpoint[]> {
+    return await EndpointModel.find();
+  }
+
+  async getEndpointsByCategory(category: string): Promise<IEndpoint[]> {
+    return await EndpointModel.find({ category });
+  }
+}

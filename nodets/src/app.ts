@@ -16,6 +16,7 @@ import { ProviderMismatchError } from "$types/error.types.ts";
 import { requestLogger } from "$middlewares/logger.middleware.ts";
 import transactionRoutes from "$routes/transaction.routes.ts";
 import { ApiDocumentationGenerator } from "$services/docs.services.ts";
+import endpointRouters from "$routes/docs.routes.ts";
 
 const app: Application = express();
 
@@ -129,6 +130,10 @@ app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
 
+// API documentation routes
+app.get("/api/v1/docs", endpointRouters);
+
+// Endpoint to generate API documentation
 app.get("/api/docs", (req, res) => {
   const docs = ApiDocumentationGenerator.generate(app);
   res.json(docs);
