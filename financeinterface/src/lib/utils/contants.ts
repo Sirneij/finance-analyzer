@@ -1,3 +1,5 @@
+import type { SupportedLanguage } from '$lib/types/docs.types';
+
 export const BASE_API_URI = import.meta.env.DEV
 	? import.meta.env.VITE_BASE_API_URI_DEV
 	: import.meta.env.VITE_BASE_API_URI_PROD;
@@ -20,3 +22,5 @@ export const COLORS = {
 		background: 'bg-gray-500'
 	}
 };
+
+export const LANGUAGES: SupportedLanguage[] = ['nodejs', 'python', 'go', 'rust'];
