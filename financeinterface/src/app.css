@@ -40,3 +40,20 @@
 		transform: rotate(1turn);
 	}
 }
+
+pre {
+	display: flex; /* Allows child elements to stretch */
+	padding: 0 !important; /* Reset padding */
+	margin: 0 !important; /* Reset margin */
+	width: 100%; /* Take full width */
+	height: 100%; /* Take full height */
+	overflow: auto; /* Enable scrolling for overflowing content */
+	background: transparent; /* Match desired background color */
+}
+
+pre code {
+	flex: 1; /* Make the code element take the full space */
+	display: block; /* Ensure it behaves like a block-level element */
+	white-space: pre-wrap; /* Wrap long lines */
+	word-wrap: break-word; /* Handle long words gracefully */
+}

@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import AiNode from '$lib/components/icons/AINode.svelte';
 	import Calculator from '$lib/components/icons/Calculator.svelte';
-	import Chart from '$lib/components/icons/Chart.svelte';
+	import FinChart from '$lib/components/icons/FinChart.svelte';
 	import GitHub from '$lib/components/icons/GitHub.svelte';
 	import Google from '$lib/components/icons/Google.svelte';
 	import Logo from '$lib/components/logos/Logo.svelte';
@@ -29,7 +29,7 @@
 		</div>
 		<!-- Financial Chart -->
 		<div class="floating-icons absolute bottom-32 right-20 opacity-20 dark:opacity-30">
-			<Chart />
+			<FinChart />
 		</div>
 		<!-- Calculator Icon -->
 		<div class="floating-icons absolute right-10 top-20 opacity-20 dark:opacity-30">

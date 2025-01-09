@@ -23,3 +23,31 @@ export interface Endpoint {
 		code: string;
 	}[];
 }
+
+export interface CodeExample {
+	language: SupportedLanguage;
+	code: string;
+}
+
+export interface ApiDoc {
+	_id: string;
+	path: string;
+	method: string;
+	middlewares: string[];
+	category: string;
+	description: string;
+	responses: Array<{
+		status: number;
+		description: string;
+		example: string;
+		_id: string;
+	}>;
+	examples: Array<{
+		language: string;
+		code: string;
+		_id: string;
+	}>;
+	parameters: any[];
+	createdAt: string;
+	updatedAt: string;
+}
