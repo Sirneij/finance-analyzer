@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { ApiDoc } from '$lib/types/docs.types';
 	import Logo from '$lib/components/logos/Logo.svelte';
+	import { page } from '$app/state';
 
 	let {
 		docs,
@@ -60,10 +61,15 @@
 					</h3>
 					<ul class="space-y-1">
 						{#each docs.filter((doc: ApiDoc) => doc.category === category) as doc}
-							<li>
+							<li
+								class={page.url.pathname === `/docs/${doc._id}`
+									? 'bg-gray-50 dark:bg-gray-800/50'
+									: ''}
+							>
 								<a
 									href={`/docs/${doc._id}`}
 									class="group flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800/50"
+									title={doc.path}
 								>
 									<span
 										class="inline-flex w-16 items-center justify-center rounded border px-2 py-0.5 text-xs font-medium uppercase {methodColors[

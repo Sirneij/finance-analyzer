@@ -20,7 +20,7 @@
 	let isMobile = $state(false);
 
 	$effect(() => {
-		hljs.initHighlightingOnLoad();
+		hljs.highlightAll();
 		// Check screen size on mount and resize
 		const checkMobile = () => {
 			isMobile = window.innerWidth < 1024;
@@ -101,7 +101,9 @@
 			in:fly={{ x: 20, duration: 600 }}
 		>
 			<div class="mx-auto max-w-7xl">
-				<div class="grid gap-8 lg:grid-cols-2">
+				<div
+					class="grid gap-8 {data.currentDoc.examples.length ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}"
+				>
 					<div class="space-y-8">
 						<div>
 							<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl dark:text-white">
@@ -149,10 +151,12 @@
 						{/if}
 					</div>
 
-					<!-- Code Snippets -->
-					<div class="lg:sticky lg:top-20" bind:this={codeSnippetContainer}>
-						<CodeSnippets examples={data.currentDoc.examples} bind:currentExample />
-					</div>
+					{#if data.currentDoc.examples.length}
+						<!-- Code Snippets -->
+						<div class="lg:sticky lg:top-20" bind:this={codeSnippetContainer}>
+							<CodeSnippets examples={data.currentDoc.examples} bind:currentExample />
+						</div>
+					{/if}
 				</div>
 			</div>
 		</main>
