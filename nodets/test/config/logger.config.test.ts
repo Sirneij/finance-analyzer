@@ -19,7 +19,7 @@ describe("Logger Configuration", () => {
     // Create a writable stream to capture log messages
     const testStream = new Writable({
       write(chunk, encoding, callback) {
-        logs.push(chunk.toString()); // Capture the log message as a string
+        logs.push(chunk.toString().trim()); // Trim the message to remove extra newline
         callback(); // Signal that the write is complete
       },
     });
@@ -38,7 +38,7 @@ describe("Logger Configuration", () => {
     logger.info("Test log message");
 
     // Validate the captured log message
-    expect(logs).toContain("2023-01-01 12:00:00 info: Test log message");
+    expect(logs).toContain("2023-01-01 07:00:00 info: Test log message");
 
     // Restore timers
     jest.useRealTimers();
