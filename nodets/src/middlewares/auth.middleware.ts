@@ -1,6 +1,6 @@
 import { AuthErrorType, ProviderMismatchError } from "$types/error.types.ts";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import { sendAuthError } from "utils/error.utils.ts";
+import { sendAuthError } from "$utils/error.utils.ts";
 
 export const isAuthenticated = (
   req: Request,

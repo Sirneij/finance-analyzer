@@ -1,15 +1,3 @@
-import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { pathsToModuleNameMapper } from "ts-jest";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const tsconfig = JSON.parse(
-  readFileSync(new URL("./tsconfig.json", import.meta.url))
-);
-
 const config = {
   preset: "ts-jest/presets/default-esm", // Changed preset path
   testEnvironment: "node",
