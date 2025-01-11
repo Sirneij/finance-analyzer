@@ -12,7 +12,7 @@ export class TransactionController {
       "401": { description: "User ID not found" },
     },
   })
-  static async handleFileUpload(req: Request, res: Response): Promise<void> {
+  async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 
@@ -64,7 +64,7 @@ export class TransactionController {
     }
   }
 
-  static async getTransactions(req: Request, res: Response): Promise<void> {
+  async getTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 
@@ -105,10 +105,7 @@ export class TransactionController {
     }
   }
 
-  static async getIncomeExpensesSavings(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  async getIncomeExpensesSavings(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 
@@ -136,7 +133,7 @@ export class TransactionController {
     }
   }
 
-  static async analyzeTransactions(req: Request, res: Response): Promise<void> {
+  async analyzeTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 
@@ -162,7 +159,7 @@ export class TransactionController {
     }
   }
 
-  static async createTransactions(req: Request, res: Response): Promise<void> {
+  async createTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 
@@ -190,7 +187,7 @@ export class TransactionController {
     }
   }
 
-  static async deleteTransactions(req: Request, res: Response): Promise<void> {
+  async deleteTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id;
 

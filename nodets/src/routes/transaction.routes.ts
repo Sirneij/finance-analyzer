@@ -3,41 +3,42 @@ import { isAuthenticated } from "$middlewares/auth.middleware.ts";
 import { Router } from "express";
 
 const transactionRouters = Router();
+const transactionController = new TransactionController();
 
 transactionRouters.get(
   "/",
   isAuthenticated,
-  TransactionController.getTransactions
+  transactionController.getTransactions
 );
 
 transactionRouters.post(
   "/",
   isAuthenticated,
-  TransactionController.createTransactions
+  transactionController.createTransactions
 );
 
 transactionRouters.delete(
   "/",
   isAuthenticated,
-  TransactionController.deleteTransactions
+  transactionController.deleteTransactions
 );
 
 transactionRouters.post(
   "/upload",
   isAuthenticated,
-  TransactionController.handleFileUpload
+  transactionController.handleFileUpload
 );
 
 transactionRouters.get(
   "/summary",
   isAuthenticated,
-  TransactionController.getIncomeExpensesSavings
+  transactionController.getIncomeExpensesSavings
 );
 
 transactionRouters.get(
   "/analyze",
   isAuthenticated,
-  TransactionController.analyzeTransactions
+  transactionController.analyzeTransactions
 );
 
 export default transactionRouters;

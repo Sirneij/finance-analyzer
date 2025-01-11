@@ -9,7 +9,7 @@ export abstract class BaseParser implements IFileParser {
 
   protected mapToTransaction(raw: RawTransaction): Partial<ITransaction> {
     return {
-      userId: this.userId,
+      userId: this.userId as mongoose.Types.ObjectId,
       date: new Date(raw.date),
       amount: Number(raw.amount),
       balance: raw.balance ? Number(raw.balance) : undefined,

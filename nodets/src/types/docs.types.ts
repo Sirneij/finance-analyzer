@@ -12,6 +12,8 @@ export interface RouteMetadata {
   responses: {
     [key: string]: { description: string };
   };
+  className?: string;
+  methodName?: string;
 }
 
 export interface RouteInfo {

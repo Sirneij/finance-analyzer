@@ -1,16 +1,16 @@
 import "reflect-metadata";
 import { RouteMetadata } from "$types/docs.types.ts";
 
-const ROUTE_METADATA_KEY = Symbol("routeDoc");
-const metadataMap = new Map<string, RouteMetadata>();
+const metadataMap: Record<string, RouteMetadata> = {};
 
 export function RouteDoc(options: RouteMetadata) {
   return function (target: any, propertyKey: string) {
     const className = target.constructor.name;
-    metadataMap.set(`${className}.${propertyKey}`, options);
+    const key = `${className}.${propertyKey}`;
+    metadataMap[key] = { ...options, className, methodName: propertyKey };
   };
 }
 
-export function getAllMetadata(): Map<string, RouteMetadata> {
+export function getAllMetadata(): Record<string, RouteMetadata> {
   return metadataMap;
 }

@@ -17,6 +17,7 @@ import { requestLogger } from "$middlewares/logger.middleware.ts";
 import transactionRoutes from "$routes/transaction.routes.ts";
 import { ApiDocumentationGenerator } from "$services/docs.services.ts";
 import endpointRouters from "$routes/docs.routes.ts";
+import { getAllMetadata } from "$utils/docs.utils.ts";
 
 const app: Application = express();
 

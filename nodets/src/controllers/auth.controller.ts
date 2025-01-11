@@ -2,7 +2,7 @@ import { baseConfig } from "$config/base.config.ts";
 import { Request, Response } from "express";
 
 export class AuthController {
-  static async loginSuccess(req: Request, res: Response) {
+  async loginSuccess(req: Request, res: Response) {
     if (req.user) {
       if (req.xhr || req.headers.accept?.includes("application/json")) {
         res.status(200).json({
@@ -27,11 +27,11 @@ export class AuthController {
     }
   }
 
-  static async loginFailure(req: Request, res: Response) {
+  async loginFailure(req: Request, res: Response) {
     res.redirect(`${baseConfig.frontendUrl}/auth/login?error=true`);
   }
 
-  static async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response) {
     req.logout(() => {
       res.redirect(`${baseConfig.frontendUrl}/auth/login`);
     });

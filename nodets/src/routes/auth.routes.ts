@@ -4,6 +4,7 @@ import { AuthController } from "$controllers/auth.controller.ts";
 import { isAuthenticated } from "$middlewares/auth.middleware.ts";
 
 const authRouters = Router();
+const authController = new AuthController();
 
 authRouters.get(
   "/google",
@@ -12,7 +13,7 @@ authRouters.get(
 authRouters.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/api/v1/auth/failure" }),
-  AuthController.loginSuccess
+  authController.loginSuccess
 );
 
 authRouters.get("/github", (req, res, next) => {
@@ -28,14 +29,14 @@ authRouters.get("/github", (req, res, next) => {
 authRouters.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),
-  AuthController.loginSuccess
+  authController.loginSuccess
 );
 
 authRouters.get("/session", isAuthenticated, (req, res) => {
   res.json({ user: req.user });
 });
 
-authRouters.get("/failure", AuthController.loginFailure);
-authRouters.get("/logout", AuthController.logout);
+authRouters.get("/failure", authController.loginFailure);
+authRouters.get("/logout", authController.logout);
 
 export default authRouters;

@@ -14,8 +14,6 @@ export class CSVParser extends BaseParser {
   };
 
   private cleanDescription(description: string): string {
-    if (!description) return "Unknown Transaction";
-
     // Remove extra spaces
     let cleaned = description.replace(/\s+/g, " ").trim();
 
@@ -47,28 +45,37 @@ export class CSVParser extends BaseParser {
         trim: true,
         relax_column_count: true, // Allow inconsistent column counts
         skip_empty_lines: true,
-        relax_quotes: true,
+        relax_quotes: false,
       })
         .on("data", (row) => {
-          try {
-            const transactionType = row.Type.toLowerCase().includes("credit")
-              ? "income"
-              : "expense";
-            const transaction = {
-              userId: this.userId,
-              date: new Date(row.Details ? row["Posting Date"] : Date.now()),
-              amount: this.normalizeAmount(row.Amount),
-              description: this.cleanDescription(row.Description),
-              balance: row.Balance ? Number(row.Balance) : 0,
-              type: transactionType as "income" | "expense",
-            };
-
-            if (!isNaN(transaction.amount)) {
-              transactions.push(transaction);
-            }
-          } catch (error) {
-            baseConfig.logger.warn("Invalid row", { row, error });
+          if (
+            !row.Type ||
+            !row.Amount ||
+            !row["Posting Date"] ||
+            !row.Description
+          ) {
+            throw new Error("Missing required fields");
           }
+          const transactionType = row.Type.toLowerCase().includes("credit")
+            ? "income"
+            : "expense";
+          const transaction = {
+            userId: this.userId,
+            date: new Date(row.Details ? row["Posting Date"] : Date.now()),
+            amount: this.normalizeAmount(row.Amount),
+            description: this.cleanDescription(row.Description),
+            balance: row.Balance ? Number(row.Balance) : 0,
+            type: transactionType as "income" | "expense",
+          };
+
+          if (!isNaN(transaction.amount)) {
+            transactions.push(transaction);
+          }
+        })
+        .on("error", (error) => {
+          baseConfig.logger.error("Error parsing CSV", { error });
+
+          return reject(error);
         })
         .on("end", () => {
           if (transactions.length === 0) {
@@ -76,10 +83,6 @@ export class CSVParser extends BaseParser {
           }
           baseConfig.logger.info(`Parsed ${transactions.length} transactions`);
           resolve(transactions);
-        })
-        .on("error", (error) => {
-          baseConfig.logger.error("CSV parse error", error);
-          reject(error);
         });
     });
   }
