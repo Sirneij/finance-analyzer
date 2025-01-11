@@ -2,6 +2,7 @@ import { TransactionService } from "$services/transaction.service.ts";
 import { RouteDoc } from "$utils/docs.utils.ts";
 import busboy from "busboy";
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 
 export class TransactionController {
   @RouteDoc({
@@ -14,15 +15,7 @@ export class TransactionController {
   })
   async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       await new Promise<void>((resolve, reject) => {
         const bb = busboy({ headers: req.headers });
@@ -46,13 +39,15 @@ export class TransactionController {
                 res.json({ success: true, ...result });
                 resolve();
               }
-            } catch (error) {
-              reject(error);
+            } catch (err) {
+              reject(err);
             }
           });
         });
 
-        bb.on("error", (err) => reject(err));
+        bb.on("error", (err) => {
+          reject(err);
+        });
 
         req.pipe(bb);
       });
@@ -66,15 +61,7 @@ export class TransactionController {
 
   async getTransactions(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 9;
@@ -107,15 +94,7 @@ export class TransactionController {
 
   async getIncomeExpensesSavings(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const summary = await TransactionService.summarizeTransactionsbyUserId(
         userId
@@ -135,15 +114,7 @@ export class TransactionController {
 
   async analyzeTransactions(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const data = await TransactionService.analyzeTransactionsByUserId(userId);
 
@@ -161,15 +132,7 @@ export class TransactionController {
 
   async createTransactions(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const transactions = req.body;
 
@@ -189,15 +152,7 @@ export class TransactionController {
 
   async deleteTransactions(req: Request, res: Response): Promise<void> {
     try {
-      const userId = req.user?._id;
-
-      if (!userId) {
-        res.status(401).json({
-          success: false,
-          error: "User ID not found",
-        });
-        return;
-      }
+      const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const transactionIds = req.body;
 
