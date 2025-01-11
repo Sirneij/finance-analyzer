@@ -11,12 +11,18 @@ export class AuthController {
           user: req.user,
         });
       } else {
-        const state = req.query.state;
+        const state = req.query.state as string | undefined;
         let redirectPath = "/";
 
         if (state) {
           try {
-            redirectPath = Buffer.from(state as string, "base64").toString();
+            // Validate if the state is Base64
+            const base64Regex = /^[A-Za-z0-9+/=]+$/;
+            if (base64Regex.test(state)) {
+              redirectPath = Buffer.from(state, "base64").toString();
+            } else {
+              throw new Error("Invalid Base64 input");
+            }
           } catch (error) {
             baseConfig.logger.error("Failed to decode state parameter:", error);
           }
