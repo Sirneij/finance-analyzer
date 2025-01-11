@@ -116,18 +116,18 @@ export class ApiDocumentationGenerator {
 }
 
 export class EndpointService {
-  async createEndpoint(
+  static async createEndpoint(
     data: Omit<IEndpoint, "id" | "createdAt" | "updatedAt">
   ): Promise<IEndpoint> {
     const endpoint = new EndpointModel(data);
     return await endpoint.save();
   }
 
-  async getEndpoint(id: string): Promise<IEndpoint | null> {
+  static async getEndpoint(id: string): Promise<IEndpoint | null> {
     return await EndpointModel.findById(id);
   }
 
-  async updateEndpoint(
+  static async updateEndpoint(
     id: string,
     data: Partial<IEndpoint>
   ): Promise<IEndpoint | null> {
@@ -138,16 +138,16 @@ export class EndpointService {
     );
   }
 
-  async deleteEndpoint(id: string): Promise<boolean> {
+  static async deleteEndpoint(id: string): Promise<boolean> {
     const result = await EndpointModel.findByIdAndDelete(id);
     return !!result;
   }
 
-  async getAllEndpoints(): Promise<IEndpoint[]> {
+  static async getAllEndpoints(): Promise<IEndpoint[]> {
     return await EndpointModel.find();
   }
 
-  async getEndpointsByCategory(category: string): Promise<IEndpoint[]> {
+  static async getEndpointsByCategory(category: string): Promise<IEndpoint[]> {
     return await EndpointModel.find({ category });
   }
 }

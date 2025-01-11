@@ -1,25 +1,19 @@
+import { Request, Response, NextFunction } from "express";
 import { EndpointService } from "$services/docs.services.ts";
-import { RequestHandler } from "express";
 
 export class EndpointController {
-  private endpointService: EndpointService;
-
-  constructor() {
-    this.endpointService = new EndpointService();
-  }
-
-  create: RequestHandler = async (req, res, next): Promise<void> => {
+  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const endpoint = await this.endpointService.createEndpoint(req.body);
+      const endpoint = await EndpointService.createEndpoint(req.body);
       res.status(201).json(endpoint);
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  get: RequestHandler = async (req, res, next): Promise<void> => {
+  async get(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const endpoint = await this.endpointService.getEndpoint(req.params.id);
+      const endpoint = await EndpointService.getEndpoint(req.params.id);
       if (!endpoint) {
         res.status(404).json({ error: "Endpoint not found" });
         return;
@@ -28,37 +22,37 @@ export class EndpointController {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  getAll: RequestHandler = async (req, res, next): Promise<void> => {
+  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const endpoints = await this.endpointService.getAllEndpoints();
+      const endpoints = await EndpointService.getAllEndpoints();
       res.json(endpoints);
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  update: RequestHandler = async (req, res, next): Promise<void> => {
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const updated = await this.endpointService.updateEndpoint(
+      const endpoint = await EndpointService.updateEndpoint(
         req.params.id,
         req.body
       );
-      if (!updated) {
+      if (!endpoint) {
         res.status(404).json({ error: "Endpoint not found" });
         return;
       }
-      res.json(updated);
+      res.json(endpoint);
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  delete: RequestHandler = async (req, res, next): Promise<void> => {
+  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const deleted = await this.endpointService.deleteEndpoint(req.params.id);
-      if (!deleted) {
+      const result = await EndpointService.deleteEndpoint(req.params.id);
+      if (!result) {
         res.status(404).json({ error: "Endpoint not found" });
         return;
       }
@@ -66,5 +60,5 @@ export class EndpointController {
     } catch (error) {
       next(error);
     }
-  };
+  }
 }
