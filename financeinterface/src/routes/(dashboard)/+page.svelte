@@ -67,7 +67,7 @@
 		<div class="flex flex-col gap-2 sm:flex-row sm:gap-3">
 			<a
 				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-blue-600 hover:bg-blue-100 sm:w-auto dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
-				href="/transactions/add"
+				href="/behavior#manual-add"
 			>
 				<Add class="h-5 w-5" />
 				<span>Add Transaction</span>

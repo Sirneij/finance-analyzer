@@ -17,7 +17,7 @@
 	};
 </script>
 
-<div class="h-[384px] rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+<div class="h-[384px] rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800" id="manual-add">
 	<h2
 		class="sticky top-0 mb-4 bg-white text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white"
 	>

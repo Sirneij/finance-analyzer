@@ -39,7 +39,6 @@ export class ApiDocumentationGenerator {
   ): RouteInfo[] {
     const routes: RouteInfo[] = [];
     const metadata = getAllMetadata();
-    console.log("metadata", metadata);
 
     if (layer.route && layer.route.path) {
       const path = this.cleanRoutePath(basePath + layer.route.path);
@@ -58,7 +57,6 @@ export class ApiDocumentationGenerator {
             const methodName = stackItem.name;
             const key = `${className}.${methodName}`;
             routeMetadata = metadata[key];
-            console.log(`key: ${key}, metadata: ${routeMetadata}`);
           }
         });
 
