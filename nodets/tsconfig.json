@@ -20,7 +20,8 @@
       "$services/*": ["./src/services/*"],
       "$types/*": ["./src/types/*"],
       "$middlewares/*": ["./src/middlewares/*"],
-      "$utils/*": ["./src/utils/*"]
+      "$utils/*": ["./src/utils/*"],
+      "$websockets/*": ["./src/websockets/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

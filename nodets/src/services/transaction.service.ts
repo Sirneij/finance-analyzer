@@ -9,6 +9,7 @@ import {
 } from "$types/transaction.types.ts";
 import mongoose from "mongoose";
 import { ParserFactory } from "$utils/parsers/factory.parsers.ts";
+import { WebSocket } from "ws";
 
 export class TransactionService {
   static async processFile(
@@ -136,5 +137,96 @@ export class TransactionService {
     } catch (error) {
       throw new Error("Failed to delete transactions");
     }
+  }
+
+  static async analyzeTransactionsByUserIdWs(
+    userId: mongoose.Types.ObjectId
+  ): Promise<SpendingReport> {
+    return this.handleWebSocketRequest(userId, "analyze");
+  }
+
+  static async summarizeTransactionsbyUserIdWs(
+    userId: mongoose.Types.ObjectId
+  ): Promise<FinancialSummary> {
+    return this.handleWebSocketRequest(userId, "summary");
+  }
+
+  static async handleProgressAction(data: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const wsUrl = baseConfig.utility_service_url.replace(/^http/, "ws");
+      baseConfig.logger.info(`Connecting to WebSocket server at ${wsUrl}`);
+      const ws = new WebSocket(`${wsUrl}/ws`);
+
+      ws.on("open", () => {
+        ws.send(
+          JSON.stringify({
+            action: data.action,
+          })
+        );
+      });
+
+      ws.on("message", (message: string) => {
+        const data = JSON.parse(message);
+
+        baseConfig.logger.info(`WebSocket message received: ${message}`);
+
+        resolve(data);
+      });
+      ws.on("error", (err) => {
+        baseConfig.logger.error(`WebSocket error: ${err.message}`);
+        reject(new Error(`WebSocket error: ${err.message}`));
+      });
+      ws.on("close", () => {
+        baseConfig.logger.info("WebSocket connection closed");
+      });
+    });
+  }
+
+  private static async handleWebSocketRequest(
+    userId: mongoose.Types.ObjectId,
+    action: string
+  ): Promise<any> {
+    const transactions = await this.findTransactionsByUserId(userId, 1, -1);
+
+    return new Promise((resolve, reject) => {
+      const wsUrl = baseConfig.utility_service_url.replace(/^http/, "ws");
+      baseConfig.logger.info(`Connecting to WebSocket server at ${wsUrl}`);
+      const ws = new WebSocket(`${wsUrl}/ws`);
+
+      ws.on("open", () => {
+        ws.send(
+          JSON.stringify({
+            action,
+            userId,
+            transactions: transactions.transactions,
+          })
+        );
+      });
+
+      ws.on("message", (message: string) => {
+        try {
+          const data = JSON.parse(message);
+
+          if (data.action === action) {
+            resolve(data.result);
+            ws.close();
+          } else if (data.error) {
+            reject(new Error(data.error));
+            ws.close();
+          }
+        } catch (err) {
+          reject(new Error("Failed to parse WebSocket response"));
+          ws.close();
+        }
+      });
+
+      ws.on("error", (err) => {
+        reject(new Error(`WebSocket error: ${err.message}`));
+      });
+
+      ws.on("close", () => {
+        console.info("WebSocket connection closed");
+      });
+    });
   }
 }

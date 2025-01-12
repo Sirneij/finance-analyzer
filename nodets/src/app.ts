@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import cors from "cors";
 import session from "express-session";
+import { createServer, Server as HttpServer } from "http";
+import { WebSocketServer } from "ws";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as GitHubStrategy } from "passport-github2";
@@ -17,9 +19,11 @@ import { requestLogger } from "$middlewares/logger.middleware.ts";
 import transactionRoutes from "$routes/transaction.routes.ts";
 import { ApiDocumentationGenerator } from "$services/docs.services.ts";
 import endpointRouters from "$routes/docs.routes.ts";
-import { getAllMetadata } from "$utils/docs.utils.ts";
+import { TransactionWebSocketHandler } from "$websockets/transaction.websocket.ts";
 
 const app: Application = express();
+const server: HttpServer = createServer(app);
+const wss = new WebSocketServer({ server, path: "/ws" });
 
 app.use(express.json());
 app.use(
@@ -125,6 +129,11 @@ app.use(handleAuthError);
 // Transaction routes
 app.use("/api/v1/transactions", transactionRoutes);
 
+// Handle WebSocket connections
+wss.on("connection", (ws) => {
+  TransactionWebSocketHandler(ws);
+});
+
 // Health check
 app.get("/api/v1/health", (req, res) => {
   baseConfig.logger.info("Health check endpoint called");
@@ -152,7 +161,7 @@ const startServer = async () => {
     baseConfig.logger.info("Connected to MongoDB cluster");
 
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       baseConfig.logger.info(`Server listening on port ${PORT}`);
     });
   } catch (error) {

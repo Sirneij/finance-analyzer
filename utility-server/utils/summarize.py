@@ -1,13 +1,16 @@
 from datetime import datetime
 
 import pandas as pd
+from aiohttp.web import WebSocketResponse
 
 from models.base import Transaction
 from utils.analyzer import validate_transaction
 from utils.settings import base_settings as settings
 
 
-async def summarize_transactions(transactions: list[dict]) -> dict:
+async def summarize_transactions(
+    transactions: list[dict], ws: WebSocketResponse = None
+) -> dict:
     """Summarize transaction data."""
     try:
         settings.logger.info('Starting transaction summarization')
@@ -33,38 +36,54 @@ async def summarize_transactions(transactions: list[dict]) -> dict:
             settings.logger.warning('No valid transactions provided')
             return {'error': 'No valid transactions provided'}
 
-        # Calculate total spending and income
+        if ws:
+            await settings.send_progress(
+                'Calculating totals', settings.active_websockets, 'Summary'
+            )
         total_spent = sum(tx.amount for tx in tx_objects if tx.amount < 0)
         total_income = sum(tx.amount for tx in tx_objects if tx.amount > 0)
 
-        # Calculate total savings in dollars
+        if ws:
+            await settings.send_progress(
+                'Calculating averages', settings.active_websockets, 'Summary'
+            )
         total_savings = total_income + total_spent
-
-        # Count of transactions
         total_transactions = len(tx_objects)
         expense_count = sum(1 for tx in tx_objects if tx.amount < 0)
         income_count = sum(1 for tx in tx_objects if tx.amount > 0)
-
-        # Average transaction amounts
         avg_expense = abs(total_spent / expense_count) if expense_count > 0 else 0
         avg_income = total_income / income_count if income_count > 0 else 0
 
-        # Date range
+        if ws:
+            await settings.send_progress(
+                'Calculating date range', settings.active_websockets, 'Summary'
+            )
         start_date = min(tx.date for tx in tx_objects)
         end_date = max(tx.date for tx in tx_objects)
 
-        # Largest single transaction
+        if ws:
+            await settings.send_progress(
+                'Calculating largest transactions',
+                settings.active_websockets,
+                'Summary',
+            )
         largest_expense = min(tx.amount for tx in tx_objects if tx.amount < 0)
         largest_income = max(tx.amount for tx in tx_objects if tx.amount > 0)
 
-        # Monthly summaries
+        if ws:
+            await settings.send_progress(
+                'Generating monthly summaries', settings.active_websockets, 'Summary'
+            )
         df = pd.DataFrame([t.__dict__ for t in tx_objects])
         df['date'] = pd.to_datetime(df['date'])
         monthly_summary = (
             df.groupby(df['date'].dt.to_period('M'))['amount'].sum().to_dict()
         )
 
-        # Calculate trends and percentage change
+        if ws:
+            await settings.send_progress(
+                'Calculating trends and changes', settings.active_websockets, 'Summary'
+            )
         monthly_income = (
             df[df['amount'] > 0].groupby(df['date'].dt.to_period('M'))['amount'].sum()
         )
@@ -84,7 +103,6 @@ async def summarize_transactions(transactions: list[dict]) -> dict:
         expense_change = await calculate_percentage_change(monthly_expense)
         savings_change = await calculate_percentage_change(monthly_savings)
 
-        # Savings rate
         savings_rate = (
             ((total_income + total_spent) / total_income) * 100 if total_income else 0
         )
@@ -98,7 +116,6 @@ async def summarize_transactions(transactions: list[dict]) -> dict:
             for month in monthly_income.index.union(monthly_expense.index)
         }
 
-        # Prepare summary
         summary = {
             'income': {
                 'total': total_income,

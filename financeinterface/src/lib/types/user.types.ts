@@ -1,6 +1,11 @@
 export interface User {
-	id: string;
+	_id: string;
 	email: string;
 	name: string;
 	avatar?: string;
+	provider: string;
+	providerId: number;
+	createdAt: string;
+	updatedAt: string;
+	__v: number;
 }

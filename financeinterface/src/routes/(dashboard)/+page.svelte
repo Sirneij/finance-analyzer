@@ -14,6 +14,8 @@
 	import Add from '$lib/components/icons/Add.svelte';
 	import Bar from '$lib/components/icons/Bar.svelte';
 	import { addNotification } from '$lib/states/notification';
+	import { BASE_WS_URI } from '$lib/utils/contants';
+	import { WebSocketService } from '$lib/services/websocket';
 
 	let { data }: { data: PageData } = $props();
 
@@ -21,7 +23,8 @@
 	const financialSummaries: FinancialSummary = data.summary || {};
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
-		loading = $state(true);
+		loading = $state(true),
+		webSocketService: WebSocketService;
 
 	$effect(() => {
 		if (!browser) return;
@@ -42,6 +45,29 @@
 		};
 
 		onMount(async () => await fetchAnalysis());
+	});
+
+	onMount(() => {
+		if (browser) {
+			webSocketService = new WebSocketService(`${BASE_WS_URI}`, data.user?._id || '');
+
+			webSocketService.socket.onmessage = (event: MessageEvent) => {
+				const data = JSON.parse(event.data);
+				console.log('WebSocket message received:', data);
+			};
+			webSocketService.socket.onclose = (event: CloseEvent) => {
+				console.log('WebSocket connection closed:', event);
+			};
+			webSocketService.socket.onerror = (event: Event) => {
+				console.error('WebSocket error:', event);
+			};
+		}
+
+		return () => {
+			if (webSocketService) {
+				webSocketService.close();
+			}
+		};
 	});
 </script>
 

@@ -2,43 +2,43 @@ import { TransactionController } from "$controllers/transaction.controller.ts";
 import { isAuthenticated } from "$middlewares/auth.middleware.ts";
 import { Router } from "express";
 
-const transactionRouters = Router();
+const transactionRoutes = Router();
 const transactionController = new TransactionController();
 
-transactionRouters.get(
+transactionRoutes.get(
   "/",
   isAuthenticated,
   transactionController.getTransactions
 );
 
-transactionRouters.post(
+transactionRoutes.post(
   "/",
   isAuthenticated,
   transactionController.createTransactions
 );
 
-transactionRouters.delete(
+transactionRoutes.delete(
   "/",
   isAuthenticated,
   transactionController.deleteTransactions
 );
 
-transactionRouters.post(
+transactionRoutes.post(
   "/upload",
   isAuthenticated,
   transactionController.handleFileUpload
 );
 
-transactionRouters.get(
+transactionRoutes.get(
   "/summary",
   isAuthenticated,
   transactionController.getIncomeExpensesSavings
 );
 
-transactionRouters.get(
+transactionRoutes.get(
   "/analyze",
   isAuthenticated,
   transactionController.analyzeTransactions
 );
 
-export default transactionRouters;
+export default transactionRoutes;
