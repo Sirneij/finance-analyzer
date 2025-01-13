@@ -2,51 +2,60 @@ import { WebSocket } from "ws";
 import { TransactionService } from "$services/transaction.service.ts";
 import { baseConfig } from "$config/base.config.ts";
 import mongoose from "mongoose";
+import { sendError } from "$utils/error.utils.ts";
 
 export function TransactionWebSocketHandler(ws: WebSocket): void {
-  ws.on("open", () => {
-    baseConfig.logger.info("WebSocket connection opened");
-  });
   ws.on("message", async (message: string) => {
-    baseConfig.logger.info(`WebSocket message received: ${message}`);
     try {
-      const data = JSON.parse(message);
+      const actions = JSON.parse(message);
 
-      baseConfig.logger.info(`WebSocket message received: ${message}`);
-
-      if (!data.action || !data.userId) {
-        ws.send(JSON.stringify({ error: "Invalid message format" }));
+      if (!Array.isArray(actions)) {
+        sendError(ws, "Invalid message format. Expected an array.");
         return;
       }
 
-      let res;
+      for (const actionObj of actions) {
+        if (!actionObj.action || !actionObj.userId) {
+          sendError(
+            ws,
+            "Invalid action format. Each action requires 'action' and 'userId'."
+          );
+          return;
+        }
 
-      switch (data.action) {
-        case "analyze":
-          res = await handleAnalyzeAction(ws, data.userId);
-          ws.send(JSON.stringify(res));
-          break;
-        case "summary":
-          res = await handleSummaryAction(ws, data.userId);
-          ws.send(JSON.stringify(res));
-          break;
-        case "progress":
-          res = await TransactionService.handleProgressAction(data);
-          ws.send(JSON.stringify(res));
-          break;
-        case "upload":
-          handleUploadAction(ws);
-          break;
-        default:
-          ws.send(JSON.stringify({ error: "Unknown action" }));
+        const { action, userId } = actionObj;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+          sendError(ws, "Invalid userId format.");
+          return;
+        }
+
+        switch (action) {
+          case "analyze":
+          case "summary":
+            await handleAction(ws, new mongoose.Types.ObjectId(userId), action);
+            break;
+          default:
+            sendError(ws, `Unknown action: ${action}`);
+        }
       }
     } catch (error) {
-      ws.send(JSON.stringify({ error: (error as Error).message }));
+      baseConfig.logger.error(
+        `Error processing message: ${
+          error instanceof Error ? error.message : error
+        }`
+      );
+      sendError(
+        ws,
+        `Failed to process message: ${
+          error instanceof Error ? error.message : error
+        }`
+      );
     }
   });
 
   ws.on("close", () => {
-    baseConfig.logger.info("WebSocket connection closed");
+    baseConfig.logger.info("Frontend WebSocket connection closed");
   });
 
   ws.on("error", (error) => {
@@ -54,39 +63,41 @@ export function TransactionWebSocketHandler(ws: WebSocket): void {
   });
 }
 
-async function handleAnalyzeAction(
-  ws: WebSocket,
-  userId: mongoose.Types.ObjectId
+async function handleAction(
+  frontendWs: WebSocket,
+  userId: mongoose.Types.ObjectId,
+  action: string
 ) {
   try {
-    const result = await TransactionService.analyzeTransactionsByUserIdWs(
-      userId
+    const transactions = await TransactionService.findTransactionsByUserId(
+      userId,
+      -1,
+      -1
     );
-    ws.send(JSON.stringify({ action: "analyze", result }));
-  } catch (error) {
-    ws.send(JSON.stringify({ error: (error as Error).message }));
-  }
-}
 
-async function handleSummaryAction(
-  ws: WebSocket,
-  userId: mongoose.Types.ObjectId
-) {
-  try {
-    const result = await TransactionService.summarizeTransactionsbyUserIdWs(
-      userId
+    if (!transactions) {
+      sendError(
+        frontendWs,
+        `No transactions found for userId: ${userId}`,
+        action
+      );
+      return;
+    }
+
+    await TransactionService.connectToUtilityServer(
+      action,
+      transactions.transactions,
+      frontendWs
     );
-    ws.send(JSON.stringify({ action: "summary", result }));
   } catch (error) {
-    ws.send(JSON.stringify({ error: (error as Error).message }));
+    baseConfig.logger.error(
+      `Error handling action: ${error instanceof Error ? error.message : error}`
+    );
+    sendError(
+      frontendWs,
+      `Failed to handle action: ${
+        error instanceof Error ? error.message : error
+      }`
+    );
   }
-}
-
-function handleUploadAction(ws: WebSocket) {
-  ws.send(
-    JSON.stringify({
-      action: "upload",
-      status: "Upload not supported over WebSocket yet.",
-    })
-  );
 }

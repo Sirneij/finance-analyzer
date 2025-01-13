@@ -19,21 +19,18 @@ class Settings:
     # List to store active WebSocket connections
     active_websockets = set()
 
-    async def send_progress(
-        self,
-        message: str,
-        active_websockets: set[WebSocketResponse],
-        operation_type: str,
-    ):
-        """Send progress message to all connected WebSocket clients."""
-        for client in active_websockets:
-            await client.send_json(
-                {
-                    'action': 'progress',
-                    'message': message,
-                    'operation': operation_type,
-                }
-            )
+    # Add to existing settings
+    async def send_ws_message(self, ws: WebSocketResponse, message: dict) -> None:
+        """Send WebSocket message with logging."""
+        if ws and not ws.closed:
+            self.logger.debug(f'Sending WebSocket message: {message}')
+            try:
+                await ws.send_json(message)
+                self.logger.debug('WebSocket message sent successfully')
+            except Exception as e:
+                self.logger.error(f'Failed to send WebSocket message: {e}')
+        else:
+            self.logger.error('WebSocket unavailable or closed')
 
 
 base_settings = Settings()

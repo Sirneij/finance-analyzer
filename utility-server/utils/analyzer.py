@@ -5,12 +5,12 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 import torch
-from aiohttp.web import WebSocketResponse
 from sklearn.ensemble import IsolationForest
 from transformers import pipeline
 
 from models.base import Transaction
 from utils.settings import base_settings as settings
+from utils.websocket import WebSocketManager
 
 
 def get_device() -> tuple[torch.device, str]:
@@ -29,11 +29,16 @@ def get_device() -> tuple[torch.device, str]:
 
 
 async def analyze_transactions(
-    transactions: list[dict], ws: WebSocketResponse = None
+    transactions: list[dict], ws_manager: WebSocketManager = None
 ) -> dict:
-    """Analyze transactions and return insights."""
+    """Analyze transactions and return insights with progress updates."""
     try:
-        # Validate and preprocess transactions
+        # Step 1: Validate and preprocess transactions
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Validating transactions...', 0.1, 'Analysis'
+            )
+
         tx_objects = [
             Transaction(
                 _id=t['_id'],
@@ -51,57 +56,66 @@ async def analyze_transactions(
         ]
 
         if not tx_objects:
-            settings.logger.warning('No valid transactions provided')
+            if ws_manager:
+                await ws_manager.send_progress(
+                    'No valid transactions provided', 1.0, 'Analysis'
+                )
             return {'error': 'No valid transactions provided'}
 
-        if ws:
-            await settings.settings.send_progress(
-                'Starting classification', settings.active_websockets, 'Analysis'
+        # Step 2: Classification
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Classifying transactions...', 0.2, 'Analysis'
             )
         categories = await classify_transactions(tx_objects)
-        if ws:
-            await settings.send_progress(
-                'Classification completed', settings.active_websockets, 'Analysis'
+
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Transaction classification completed successfully', 0.4, 'Analysis'
             )
 
-        if ws:
-            await settings.send_progress(
-                'Starting anomaly detection', settings.active_websockets, 'Analysis'
-            )
+        # Step 3: Anomaly Detection
+        if ws_manager:
+            await ws_manager.send_progress('Detecting anomalies...', 0.4, 'Analysis')
         anomalies = await detect_anomalies(tx_objects)
-        if ws:
-            await settings.send_progress(
-                'Anomaly detection completed', settings.active_websockets, 'Analysis'
+
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Anomaly detection completed successfully', 0.6, 'Analysis'
             )
 
-        if ws:
-            await settings.send_progress(
-                'Starting spending analysis', settings.active_websockets, 'Analysis'
-            )
+        # Step 4: Spending Analysis
+        if ws_manager:
+            await ws_manager.send_progress('Analyzing spending...', 0.6, 'Analysis')
         spending_analysis = await analyze_spending(tx_objects)
-        if ws:
-            await settings.send_progress(
-                'Spending analysis completed', settings.active_websockets, 'Analysis'
+
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Spending analysis completed successfully', 0.8, 'Analysis'
             )
 
-        if ws:
-            await settings.send_progress(
-                'Starting trend prediction', settings.active_websockets, 'Analysis'
+        # Step 5: Trend Prediction
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Predicting spending trends...', 0.8, 'Analysis'
             )
         spending_trends = await predict_trends(tx_objects)
-        if ws:
-            await settings.send_progress(
-                'Trend prediction completed', settings.active_websockets, 'Analysis'
-            )
 
-        return {
+        # Compile the results
+        result = {
             'categories': categories,
             'anomalies': anomalies,
             'spending_analysis': spending_analysis,
             'spending_trends': spending_trends,
         }
+
+        settings.logger.info('Transaction analysis completed successfully')
+        return result
+
     except Exception as e:
-        settings.logger.error(f'Error analyzing transactions: {str(e)}')
+        settings.logger.error(f'Error analyzing transactions: {str(e)}', exc_info=True)
+        if ws_manager:
+            await ws_manager.send_progress('Analysis failed', 1.0)
         return {'error': f'Analysis failed: {str(e)}'}
 
 

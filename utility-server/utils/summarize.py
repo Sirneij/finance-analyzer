@@ -1,21 +1,24 @@
 from datetime import datetime
 
 import pandas as pd
-from aiohttp.web import WebSocketResponse
 
 from models.base import Transaction
 from utils.analyzer import validate_transaction
 from utils.settings import base_settings as settings
+from utils.websocket import WebSocketManager
 
 
 async def summarize_transactions(
-    transactions: list[dict], ws: WebSocketResponse = None
+    transactions: list[dict], ws_manager: WebSocketManager = None
 ) -> dict:
     """Summarize transaction data."""
     try:
-        settings.logger.info('Starting transaction summarization')
-
         # Validate and convert transactions to objects
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Validating transactions...', 0.1, 'Summarize'
+            )
+
         tx_objects = [
             Transaction(
                 _id=t['_id'],
@@ -34,19 +37,25 @@ async def summarize_transactions(
 
         if not tx_objects:
             settings.logger.warning('No valid transactions provided')
+            if ws_manager:
+                await ws_manager.send_progress(
+                    'No valid transactions provided', 1.0, 'Summarize'
+                )
             return {'error': 'No valid transactions provided'}
 
-        if ws:
-            await settings.send_progress(
-                'Calculating totals', settings.active_websockets, 'Summary'
-            )
+        # Step 1: Calculate totals
+        if ws_manager:
+            await ws_manager.send_progress('Calculating totals...', 0.2, 'Summarize')
+
         total_spent = sum(tx.amount for tx in tx_objects if tx.amount < 0)
         total_income = sum(tx.amount for tx in tx_objects if tx.amount > 0)
 
-        if ws:
-            await settings.send_progress(
-                'Calculating averages', settings.active_websockets, 'Summary'
+        # Step 2: Calculate additional metrics
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Calculating average income and expenses...', 0.35, 'Summarize'
             )
+
         total_savings = total_income + total_spent
         total_transactions = len(tx_objects)
         expense_count = sum(1 for tx in tx_objects if tx.amount < 0)
@@ -54,36 +63,33 @@ async def summarize_transactions(
         avg_expense = abs(total_spent / expense_count) if expense_count > 0 else 0
         avg_income = total_income / income_count if income_count > 0 else 0
 
-        if ws:
-            await settings.send_progress(
-                'Calculating date range', settings.active_websockets, 'Summary'
+        # Step 3: Calculate largest transactions and date range
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Identifying largest transactions...', 0.5, 'Summarize'
             )
+
         start_date = min(tx.date for tx in tx_objects)
         end_date = max(tx.date for tx in tx_objects)
-
-        if ws:
-            await settings.send_progress(
-                'Calculating largest transactions',
-                settings.active_websockets,
-                'Summary',
-            )
         largest_expense = min(tx.amount for tx in tx_objects if tx.amount < 0)
         largest_income = max(tx.amount for tx in tx_objects if tx.amount > 0)
 
-        if ws:
-            await settings.send_progress(
-                'Generating monthly summaries', settings.active_websockets, 'Summary'
+        # Step 4: Generate monthly summaries
+        if ws_manager:
+            await ws_manager.send_progress(
+                'Generating monthly summaries...', 0.7, 'Summarize'
             )
+
         df = pd.DataFrame([t.__dict__ for t in tx_objects])
         df['date'] = pd.to_datetime(df['date'])
         monthly_summary = (
             df.groupby(df['date'].dt.to_period('M'))['amount'].sum().to_dict()
         )
 
-        if ws:
-            await settings.send_progress(
-                'Calculating trends and changes', settings.active_websockets, 'Summary'
-            )
+        # Step 5: Analyze trends and changes
+        if ws_manager:
+            await ws_manager.send_progress('Analyzing trends...', 0.85, 'Summarize')
+
         monthly_income = (
             df[df['amount'] > 0].groupby(df['date'].dt.to_period('M'))['amount'].sum()
         )
@@ -116,6 +122,7 @@ async def summarize_transactions(
             for month in monthly_income.index.union(monthly_expense.index)
         }
 
+        # Compile summary results
         summary = {
             'income': {
                 'total': total_income,
@@ -144,11 +151,12 @@ async def summarize_transactions(
             'savings_rate': savings_rate,
             'monthly_summary': monthly_summary,
         }
-
         settings.logger.info('Transaction summarization completed successfully')
         return summary
     except Exception as e:
         settings.logger.error(f'Error summarizing transactions: {str(e)}')
+        if ws_manager:
+            await ws_manager.send_progress('Summarization failed', 1.0)
         return {'error': f'Summarization failed: {str(e)}'}
 
 

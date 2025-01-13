@@ -24,28 +24,29 @@
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
 		loading = $state(true),
+		finance = $state({} as FinancialSummary),
 		webSocketService: WebSocketService;
 
-	$effect(() => {
-		if (!browser) return;
-		const fetchAnalysis = async () => {
-			try {
-				loading = true;
-				transAnalysis = await getTransactionAnalysis();
-			} catch (e) {
-				console.error(e);
-			} finally {
-				if (transAnalysis.spending_trends) {
-					addNotification('Financial insights loaded successfully', 'success');
-				} else {
-					addNotification('No insights available', 'info');
-				}
-				loading = false;
-			}
-		};
+	// $effect(() => {
+	// 	if (!browser) return;
+	// 	const fetchAnalysis = async () => {
+	// 		try {
+	// 			loading = true;
+	// 			transAnalysis = await getTransactionAnalysis();
+	// 		} catch (e) {
+	// 			console.error(e);
+	// 		} finally {
+	// 			if (transAnalysis.spending_trends) {
+	// 				addNotification('Financial insights loaded successfully', 'success');
+	// 			} else {
+	// 				addNotification('No insights available', 'info');
+	// 			}
+	// 			loading = false;
+	// 		}
+	// 	};
 
-		onMount(async () => await fetchAnalysis());
-	});
+	// 	onMount(async () => await fetchAnalysis());
+	// });
 
 	onMount(() => {
 		if (browser) {
@@ -53,13 +54,22 @@
 
 			webSocketService.socket.onmessage = (event: MessageEvent) => {
 				const data = JSON.parse(event.data);
-				console.log('WebSocket message received:', data);
-			};
-			webSocketService.socket.onclose = (event: CloseEvent) => {
-				console.log('WebSocket connection closed:', event);
-			};
-			webSocketService.socket.onerror = (event: Event) => {
-				console.error('WebSocket error:', event);
+				console.log(data);
+
+				switch (data.action) {
+					case 'progress':
+						console.log(data.progress);
+						break;
+					case 'summary_complete':
+						finance = data.result;
+						break;
+					case 'analysis_complete':
+						transAnalysis = data.result;
+						loading = false;
+						break;
+					default:
+						break;
+				}
 			};
 		}
 
@@ -69,6 +79,8 @@
 			}
 		};
 	});
+
+	$inspect({ transAnalysis, loading, finance });
 </script>
 
 <div class="space-y-6">

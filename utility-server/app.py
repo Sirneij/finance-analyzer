@@ -1,17 +1,25 @@
 import asyncio
 
 from aiohttp import WSMsgType, web
-from aiohttp.web import Application, Request, Response, WebSocketResponse
+from aiohttp.web import Request, Response, WebSocketResponse
 
 from utils.analyzer import analyze_transactions
 from utils.extract_text import extract_text_from_pdf
 from utils.settings import base_settings
 from utils.summarize import summarize_transactions
+from utils.websocket import WebSocketManager
 
-routes = web.RouteTableDef()
+# Add connection tracking
+ws_connections = set()
 
 
-@routes.post('/extract-text')
+async def cleanup_ws(app):
+    """Cleanup WebSocket connections on shutdown."""
+    for ws in set(ws_connections):
+        await ws.close(code=WSMsgType.CLOSE, message='Server shutdown')
+    ws_connections.clear()
+
+
 async def extract_text(request: Request) -> Response:
     try:
         base_settings.logger.info('Received text extraction request')
@@ -36,7 +44,6 @@ async def extract_text(request: Request) -> Response:
         return web.json_response({'error': str(e)}, status=500)
 
 
-@routes.post('/analyze')
 async def analyze(request: web.Request) -> web.Response:
     try:
         data = await request.json()
@@ -57,7 +64,6 @@ async def analyze(request: web.Request) -> web.Response:
         return web.json_response({'error': 'Analysis failed: ' + str(e)}, status=500)
 
 
-@routes.post('/summarize')
 async def summarize(request: web.Request) -> web.Response:
     try:
         data = await request.json()
@@ -80,83 +86,69 @@ async def summarize(request: web.Request) -> web.Response:
         )
 
 
-@routes.get('/ws')
 async def websocket_handler(request: Request) -> WebSocketResponse:
     """WebSocket handler for real-time communication."""
-    ws = WebSocketResponse()
+    ws = web.WebSocketResponse(
+        # heartbeat=30,  # Send heartbeat every 30 seconds
+        # autoping=True,  # Automatically respond to pings
+    )
     await ws.prepare(request)
 
-    base_settings.logger.info('New WebSocket connection established')
-    base_settings.active_websockets.add(ws)
+    ws_connections.add(ws)
+    ws_manager = WebSocketManager(ws)
+    await ws_manager.prepare()
+
+    base_settings.logger.info('WebSocket connection established')
 
     try:
         async for msg in ws:
             if msg.type == WSMsgType.TEXT:
-                data = msg.json()
-                base_settings.logger.info(f'Received message: {data}')
-
-                # Handle specific actions
-                if data['action'].lower() == 'analyze':
-                    transactions = data.get('transactions', [])
-                    result = await analyze_transactions(transactions)
-                    await ws.send_json({'type': 'analysis_result', 'data': result})
-                elif data['action'].lower() == 'summary':
-                    transactions = data.get('transactions', [])
-                    result = await summarize_transactions(transactions)
-                    await ws.send_json({'type': 'summary_result', 'data': result})
-                elif data['action'].lower() == 'progress':
-                    operation_type = 'Summary'
-                    await base_settings.send_progress(
-                        'Processing transactions...', 
-                        base_settings.active_websockets, operation_type
-                    )
-                else:
-                    await ws.send_json({'error': 'Unknown action'})
+                try:
+                    data = msg.json()
+                    if data.get('action') == 'analyze':
+                        result = await analyze_transactions(
+                            data.get('transactions'), ws_manager
+                        )
+                        await ws_manager.send_progress(
+                            'Analysis complete', 1.0, 'Analysis'
+                        )
+                        await ws_manager.send_result(
+                            result, 'Analysis', 'analysis_complete'
+                        )
+                    elif data.get('action') == 'summary':
+                        result = await summarize_transactions(
+                            data.get('transactions'), ws_manager
+                        )
+                        await ws_manager.send_progress(
+                            'Summary complete', 1.0, 'Summary'
+                        )
+                        await ws_manager.send_result(
+                            result, 'Summary', 'summary_complete'
+                        )
+                    else:
+                        await ws_manager.send_result(
+                            {'message': 'Unknown action'}, 'Error', 'error'
+                        )
+                except Exception as e:
+                    base_settings.logger.error(f'Message processing error: {str(e)}')
+                    await ws_manager.send_result({'error': str(e)}, 'Error', 'error')
             elif msg.type == WSMsgType.ERROR:
-                base_settings.logger.error(
-                    f'WebSocket connection closed with exception: {ws.exception()}'
-                )
-    except Exception as e:
-        base_settings.logger.error(f'WebSocket error: {str(e)}', exc_info=True)
+                base_settings.logger.error(f'WebSocket error: {ws.exception()}')
     finally:
+        ws_connections.remove(ws)
         base_settings.logger.info('WebSocket connection closed')
-        base_settings.active_websockets.remove(ws)
 
     return ws
 
 
-async def broadcast_to_websockets(message: dict) -> None:
-    """Broadcast a message to all connected WebSocket clients."""
-    for ws in base_settings.active_websockets:
-        if not ws.closed:
-            await ws.send_json(message)
+app = web.Application()
+app.router.add_post('/extract-text', extract_text)
+app.router.add_post('/analyze', analyze)
+app.router.add_post('/summarize', summarize)
+app.router.add_get('/ws', websocket_handler)
 
-
-async def create_app() -> Application:
-    base_settings.logger.info('Creating application')
-    app = web.Application()
-    app.add_routes(routes)
-    return app
-
-
-async def run(port: int = 5173) -> None:
-    try:
-        app: Application = await create_app()
-        runner: web.AppRunner = web.AppRunner(app)
-        await runner.setup()
-        site: web.TCPSite = web.TCPSite(runner, '', port)
-        base_settings.logger.info(f'Starting server on port {port}')
-        await site.start()
-
-        # Keep the server running
-        await asyncio.Event().wait()
-    except KeyboardInterrupt:
-        base_settings.logger.info('Shutting down server')
-        await runner.cleanup()
-    except Exception as e:
-        base_settings.logger.error(f'Server error: {str(e)}', exc_info=True)
-        raise
-
+# Add cleanup on shutdown
+app.on_shutdown.append(cleanup_ws)
 
 if __name__ == '__main__':
-    asyncio.run(run())
+    web.run_app(app, host='localhost', port=5173)

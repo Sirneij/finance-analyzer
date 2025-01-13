@@ -1,6 +1,7 @@
 import { baseConfig } from "$config/base.config.ts";
 import { AuthError } from "$types/error.types.ts";
 import { Response } from "express";
+import { WebSocket } from "ws";
 
 export const sendAuthError = (res: Response, error: AuthError) => {
   const isApi =
@@ -22,3 +23,7 @@ export const sendAuthError = (res: Response, error: AuthError) => {
 
   return res.redirect(`${baseConfig.frontendUrl}/auth/login?${params}`);
 };
+
+export function sendError(ws: WebSocket, message: string, action?: string) {
+  ws.send(JSON.stringify({ error: message, action }));
+}

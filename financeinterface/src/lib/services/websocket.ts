@@ -17,7 +17,18 @@ export class WebSocketService {
 
 	public onOpen = (event: Event) => {
 		console.log('WebSocket connection opened:', event);
-		this.socket.send(JSON.stringify({ action: 'progress', userId: this.userId }));
+		this.socket.send(
+			JSON.stringify([
+				{
+					action: 'analyze',
+					userId: this.userId
+				},
+				{
+					action: 'summary',
+					userId: this.userId
+				}
+			])
+		);
 	};
 
 	public onMessage = (event: MessageEvent) => {
@@ -34,11 +45,11 @@ export class WebSocketService {
 		}
 	};
 
-	public onClose = (event: CloseEvent) => {
+	private onClose = (event: CloseEvent) => {
 		console.log('WebSocket connection closed:', event);
 	};
 
-	public onError = (event: Event) => {
+	private onError = (event: Event) => {
 		console.error('WebSocket error:', event);
 	};
 
