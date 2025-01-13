@@ -120,10 +120,10 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
                             data.get('transactions'), ws_manager
                         )
                         await ws_manager.send_progress(
-                            'Summary complete', 1.0, 'Summary'
+                            'Summary complete', 1.0, 'Summarize'
                         )
                         await ws_manager.send_result(
-                            result, 'Summary', 'summary_complete'
+                            result, 'Summarize', 'summary_complete'
                         )
                     else:
                         await ws_manager.send_result(

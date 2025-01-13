@@ -23,7 +23,7 @@ class WebSocketManager:
         try:
             await self.ws.send_json(
                 {
-                    'type': 'progress',
+                    'action': 'progress',
                     'message': message,
                     'progress': progress,
                     'taskType': task_type,
@@ -41,7 +41,11 @@ class WebSocketManager:
 
         try:
             await self.ws.send_json(
-                {'action': action, 'result': result, 'type': task_type}
+                {
+                    'action': action,
+                    'result': result,
+                    'taskType': task_type,
+                }
             )
         except Exception as e:
             base_settings.logger.error(f'Error sending result: {str(e)}')

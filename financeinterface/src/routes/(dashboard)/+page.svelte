@@ -16,37 +16,19 @@
 	import { addNotification } from '$lib/states/notification';
 	import { BASE_WS_URI } from '$lib/utils/contants';
 	import { WebSocketService } from '$lib/services/websocket';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
 	let { data }: { data: PageData } = $props();
 
 	const transactions: Transaction[] = data.transactions || [];
-	const financialSummaries: FinancialSummary = data.summary || {};
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
-		loading = $state(true),
+		loadingAnalysis = $state(true),
+		loadingSummary = $state(true),
 		finance = $state({} as FinancialSummary),
+		loadingSummaryProgress: ProgressSteps[] = $state([]),
+		loadingAnalysisProgress: ProgressSteps[] = $state([]),
 		webSocketService: WebSocketService;
-
-	// $effect(() => {
-	// 	if (!browser) return;
-	// 	const fetchAnalysis = async () => {
-	// 		try {
-	// 			loading = true;
-	// 			transAnalysis = await getTransactionAnalysis();
-	// 		} catch (e) {
-	// 			console.error(e);
-	// 		} finally {
-	// 			if (transAnalysis.spending_trends) {
-	// 				addNotification('Financial insights loaded successfully', 'success');
-	// 			} else {
-	// 				addNotification('No insights available', 'info');
-	// 			}
-	// 			loading = false;
-	// 		}
-	// 	};
-
-	// 	onMount(async () => await fetchAnalysis());
-	// });
 
 	onMount(() => {
 		if (browser) {
@@ -54,18 +36,27 @@
 
 			webSocketService.socket.onmessage = (event: MessageEvent) => {
 				const data = JSON.parse(event.data);
-				console.log(data);
-
 				switch (data.action) {
 					case 'progress':
-						console.log(data.progress);
+						if (data.taskType === 'Summarize') {
+							loadingSummaryProgress.push({
+								progress: data.progress,
+								message: data.message
+							});
+						} else if (data.taskType === 'Analysis') {
+							loadingAnalysisProgress.push({
+								progress: data.progress,
+								message: data.message
+							});
+						}
 						break;
 					case 'summary_complete':
 						finance = data.result;
+						loadingSummary = false;
 						break;
 					case 'analysis_complete':
 						transAnalysis = data.result;
-						loading = false;
+						loadingAnalysis = false;
 						break;
 					default:
 						break;
@@ -79,8 +70,6 @@
 			}
 		};
 	});
-
-	$inspect({ transAnalysis, loading, finance });
 </script>
 
 <div class="space-y-6">
@@ -120,20 +109,28 @@
 		</div>
 	</div>
 	<!-- Financial Summary Cards -->
-	<Summary {financialSummaries} />
+	<Summary bind:financialSummaries={finance} />
 
 	<!-- Card and Insights Grid -->
 	<div class="grid gap-4 sm:gap-6 md:grid-cols-1 lg:grid-cols-2">
 		<!-- Behavioral Insights -->
-		<BehaviouralInsights categories={transAnalysis.categories} {loading} />
+		<BehaviouralInsights categories={transAnalysis.categories} loading={loadingAnalysis} />
 		<!-- Monthly summary -->
-		<MonthlySummary {financialSummaries} {loading} />
+		<MonthlySummary
+			financialSummaries={finance}
+			loading={loadingSummary}
+			bind:steps={loadingSummaryProgress}
+		/>
 	</div>
 
 	<!-- Charts + Transactions Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">
 		<!-- Financial Charts -->
-		<FinanceChart {loading} spending_analysis={transAnalysis.spending_analysis} />
+		<FinanceChart
+			loading={loadingAnalysis}
+			spending_analysis={transAnalysis.spending_analysis}
+			bind:steps={loadingAnalysisProgress}
+		/>
 
 		<!-- Recent Transactions -->
 		<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">

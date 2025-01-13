@@ -6,3 +6,8 @@ export interface Notification {
 	message: string;
 	duration: number;
 }
+
+export interface ProgressSteps {
+	progress: number;
+	message: string;
+}

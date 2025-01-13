@@ -8,9 +8,13 @@
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import { COLORS } from '$lib/utils/contants';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
-	let { spending_analysis, loading }: { spending_analysis: SpendingAnalysis; loading: boolean } =
-		$props();
+	let {
+		spending_analysis,
+		loading,
+		steps = $bindable()
+	}: { spending_analysis: SpendingAnalysis; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let financialTrendsCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
@@ -124,7 +128,7 @@
 
 	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
-			<LoadingChart />
+			<LoadingChart bind:steps />
 		{:else if !spending_analysis}
 			<Empty
 				title="No financial data available"

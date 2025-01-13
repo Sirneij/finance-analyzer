@@ -25,7 +25,7 @@
 	<div class="h-64 overflow-y-auto">
 		<div class="grid grid-cols-1 gap-3 pr-2 sm:grid-cols-2 sm:gap-4">
 			{#if loading}
-				{#each Array(4) as _, i}
+				{#each Array(2) as _, i}
 					<LoadingInsight />
 				{/each}
 			{:else if percentageValues.length === 0}

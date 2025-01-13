@@ -157,7 +157,6 @@ export class TransactionService {
 
     ws.on("message", (message: string) => {
       const data = JSON.parse(message);
-      console.log(data);
       frontendWs.send(JSON.stringify(data));
     });
 

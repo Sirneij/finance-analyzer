@@ -69,30 +69,15 @@ async def analyze_transactions(
             )
         categories = await classify_transactions(tx_objects)
 
-        if ws_manager:
-            await ws_manager.send_progress(
-                'Transaction classification completed successfully', 0.4, 'Analysis'
-            )
-
         # Step 3: Anomaly Detection
         if ws_manager:
             await ws_manager.send_progress('Detecting anomalies...', 0.4, 'Analysis')
         anomalies = await detect_anomalies(tx_objects)
 
-        if ws_manager:
-            await ws_manager.send_progress(
-                'Anomaly detection completed successfully', 0.6, 'Analysis'
-            )
-
         # Step 4: Spending Analysis
         if ws_manager:
             await ws_manager.send_progress('Analyzing spending...', 0.6, 'Analysis')
         spending_analysis = await analyze_spending(tx_objects)
-
-        if ws_manager:
-            await ws_manager.send_progress(
-                'Spending analysis completed successfully', 0.8, 'Analysis'
-            )
 
         # Step 5: Trend Prediction
         if ws_manager:

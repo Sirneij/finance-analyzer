@@ -4,106 +4,90 @@
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import CircledSum from '$lib/components/icons/CircledSum.svelte';
 	import ExpenseList from '$lib/components/icons/ExpenseList.svelte';
-	import { createCountAnimation } from '$lib/states/counter.svelte';
 	import { formatMoney } from '$lib/utils/helpers/money.helpers';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
 
-	let { financialSummaries }: { financialSummaries: FinancialSummary } = $props();
-
-	const incomeCounter = createCountAnimation(0, financialSummaries?.income?.total || 0);
-	const expensesCounter = createCountAnimation(0, financialSummaries?.expenses?.total || 0);
-	const savingsCounter = createCountAnimation(0, financialSummaries?.savings?.total || 0);
-
-	$effect.root(() => {
-		// Start animations immediately
-		incomeCounter.startAnimation();
-		expensesCounter.startAnimation();
-		savingsCounter.startAnimation();
-
-		return () => {
-			incomeCounter.cleanup();
-			expensesCounter.cleanup();
-			savingsCounter.cleanup();
-		};
-	});
+	let { financialSummaries = $bindable() }: { financialSummaries: FinancialSummary } = $props();
 </script>
 
-<div class="grid gap-6 sm:grid-cols-3">
-	<div
-		class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
-	>
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-3">
-				<CircledSum class="h-5 w-5 text-green-500" />
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Income</h3>
+{#if financialSummaries}
+	<div class="grid gap-6 sm:grid-cols-3">
+		<div
+			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<CircledSum class="h-5 w-5 text-green-500" />
+					<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Income</h3>
+				</div>
+				<div class="flex items-center gap-1">
+					<Caret
+						trend={financialSummaries?.income?.trend ?? 'up'}
+						class={`h-4 w-4 ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					/>
+					<span
+						class={`text-sm ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					>
+						{(financialSummaries?.income?.change ?? 0).toFixed(2)}%
+					</span>
+				</div>
 			</div>
-			<div class="flex items-center gap-1">
-				<Caret
-					trend={financialSummaries?.income?.trend ?? 'up'}
-					class={`h-4 w-4 ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				/>
-				<span
-					class={`text-sm ${(financialSummaries?.income?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				>
-					{(financialSummaries?.income?.change ?? 0).toFixed(2)}%
-				</span>
-			</div>
+			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
+				{formatMoney(financialSummaries?.income?.total)}
+			</p>
 		</div>
-		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{incomeCounter.value.toLocaleString()}
-		</p>
-	</div>
 
-	<div
-		class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
-	>
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-3">
-				<ExpenseList class="h-5 w-5 text-red-500" />
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Expenses</h3>
+		<div
+			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<ExpenseList class="h-5 w-5 text-red-500" />
+					<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Expenses</h3>
+				</div>
+				<div class="flex items-center gap-1">
+					<Caret
+						trend={financialSummaries?.expenses?.trend ?? 'up'}
+						class={`h-4 w-4 ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					/>
+					<span
+						class={`text-sm ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
+					>
+						{(financialSummaries?.expenses?.change ?? 0).toFixed(2)}%
+					</span>
+				</div>
 			</div>
-			<div class="flex items-center gap-1">
-				<Caret
-					trend={financialSummaries?.expenses?.trend ?? 'up'}
-					class={`h-4 w-4 ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
-				/>
-				<span
-					class={`text-sm ${(financialSummaries?.expenses?.trend ?? 'up') === 'up' ? 'text-red-500' : 'text-green-500'}`}
-				>
-					{(financialSummaries?.expenses?.change ?? 0).toFixed(2)}%
-				</span>
-			</div>
+			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
+				{formatMoney(financialSummaries?.expenses?.total)}
+			</p>
 		</div>
-		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{expensesCounter.value.toLocaleString()}
-		</p>
-	</div>
 
-	<div
-		class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
-	>
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-3">
-				<Amount class="h-5 w-5 text-blue-500" />
-				<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Savings</h3>
+		<div
+			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<Amount class="h-5 w-5 text-blue-500" />
+					<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Savings</h3>
+				</div>
+				<div class="flex items-center gap-1">
+					<Caret
+						trend={financialSummaries?.savings?.trend ?? 'up'}
+						class={`h-4 w-4 ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					/>
+					<span
+						class={`text-sm ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
+					>
+						{(financialSummaries?.savings?.change ?? 0).toFixed(2)}%
+					</span>
+				</div>
 			</div>
-			<div class="flex items-center gap-1">
-				<Caret
-					trend={financialSummaries?.savings?.trend ?? 'up'}
-					class={`h-4 w-4 ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				/>
-				<span
-					class={`text-sm ${(financialSummaries?.savings?.trend ?? 'up') === 'up' ? 'text-green-500' : 'text-red-500'}`}
-				>
-					{(financialSummaries?.savings?.change ?? 0).toFixed(2)}%
-				</span>
-			</div>
+			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
+				{formatMoney(financialSummaries?.savings?.total)}
+			</p>
 		</div>
-		<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-			<span class="text-lg">$</span>{savingsCounter.value.toLocaleString()}
-		</p>
 	</div>
-</div>
+{/if}
 
 <div class="mt-6 grid gap-4 sm:grid-cols-4">
 	<!-- Transaction Counts -->

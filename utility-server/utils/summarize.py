@@ -52,9 +52,7 @@ async def summarize_transactions(
 
         # Step 2: Calculate additional metrics
         if ws_manager:
-            await ws_manager.send_progress(
-                'Calculating average income and expenses...', 0.35, 'Summarize'
-            )
+            await ws_manager.send_progress('Calculating average..', 0.35, 'Summarize')
 
         total_savings = total_income + total_spent
         total_transactions = len(tx_objects)

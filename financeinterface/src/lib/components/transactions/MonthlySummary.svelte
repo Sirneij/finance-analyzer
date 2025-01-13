@@ -8,9 +8,13 @@
 	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
 	import { transformMonthlyChartData } from '$lib/utils/helpers/transactions.helpers';
 	import { COLORS } from '$lib/utils/contants';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
-	let { financialSummaries, loading }: { financialSummaries: FinancialSummary; loading: boolean } =
-		$props();
+	let {
+		financialSummaries,
+		loading,
+		steps = $bindable()
+	}: { financialSummaries: FinancialSummary; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let monthlySummariesCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
@@ -117,7 +121,7 @@
 
 	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
-			<LoadingChart />
+			<LoadingChart bind:steps />
 		{:else if !financialSummaries?.monthly_summary}
 			<Empty
 				title="No financial data available"
