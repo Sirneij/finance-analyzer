@@ -78,7 +78,7 @@
 			<img
 				src={page.data.user?.avatar}
 				alt={page.data.user?.name}
-				class="h-12 w-12 rounded-full ring-2 ring-blue-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
+				class="h-12 w-12 rounded-full ring-2 ring-indigo-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
 			/>
 			<div class="text-center sm:text-left">
 				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
@@ -92,7 +92,7 @@
 
 		<div class="flex flex-col gap-2 sm:flex-row sm:gap-3">
 			<a
-				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-blue-600 hover:bg-blue-100 sm:w-auto dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30"
+				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-indigo-600 hover:bg-indigo-100 sm:w-auto dark:bg-indigo-900/20 dark:text-indigo-400 dark:hover:bg-indigo-900/30"
 				href="/behavior#manual-add"
 			>
 				<Add class="h-5 w-5" />
@@ -140,7 +140,7 @@
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
 				<a
-					class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+					class="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
 					href="/transactions"
 				>
 					View All

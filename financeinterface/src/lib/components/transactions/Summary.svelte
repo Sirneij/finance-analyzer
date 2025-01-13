@@ -67,7 +67,7 @@
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
-					<Amount class="h-5 w-5 text-blue-500" />
+					<Amount class="h-5 w-5 text-indigo-500" />
 					<h3 class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Savings</h3>
 				</div>
 				<div class="flex items-center gap-1">

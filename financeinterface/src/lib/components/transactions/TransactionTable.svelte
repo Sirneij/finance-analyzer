@@ -82,7 +82,7 @@
 					<th class="px-6 py-4">
 						<input
 							type="checkbox"
-							class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+							class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
 							onchange={toggleAll}
 							checked={selectedTransactions.size === transactions.length && transactions.length > 0}
 						/>
@@ -119,7 +119,7 @@
 						<td class="px-6 py-4">
 							<input
 								type="checkbox"
-								class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+								class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
 								checked={selectedTransactions.has(transaction._id)}
 								onchange={() => toggleSelection(transaction._id)}
 							/>
@@ -129,7 +129,7 @@
 								<div
 									class={`h-2 w-2 rounded-full ${
 										isSameDay(transaction.date, new Date())
-											? 'bg-blue-500'
+											? 'bg-indigo-500'
 											: 'bg-gray-300 dark:bg-gray-600'
 									}`}
 								></div>

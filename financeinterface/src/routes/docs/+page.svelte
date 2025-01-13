@@ -36,7 +36,7 @@
 		<!-- Hero Section -->
 		<div class="py-16 text-center" in:fly={{ y: 20, duration: 800 }}>
 			<h1
-				class="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl"
+				class="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl"
 			>
 				API Documentation
 			</h1>
@@ -48,13 +48,13 @@
 			<div class="mx-auto mt-12 max-w-xl">
 				<div class="group relative">
 					<Search
-						class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-blue-500"
+						class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-indigo-500"
 					/>
 					<input
 						type="text"
 						bind:value={searchQuery}
 						placeholder="Search endpoints..."
-						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					/>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 								</div>
 							</div>
 							<span
-								class="rounded-full bg-gradient-to-r from-blue-500 to-violet-500 px-4 py-1 text-xs font-medium text-white shadow-lg"
+								class="rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-4 py-1 text-xs font-medium text-white shadow-lg"
 							>
 								{endpoint.method}
 							</span>

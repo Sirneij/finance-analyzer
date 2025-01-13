@@ -111,7 +111,7 @@
 							</h1>
 							<div class="mt-4 flex flex-wrap items-center gap-2">
 								<span
-									class="rounded border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-900/50 dark:text-blue-300"
+									class="rounded border border-indigo-200 bg-blue-50 px-4 py-1 text-xs font-medium text-indigo-700 dark:border-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300"
 								>
 									{data.currentDoc.method}
 								</span>

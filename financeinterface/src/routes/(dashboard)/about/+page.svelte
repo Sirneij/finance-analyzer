@@ -16,7 +16,7 @@
 		<!-- Hero Section -->
 		<div class="mb-16 space-y-4 text-center" in:fly={{ y: 50, duration: 1000 }}>
 			<h1
-				class="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-5xl font-bold text-transparent dark:from-blue-400 dark:to-teal-400"
+				class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text text-5xl font-bold text-transparent dark:from-indigo-400 dark:to-teal-400"
 			>
 				About Developer
 			</h1>
@@ -36,13 +36,13 @@
 				<div class="flex space-x-4">
 					<a
 						href="https://github.com"
-						class="text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+						class="text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
 					>
 						GitHub
 					</a>
 					<a
 						href="https://linkedin.com"
-						class="text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+						class="text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
 					>
 						LinkedIn
 					</a>
@@ -63,7 +63,7 @@
 							</div>
 							<div class="h-2 rounded-full bg-gray-200 dark:bg-gray-700">
 								<div
-									class="h-full rounded-full bg-gradient-to-r from-blue-600 to-teal-600 dark:from-blue-400 dark:to-teal-400"
+									class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-teal-600 dark:from-indigo-400 dark:to-teal-400"
 									style="width: {skill.level}%"
 									transition:fade
 								></div>

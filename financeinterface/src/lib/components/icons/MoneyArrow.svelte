@@ -8,7 +8,7 @@
 			? 'text-green-600 dark:text-green-400'
 			: txType === 'expense'
 				? 'text-red-600 dark:text-red-400'
-				: 'text-blue-600 dark:text-blue-400'
+				: 'text-indigo-600 dark:text-indigo-400'
 	}`}
 	fill="none"
 	viewBox="0 0 24 24"

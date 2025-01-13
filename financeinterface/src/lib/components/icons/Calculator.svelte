@@ -3,7 +3,7 @@
 </script>
 
 <svg
-	class="h-14 w-14 text-blue-600 dark:text-blue-400 dark:drop-shadow-[0_0_8px_rgba(96,165,250,0.4)]"
+	class="h-14 w-14 text-indigo-600 dark:text-indigo-400 dark:drop-shadow-[0_0_8px_rgba(96,165,250,0.4)]"
 	viewBox="0 0 24 24"
 	fill="currentColor"
 	{...props}

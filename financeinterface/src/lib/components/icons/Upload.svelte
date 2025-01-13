@@ -3,7 +3,7 @@
 </script>
 
 <svg
-	class="mb-4 h-8 w-8 text-gray-500 transition-colors group-hover:text-blue-500 dark:text-gray-400"
+	class="mb-4 h-8 w-8 text-gray-500 transition-colors group-hover:text-indigo-500 dark:text-gray-400"
 	aria-hidden="true"
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"

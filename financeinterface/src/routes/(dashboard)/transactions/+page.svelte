@@ -69,7 +69,7 @@
 							<button
 								class="inline-flex h-8 w-8 items-center justify-center rounded-md text-sm font-medium transition-colors {data
 									.metadata.page === pageNum
-									? 'bg-blue-600 text-white hover:bg-blue-700'
+									? 'bg-indigo-600 text-white hover:bg-indigo-700'
 									: 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'}"
 								onclick={() => handlePageChange(pageNum as number)}
 							>

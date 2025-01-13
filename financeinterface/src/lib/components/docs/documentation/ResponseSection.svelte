@@ -18,7 +18,7 @@
 		<h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Responses</h3>
 		<button
 			type="button"
-			class="bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
+			class="bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-indigo-600"
 			onclick={addResponse}
 		>
 			Add Response

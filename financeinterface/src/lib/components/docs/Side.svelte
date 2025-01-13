@@ -19,7 +19,7 @@
 
 	const methodColors = {
 		GET: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800',
-		POST: 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-800',
+		POST: 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-800',
 		PUT: 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-800',
 		DELETE:
 			'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/50 dark:text-red-300 dark:border-red-800',
@@ -81,7 +81,7 @@
 									<div class="min-w-0 flex-1">
 										<span
 											class="block truncate {activeDoc === doc._id
-												? 'font-medium text-blue-600 dark:text-blue-400'
+												? 'font-medium text-indigo-600 dark:text-indigo-400'
 												: 'text-gray-700 dark:text-gray-300'}"
 										>
 											{doc.path}

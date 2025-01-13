@@ -19,7 +19,7 @@
 							? 'bg-green-100 dark:bg-green-900/20'
 							: tx.type === 'expense'
 								? 'bg-red-100 dark:bg-red-900/20'
-								: 'bg-blue-100 dark:bg-blue-900/20'
+								: 'bg-indigo-100 dark:bg-indigo-900/20'
 					}`}
 				>
 					<MoneyArrow txType={tx.type} />

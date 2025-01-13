@@ -37,7 +37,7 @@
 				<button
 					class="flex shrink-0 items-center gap-2 px-4 py-2 text-sm transition-colors {activeLanguage ===
 					lang
-						? 'border-b-2 border-blue-500 font-semibold text-blue-600 dark:text-blue-400'
+						? 'border-b-2 border-indigo-500 font-semibold text-indigo-600 dark:text-indigo-400'
 						: 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'}"
 					onclick={() => switchLanguage(lang as SupportedLanguage)}
 				>

@@ -3,7 +3,7 @@
 	import { slide } from 'svelte/transition';
 	import type { Notification } from '$lib/types/notification.types';
 	const bgColors: Record<Notification['type'], string> = {
-		info: 'bg-blue-500',
+		info: 'bg-indigo-500',
 		success: 'bg-green-500',
 		warning: 'bg-yellow-500',
 		error: 'bg-red-500'

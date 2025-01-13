@@ -16,8 +16,8 @@ export const COLORS = {
 		background: 'bg-red-500'
 	},
 	savings: {
-		chart: '#3B82F6',
-		background: 'bg-blue-500'
+		chart: '#4F46E5',
+		background: 'bg-indigo-500'
 	},
 	balance: {
 		chart: '#6B7280',
