@@ -13,7 +13,7 @@
 	let {
 		spending_analysis,
 		loading,
-		steps = $bindable()
+		steps
 	}: { spending_analysis: SpendingAnalysis; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let financialTrendsCanvas = $state<HTMLCanvasElement>(),
@@ -128,7 +128,7 @@
 
 	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
-			<LoadingChart bind:steps />
+			<LoadingChart {steps} />
 		{:else if !spending_analysis}
 			<Empty
 				title="No financial data available"

@@ -9,38 +9,51 @@
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
 	import FileInput from '$lib/components/transactions/FileInput.svelte';
 	import type { SpendingReport } from '$lib/types/transaction.types';
-	import {
-		getFinancialInsights,
-		getTransactionAnalysis
-	} from '$lib/utils/helpers/transactions.helpers';
-	import { onMount } from 'svelte';
+	import { getFinancialInsights } from '$lib/utils/helpers/transactions.helpers';
+	import { onDestroy, onMount } from 'svelte';
 	import type { ActionData } from './$types';
-	import { addNotification } from '$lib/states/notification';
+	import { NEEDEDDATA, WebSocketService } from '$lib/services/websocket';
+	import { BASE_WS_URI } from '$lib/utils/contants';
+	import { page } from '$app/state';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
 	const { form }: { form: ActionData } = $props();
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
-		loading = $state(true);
+		loadingAnalysis = $state(true),
+		loadingAnalysisProgress: ProgressSteps[] = $state([]),
+		webSocketService: WebSocketService;
 
-	$effect(() => {
-		if (!browser) return;
-		const fetchAnalysis = async () => {
-			try {
-				loading = true;
-				transAnalysis = await getTransactionAnalysis();
-			} catch (e) {
-				console.error(e);
-			} finally {
-				if (transAnalysis.spending_trends) {
-					addNotification('Financial insights loaded successfully', 'success');
-				} else {
-					addNotification('No insights available', 'info');
+	onMount(() => {
+		if (browser) {
+			webSocketService = new WebSocketService(`${BASE_WS_URI}`, page.data.user?._id || '', [
+				NEEDEDDATA.ANALYSIS
+			]);
+
+			webSocketService.socket.onmessage = (event: MessageEvent) => {
+				const data = JSON.parse(event.data);
+				switch (data.action) {
+					case 'progress':
+						if (data.taskType === 'Analysis') {
+							loadingAnalysisProgress.push({
+								progress: data.progress,
+								message: data.message
+							});
+						}
+						break;
+					case 'analysis_complete':
+						transAnalysis = data.result;
+						loadingAnalysis = false;
+						break;
+					default:
+						break;
 				}
-				loading = false;
-			}
-		};
+			};
+		}
+	});
 
-		onMount(async () => await fetchAnalysis());
+	onDestroy(() => {
+		if (webSocketService) webSocketService.close();
 	});
 </script>
 
@@ -57,19 +70,26 @@
 	<!-- Charts Section -->
 	<div class="grid gap-6 lg:grid-cols-2">
 		<!-- Suspicious transactions -->
-		<Anomaly anomalies={transAnalysis.anomalies} {loading} />
+		<Anomaly
+			anomalies={transAnalysis.anomalies}
+			loading={loadingAnalysis}
+			steps={loadingAnalysisProgress}
+		/>
 
 		<!-- Spending Categories -->
-		<SpendingCategories categories={transAnalysis.categories} {loading} />
+		<SpendingCategories
+			categories={transAnalysis.categories}
+			loading={loadingAnalysis}
+			steps={loadingAnalysisProgress}
+		/>
 	</div>
 
 	<!-- Insights Section -->
 	<div class="grid gap-6 sm:grid-cols-2">
 		<!-- Saving rate -->
-		{#if loading}
-			{#each new Array(2) as _, i}
-				<LoadingInsight />
-			{/each}
+		{#if loadingAnalysis}
+			<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
+			<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
 		{:else if !transAnalysis.spending_trends}
 			<div class="col-span-2 flex min-h-[200px] items-center justify-center">
 				<Empty

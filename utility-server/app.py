@@ -1,4 +1,6 @@
 import asyncio
+import signal
+from asyncio import Lock
 
 from aiohttp import WSMsgType, web
 from aiohttp.web import Request, Response, WebSocketResponse
@@ -9,15 +11,29 @@ from utils.settings import base_settings
 from utils.summarize import summarize_transactions
 from utils.websocket import WebSocketManager
 
-# Add connection tracking
-ws_connections = set()
+# Replace global ws_connections with typed version
+ws_connections: set[WebSocketResponse] = set()
+ws_lock = Lock()
+
+
+async def start_background_tasks(app):
+    """Initialize application background tasks."""
+    app['ws_connections'] = ws_connections
+    app['ws_lock'] = ws_lock
+
+
+async def cleanup_background_tasks(app):
+    """Cleanup application resources."""
+    await cleanup_ws(app)
 
 
 async def cleanup_ws(app):
     """Cleanup WebSocket connections on shutdown."""
-    for ws in set(ws_connections):
-        await ws.close(code=WSMsgType.CLOSE, message='Server shutdown')
-    ws_connections.clear()
+    async with ws_lock:
+        connections = set(ws_connections)  # Create a copy to iterate safely
+        for ws in connections:
+            await ws.close(code=WSMsgType.CLOSE, message='Server shutdown')
+        ws_connections.clear()
 
 
 async def extract_text(request: Request) -> Response:
@@ -94,7 +110,8 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
     )
     await ws.prepare(request)
 
-    ws_connections.add(ws)
+    async with ws_lock:
+        ws_connections.add(ws)
     ws_manager = WebSocketManager(ws)
     await ws_manager.prepare()
 
@@ -135,20 +152,57 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
             elif msg.type == WSMsgType.ERROR:
                 base_settings.logger.error(f'WebSocket error: {ws.exception()}')
     finally:
-        ws_connections.remove(ws)
+        async with ws_lock:
+            ws_connections.remove(ws)
+        await ws.close()
         base_settings.logger.info('WebSocket connection closed')
-
     return ws
 
 
-app = web.Application()
-app.router.add_post('/extract-text', extract_text)
-app.router.add_post('/analyze', analyze)
-app.router.add_post('/summarize', summarize)
-app.router.add_get('/ws', websocket_handler)
+def init_app() -> web.Application:
+    app = web.Application()
+    app.router.add_post('/extract-text', extract_text)
+    app.router.add_post('/analyze', analyze)
+    app.router.add_post('/summarize', summarize)
+    app.router.add_get('/ws', websocket_handler)
 
-# Add cleanup on shutdown
-app.on_shutdown.append(cleanup_ws)
+    # Add startup/cleanup handlers
+    app.on_startup.append(start_background_tasks)
+    app.on_cleanup.append(cleanup_background_tasks)
+
+    return app
+
+
+async def shutdown(sig: signal.Signals, loop: asyncio.AbstractEventLoop) -> None:
+    """Cleanup tasks tied to the service's shutdown."""
+    app = init_app()
+    print(f'Received exit signal {sig.name}...')
+    await cleanup_ws(app)
+
+    tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+    [task.cancel() for task in tasks]
+
+    print(f'Cancelling {len(tasks)} outstanding tasks')
+    await asyncio.gather(*tasks, return_exceptions=True)
+    loop.stop()
+
 
 if __name__ == '__main__':
-    web.run_app(app, host='localhost', port=5173)
+    app = init_app()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    # Handle signals
+    signals = (signal.SIGHUP, signal.SIGTERM, signal.SIGINT)
+    for s in signals:
+        loop.add_signal_handler(s, lambda s=s: asyncio.create_task(shutdown(s, loop)))
+
+    try:
+        web.run_app(app, host='localhost', port=5173)
+    except KeyboardInterrupt:
+        base_settings.logger.info('Received keyboard interrupt...')
+    finally:
+        base_settings.logger.info('Shutting down the service...')
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
+        base_settings.logger.info('Successfully shutdown the service.')

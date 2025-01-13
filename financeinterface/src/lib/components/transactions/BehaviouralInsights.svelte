@@ -3,8 +3,13 @@
 	import { transformCategoriesToArray } from '$lib/utils/helpers/transactions.helpers';
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
 	import Empty from '$lib/components/resuables/Empty.svelte';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
-	let { categories, loading }: { categories: CategoriesData; loading: boolean } = $props();
+	let {
+		categories,
+		loading,
+		steps
+	}: { categories: CategoriesData; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let percentageValues: {
 		title: string;
@@ -25,9 +30,13 @@
 	<div class="h-64 overflow-y-auto">
 		<div class="grid grid-cols-1 gap-3 pr-2 sm:grid-cols-2 sm:gap-4">
 			{#if loading}
-				{#each Array(2) as _, i}
-					<LoadingInsight />
-				{/each}
+				<div class="col-span-full">
+					<LoadingInsight
+						{steps}
+						numBoxes={6}
+						containerClass="grid grid-cols-1 gap-3 pr-2 sm:grid-cols-2 sm:gap-4"
+					/>
+				</div>
 			{:else if percentageValues.length === 0}
 				<div class="col-span-full">
 					<Empty

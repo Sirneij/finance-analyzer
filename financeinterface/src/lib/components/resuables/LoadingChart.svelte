@@ -2,7 +2,7 @@
 	import type { ProgressSteps } from '$lib/types/notification.types';
 	import Check from '$lib/components/icons/Check.svelte';
 
-	let { steps = $bindable() }: { steps: ProgressSteps[] } = $props();
+	let { steps }: { steps: ProgressSteps[] } = $props();
 	const currentStep = $derived(
 		steps.reduce((maxIndex, current, index, array) => {
 			if (index === array.length - 1) return index;
@@ -48,7 +48,7 @@
 
 						<!-- Progress percentage -->
 						<div
-							class={`absolute w-24 text-center text-sm ${i % 2 === 0 ? '-top-6' : '-bottom-6'}`}
+							class={`absolute w-24 text-center text-xs ${i % 2 === 0 ? '-top-6' : '-bottom-6'}`}
 						>
 							<span
 								class={`transition-colors duration-300 ${
@@ -62,7 +62,7 @@
 						</div>
 
 						<div
-							class={`absolute w-24 text-center text-sm ${i % 2 === 0 ? '-bottom-10' : '-top-10'}`}
+							class={`absolute w-24 text-center text-xs ${i % 2 === 0 ? '-bottom-10' : '-top-10'}`}
 						>
 							<span
 								class={`transition-colors duration-300 ${

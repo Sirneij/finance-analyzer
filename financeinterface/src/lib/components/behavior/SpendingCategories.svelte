@@ -9,8 +9,13 @@
 	import Empty from '$lib/components/resuables/Empty.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
-	let { categories, loading }: { categories: CategoriesData; loading: boolean } = $props();
+	let {
+		categories,
+		loading,
+		steps
+	}: { categories: CategoriesData; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let spendingCategoriesCanvas = $state<HTMLCanvasElement>(),
 		chartInitialized = false,
@@ -85,7 +90,7 @@
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Spending Categories</h2>
 	<div class={`transition-all duration-300 ${isFullscreen ? 'h-[calc(100vh-8rem)]' : 'h-64'}`}>
 		{#if loading}
-			<LoadingChart />
+			<LoadingChart {steps} />
 		{:else if !categories || !Object.keys(categories.categories).length}
 			<Empty title="No data found" description="No spending categories found in your account." />
 		{:else}

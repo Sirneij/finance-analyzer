@@ -13,7 +13,7 @@
 	let {
 		financialSummaries,
 		loading,
-		steps = $bindable()
+		steps
 	}: { financialSummaries: FinancialSummary; loading: boolean; steps: ProgressSteps[] } = $props();
 
 	let monthlySummariesCanvas = $state<HTMLCanvasElement>(),
@@ -105,7 +105,7 @@
 	</button>
 
 	<div class="mb-4 flex items-center justify-between">
-		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Monthly Summary</h3>
+		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Summary</h3>
 		<div class="flex items-center gap-4">
 			<span class="flex items-center text-sm text-gray-500 dark:text-gray-400">
 				<span class="mr-1 h-3 w-3 rounded-full {COLORS.income.background}"></span> Income
@@ -121,7 +121,7 @@
 
 	<div class={isFullscreen ? 'h-[calc(100vh-120px)]' : 'h-64'}>
 		{#if loading}
-			<LoadingChart bind:steps />
+			<LoadingChart {steps} />
 		{:else if !financialSummaries?.monthly_summary}
 			<Empty
 				title="No financial data available"

@@ -7,15 +7,13 @@
 	import Transactions from '$lib/components/transactions/Transactions.svelte';
 	import type { SpendingReport, Transaction, FinancialSummary } from '$lib/types/transaction.types';
 	import { getFirstName } from '$lib/utils/helpers/name.helpers';
-	import { getTransactionAnalysis } from '$lib/utils/helpers/transactions.helpers';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import MonthlySummary from '$lib/components/transactions/MonthlySummary.svelte';
 	import Add from '$lib/components/icons/Add.svelte';
 	import Bar from '$lib/components/icons/Bar.svelte';
-	import { addNotification } from '$lib/states/notification';
 	import { BASE_WS_URI } from '$lib/utils/contants';
-	import { WebSocketService } from '$lib/services/websocket';
+	import { NEEDEDDATA, WebSocketService } from '$lib/services/websocket';
 	import type { ProgressSteps } from '$lib/types/notification.types';
 
 	let { data }: { data: PageData } = $props();
@@ -32,7 +30,10 @@
 
 	onMount(() => {
 		if (browser) {
-			webSocketService = new WebSocketService(`${BASE_WS_URI}`, data.user?._id || '');
+			webSocketService = new WebSocketService(`${BASE_WS_URI}`, data.user?._id || '', [
+				NEEDEDDATA.SUMMARY,
+				NEEDEDDATA.ANALYSIS
+			]);
 
 			webSocketService.socket.onmessage = (event: MessageEvent) => {
 				const data = JSON.parse(event.data);
@@ -63,12 +64,10 @@
 				}
 			};
 		}
+	});
 
-		return () => {
-			if (webSocketService) {
-				webSocketService.close();
-			}
-		};
+	onDestroy(() => {
+		if (webSocketService) webSocketService.close();
 	});
 </script>
 
@@ -114,12 +113,16 @@
 	<!-- Card and Insights Grid -->
 	<div class="grid gap-4 sm:gap-6 md:grid-cols-1 lg:grid-cols-2">
 		<!-- Behavioral Insights -->
-		<BehaviouralInsights categories={transAnalysis.categories} loading={loadingAnalysis} />
+		<BehaviouralInsights
+			categories={transAnalysis.categories}
+			loading={loadingAnalysis}
+			steps={loadingAnalysisProgress}
+		/>
 		<!-- Monthly summary -->
 		<MonthlySummary
 			financialSummaries={finance}
 			loading={loadingSummary}
-			bind:steps={loadingSummaryProgress}
+			steps={loadingSummaryProgress}
 		/>
 	</div>
 
@@ -129,7 +132,7 @@
 		<FinanceChart
 			loading={loadingAnalysis}
 			spending_analysis={transAnalysis.spending_analysis}
-			bind:steps={loadingAnalysisProgress}
+			steps={loadingAnalysisProgress}
 		/>
 
 		<!-- Recent Transactions -->

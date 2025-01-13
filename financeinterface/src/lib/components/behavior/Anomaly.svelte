@@ -3,17 +3,20 @@
 	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
 	import Empty from '$lib/components/resuables/Empty.svelte';
+	import type { ProgressSteps } from '$lib/types/notification.types';
 
-	let { anomalies, loading }: { anomalies: Anomaly[]; loading: boolean } = $props();
+	let {
+		anomalies,
+		loading,
+		steps
+	}: { anomalies: Anomaly[]; loading: boolean; steps: ProgressSteps[] } = $props();
 </script>
 
 <div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Suspicious Transactions</h2>
 	<div class="max-h-64 space-y-4 overflow-y-auto">
 		{#if loading}
-			{#each new Array(3) as _, i}
-				<LoadingInsight />
-			{/each}
+			<LoadingInsight {steps} numBoxes={4} />
 		{:else if !anomalies}
 			<Empty
 				title="No anomalies found"
