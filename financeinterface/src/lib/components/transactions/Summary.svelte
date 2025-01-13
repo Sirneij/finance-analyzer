@@ -4,8 +4,8 @@
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import CircledSum from '$lib/components/icons/CircledSum.svelte';
 	import ExpenseList from '$lib/components/icons/ExpenseList.svelte';
-	import { formatMoney } from '$lib/utils/helpers/money.helpers';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
+	import { formatMoney } from '$lib/utils/helpers/money.helpers.svelte';
 
 	let { financialSummaries = $bindable() }: { financialSummaries: FinancialSummary } = $props();
 </script>

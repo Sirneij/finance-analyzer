@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Calendar from '$lib/components/icons/Calendar.svelte';
 	import { formatDate, isSameDay } from '$lib/utils/helpers/date.helpers';
-	import { formatMoney } from '$lib/utils/helpers/money.helpers';
+	import { formatMoney } from '$lib/utils/helpers/money.helpers.svelte';
 	import Amount from '$lib/components/icons/Amount.svelte';
 	import Balance from '$lib/components/icons/Balance.svelte';
 	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
