@@ -4,6 +4,9 @@ export const BASE_API_URI = import.meta.env.DEV
 	? import.meta.env.VITE_BASE_API_URI_DEV
 	: import.meta.env.VITE_BASE_API_URI_PROD;
 
+export const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
+export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL;
+
 export const BASE_WS_URI = BASE_API_URI.replace(/^http/, 'ws').replace('/api', '/ws');
 
 export const COLORS = {
@@ -77,3 +80,67 @@ export const NAME_OF_TOOLS_ON_DEVICON_TO_INCLUDE = {
 };
 
 export const NAME_OF_TOOLS_ON_DEVICON_TO_EXCLUDE = ['openedge abl'];
+export const GITHUB_LANGUAGE_COLORS = {
+	javascript: '#f1e05a',
+	typescript: '#3178c6',
+	html5: '#e34c26',
+	css3: '#563d7c',
+	python: '#3572A5',
+	java: '#b07219',
+	ruby: '#701516',
+	php: '#4F5D95',
+	cplusplus: '#f34b7d',
+	c: '#555555',
+	swift: '#ffac45',
+	go: '#00ADD8',
+	rust: '#dea584',
+	bash: '#89e051',
+	docker: '#384d54',
+	csharp: '#178600',
+	sass: '#a53b70',
+	scala: '#c22d40',
+	postgresql: '#336791',
+	neo4j: '#008CC1',
+	jupyter: '#DA5B0B',
+	heroku: '#79589f',
+	cmake: '#064F8C',
+	windows11: '#0078D6',
+	progress: '#4A245E',
+	less: '#1d365d',
+	django: '#092e20',
+	perl: '#0298c3',
+	flask: '#000000',
+	tex: '#3D6117'
+};
+
+export const TESTIMONIALS = [
+	{
+		name: 'Frances Nnamadim',
+		title: 'Senior Specialist, IT Business Analyst, IHS Towers',
+		text: 'John is a person with excellent programming and software development skills. He carries out his duties with due diligence and enthusiasm thus giving out his best. He is dedicated to providing quality work. He is very determined and focused. John would be an asset to any organization.',
+		image:
+			'https://media.licdn.com/dms/image/v2/D4D03AQHss3lJD-yAtg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1663930667664?e=1742428800&v=beta&t=UJGU_-YKojjkCMDWknpz7guT63VV2tOPyuDqoriiQ7g',
+		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
+	},
+	{
+		name: 'Oluwaseun Oyeyemi',
+		title: 'Software Engineer, Andela',
+		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.',
+		image:
+			'https://media.licdn.com/dms/image/C5603AQH6lN5z6v9VzQ/profile-displayphoto-shrink_400_400/0/1517346844421?e=1742428800&v=beta&t=O4pYX0j6r3vQFw6Uj5ZKj5K0V8X5p1o9g9Z8YRf5o0s',
+		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
+	},
+	{
+		name: 'Oluwaseun Oyeyemi',
+		title: 'Software Engineer, Andela',
+		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.',
+		image:
+			'https://media.licdn.com/dms/image/C5603AQH6lN5z6v9VzQ/profile-displayphoto-shrink_400_400/0/1517346844421?e=1742428800&v=beta&t=O4pYX0j6r3vQFw6Uj5ZKj5K0V8X5p1o9g9Z8YRf5o0s',
+		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
+	},
+	{
+		name: 'Oluwaseun Oyeyemi',
+		title: 'Software Engineer, Andela',
+		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.'
+	}
+];

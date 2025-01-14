@@ -99,3 +99,11 @@ export type ProcessedBlogs = {
 	series: BlogSeries[];
 	standalone: StandaloneBlogPost[];
 };
+
+export interface Testimonial {
+	name: string;
+	title?: string;
+	text: string;
+	image?: string;
+	link?: string;
+}
