@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { fade, fly } from 'svelte/transition';
 	import Search from '$lib/components/icons/Search.svelte';
 	import type { PageData } from './$types';
 	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
 	import AiNode from '$lib/components/icons/AINode.svelte';
 	import FinChart from '$lib/components/icons/FinChart.svelte';
 	import Calculator from '$lib/components/icons/Calculator.svelte';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	let searchQuery = $state('');
@@ -32,9 +33,9 @@
 		</div>
 	</div>
 
-	<div class="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+	<AnimatedContainer class="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<!-- Hero Section -->
-		<div class="py-16 text-center" in:fly={{ y: 20, duration: 800 }}>
+		<AnimatedSection y={20} class="py-16 text-center">
 			<h1
 				class="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl"
 			>
@@ -58,10 +59,10 @@
 					/>
 				</div>
 			</div>
-		</div>
+		</AnimatedSection>
 
 		<!-- Categories -->
-		<div class="mb-16" in:fly={{ y: 20, duration: 600, delay: 200 }}>
+		<AnimatedSection y={30} delay={200} class="mb-16">
 			<h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-white">API Categories</h2>
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each data.categories as category}
@@ -76,10 +77,10 @@
 					</a>
 				{/each}
 			</div>
-		</div>
+		</AnimatedSection>
 
 		<!-- Popular Endpoints -->
-		<div class="mb-20 backdrop-blur-sm" in:fly={{ y: 20, duration: 600, delay: 400 }}>
+		<AnimatedSection y={40} delay={400} class="mb-20 backdrop-blur-sm">
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Popular Endpoints
 			</h2>
@@ -107,10 +108,10 @@
 					</a>
 				{/each}
 			</div>
-		</div>
+		</AnimatedSection>
 
 		<!-- Getting Started -->
-		<div class="mb-20 backdrop-blur-sm" in:fly={{ y: 20, duration: 600, delay: 600 }}>
+		<AnimatedSection y={50} delay={600} class="mb-20 backdrop-blur-sm">
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Getting Started
 			</h2>
@@ -144,8 +145,8 @@
 						class="overflow-x-auto rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 p-4 font-mono text-sm text-white shadow-lg dark:from-black dark:to-gray-900">Authorization: Bearer YOUR_API_KEY</pre>
 				</div>
 			</div>
-		</div>
-	</div>
+		</AnimatedSection>
+	</AnimatedContainer>
 </div>
 
 <style>

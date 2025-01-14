@@ -13,6 +13,8 @@
 	import { onDestroy, onMount } from 'svelte';
 	import type { ActionData } from './$types';
 	import { NEEDEDDATA, WebSocketService } from '$lib/services/websocket';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import { BASE_WS_URI } from '$lib/utils/contants';
 	import { page } from '$app/state';
 	import type { ProgressSteps } from '$lib/types/notification.types';
@@ -57,50 +59,75 @@
 	});
 </script>
 
-<div class="space-y-6 p-6">
-	<FormError {form} />
-	<div class="grid gap-6 lg:grid-cols-2">
-		<!-- File Upload -->
-		<FileInput />
+<AnimatedContainer class="space-y-6 p-6">
+	<!-- Hero Section -->
+	<AnimatedSection
+		y={20}
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800"
+	>
+		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+			<img
+				src={page.data.user?.avatar}
+				alt={page.data.user?.name}
+				class="h-12 w-12 rounded-full ring-2 ring-indigo-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
+			/>
+			<div class="text-center sm:text-left">
+				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
+					Financial Behavior
+				</h1>
+				<p class="text-sm text-gray-600 sm:text-base dark:text-gray-400">
+					Analyze and understand your spending patterns
+				</p>
+			</div>
+		</div>
+	</AnimatedSection>
+	<!-- Error Message -->
+	<AnimatedSection y={20}>
+		<FormError {form} />
+	</AnimatedSection>
 
-		<!-- Manual Input Form -->
-		<ManualAdd />
-	</div>
+	<!-- Input Section -->
+	<AnimatedSection y={30} delay={200}>
+		<div class="grid gap-6 lg:grid-cols-2">
+			<FileInput />
+			<ManualAdd />
+		</div>
+	</AnimatedSection>
 
 	<!-- Charts Section -->
-	<div class="grid gap-6 lg:grid-cols-2">
-		<!-- Suspicious transactions -->
-		<Anomaly
-			anomalies={transAnalysis.anomalies}
-			loading={loadingAnalysis}
-			steps={loadingAnalysisProgress}
-		/>
-
-		<!-- Spending Categories -->
-		<SpendingCategories
-			categories={transAnalysis.categories}
-			loading={loadingAnalysis}
-			steps={loadingAnalysisProgress}
-		/>
-	</div>
+	<AnimatedSection y={40} delay={400}>
+		<div class="grid gap-6 lg:grid-cols-2">
+			<Anomaly
+				anomalies={transAnalysis.anomalies}
+				loading={loadingAnalysis}
+				steps={loadingAnalysisProgress}
+			/>
+			<SpendingCategories
+				categories={transAnalysis.categories}
+				loading={loadingAnalysis}
+				steps={loadingAnalysisProgress}
+			/>
+		</div>
+	</AnimatedSection>
 
 	<!-- Insights Section -->
-	<div class="grid gap-6 sm:grid-cols-2">
-		<!-- Saving rate -->
-		{#if loadingAnalysis}
-			<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
-			<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
-		{:else if !transAnalysis.spending_trends}
-			<div class="col-span-2 flex min-h-[200px] items-center justify-center">
-				<Empty
-					title="No insights available"
-					description="No insights available for your account."
-				/>
-			</div>
-		{:else}
-			{#each getFinancialInsights(transAnalysis) as insight}
-				<Insight {insight} />
-			{/each}
-		{/if}
-	</div>
-</div>
+	<AnimatedSection y={50} delay={600}>
+		<div class="grid gap-6 sm:grid-cols-2">
+			{#if loadingAnalysis}
+				<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
+				<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
+			{:else if !transAnalysis.spending_trends}
+				<div class="col-span-2 flex min-h-[200px] items-center justify-center">
+					<Empty
+						title="No insights available"
+						description="No insights available for your account."
+					/>
+				</div>
+			{:else}
+				{#each getFinancialInsights(transAnalysis) as insight}
+					<Insight {insight} />
+				{/each}
+			{/if}
+		</div>
+	</AnimatedSection>
+</AnimatedContainer>

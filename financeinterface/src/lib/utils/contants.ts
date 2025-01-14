@@ -55,3 +55,25 @@ export const LANGUAGES_MAP: Record<SupportedLanguage, Language> = {
 		hljsLanguage: 'rust'
 	}
 };
+
+export const GITHUB_AUTH_TOKEN: string = import.meta.env.VITE_GITHUB_AUTH_TOKEN;
+export const GITHUB_USERNAME: string = import.meta.env.VITE_GITHUB_USERNAME;
+
+export const NAME_OF_TOOLS_ON_DEVICON_TO_INCLUDE = {
+	'c++': 'cplusplus',
+	'c#': 'csharp',
+	html: 'html5',
+	css: 'css3',
+	scss: 'sass',
+	shell: 'bash',
+	plpgsql: 'postgresql',
+	'openedge abl': 'progress',
+	cypher: 'neo4j',
+	makefile: 'cmake',
+	batchfile: 'windows11',
+	procfile: 'heroku',
+	'jupyter notebook': 'jupyter',
+	dockerfile: 'docker'
+};
+
+export const NAME_OF_TOOLS_ON_DEVICON_TO_EXCLUDE = ['openedge abl'];

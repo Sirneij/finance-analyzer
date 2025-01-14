@@ -15,6 +15,8 @@
 	import { BASE_WS_URI } from '$lib/utils/contants';
 	import { NEEDEDDATA, WebSocketService } from '$lib/services/websocket';
 	import type { ProgressSteps } from '$lib/types/notification.types';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -71,9 +73,12 @@
 	});
 </script>
 
-<div class="space-y-6">
+<AnimatedContainer class="space-y-6">
 	<!-- Welcome Section -->
-	<div class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
+	<AnimatedSection
+		y={20}
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800"
+	>
 		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img
 				src={page.data.user?.avatar}
@@ -106,12 +111,14 @@
 				<span>Reports</span>
 			</button>
 		</div>
-	</div>
+	</AnimatedSection>
 	<!-- Financial Summary Cards -->
-	<Summary bind:financialSummaries={finance} />
+	<AnimatedSection y={30} delay={200}>
+		<Summary bind:financialSummaries={finance} />
+	</AnimatedSection>
 
 	<!-- Card and Insights Grid -->
-	<div class="grid gap-4 sm:gap-6 md:grid-cols-1 lg:grid-cols-2">
+	<AnimatedSection y={40} delay={400} class="grid gap-4 sm:gap-6 md:grid-cols-1 lg:grid-cols-2">
 		<!-- Behavioral Insights -->
 		<BehaviouralInsights
 			categories={transAnalysis.categories}
@@ -124,10 +131,10 @@
 			loading={loadingSummary}
 			steps={loadingSummaryProgress}
 		/>
-	</div>
+	</AnimatedSection>
 
 	<!-- Charts + Transactions Grid -->
-	<div class="grid gap-6 lg:grid-cols-2">
+	<AnimatedSection y={50} delay={600} class="grid gap-6 lg:grid-cols-2">
 		<!-- Financial Charts -->
 		<FinanceChart
 			loading={loadingAnalysis}
@@ -148,5 +155,5 @@
 			</div>
 			<Transactions {transactions} />
 		</div>
-	</div>
-</div>
+	</AnimatedSection>
+</AnimatedContainer>

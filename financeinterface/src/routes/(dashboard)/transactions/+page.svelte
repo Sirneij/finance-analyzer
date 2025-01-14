@@ -2,6 +2,8 @@
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
 	import TransactionTable from '$lib/components/transactions/TransactionTable.svelte';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -31,9 +33,16 @@
 	});
 </script>
 
-<div class="w-full space-y-4">
-	<TransactionTable bind:transactions />
-	<div class="mt-4 rounded-lg bg-white shadow-sm dark:bg-gray-800">
+<AnimatedContainer class="w-full space-y-4">
+	<AnimatedSection y={30} identifier={data.metadata.page}>
+		<TransactionTable bind:transactions />
+	</AnimatedSection>
+	<AnimatedSection
+		y={40}
+		delay={200}
+		identifier={data.metadata.page}
+		class="mt-4 rounded-lg bg-white shadow-sm dark:bg-gray-800"
+	>
 		<div class="flex flex-col items-center justify-between gap-4 p-4 sm:flex-row">
 			<!-- Results counter -->
 			<div class="text-sm text-gray-600 dark:text-gray-400">
@@ -95,5 +104,5 @@
 				</button>
 			</div>
 		</div>
-	</div>
-</div>
+	</AnimatedSection>
+</AnimatedContainer>

@@ -9,6 +9,8 @@
 	import 'highlight.js/styles/night-owl.min.css';
 	import type { CodeExample } from '$lib/types/docs.types';
 	import { LANGUAGES_MAP } from '$lib/utils/contants';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	let isSidebarOpen = $state(false),
@@ -100,12 +102,12 @@
 				: 'lg:ml-20'} mt-16 flex-1 px-4 py-4 lg:mt-0 lg:px-8 lg:py-12"
 			in:fly={{ x: 20, duration: 600 }}
 		>
-			<div class="mx-auto max-w-7xl">
+			<AnimatedContainer class="mx-auto max-w-7xl">
 				<div
 					class="grid gap-8 {data.currentDoc.examples.length ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}"
 				>
 					<div class="space-y-8">
-						<div>
+						<AnimatedSection y={20}>
 							<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl dark:text-white">
 								{data.currentDoc.path}
 							</h1>
@@ -119,14 +121,18 @@
 									{data.currentDoc.category}
 								</span>
 							</div>
-						</div>
+						</AnimatedSection>
 
-						<div class="prose prose-blue dark:prose-invert max-w-none">
+						<AnimatedSection
+							y={30}
+							delay={200}
+							class="prose prose-blue dark:prose-invert max-w-none"
+						>
 							{@html marked(data.currentDoc.description)}
-						</div>
+						</AnimatedSection>
 
 						{#if data.currentDoc.responses.length}
-							<div class="space-y-4">
+							<AnimatedSection y={40} delay={400} class="space-y-4">
 								<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Responses</h2>
 								{#each data.currentDoc.responses as response}
 									<div
@@ -147,18 +153,20 @@
 										</div>
 									</div>
 								{/each}
-							</div>
+							</AnimatedSection>
 						{/if}
 					</div>
 
 					{#if data.currentDoc.examples.length}
 						<!-- Code Snippets -->
-						<div class="lg:sticky lg:top-20" bind:this={codeSnippetContainer}>
-							<CodeSnippets examples={data.currentDoc.examples} bind:currentExample />
-						</div>
+						<AnimatedSection y={50} delay={600}>
+							<div class="lg:sticky lg:top-20" bind:this={codeSnippetContainer}>
+								<CodeSnippets examples={data.currentDoc.examples} bind:currentExample />
+							</div>
+						</AnimatedSection>
 					{/if}
 				</div>
-			</div>
+			</AnimatedContainer>
 		</main>
 	</div>
 

@@ -9,6 +9,8 @@
 	import FormError from '$lib/components/resuables/FormError.svelte';
 	import Loader from '$lib/components/resuables/Loader.svelte';
 	import { addNotification } from '$lib/states/notification';
+	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -63,43 +65,58 @@
 	};
 </script>
 
-<div class="mx-auto max-w-4xl space-y-6 p-6">
+<AnimatedContainer class="mx-auto max-w-4xl space-y-6 p-6">
 	<div class="rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
-		<div>
-			<h2 class="text-xl font-semibold text-gray-900 dark:text-white">API Documentation Builder</h2>
-			<p class="text-sm text-gray-600 dark:text-gray-400">
-				Create documentation for API endpoints.
-			</p>
-		</div>
-
-		<FormError {form} />
-
-		<div class="relative mb-4 mt-2">
-			<div class="absolute inset-0 flex items-center">
-				<div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+		<!-- Header Section -->
+		<AnimatedSection y={30}>
+			<div>
+				<h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+					API Documentation Builder
+				</h2>
+				<p class="text-sm text-gray-600 dark:text-gray-400">
+					Create documentation for API endpoints.
+				</p>
 			</div>
-		</div>
 
-		<!-- Endpoint Selector -->
-		<EndpointSelector endpoints={data.endpoints} bind:selectedEndpoint bind:formState />
+			<FormError {form} />
+
+			<div class="relative mb-4 mt-2">
+				<div class="absolute inset-0 flex items-center">
+					<div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+				</div>
+			</div>
+		</AnimatedSection>
+
+		<!-- Endpoint Selector with slight delay -->
+		<AnimatedSection y={40} delay={200}>
+			<EndpointSelector endpoints={data.endpoints} bind:selectedEndpoint bind:formState />
+		</AnimatedSection>
 
 		<form class="space-y-6" method="POST" onsubmit={createDocs}>
 			<!-- Basic Info -->
-			<BasicInfo bind:selectedEndpoint bind:formState />
+			<AnimatedSection y={50} delay={400}>
+				<BasicInfo bind:selectedEndpoint bind:formState />
+			</AnimatedSection>
 
 			<!-- Parameters -->
-			<ParameterSection bind:formState />
+			<AnimatedSection y={60} delay={600}>
+				<ParameterSection bind:formState />
+			</AnimatedSection>
 
 			<!-- Responses -->
-			<ResponseSection bind:formState />
+			<AnimatedSection y={70} delay={800}>
+				<ResponseSection bind:formState />
+			</AnimatedSection>
 
 			<!-- Code Examples -->
-			<CodeExampleSection bind:formState />
+			<AnimatedSection y={80} delay={1000}>
+				<CodeExampleSection bind:formState />
+			</AnimatedSection>
 
 			<FormError {form} />
 
 			<!-- Submit Button -->
-			<div class="flex items-center justify-center">
+			<AnimatedSection y={-30} delay={1200} class="flex items-center justify-center">
 				{#if isCreating}
 					<Loader width={20} message="Creating Documentation..." />
 				{:else}
@@ -110,7 +127,7 @@
 						Save Documentation
 					</button>
 				{/if}
-			</div>
+			</AnimatedSection>
 		</form>
 	</div>
-</div>
+</AnimatedContainer>
