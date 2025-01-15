@@ -31,7 +31,7 @@
 		<Profile {data} />
 
 		<!-- GitHub Overview -->
-		<GitHubOverview githubUser={data.githubData.user} {devtoArticles} />
+		<GitHubOverview githubUser={data.githubData.user} bind:devtoArticles />
 
 		<!-- Top Repos -->
 		<TopRepos topRepos={data.githubData.topRepos} />

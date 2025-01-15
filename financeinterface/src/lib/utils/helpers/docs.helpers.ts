@@ -23,3 +23,29 @@ export function getMethodColor(method: HttpMethod): string {
 	};
 	return colors[method];
 }
+
+export function formatRange(num: number): string {
+	const ranges = [
+		{ value: 1e9, symbol: 'B' },
+		{ value: 1e6, symbol: 'M' },
+		{ value: 1e3, symbol: 'K' }
+	];
+
+	// Handle large numbers
+	for (const range of ranges) {
+		if (num >= range.value) {
+			const scaled = num / range.value;
+			const rounded = scaled >= 10 ? Math.floor(scaled) : Math.floor(scaled * 10) / 10;
+			return `${rounded}${range.symbol}+`;
+		}
+	}
+
+	// Handle smaller ranges
+	if (num < 30) return '10+';
+	if (num < 60) return '30+';
+	if (num < 100) return '60+';
+
+	// Handle hundreds (100+)
+	const hundreds = Math.floor(num / 100) * 100;
+	return `${hundreds}+`;
+}
