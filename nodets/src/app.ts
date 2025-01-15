@@ -163,8 +163,6 @@ const startServer = async () => {
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {
       baseConfig.logger.info(`Server listening on port ${PORT}`);
-      // Log configuration settings
-      baseConfig.logger.info("Configuration settings:", baseConfig);
     });
   } catch (error) {
     baseConfig.logger.error("Error starting server:", error);
