@@ -8,8 +8,9 @@
 	import Hero from '$lib/components/about/Hero.svelte';
 	import Articles from '$lib/components/about/Articles.svelte';
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types.js';
+	import type { PageData } from './$types';
 
-	let { data } = $props();
+	let { data }: { data: PageData } = $props();
 
 	let devtoArticles: ProcessedDevToArticles | null = $state(null);
 </script>
