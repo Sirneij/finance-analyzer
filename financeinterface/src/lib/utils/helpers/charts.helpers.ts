@@ -121,7 +121,7 @@ export const skillLevelChartConfig: ChartConfiguration = {
 				backgroundColor: 'rgba(0,0,0,0.8)',
 				padding: 12,
 				titleFont: {
-					size: 14
+					size: 12
 				},
 				callbacks: {
 					title: (tooltipItems) => {
@@ -135,11 +135,11 @@ export const skillLevelChartConfig: ChartConfiguration = {
 				}
 			},
 			legend: {
-				position: 'right',
-				align: 'start',
+				position: 'top',
+				align: 'center',
 				labels: {
-					padding: 20,
-					boxWidth: 15,
+					padding: 12,
+					boxWidth: 12,
 					font: {
 						size: 12
 					}
@@ -147,75 +147,4 @@ export const skillLevelChartConfig: ChartConfiguration = {
 			}
 		}
 	}
-};
-
-export const languageUsageChartConfig: ChartConfiguration = {
-	type: 'pie',
-	data: {
-		labels: [],
-		datasets: []
-	},
-	options: {
-		...options,
-		plugins: {
-			legend: {
-				display: true,
-				position: 'right',
-
-				labels: {
-					boxWidth: 15,
-					padding: 15,
-					font: {
-						size: 12
-					}
-				}
-			},
-			tooltip: {
-				callbacks: {
-					label: (context) => {
-						const value = Number(context.raw);
-						const total = context.dataset.data.reduce((acc, curr) => {
-							// Handle different possible data types
-							const currentValue =
-								typeof curr === 'number'
-									? curr
-									: Array.isArray(curr)
-										? curr[0]
-										: typeof curr === 'object' && curr !== null
-											? ((curr as any).value ?? 0)
-											: 0;
-							return acc + currentValue;
-						}, 0);
-						const percentage = ((value / (total as number)) * 100).toFixed(1);
-						return `${context.label}: ${percentage}%`;
-					}
-				}
-			}
-		},
-		scales: {
-			r: {
-				grid: { color: '#374151' },
-				angleLines: { color: '#374151' },
-				pointLabels: { color: '#6B7280' }
-			}
-		},
-		layout: {
-			padding: {
-				left: 10,
-				right: 10,
-				top: 0,
-				bottom: 0
-			}
-		}
-	}
-};
-export const getLanguageColor = (language: string, opacity = 0.8) => {
-	const hex =
-		GITHUB_LANGUAGE_COLORS[language.toLocaleLowerCase() as keyof typeof GITHUB_LANGUAGE_COLORS] ||
-		'#858585';
-	// Convert hex to rgba
-	const r = parseInt(hex.slice(1, 3), 16);
-	const g = parseInt(hex.slice(3, 5), 16);
-	const b = parseInt(hex.slice(5, 7), 16);
-	return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };

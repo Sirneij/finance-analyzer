@@ -16,6 +16,16 @@ export interface UserData {
 	updated_at: string;
 }
 
+export type BasicUserData = {
+	name: string;
+	bio: string;
+	location: string;
+	public_repos: number;
+	followers: number;
+	following: number;
+	avatar_url: string;
+};
+
 /** GitHub repository information */
 export interface Repository {
 	id: number;
@@ -48,15 +58,7 @@ export interface Repository {
 }
 
 export interface GithubUserDetails {
-	user: {
-		name: string;
-		bio: string;
-		location: string;
-		public_repos: number;
-		followers: number;
-		following: number;
-		avatar_url: string;
-	};
+	user: BasicUserData;
 	topRepos: Array<{
 		name: string;
 		description: string | null;

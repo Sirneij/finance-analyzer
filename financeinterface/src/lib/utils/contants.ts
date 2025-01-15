@@ -6,6 +6,7 @@ export const BASE_API_URI = import.meta.env.DEV
 
 export const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL;
+export const DEVTO_API_KEY = import.meta.env.VITE_DEVTO_API_KEY;
 
 export const BASE_WS_URI = BASE_API_URI.replace(/^http/, 'ws').replace('/api', '/ws');
 
@@ -143,4 +144,11 @@ export const TESTIMONIALS = [
 		title: 'Software Engineer, Andela',
 		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.'
 	}
+];
+
+export const SKILLS = [
+	{ name: 'Frontend', level: 90 },
+	{ name: 'Backend', level: 95 },
+	{ name: 'Database Design', level: 90 },
+	{ name: 'System Architecture', level: 85 }
 ];
