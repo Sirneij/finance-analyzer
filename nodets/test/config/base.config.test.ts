@@ -1,4 +1,4 @@
-import { baseConfig } from "$config/base.config.ts";
+import { baseConfig } from "$config/base.config.js";
 
 describe("baseConfig", () => {
   const originalEnv = process.env;

@@ -1,9 +1,9 @@
-// csv.parsers.test.ts
-import { CSVParser } from "$utils/parsers/csv.parsers.ts";
-import { ITransaction } from "$types/transaction.types.ts";
+// csv.parsers.test.js
+import { CSVParser } from "$utils/parsers/csv.parsers.js";
+import { ITransaction } from "$types/transaction.types.js";
 import { PassThrough } from "stream";
 import mongoose from "mongoose";
-import { baseConfig } from "$config/base.config.ts";
+import { baseConfig } from "$config/base.config.js";
 
 describe("CSVParser", () => {
   let parser: CSVParser;

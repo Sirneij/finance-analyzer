@@ -1,4 +1,4 @@
-import { EndpointController } from "$controllers/docs.controller.ts";
+import { EndpointController } from "$controllers/docs.controller.js";
 import { Router } from "express";
 
 const endpointRouters = Router();

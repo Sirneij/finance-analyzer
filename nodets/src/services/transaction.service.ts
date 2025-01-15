@@ -1,16 +1,16 @@
-import { baseConfig } from "$config/base.config.ts";
-import { Transaction } from "$models/transaction.model.ts";
+import { baseConfig } from "$config/base.config.js";
+import { Transaction } from "$models/transaction.model.js";
 import {
   FileUploadResult,
   ITransaction,
   SpendingReport,
   FinancialSummary,
   PaginatedTransactions,
-} from "$types/transaction.types.ts";
+} from "$types/transaction.types.js";
 import mongoose from "mongoose";
-import { ParserFactory } from "$utils/parsers/factory.parsers.ts";
+import { ParserFactory } from "$utils/parsers/factory.parsers.js";
 import { WebSocket } from "ws";
-import { sendError } from "$utils/error.utils.ts";
+import { sendError } from "$utils/error.utils.js";
 
 export class TransactionService {
   static async processFile(

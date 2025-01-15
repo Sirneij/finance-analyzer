@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { EndpointService } from "$services/docs.services.ts";
+import { EndpointService } from "$services/docs.services.js";
 
 export class EndpointController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {

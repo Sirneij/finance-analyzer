@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-import { AuthController } from "$controllers/auth.controller.ts";
-import { isAuthenticated } from "$middlewares/auth.middleware.ts";
+import { AuthController } from "$controllers/auth.controller.js";
+import { isAuthenticated } from "$middlewares/auth.middleware.js";
 
 const authRouters = Router();
 const authController = new AuthController();

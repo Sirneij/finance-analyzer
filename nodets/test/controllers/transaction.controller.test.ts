@@ -1,12 +1,12 @@
-import { TransactionController } from "$controllers/transaction.controller.ts";
-import { TransactionService } from "$services/transaction.service.ts";
-import { FinancialSummary, SpendingReport } from "$types/transaction.types.ts";
+import { TransactionController } from "$controllers/transaction.controller.js";
+import { TransactionService } from "$services/transaction.service.js";
+import { FinancialSummary, SpendingReport } from "$types/transaction.types.js";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Readable } from "stream";
 
-// transaction.controller.test.ts
-describe("Sample Test transaction.controller.test.ts", () => {
+// transaction.controller.test.js
+describe("Sample Test transaction.controller.test.js", () => {
   it("should pass", () => {
     expect(true).toBe(true);
   });

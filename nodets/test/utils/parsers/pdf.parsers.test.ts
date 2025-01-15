@@ -1,6 +1,6 @@
-// pdf.parsers.test.ts
-import { PDFParser } from "$utils/parsers/pdf.parsers.ts";
-import { ITransaction } from "$types/transaction.types.ts";
+// pdf.parsers.test.js
+import { PDFParser } from "$utils/parsers/pdf.parsers.js";
+import { ITransaction } from "$types/transaction.types.js";
 import mongoose from "mongoose";
 
 global.fetch = jest.fn();

@@ -1,4 +1,4 @@
-import { ITransaction } from "$types/transaction.types.ts";
+import { ITransaction } from "$types/transaction.types.js";
 
 export type SupportedFileTypes =
   | "text/csv"

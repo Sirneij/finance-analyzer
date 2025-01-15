@@ -1,4 +1,4 @@
-import { DbConfig } from "$types/db.types.ts";
+import { DbConfig } from "$types/db.types.js";
 
 import { config } from "dotenv";
 

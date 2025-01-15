@@ -1,5 +1,5 @@
-import { IFileParser } from "$types/files.types.ts";
-import { ITransaction, RawTransaction } from "$types/transaction.types.ts";
+import { IFileParser } from "$types/files.types.js";
+import { ITransaction, RawTransaction } from "$types/transaction.types.js";
 import mongoose from "mongoose";
 
 export abstract class BaseParser implements IFileParser {

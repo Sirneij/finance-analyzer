@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { baseConfig } from "$config/base.config.ts";
+import { baseConfig } from "$config/base.config.js";
 import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
 

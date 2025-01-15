@@ -1,8 +1,8 @@
 import { WebSocket } from "ws";
-import { TransactionService } from "$services/transaction.service.ts";
-import { baseConfig } from "$config/base.config.ts";
+import { TransactionService } from "$services/transaction.service.js";
+import { baseConfig } from "$config/base.config.js";
 import mongoose from "mongoose";
-import { sendError } from "$utils/error.utils.ts";
+import { sendError } from "$utils/error.utils.js";
 
 export function TransactionWebSocketHandler(ws: WebSocket): void {
   ws.on("message", async (message: string) => {

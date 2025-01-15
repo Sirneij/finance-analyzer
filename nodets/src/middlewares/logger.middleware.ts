@@ -1,4 +1,4 @@
-import { baseConfig } from "$config/base.config.ts";
+import { baseConfig } from "$config/base.config.js";
 import { Request, Response, NextFunction } from "express";
 
 export const requestLogger = (

@@ -1,5 +1,5 @@
-import { baseConfig } from "$config/base.config.ts";
-import { AuthError } from "$types/error.types.ts";
+import { baseConfig } from "$config/base.config.js";
+import { AuthError } from "$types/error.types.js";
 import { Response } from "express";
 import { WebSocket } from "ws";
 

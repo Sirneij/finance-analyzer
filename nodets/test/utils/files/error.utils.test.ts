@@ -1,9 +1,9 @@
-import { sendAuthError } from "$utils/error.utils.ts";
-import { AuthError, AuthErrorType } from "$types/error.types.ts";
-import { baseConfig } from "$config/base.config.ts";
+import { sendAuthError } from "$utils/error.utils.js";
+import { AuthError, AuthErrorType } from "$types/error.types.js";
+import { baseConfig } from "$config/base.config.js";
 
-// error.utils.test.ts
-describe("Sample Test error.utils.test.ts", () => {
+// error.utils.test.js
+describe("Sample Test error.utils.test.js", () => {
   it("should pass", () => {
     expect(true).toBe(true);
   });

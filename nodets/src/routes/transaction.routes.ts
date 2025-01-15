@@ -1,5 +1,5 @@
-import { TransactionController } from "$controllers/transaction.controller.ts";
-import { isAuthenticated } from "$middlewares/auth.middleware.ts";
+import { TransactionController } from "$controllers/transaction.controller.js";
+import { isAuthenticated } from "$middlewares/auth.middleware.js";
 import { Router } from "express";
 
 const transactionRoutes = Router();

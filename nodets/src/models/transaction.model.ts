@@ -1,4 +1,4 @@
-import { ITransaction } from "$types/transaction.types.ts";
+import { ITransaction } from "$types/transaction.types.js";
 import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = new Schema(

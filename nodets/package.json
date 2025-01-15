@@ -5,8 +5,8 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "tsx watch src/app.ts",
-    "build": "tsc",
-    "start": "node dist/app.js",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/src/app.js",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --silent=false"
   },
@@ -33,6 +33,7 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },

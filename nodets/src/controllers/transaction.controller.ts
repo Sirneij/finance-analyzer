@@ -1,5 +1,5 @@
-import { TransactionService } from "$services/transaction.service.ts";
-import { RouteDoc } from "$utils/docs.utils.ts";
+import { TransactionService } from "$services/transaction.service.js";
+import { RouteDoc } from "$utils/docs.utils.js";
 import busboy from "busboy";
 import { Request, Response } from "express";
 import mongoose from "mongoose";

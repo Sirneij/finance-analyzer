@@ -1,12 +1,12 @@
-import { AuthController } from "$controllers/auth.controller.ts";
+import { AuthController } from "$controllers/auth.controller.js";
 import mongoose from "mongoose";
-import { createMockLogger } from "../mocks/logger.mock.ts";
+import { createMockLogger } from "../mocks/logger.mock.js";
 import { Request, Response } from "express";
-import { Providers } from "$types/misc.types.ts";
-import { baseConfig } from "$config/base.config.ts";
+import { Providers } from "$types/misc.types.js";
+import { baseConfig } from "$config/base.config.js";
 
-// auth.controller.test.ts
-describe("Sample Test auth.controller.test.ts", () => {
+// auth.controller.test.js
+describe("Sample Test auth.controller.test.js", () => {
   it("should pass", () => {
     expect(true).toBe(true);
   });

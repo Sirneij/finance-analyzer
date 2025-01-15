@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { IFileParser, SupportedFileTypes } from "$types/files.types.ts";
-import { CSVParser } from "$utils/parsers/csv.parsers.ts";
-import { PDFParser } from "$utils/parsers/pdf.parsers.ts";
+import { IFileParser, SupportedFileTypes } from "$types/files.types.js";
+import { CSVParser } from "$utils/parsers/csv.parsers.js";
+import { PDFParser } from "$utils/parsers/pdf.parsers.js";
 
 export class ParserFactory {
   static getParser(

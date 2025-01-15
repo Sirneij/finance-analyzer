@@ -1,7 +1,7 @@
-import { BaseConfig } from "$types/misc.types.ts";
-import { authConfig } from "$config/internal/auth.config.ts";
-import { dbConfig } from "$config/internal/db.config.ts";
-import { logger } from "$config/internal/logger.config.ts";
+import { BaseConfig } from "$types/misc.types.js";
+import { authConfig } from "$config/internal/auth.config.js";
+import { dbConfig } from "$config/internal/db.config.js";
+import { logger } from "$config/internal/logger.config.js";
 
 // export const baseConfig: BaseConfig = {
 //   auth: authConfig,

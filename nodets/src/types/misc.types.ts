@@ -1,5 +1,5 @@
-import { AuthConfig } from "$types/auth.types.ts";
-import { DbConfig } from "$types/db.types.ts";
+import { AuthConfig } from "$types/auth.types.js";
+import { DbConfig } from "$types/db.types.js";
 import winston from "winston";
 
 export enum Providers {

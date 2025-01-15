@@ -1,9 +1,9 @@
-import { BaseParser } from "$utils/file.utils.ts";
+import { BaseParser } from "$utils/file.utils.js";
 import mongoose from "mongoose";
-import { RawTransaction } from "$types/transaction.types.ts";
+import { RawTransaction } from "$types/transaction.types.js";
 
-// file.utils.test.ts
-describe("Sample Test file.utils.test.ts", () => {
+// file.utils.test.js
+describe("Sample Test file.utils.test.js", () => {
   it("should pass", () => {
     expect(true).toBe(true);
   });

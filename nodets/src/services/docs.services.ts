@@ -1,6 +1,6 @@
-import { RouteInfo } from "$types/docs.types.ts";
-import { getAllMetadata } from "$utils/docs.utils.ts";
-import { EndpointModel, IEndpoint } from "$models/docs.model.ts";
+import { RouteInfo } from "$types/docs.types.js";
+import { getAllMetadata } from "$utils/docs.utils.js";
+import { EndpointModel, IEndpoint } from "$models/docs.model.js";
 
 export class ApiDocumentationGenerator {
   private static getHandlerClassName(handler: Function): string {

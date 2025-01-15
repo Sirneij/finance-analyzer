@@ -1,6 +1,6 @@
-import { User } from "$models/user.model.ts";
-import { UserProfile } from "$types/auth.types.ts";
-import { ProviderMismatchError } from "$types/error.types.ts";
+import { User } from "$models/user.model.js";
+import { UserProfile } from "$types/auth.types.js";
+import { ProviderMismatchError } from "$types/error.types.js";
 
 export class AuthService {
   static async findOrCreateUser(profile: UserProfile) {

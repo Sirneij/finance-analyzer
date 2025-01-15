@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { HttpMethod, SupportedLanguage } from "$types/docs.types.ts";
+import { HttpMethod, SupportedLanguage } from "$types/docs.types.js";
 
 const EndpointSchema = new Schema(
   {

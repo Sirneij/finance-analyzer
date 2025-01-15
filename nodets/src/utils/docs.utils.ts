@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { RouteMetadata } from "$types/docs.types.ts";
+import { RouteMetadata } from "$types/docs.types.js";
 
 const metadataMap: Record<string, RouteMetadata> = {};
 

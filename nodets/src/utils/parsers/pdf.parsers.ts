@@ -1,6 +1,6 @@
-import { baseConfig } from "$config/base.config.ts";
-import { ITransaction } from "$types/transaction.types.ts";
-import { BaseParser } from "$utils/file.utils.ts";
+import { baseConfig } from "$config/base.config.js";
+import { ITransaction } from "$types/transaction.types.js";
+import { BaseParser } from "$utils/file.utils.js";
 
 export class PDFParser extends BaseParser {
   private static readonly TRANSACTION_PATTERN =

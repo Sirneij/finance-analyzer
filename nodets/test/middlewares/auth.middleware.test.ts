@@ -1,17 +1,17 @@
 import {
   isAuthenticated,
   handleAuthError,
-} from "$middlewares/auth.middleware.ts";
-import { ProviderMismatchError } from "$types/error.types.ts";
+} from "$middlewares/auth.middleware.js";
+import { ProviderMismatchError } from "$types/error.types.js";
 import { Request, Response } from "express";
 
-// auth.middleware.test.ts
-describe("Sample Test auth.middleware.test.ts", () => {
+// auth.middleware.test.js
+describe("Sample Test auth.middleware.test.js", () => {
   it("should pass", () => {
     expect(true).toBe(true);
   });
 });
-// auth.middleware.test.ts
+// auth.middleware.test.js
 
 describe("isAuthenticated Middleware", () => {
   it("should call next if user is authenticated", () => {
