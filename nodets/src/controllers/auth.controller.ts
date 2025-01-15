@@ -30,8 +30,7 @@ export class AuthController {
         }
 
         baseConfig.logger.info(
-          "Redirecting to:",
-          `${baseConfig.frontendUrl}${redirectPath}`
+          `Redirecting user to: ${baseConfig.frontendUrl}${redirectPath}`
         );
 
         res.redirect(`${baseConfig.frontendUrl}${redirectPath}`);
