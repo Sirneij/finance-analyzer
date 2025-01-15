@@ -1,7 +1,6 @@
 import type {
 	DevToArticle,
 	DevToComment,
-	DevToFollower,
 	DevToFollowerCount,
 	ProcessedDevToArticles,
 	SeriesDevToArticle

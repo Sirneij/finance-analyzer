@@ -46,14 +46,14 @@
 				</div>
 			{:else}
 				{#each percentageValues as pv}
-					<div class="rounded-lg border border-gray-200 p-3 sm:p-4 dark:border-gray-700">
-						<h3 class="text-xs font-medium text-gray-600 sm:text-sm dark:text-gray-400">
+					<div class="rounded-lg border border-gray-200 p-3 dark:border-gray-700 sm:p-4">
+						<h3 class="text-xs font-medium text-gray-600 dark:text-gray-400 sm:text-sm">
 							{pv.title}
 						</h3>
-						<p class="mt-1 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+						<p class="mt-1 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
 							{pv.value}
 						</p>
-						<p class="mt-1 text-xs text-gray-600 sm:text-sm dark:text-gray-400">
+						<p class="mt-1 text-xs text-gray-600 dark:text-gray-400 sm:text-sm">
 							{pv.description}
 						</p>
 					</div>

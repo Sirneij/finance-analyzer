@@ -5,7 +5,7 @@ export const [send, receive] = crossfade({
 	duration: (d) => Math.sqrt(d * 200),
 
 	// eslint-disable-next-line no-unused-vars
-	fallback(node, params) {
+	fallback(node, _params) {
 		const style = getComputedStyle(node);
 		const transform = style.transform === 'none' ? '' : style.transform;
 

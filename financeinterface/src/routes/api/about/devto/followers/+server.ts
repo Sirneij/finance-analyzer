@@ -17,7 +17,7 @@ export async function GET({ fetch }) {
 			}
 		);
 	} catch (err) {
-		throw error(500, 'Failed to fetch followers');
+		throw error(500, `Failed to fetch followers: ${err}`);
 	}
 }
 

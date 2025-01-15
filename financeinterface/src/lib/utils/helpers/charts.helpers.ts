@@ -1,5 +1,4 @@
 import { type ChartConfiguration, type ChartOptions } from 'chart.js';
-import { GITHUB_LANGUAGE_COLORS } from '../contants';
 
 const options: ChartOptions = {
 	responsive: true,
@@ -31,7 +30,7 @@ const options: ChartOptions = {
 		y: {
 			beginAtZero: true,
 			ticks: {
-				callback: function (tickValue: number | string, index: number, ticks: any[]): string {
+				callback: function (tickValue: number | string, _index: number, _ticks: any[]): string {
 					return `$${tickValue.toLocaleString()}`;
 				}
 			}

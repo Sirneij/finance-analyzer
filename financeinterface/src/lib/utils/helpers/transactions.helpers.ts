@@ -1,9 +1,4 @@
-import type {
-	Categories,
-	CategoriesData,
-	InsightMetric,
-	SpendingReport
-} from '$lib/types/transaction.types';
+import type { CategoriesData, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
 
 export function transformCategoriesToArray(categoryData: CategoriesData) {
 	return Object.entries(categoryData.percentages)

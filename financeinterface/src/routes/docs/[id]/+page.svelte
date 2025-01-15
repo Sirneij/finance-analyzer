@@ -108,7 +108,7 @@
 				>
 					<div class="space-y-8">
 						<AnimatedSection y={20}>
-							<h1 class="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl dark:text-white">
+							<h1 class="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">
 								{data.currentDoc.path}
 							</h1>
 							<div class="mt-4 flex flex-wrap items-center gap-2">
@@ -126,7 +126,7 @@
 						<AnimatedSection
 							y={30}
 							delay={200}
-							class="prose prose-blue dark:prose-invert max-w-none"
+							class="prose prose-blue max-w-none dark:prose-invert"
 						>
 							{@html marked(data.currentDoc.description)}
 						</AnimatedSection>
@@ -136,7 +136,7 @@
 								<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Responses</h2>
 								{#each data.currentDoc.responses as response}
 									<div
-										class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md sm:p-6 dark:border-gray-700 dark:bg-gray-800"
+										class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6"
 									>
 										<div class="mb-4 flex flex-wrap items-center gap-2">
 											<span
@@ -148,7 +148,7 @@
 												{@html marked(response.description)}
 											</span>
 										</div>
-										<div class="prose prose-blue dark:prose-invert max-w-none">
+										<div class="prose prose-blue max-w-none dark:prose-invert">
 											{@html marked(response.example)}
 										</div>
 									</div>

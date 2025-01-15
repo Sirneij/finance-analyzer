@@ -43,19 +43,18 @@
 		totalReactions = $state(0),
 		totalComments = $state(0);
 
-	$effect(() => {
-		totalArticles = devtoArticles
-			? Object.values(devtoArticles.series).flat().length + devtoArticles.standalone.length
-			: 0;
-
-		totalReactions = devtoArticles ? calculateTotalReactions(devtoArticles) : 0;
-		totalComments = devtoArticles ? calculateTotalComments(devtoArticles) : 0;
-
+	onMount(async () => {
+		const devtoFollowers = await fetchFollowers();
 		devToStats = [
 			{
 				label: 'Articles',
 				value: formatRange(totalArticles),
 				iconName: 'articles'
+			},
+			{
+				label: 'Followers',
+				value: formatRange(devtoFollowers.count),
+				iconName: 'followers'
 			},
 			{
 				label: 'Total Reactions',
@@ -68,15 +67,15 @@
 				iconName: 'comments'
 			}
 		];
+	});
 
-		onMount(async () => {
-			const devtoFollowers = await fetchFollowers();
-			devToStats.splice(1, 0, {
-				label: 'Followers',
-				value: formatRange(devtoFollowers.count),
-				iconName: 'followers'
-			});
-		});
+	$effect(() => {
+		totalArticles = devtoArticles
+			? Object.values(devtoArticles.series).flat().length + devtoArticles.standalone.length
+			: 0;
+
+		totalReactions = devtoArticles ? calculateTotalReactions(devtoArticles) : 0;
+		totalComments = devtoArticles ? calculateTotalComments(devtoArticles) : 0;
 	});
 </script>
 

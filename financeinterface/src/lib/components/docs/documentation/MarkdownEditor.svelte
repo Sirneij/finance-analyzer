@@ -38,7 +38,7 @@
 	</div>
 
 	{#if preview}
-		<div class="prose prose-blue dark:prose-invert max-w-none">{@html htmlContent}</div>
+		<div class="prose prose-blue max-w-none dark:prose-invert">{@html htmlContent}</div>
 	{:else}
 		<textarea
 			{required}

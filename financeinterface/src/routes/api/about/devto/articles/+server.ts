@@ -16,7 +16,7 @@ export async function GET() {
 		const articles = await response.json();
 		return json(articles);
 	} catch (error) {
-		return new Response(JSON.stringify({ error: 'Failed to fetch articles' }), {
+		return new Response(JSON.stringify({ error: `Failed to fetch articles: ${error}` }), {
 			status: 500
 		});
 	}

@@ -1,8 +1,7 @@
 <script>
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
-	import { GITHUB_USERNAME, SKILLS } from '$lib/utils/contants';
+	import { GITHUB_USERNAME } from '$lib/utils/contants';
 	import { marked } from 'marked';
-	import { fade } from 'svelte/transition';
 	import SkillChart from './SkillChart.svelte';
 
 	let { data } = $props();
