@@ -25,36 +25,47 @@ const app: Application = express();
 const server: HttpServer = createServer(app);
 const wss = new WebSocketServer({ server, path: "/ws" });
 
+// 1. Trust proxy setting
+app.set("trust proxy", 1);
+
+// 2. Basic middleware
 app.use(express.json());
+
+// 3. CORS configuration
 app.use(
   cors({
     origin: baseConfig.frontendUrl,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["set-cookie"],
   })
 );
 
+// 4. Session configuration
 app.use(
   session({
     store: baseConfig.redis_url ? connectToRedis() : new session.MemoryStore(),
     secret: baseConfig.auth.session.secret,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      // domain:
-      //   process.env.NODE_ENV === "production" ? ".yourdomain.com" : undefined,
+      // domain: process.env.NODE_ENV === "production" ? baseConfig.cookieDomain : undefined,
     },
   })
 );
 
-app.use(requestLogger);
+// 5. Authentication middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// 6. Application middleware
+app.use(requestLogger);
 
 passport.serializeUser<User>((user, done) => {
   done(null, user);

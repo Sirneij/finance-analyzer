@@ -32,7 +32,7 @@ authRouters.get(
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),
   (req, res, next) => {
     // Log the session object
-    baseConfig.logger.info(`Session data: ${req.session}`);
+    baseConfig.logger.info(`Session data: ${JSON.stringify(req.session)}`);
     baseConfig.logger.info(
       `Set-Cookie Header: ${res.getHeaders()["set-cookie"]}`
     );
