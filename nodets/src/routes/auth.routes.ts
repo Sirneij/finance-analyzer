@@ -31,12 +31,29 @@ authRouters.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),
   (req, res, next) => {
-    // Log the session object
+    // Enhanced debugging
+    baseConfig.logger.info(`Session ID: ${req.sessionID}`);
     baseConfig.logger.info(`Session data: ${JSON.stringify(req.session)}`);
+    baseConfig.logger.info(`Request headers: ${JSON.stringify(req.headers)}`);
     baseConfig.logger.info(
-      `Set-Cookie Header: ${res.getHeaders()["set-cookie"]}`
+      `Response headers before: ${JSON.stringify(res.getHeaders())}`
     );
-    // Call the next middleware or controller
+
+    // Ensure cookie is set explicitly
+    res.cookie("connect.sid", req.sessionID, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+      // domain:
+      //   process.env.NODE_ENV === "production"
+      //     ? baseConfig.cookieDomain
+      //     : undefined,
+    });
+
+    baseConfig.logger.info(
+      `Response headers after: ${JSON.stringify(res.getHeaders())}`
+    );
     next();
   },
   authController.loginSuccess
