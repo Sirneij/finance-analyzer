@@ -10,6 +10,7 @@
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types.js';
 	import type { PageData } from './$types';
 	import JI from '$lib/components/logos/JI.svelte';
+	import Resume from '$lib/components/about/Resume.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -41,6 +42,9 @@
 
 		<!-- Profile Section -->
 		<Profile {data} />
+
+		<!-- Resume -->
+		<Resume />
 
 		<!-- GitHub Overview -->
 		<GitHubOverview githubUser={data.githubData.user} bind:devtoArticles />
