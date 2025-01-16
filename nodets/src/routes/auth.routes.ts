@@ -2,7 +2,6 @@ import { Router } from "express";
 import passport from "passport";
 import { AuthController } from "$controllers/auth.controller.js";
 import { isAuthenticated } from "$middlewares/auth.middleware.js";
-import { baseConfig } from "$config/base.config.js";
 
 const authRouters = Router();
 const authController = new AuthController();
@@ -30,13 +29,6 @@ authRouters.get("/github", (req, res, next) => {
 authRouters.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/api/v1/auth/failure" }),
-  (req, res, next) => {
-    // Log the session object
-    baseConfig.logger.info(`Session data: ${JSON.stringify(req.session)}`);
-
-    // Call the next middleware or controller
-    next();
-  },
   authController.loginSuccess
 );
 

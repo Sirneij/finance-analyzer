@@ -49,5 +49,9 @@ export const connectToRedis = (): RedisStore => {
     baseConfig.logger.error("❌ Redis connection error:", error);
   });
 
+  redisClient.on("connect", () => {
+    baseConfig.logger.info("✅ Redis connection successful");
+  });
+
   return new RedisStore({ client: redisClient, prefix: "session:" });
 };
