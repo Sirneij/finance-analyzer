@@ -24,7 +24,12 @@
 		Manual Transaction Entry
 	</h2>
 	<div class="h-[calc(100%-2rem)] overflow-y-auto">
-		<form class="space-y-4" action="?/addTransaction" method="POST" use:enhance={handleSubmit}>
+		<form
+			class="space-y-4"
+			action="/finanalyzer?/addTransaction"
+			method="POST"
+			use:enhance={handleSubmit}
+		>
 			<div class="space-y-1">
 				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="date">
 					Date

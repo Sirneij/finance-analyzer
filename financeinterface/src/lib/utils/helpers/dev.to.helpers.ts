@@ -46,7 +46,7 @@ async function retryFetch<T>(
 
 export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArticles> {
 	const articles = await retryFetch(async () => {
-		const response = await fetchWithTimeout('/api/about/devto/articles', {
+		const response = await fetchWithTimeout('/finanalyzer/api/about/devto/articles', {
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -133,7 +133,7 @@ export async function fetchFollowers(): Promise<DevToFollowerCount> {
 	if (cachedData) return cachedData.data;
 
 	const followers = await retryFetch(async () => {
-		const response = await fetchWithTimeout('/api/about/devto/followers', {
+		const response = await fetchWithTimeout('/finanalyzer/api/about/devto/followers', {
 			headers: {
 				'Content-Type': 'application/json'
 			}

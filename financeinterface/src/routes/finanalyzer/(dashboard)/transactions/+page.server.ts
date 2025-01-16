@@ -5,7 +5,7 @@ import type { CustomError } from '$lib/types/errors.types';
 
 export const load: PageServerLoad = async ({ fetch, locals, url }) => {
 	if (!locals.user) {
-		throw redirect(302, '/auth/login?next=/transactions');
+		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/transactions');
 	}
 
 	const page = Number(url.searchParams.get('page')) || 1;

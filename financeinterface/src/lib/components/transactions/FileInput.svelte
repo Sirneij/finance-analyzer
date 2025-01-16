@@ -71,7 +71,7 @@
 			bind:this={uploadSubmitButton}
 			type="submit"
 			class="hidden"
-			formaction="/behavior?/upload"
+			formaction="/finanalyzer/behavior?/upload"
 		>
 			Upload
 		</button>

@@ -6,7 +6,7 @@
 
 <svelte:head>
 	<title>{data.githubData.user.name || 'Developer Portfolio'} - Portfolio</title>
-	<link rel="canonical" href="{WEBSITE_URL}/about" />
+	<link rel="canonical" href={WEBSITE_URL} />
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
 	<meta name="description" content={data.githubData.user.bio || 'Software Engineer Portfolio'} />
 	<meta name="author" content={data.githubData.user.name} />
@@ -21,7 +21,7 @@
 		content={data.githubData.user.bio || 'Software Engineer Portfolio'}
 	/>
 	<meta property="og:image" content={data.githubData.user.avatar_url} />
-	<meta property="og:url" content="{WEBSITE_URL}/about" />
+	<meta property="og:url" content={WEBSITE_URL} />
 	<meta property="og:site_name" content="John Owolabi Idogun's Portfolio" />
 	<meta property="og:type" content="profile" />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -37,13 +37,13 @@
 		{
 			"@context": "https://schema.org",
 			"@type": "Person",
-			"name": "{data.githubData.user.name}",
-			"url": "https://yourwebsite.com/portfolio",
-			"image": "{data.githubData.user.avatar_url}",
-			"description": "{data.githubData.user.bio}",
+			"name": `${data.githubData.user.name}`,
+			"url": `${WEBSITE_URL}`,
+			"image": `${data.githubData.user.avatar_url}`,
+			"description": `${data.githubData.user.bio}`,
 			"jobTitle": "Software Engineer",
 			"sameAs": [
-				"https://github.com/{GITHUB_USERNAME}",
+				`https://github.com/${GITHUB_USERNAME}`,
 				"https://www.linkedin.com/in/your-linkedin-profile/"
 			]
 		}

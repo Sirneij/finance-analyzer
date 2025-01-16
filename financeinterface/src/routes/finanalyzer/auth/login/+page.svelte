@@ -63,7 +63,6 @@
 			<!-- Social Login Buttons -->
 			<div class="mt-8 space-y-4">
 				<!-- GitHub Login Button -->
-
 				<a
 					href={`${BASE_API_URI}/v1/auth/github?next=${next}`}
 					class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"

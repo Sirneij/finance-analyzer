@@ -54,7 +54,11 @@
 		</div>
 
 		{#if selectedTransactions.size > 0}
-			<form method="POST" action="?/deleteTransactions" use:enhance={handleDelete}>
+			<form
+				method="POST"
+				action="/finanalyzer/transactions?/deleteTransactions"
+				use:enhance={handleDelete}
+			>
 				<input
 					type="hidden"
 					name="transactions"
@@ -174,7 +178,11 @@
 						</td>
 						<td>
 							{#if hoveredTransaction === transaction._id && !selectedTransactions.size}
-								<form method="POST" action="?/deleteTransactions" use:enhance={handleDelete}>
+								<form
+									method="POST"
+									action="/finanalyzer/transactions?/deleteTransactions"
+									use:enhance={handleDelete}
+								>
 									<input type="hidden" name="transactions" value={transaction._id} />
 									<button
 										class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
