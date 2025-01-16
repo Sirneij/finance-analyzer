@@ -11,7 +11,7 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="/ji/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="johnowolabiidogun.dev" />
 	<link rel="manifest" href="/ji/site.webmanifest" />
-	<title>{data.githubData.user.name || 'Developer Portfolio'} - Portfolio</title>
+	<title>{data.githubData.user.name || 'Developer Portfolio'} - {data.githubData.user.bio}</title>
 	<link rel="canonical" href={WEBSITE_URL} />
 	<link rel="icon" href="/ji/favicon.ico" type="image/x-icon" />
 	<meta name="description" content={data.githubData.user.bio || 'Software Engineer Portfolio'} />
