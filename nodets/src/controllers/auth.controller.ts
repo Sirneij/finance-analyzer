@@ -27,17 +27,26 @@ export class AuthController {
             baseConfig.logger.error("Failed to decode state parameter:", error);
           }
         }
+        baseConfig.logger.info(
+          `Redirecting to ${baseConfig.frontendUrl}${redirectPath}`
+        );
         res.redirect(`${baseConfig.frontendUrl}${redirectPath}`);
       }
     }
   }
 
   async loginFailure(req: Request, res: Response) {
+    baseConfig.logger.info(
+      `Redirecting to ${baseConfig.frontendUrl}/finanalyzer/auth/login?error=true`
+    );
     res.redirect(`${baseConfig.frontendUrl}/finanalyzer/auth/login?error=true`);
   }
 
   async logout(req: Request, res: Response) {
     req.logout(() => {
+      baseConfig.logger.info(
+        `Redirecting to ${baseConfig.frontendUrl}/finanalyzer/auth/login`
+      );
       res.redirect(`${baseConfig.frontendUrl}/finanalyzer/auth/login`);
     });
   }
