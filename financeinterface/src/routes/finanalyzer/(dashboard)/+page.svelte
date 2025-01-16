@@ -69,8 +69,6 @@
 	onDestroy(() => {
 		if (webSocketService) webSocketService.close();
 	});
-
-	console.log(data.transactions);
 </script>
 
 <AnimatedContainer class="space-y-6">
