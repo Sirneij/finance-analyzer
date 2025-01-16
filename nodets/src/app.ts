@@ -36,7 +36,17 @@ app.use(
   cors({
     origin: baseConfig.frontendUrl,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS",
+      "HEAD",
+      "TRACE",
+      "CONNECT",
+    ],
     allowedHeaders: ["Content-Type", "Authorization"],
     exposedHeaders: ["set-cookie"],
   })
@@ -55,7 +65,10 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      // domain: process.env.NODE_ENV === "production" ? baseConfig.cookieDomain : undefined,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? baseConfig.cookieDomain
+          : undefined,
     },
   })
 );

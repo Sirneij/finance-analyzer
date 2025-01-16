@@ -23,6 +23,9 @@ export const baseConfig: BaseConfig = {
   get redis_url() {
     return process.env.REDIS_URL || "redis://localhost:6379";
   },
+  get cookieDomain() {
+    return process.env.COOKIE_DOMAIN || "localhost";
+  },
   auth: authConfig,
   db: dbConfig,
   logger: logger,

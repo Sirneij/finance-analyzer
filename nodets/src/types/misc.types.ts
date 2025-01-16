@@ -14,4 +14,5 @@ export interface BaseConfig {
   logger: winston.Logger;
   utility_service_url: string;
   redis_url: string;
+  cookieDomain: string;
 }
