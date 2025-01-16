@@ -225,7 +225,7 @@ describe("AuthController", () => {
       );
 
       expect(mockRes.redirect).toHaveBeenCalledWith(
-        `${baseConfig.frontendUrl}/auth/login?error=true`
+        `${baseConfig.frontendUrl}/finanalyzer/auth/login?error=true`
       );
     });
   });
@@ -236,7 +236,7 @@ describe("AuthController", () => {
 
       expect(mockReq.logout).toHaveBeenCalled();
       expect(mockRes.redirect).toHaveBeenCalledWith(
-        `${baseConfig.frontendUrl}/auth/login`
+        `${baseConfig.frontendUrl}/finanalyzer/finanalyzer/auth/login`
       );
     });
   });

@@ -33,12 +33,12 @@ export class AuthController {
   }
 
   async loginFailure(req: Request, res: Response) {
-    res.redirect(`${baseConfig.frontendUrl}/auth/login?error=true`);
+    res.redirect(`${baseConfig.frontendUrl}/finanalyzer/auth/login?error=true`);
   }
 
   async logout(req: Request, res: Response) {
     req.logout(() => {
-      res.redirect(`${baseConfig.frontendUrl}/auth/login`);
+      res.redirect(`${baseConfig.frontendUrl}/finanalyzer/auth/login`);
     });
   }
 }

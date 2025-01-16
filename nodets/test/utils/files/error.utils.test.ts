@@ -59,7 +59,7 @@ describe("sendAuthError", () => {
       provider: "TestProvider",
     });
     expect(mockResponse.redirect).toHaveBeenCalledWith(
-      `${baseConfig.frontendUrl}/auth/login?${query}`
+      `${baseConfig.frontendUrl}/finanalyzer/auth/login?${query}`
     );
   });
 });

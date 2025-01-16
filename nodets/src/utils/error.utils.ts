@@ -21,7 +21,9 @@ export const sendAuthError = (res: Response, error: AuthError) => {
     ...(error.provider && { provider: error.provider }),
   });
 
-  return res.redirect(`${baseConfig.frontendUrl}/auth/login?${params}`);
+  return res.redirect(
+    `${baseConfig.frontendUrl}/finanalyzer/auth/login?${params}`
+  );
 };
 
 export function sendError(ws: WebSocket, message: string, action?: string) {
