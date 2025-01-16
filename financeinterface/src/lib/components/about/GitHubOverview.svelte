@@ -132,10 +132,12 @@
 					</div>
 				</div>
 			{:else}
-				<div class="animate-pulse bg-gray-100 dark:bg-gray-800/50 rounded-xl p-6 text-center">
-					<div class="h-12 w-12 bg-gray-200 dark:bg-gray-700/50 rounded-full mx-auto mb-4"></div>
-					<div class="h-4 w-24 bg-gray-200 dark:bg-gray-700/50 rounded mx-auto"></div>
-				</div>
+				{#each new Array(4) as _}
+					<div class="animate-pulse bg-gray-100 dark:bg-gray-800/50 rounded-xl p-6 text-center">
+						<div class="h-12 w-12 bg-gray-200 dark:bg-gray-700/50 rounded-full mx-auto mb-4"></div>
+						<div class="h-4 w-24 bg-gray-200 dark:bg-gray-700/50 rounded mx-auto"></div>
+					</div>
+				{/each}
 			{/each}
 		</div>
 	</div>
