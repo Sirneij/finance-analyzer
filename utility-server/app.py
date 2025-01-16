@@ -173,36 +173,44 @@ def init_app() -> web.Application:
     return app
 
 
-async def shutdown(sig: signal.Signals, loop: asyncio.AbstractEventLoop) -> None:
+async def shutdown(app):
     """Cleanup tasks tied to the service's shutdown."""
-    app = init_app()
-    print(f'Received exit signal {sig.name}...')
+    base_settings.logger.info('Starting graceful shutdown...')
     await cleanup_ws(app)
-
     tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
-    [task.cancel() for task in tasks]
-
-    print(f'Cancelling {len(tasks)} outstanding tasks')
+    for task in tasks:
+        task.cancel()
+    base_settings.logger.info(f'Cancelling {len(tasks)} outstanding tasks')
     await asyncio.gather(*tasks, return_exceptions=True)
-    loop.stop()
 
 
 if __name__ == '__main__':
     app = init_app()
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
 
-    # Handle signals
-    signals = (signal.SIGHUP, signal.SIGTERM, signal.SIGINT)
-    for s in signals:
-        loop.add_signal_handler(s, lambda s=s: asyncio.create_task(shutdown(s, loop)))
+    async def main():
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, 'localhost', 5173)
+
+        # Start the site
+        await site.start()
+
+        base_settings.logger.info(f'Server started at http://localhost:5173')
+
+        # Setup signal handlers
+        loop = asyncio.get_running_loop()
+        for sig in (signal.SIGTERM, signal.SIGINT):
+            loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(app)))
+
+        try:
+            # Keep the server running
+            await asyncio.Event().wait()
+        finally:
+            await runner.cleanup()
 
     try:
-        web.run_app(app, host='localhost', port=5173)
+        asyncio.run(main())
     except KeyboardInterrupt:
         base_settings.logger.info('Received keyboard interrupt...')
     finally:
-        base_settings.logger.info('Shutting down the service...')
-        loop.run_until_complete(loop.shutdown_asyncgens())
-        loop.close()
-        base_settings.logger.info('Successfully shutdown the service.')
+        base_settings.logger.info('Server shutdown complete.')

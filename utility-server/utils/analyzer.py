@@ -39,6 +39,13 @@ async def analyze_transactions(
                 'Validating transactions...', 0.1, 'Analysis'
             )
 
+        if not transactions:
+            if ws_manager:
+                await ws_manager.send_progress(
+                    'No transactions provided', 1.0, 'Summarize'
+                )
+            return {'error': 'No transactions provided'}
+
         tx_objects = [
             Transaction(
                 _id=t['_id'],
