@@ -22,7 +22,7 @@
 	class="fixed inset-y-0 left-0 z-30 transform bg-white transition-all duration-300 dark:bg-gray-800"
 >
 	<div class="flex h-16 items-center justify-between px-4">
-		<a class="logo-container" href="/">
+		<a class="logo-container" href="/finanalyzer">
 			{#if isSidebarOpen}
 				<Logo {isSmall} class="h-12 w-auto" />
 			{:else}
