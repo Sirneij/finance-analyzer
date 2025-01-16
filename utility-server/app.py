@@ -184,33 +184,67 @@ async def shutdown(app):
     await asyncio.gather(*tasks, return_exceptions=True)
 
 
+async def find_free_port(start_port: int = 5173) -> int:
+    """Find first available port starting from start_port."""
+    port = start_port
+    while port < 65535:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.bind(('', port))
+            sock.close()
+            return port
+        except OSError:
+            port += 1
+    raise OSError("No free ports available")
+
+
 if __name__ == '__main__':
+    import socket
+
     app = init_app()
 
     async def main():
         runner = web.AppRunner(app)
         await runner.setup()
-        site = web.TCPSite(runner, 'localhost', 5173)
 
-        # Start the site
-        await site.start()
-
-        base_settings.logger.info(f'Server started at http://localhost:5173')
-
-        # Setup signal handlers
-        loop = asyncio.get_running_loop()
-        for sig in (signal.SIGTERM, signal.SIGINT):
-            loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(app)))
+        # Find available port
+        port = await find_free_port()
+        host = '0.0.0.0'  # Listen on all interfaces
+        site = web.TCPSite(runner, host, port)
 
         try:
+            await site.start()
+            base_settings.logger.info(f'Server started at http://localhost:{port}')
+
+            # Use standard signal handling
+            def signal_handler(signame):
+                base_settings.logger.info(f'Received signal {signame}')
+                asyncio.create_task(shutdown(app))
+
+            for signame in ('SIGINT', 'SIGTERM'):
+                loop = asyncio.get_running_loop()
+                loop.add_signal_handler(
+                    getattr(signal, signame), lambda s=signame: signal_handler(s)
+                )
+
             # Keep the server running
             await asyncio.Event().wait()
+
+        except OSError as e:
+            base_settings.logger.error(f'Failed to start server: {e}')
+            raise
         finally:
             await runner.cleanup()
 
+    # Main execution with proper signal handling
     try:
-        asyncio.run(main())
+        if asyncio.get_event_loop().is_running():
+            base_settings.logger.error("Cannot start server in running event loop")
+        else:
+            asyncio.run(main())
     except KeyboardInterrupt:
         base_settings.logger.info('Received keyboard interrupt...')
+    except Exception as e:
+        base_settings.logger.error(f'Server error: {e}')
     finally:
         base_settings.logger.info('Server shutdown complete.')
