@@ -40,16 +40,16 @@ authRouters.get(
     );
 
     // Ensure cookie is set explicitly
-    res.cookie("connect.sid", req.sessionID, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      // domain:
-      //   process.env.NODE_ENV === "production"
-      //     ? baseConfig.cookieDomain
-      //     : undefined,
-    });
+    // res.cookie("connect.sid", req.sessionID, {
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    //   httpOnly: true,
+    //   maxAge: 24 * 60 * 60 * 1000,
+    //   // domain:
+    //   //   process.env.NODE_ENV === "production"
+    //   //     ? baseConfig.cookieDomain
+    //   //     : undefined,
+    // });
 
     baseConfig.logger.info(
       `Response headers after: ${JSON.stringify(res.getHeaders())}`
