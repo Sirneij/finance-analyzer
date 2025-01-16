@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 export class AuthController {
   async loginSuccess(req: Request, res: Response) {
-    baseConfig.logger.info("User logged in:", req.user);
     if (req.user) {
       if (req.xhr || req.headers.accept?.includes("application/json")) {
         res.status(200).json({
@@ -28,11 +27,6 @@ export class AuthController {
             baseConfig.logger.error("Failed to decode state parameter:", error);
           }
         }
-
-        baseConfig.logger.info(
-          `Redirecting user to: ${baseConfig.frontendUrl}${redirectPath}`
-        );
-
         res.redirect(`${baseConfig.frontendUrl}${redirectPath}`);
       }
     }
