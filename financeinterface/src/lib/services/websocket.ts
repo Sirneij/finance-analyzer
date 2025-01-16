@@ -23,7 +23,7 @@ export class WebSocketService {
 	}
 
 	private onOpen = (event: Event) => {
-		console.log('WebSocket connection opened:', event);
+		// console.log('WebSocket connection opened:', event);
 		const messages = this.neededData.map((data) => {
 			return {
 				action: data,
@@ -36,15 +36,15 @@ export class WebSocketService {
 
 	public onMessage = (event: MessageEvent) => {
 		const data = JSON.parse(event.data);
-		console.log('WebSocket message received:', data);
+		// console.log('WebSocket message received:', data);
 	};
 
 	private onClose = (event: CloseEvent) => {
-		console.log('WebSocket connection closed:', event);
+		// console.log('WebSocket connection closed:', event);
 	};
 
 	private onError = (event: Event) => {
-		console.error('WebSocket error:', event);
+		// console.error('WebSocket error:', event);
 	};
 
 	public close() {
