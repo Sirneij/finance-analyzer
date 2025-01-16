@@ -61,7 +61,7 @@ export function transformMonthlyChartData(monthlySummary: Record<string, any>) {
 
 export async function getTransactionAnalysis(): Promise<SpendingReport> {
 	try {
-		const response = await fetch('/api/transactions/analyze');
+		const response = await fetch('/finanalyzer/api/transactions/analyze');
 		const data = await response.json();
 		return data;
 	} catch (error) {

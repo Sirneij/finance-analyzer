@@ -7,8 +7,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let visiblePages = $state<(number | string)[]>([]),
-		transactions = $state(data.transactions);
+	let visiblePages = $state<(number | string)[]>([]);
 
 	function calculateVisiblePages(currentPage: number, total: number) {
 		if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -25,17 +24,13 @@
 	}
 
 	$effect(() => {
-		transactions = data.transactions;
-	});
-
-	$effect(() => {
 		visiblePages = calculateVisiblePages(data.metadata.page, data.metadata.totalPages);
 	});
 </script>
 
 <AnimatedContainer class="w-full space-y-4">
 	<AnimatedSection y={30} identifier={data.metadata.page}>
-		<TransactionTable bind:transactions />
+		<TransactionTable bind:transactions={data.transactions} />
 	</AnimatedSection>
 	<AnimatedSection
 		y={40}

@@ -20,8 +20,6 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const transactions: Transaction[] = data.transactions || [];
-
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
 		loadingAnalysis = $state(true),
 		loadingSummary = $state(true),
@@ -77,7 +75,7 @@
 	<!-- Welcome Section -->
 	<AnimatedSection
 		y={20}
-		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 sm:p-6"
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800"
 	>
 		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img
@@ -86,10 +84,10 @@
 				class="h-12 w-12 rounded-full ring-2 ring-indigo-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
 			/>
 			<div class="text-center sm:text-left">
-				<h1 class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl md:text-3xl">
+				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
 					Welcome back, {getFirstName(page.data.user?.name)}!
 				</h1>
-				<p class="text-sm text-gray-600 dark:text-gray-400 sm:text-base">
+				<p class="text-sm text-gray-600 sm:text-base dark:text-gray-400">
 					Here's your financial overview
 				</p>
 			</div>
@@ -97,7 +95,7 @@
 
 		<div class="flex flex-col gap-2 sm:flex-row sm:gap-3">
 			<a
-				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-indigo-600 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:hover:bg-indigo-900/30 sm:w-auto"
+				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 text-indigo-600 hover:bg-indigo-100 sm:w-auto dark:bg-indigo-900/20 dark:text-indigo-400 dark:hover:bg-indigo-900/30"
 				href="/behavior#manual-add"
 			>
 				<Add class="h-5 w-5" />
@@ -105,7 +103,7 @@
 			</a>
 
 			<button
-				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-gray-50 px-4 py-2 text-gray-600 hover:bg-gray-100 dark:bg-gray-700/50 dark:text-gray-400 dark:hover:bg-gray-700 sm:w-auto"
+				class="flex w-full items-center justify-center space-x-2 rounded-lg bg-gray-50 px-4 py-2 text-gray-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-700/50 dark:text-gray-400 dark:hover:bg-gray-700"
 			>
 				<Bar class="h-5 w-5" />
 				<span>Reports</span>
@@ -148,12 +146,12 @@
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
 				<a
 					class="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
-					href="/transactions"
+					href="/finanalyzer/transactions"
 				>
 					View All
 				</a>
 			</div>
-			<Transactions {transactions} />
+			<Transactions transactions={data.transactions} />
 		</div>
 	</AnimatedSection>
 </AnimatedContainer>
