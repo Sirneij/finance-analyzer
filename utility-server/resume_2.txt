@@ -1,0 +1,80 @@
+John Owolabi Idogun
++1 (631) 672 6164
+github.com/sirneij
+john.owolabi.idogun@gmail.com
+Jacksonville, FL (Open to Relocation or Remote, No visa sponsorship needed)
+linkedin.com/in/john-owolabi-idogun
+Professional Summary
+Software Engineer with 4+ years of experience, including FinTech, freelancing, and research. Skilled in building scalable,
+secure systems using Python, C++, C#, Java, JavaScript, Go, and Rust. Proven success in automating processes, enhancing
+user experiences, and integrating innovative solutions.
+Key Skills
+• Programming: Python (Django, Flask & FastAPI), Rust (Axum & Actix-web), Golang, Java, C# (.NET), JavaScript &
+TypeScript (ExpressJS, Svelte & React)
+• Databases: PostgreSQL, MySQL, MongoDB, CoackroachDB, Neo4j, DuckDB
+• Other Skills: Git, ORM, Docker, AWS, GCP, Digital Ocean, MarkDown, SvelteJS, ReactJS, MVC, REST APIs, HTMX
+Professional Experience
+• Arve Limited (QuickCheck)
+Lagos, Nigeria
+Software Engineer
+Oct. 2021 - Oct. 2023
+Arve Limited is a leading provider of financial services for individuals and small businesses in Nigeria through its online lending platform.
+◦Payment Integrations: Streamlined payment operations by seamlessly integrating payment gateways like Monnify and
+Paystack to handle over 500K daily transactions.
+◦Loan Investigation: Created an automated loan investigation system, reducing manual processing time by 50% and improving
+issue accuracy.
+◦Loan Recovery: Integrated multiple agencies for loan recovery, automating updates to Google Sheets, reducing labour by 40%,
+and ensuring accurate commission payments.
+◦User Credit Levels: Automated customer credit level upgrades, reducing errors by 70% and improving user experience.
+◦Dynamic Django Global Settings: Implemented a dynamic settings modification system, reducing server downtime by 20%
+without restarts.
+◦Technologies: Python 3 (Django & Django REST Framework, MyPy), PostgreSQL, Pytest, Celery, JavaScript (jQuery & Ajax,
+ReactNative), C# (.NET), Docker, Linux (Ubuntu), Git (GitLab), Trello.
+• ipNX Nigeria Limited
+Lagos, Nigeria
+Research & Systems Architecture Intern
+Aug. 2019 - Jan. 2020
+ipNX is an ICT company providing corporate and residential customers with network connectivity, internet, telephony, TV, and cloud-based services.
+◦Internet Subscription Management: Engineered an internet subscription management system featuring real-time data
+visualization using Chart.js and JavaScript along with Python, elevating subscription tracking and data accuracy by 25%.
+◦Documentation Portal: Created a documentation system with threaded commenting, full-text search, and CRUD
+functionalities, enhancing documentation accessibility and collaboration by 30%.
+◦Technologies: Python (Django and Flask), JavaScript, C# (.NET), Linux (Ubuntu), Git(GitHub)
+Additional Experience
+• Stony Brook University
+Stony Brook, New York, United States
+Graduate Teaching & Research Assistant
+Aug. 2023 - Present
+New York State flagship University.
+◦Database Design and Practice (ISE305): Enhanced students’ comprehension of database design principles and resolved
+SQL-based inquiries to elevate performance.
+◦Research: Achieved enhanced data accuracy by streamlining the performance analysis in logic and database systems to
+eradicate manual processes using Python for automated analysis.
+◦2D Game Programming (CSE 380) & Software Engineering (CSE 416): Played a pivotal role in spearheading student projects
+dedicated to automating healthcare processes, resulting in a remarkable 50% decrease in processing time by leveraging MERN
+stack technologies.
+◦Computer Systems Fundamentals I (CSE 220): Designed and administered test cases, supervised exams, and assessed
+assignments using Excel and Learning Management System (LMS) software to enhance operational efficiency by 20%.
+• DEV Community
+Online
+Volunteer Technical Writer and Trusted Member
+June 2021 - Present
+DEV is a community of software developers getting together to help one another out.
+◦Technical Writer: Drove a significant increase in engagement and readership through over 60 top-tier technical content
+focusing on Software Engineering challenges, utilizing Python, Rust, Go, C# (.NET), and JavaScript/TypeScript.
+◦GitHub + DEV 2023 Hackathon Runner-Up: Secured the runner-up position in GitHub + DEV 2023 Hackathon by authoring
+articles on enriching GitHub actions with an efficient, secure, and dependable session-based authentication system
+orchestrated with Django and SvelteKit, commended by participants for its innovation.
+◦Trusted Member: Fostered positive interactions and maintained community guidelines on DEV Community by managing
+inappropriate content discussions as a Trusted Member, using adherence tools from the Trusted Member panel, and
+overseeing 500+ interactions.
+Education
+• Federal University of Technology
+Akure, Nigeria
+Bachelor of Engineering in Computer Engineering; CGPA: 3.72 (4.65/5.0)
+Nov. 2015 – Oct. 2021
+The Federal University of Technology, Akure is the top public university in Nigeria.
+◦Minor: Electrical and Electronics Engineering.
+◦Award: Best graduating Computer Engineering student. Top 1% of the class.
+◦Thesis: Web-based collection, visualization, and analysis of crowd-sourced energy data from commercial and residential
+buildings.

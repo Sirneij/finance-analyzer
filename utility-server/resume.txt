@@ -1,0 +1,73 @@
+John Owolabi Idogun
++1(631)6726164
+github.com/sirneij john.owolabi.idogun@gmail.com
+Jacksonville,FL(OpentoRelocationorRemote,Novisasponsorshipneeded) linkedin.com/in/john-owolabi-idogun
+Professional Summary
+SoftwareEngineerwith4+yearsofexperience,includingFinTech,freelancing,andresearch. Skilledinbuildingscalable,
+securesystemsusingPython,C++,C#,Java,JavaScript,Go,andRust. Provensuccessinautomatingprocesses,enhancing
+userexperiences,andintegratinginnovativesolutions.
+Key Skills
+• Programming: Python(Django,Flask&FastAPI),Rust(Axum&Actix-web),Golang,Java,C#(.NET),JavaScript&
+TypeScript(ExpressJS,Svelte&React)
+• Databases: PostgreSQL,MySQL,MongoDB,CoackroachDB,Neo4j,DuckDB
+• OtherSkills: Git,ORM,Docker,AWS,GCP,DigitalOcean,MarkDown,SvelteJS,ReactJS,MVC,RESTAPIs,HTMX
+Professional Experience
+ArveLimited(QuickCheck) Lagos,Nigeria
+•
+SoftwareEngineer Oct.2021-Oct.2023
+ArveLimitedisaleadingprovideroffinancialservicesforindividualsandsmallbusinessesinNigeriathroughitsonlinelendingplatform.
+◦ PaymentIntegrations:StreamlinedpaymentoperationsbyseamlesslyintegratingpaymentgatewayslikeMonnifyand
+Paystacktohandleover500Kdailytransactions.
+◦ LoanInvestigation:Createdanautomatedloaninvestigationsystem,reducingmanualprocessingtimeby50%andimproving
+issueaccuracy.
+◦ LoanRecovery:Integratedmultipleagenciesforloanrecovery,automatingupdatestoGoogleSheets,reducinglabourby40%,
+andensuringaccuratecommissionpayments.
+◦ UserCreditLevels:Automatedcustomercreditlevelupgrades,reducingerrorsby70%andimprovinguserexperience.
+◦ DynamicDjangoGlobalSettings:Implementedadynamicsettingsmodificationsystem,reducingserverdowntimeby20%
+withoutrestarts.
+◦ Technologies:Python3(Django&DjangoRESTFramework,MyPy),PostgreSQL,Pytest,Celery,JavaScript(jQuery&Ajax,
+ReactNative),C#(.NET),Docker,Linux(Ubuntu),Git(GitLab),Trello.
+ipNXNigeriaLimited Lagos,Nigeria
+•
+Research&SystemsArchitectureIntern Aug.2019-Jan.2020
+ipNXisanICTcompanyprovidingcorporateandresidentialcustomerswithnetworkconnectivity,internet,telephony,TV,andcloud-basedservices.
+◦ InternetSubscriptionManagement:Engineeredaninternetsubscriptionmanagementsystemfeaturingreal-timedata
+visualizationusingChart.jsandJavaScriptalongwithPython,elevatingsubscriptiontrackinganddataaccuracyby25%.
+◦ DocumentationPortal:Createdadocumentationsystemwiththreadedcommenting,full-textsearch,andCRUD
+functionalities,enhancingdocumentationaccessibilityandcollaborationby30%.
+◦ Technologies:Python(DjangoandFlask),JavaScript,C#(.NET),Linux(Ubuntu),Git(GitHub)
+Additional Experience
+StonyBrookUniversity StonyBrook,NewYork,UnitedStates
+•
+GraduateTeaching&ResearchAssistant Aug.2023-Present
+NewYorkStateflagshipUniversity.
+◦ DatabaseDesignandPractice(ISE305):Enhancedstudents’comprehensionofdatabasedesignprinciplesandresolved
+SQL-basedinquiriestoelevateperformance.
+◦ Research:Achievedenhanceddataaccuracybystreamliningtheperformanceanalysisinlogicanddatabasesystemsto
+eradicatemanualprocessesusingPythonforautomatedanalysis.
+◦ 2DGameProgramming(CSE380)&SoftwareEngineering(CSE416):Playedapivotalroleinspearheadingstudentprojects
+dedicatedtoautomatinghealthcareprocesses,resultinginaremarkable50%decreaseinprocessingtimebyleveragingMERN
+stacktechnologies.
+◦ ComputerSystemsFundamentalsI(CSE220):Designedandadministeredtestcases,supervisedexams,andassessed
+assignmentsusingExcelandLearningManagementSystem(LMS)softwaretoenhanceoperationalefficiencyby20%.
+DEVCommunity Online
+•
+VolunteerTechnicalWriterandTrustedMember June2021-Present
+DEVisacommunityofsoftwaredevelopersgettingtogethertohelponeanotherout.
+◦ TechnicalWriter:Droveasignificantincreaseinengagementandreadershipthroughover60top-tiertechnicalcontent
+focusingonSoftwareEngineeringchallenges,utilizingPython,Rust,Go,C#(.NET),andJavaScript/TypeScript.
+◦ GitHub+DEV2023HackathonRunner-Up:Securedtherunner-uppositioninGitHub+DEV2023Hackathonbyauthoring
+articlesonenrichingGitHubactionswithanefficient,secure,anddependablesession-basedauthenticationsystem
+orchestratedwithDjangoandSvelteKit,commendedbyparticipantsforitsinnovation.
+◦ TrustedMember:FosteredpositiveinteractionsandmaintainedcommunityguidelinesonDEVCommunitybymanaging
+inappropriatecontentdiscussionsasaTrustedMember,usingadherencetoolsfromtheTrustedMemberpanel,and
+overseeing500+interactions.
+Education
+FederalUniversityofTechnology Akure,Nigeria
+•
+BachelorofEngineeringinComputerEngineering;CGPA:3.72(4.65/5.0) Nov.2015–Oct.2021
+TheFederalUniversityofTechnology,AkureisthetoppublicuniversityinNigeria.
+◦ Minor:ElectricalandElectronicsEngineering.
+◦ Award:BestgraduatingComputerEngineeringstudent.Top1%oftheclass.
+◦ Thesis:Web-basedcollection,visualization,andanalysisofcrowd-sourcedenergydatafromcommercialandresidential
+buildings.

@@ -1,0 +1,35 @@
+{
+    "experiences": [],
+    "education": [],
+    "skills": {
+        "Programming Languages": [
+            "Go",
+            "Python",
+            "Rust",
+            "Java",
+            "C#",
+            "TypeScript"
+        ],
+        "Frontend": [
+            "React",
+            "Svelte"
+        ],
+        "Backend": [
+            "FastAPI",
+            "Flask",
+            "Django"
+        ],
+        "Database": [
+            "MySQL",
+            "Neo4j",
+            "MongoDB",
+            "PostgreSQL",
+            "DuckDB"
+        ],
+        "Cloud & DevOps": [
+            "Docker",
+            "GCP",
+            "AWS"
+        ]
+    }
+}

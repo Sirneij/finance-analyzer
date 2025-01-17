@@ -88,10 +88,6 @@
 	const toggleSection = (section: keyof typeof expandedSections) => {
 		expandedSections[section] = !expandedSections[section];
 	};
-
-	const getStaggerDelay = (index: number, total: number, isEntering: boolean) => {
-		return isEntering ? index * 200 : (total - index - 1) * 200;
-	};
 </script>
 
 <div class="mb-24 space-y-24 rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800/50">
