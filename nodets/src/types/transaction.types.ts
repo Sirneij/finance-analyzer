@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { Resume } from "$types/resume.types.js";
 
 export interface ITransaction extends Document {
   _id: string;
@@ -35,7 +36,7 @@ export interface UploadResponse {
 }
 
 export interface FileUploadResult {
-  transactions: Partial<ITransaction>[];
+  data: Partial<ITransaction>[] | Resume;
   mimeType: string;
 }
 

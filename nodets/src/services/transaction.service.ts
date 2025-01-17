@@ -11,28 +11,40 @@ import mongoose from "mongoose";
 import { ParserFactory } from "$utils/parsers/factory.parsers.js";
 import { WebSocket } from "ws";
 import { sendError } from "$utils/error.utils.js";
+import { isResume } from "$types/guards/resume.guards.js";
+import { ResumeModel } from "$models/resume.model.js";
 
 export class TransactionService {
   static async processFile(
     buffer: Buffer,
     mimeType: string,
-    userId: mongoose.Types.ObjectId
+    userId: mongoose.Types.ObjectId,
+    name: string
   ): Promise<FileUploadResult> {
     if (!ParserFactory.isSupportedType(mimeType)) {
       throw new Error("Unsupported file type");
     }
 
     const parser = ParserFactory.getParser(mimeType, userId);
-    const transactions = await parser.parse(buffer);
+    const data = await parser.parse(buffer, name);
 
-    baseConfig.logger.info(`Parsed ${transactions.length} transactions`);
+    let result: FileUploadResult;
 
-    await Transaction.insertMany(transactions);
+    if (isResume(data)) {
+      const createdResume = await ResumeModel.create(data);
+      result = {
+        data: createdResume,
+        mimeType,
+      };
+    } else {
+      const createdTransactions = await Transaction.insertMany(data);
+      result = {
+        data: createdTransactions,
+        mimeType,
+      };
+    }
 
-    return {
-      transactions,
-      mimeType,
-    };
+    return result;
   }
 
   static async findTransactionsByUserId(

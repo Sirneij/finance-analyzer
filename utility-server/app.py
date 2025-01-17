@@ -5,6 +5,7 @@ from aiohttp.web import Request, Response, WebSocketResponse
 
 from utils.analyzer import analyze_transactions
 from utils.extract_text import extract_text_from_pdf
+from utils.resume_parser import extract_text_with_pymupdf, parse_resume_text
 from utils.settings import base_settings
 from utils.summarize import summarize_transactions
 from utils.websocket import WebSocketManager
@@ -32,6 +33,31 @@ async def cleanup_ws(app):
         for ws in connections:
             await ws.close(code=WSMsgType.CLOSE, message='Server shutdown')
         ws_connections.clear()
+
+
+async def parse_resume(request: Request) -> Response:
+    try:
+        base_settings.logger.info('Received resume parsing request')
+        reader = await request.multipart()
+        field = await reader.next()
+
+        if field.name != 'file':
+            base_settings.logger.warning('No file field in request')
+            return web.json_response({'error': 'No file uploaded'}, status=400)
+
+        # Read the file content
+        base_settings.logger.info('Reading uploaded file')
+        file_content: bytes = await field.read()
+
+        text: str = await extract_text_with_pymupdf(file_content)
+        resume_data = await parse_resume_text(text)
+        base_settings.logger.info('Successfully processed request')
+        return web.json_response(resume_data)
+    except Exception as e:
+        base_settings.logger.error(
+            f'Request processing failed: {str(e)}', exc_info=True
+        )
+        return web.json_response({'error': str(e)}, status=500)
 
 
 async def extract_text(request: Request) -> Response:
@@ -159,6 +185,7 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
 
 def init_app() -> web.Application:
     app = web.Application()
+    app.router.add_post('/parse-resume', parse_resume)
     app.router.add_post('/extract-text', extract_text)
     app.router.add_post('/analyze', analyze)
     app.router.add_post('/summarize', summarize)

@@ -26,8 +26,10 @@
 				</div>
 			</div>
 		</div>
-
-		<p class="mb-6 max-w-prose leading-8 tracking-wide text-gray-600 dark:text-gray-300">
+		<h2 class="text-3xl font-semibold">Hello, I'm {data.githubData.user.name},</h2>
+		<p
+			class="mb-6 max-w-prose text-justify leading-8 tracking-wide text-gray-600 dark:text-gray-300"
+		>
 			{@html marked(data.githubData.specialRepo?.bio || data.githubData.user.bio)}
 		</p>
 		<div class="flex space-x-4">

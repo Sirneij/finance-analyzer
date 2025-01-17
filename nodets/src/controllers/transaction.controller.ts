@@ -32,7 +32,8 @@ export class TransactionController {
               const result = await TransactionService.processFile(
                 buffer,
                 info.mimeType,
-                userId
+                userId,
+                name
               );
               if (!isFileProcessed) {
                 isFileProcessed = true;

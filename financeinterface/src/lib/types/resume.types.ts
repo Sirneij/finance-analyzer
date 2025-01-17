@@ -1,9 +1,9 @@
 interface Experience {
 	role: string;
 	company: string;
+	location?: string;
 	companyDescription: string;
 	period: string;
-	description: string;
 	techStack: string[];
 	achievements: string[];
 }
@@ -13,7 +13,8 @@ interface Education {
 	school: string;
 	location: string;
 	period: string;
-	description: string;
+	schoolDescription: string;
+	achievements?: string[];
 }
 
 type SkillCategories =
@@ -21,7 +22,8 @@ type SkillCategories =
 	| 'Frontend'
 	| 'Backend'
 	| 'Database'
-	| 'Cloud & DevOps';
+	| 'Cloud & DevOps'
+	| 'Others';
 
 type Skills = {
 	[K in SkillCategories]: string[];
