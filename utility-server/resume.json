@@ -1,0 +1,125 @@
+{
+    "name": "John Owolabi Idogun",
+    "contact": {
+        "phone": "+1 (631) 672 6164",
+        "github": "github.com/sirneij",
+        "email": "john.owolabi.idogun@gmail.com",
+        "location": "Jacksonville, FL (Open to Relocation or Remote, No visa sponsorship needed)",
+        "linkedin": "linkedin.com/in/john-owolabi-idogun"
+    },
+    "summary": "Software Engineer with 4+ years of experience, including FinTech, freelancing, and research. Skilled in building scalable, secure systems using Python, C++, C#, Java, JavaScript, Go, and Rust. Proven success in automating processes, enhancing user experiences, and integrating innovative solutions.",
+    "skills": {
+        "Programming Languages": [
+            "C# (.NET)",
+            "CoackroachDB",
+            "Docker",
+            "Golang",
+            "Java",
+            "JavaScript &",
+            "MarkDown",
+            "MongoDB",
+            "MySQL",
+            "Neo4j",
+            "ORM",
+            "PostgreSQL",
+            "Python (Django",
+            "REST APIs",
+            "ReactJS",
+            "Rust (Axum & Actix-web)"
+        ],
+        "Backend": [
+            "Flask & FastAPI)"
+        ],
+        "Cloud & DevOps": [
+            "AWS",
+            "GCP"
+        ],
+        "Other": [
+            "Digital Ocean",
+            "DuckDB",
+            "Git",
+            "HTMX",
+            "MVC",
+            "SvelteJS"
+        ]
+    },
+    "experiences": [
+        {
+            "role": "Software Engineer",
+            "company": "Arve Limited (QuickCheck)",
+            "companyDescription": "Arve Limited is a leading provider of financial services for individuals and small businesses in Nigeria through its online lending platform.",
+            "period": "Oct. 2021 - Oct. 2023",
+            "techStack": [
+                "Python 3 (Django & Django REST Framework",
+                "MyPy)",
+                "PostgreSQL",
+                "Pytest",
+                "Celery",
+                "JavaScript (jQuery & Ajax"
+            ],
+            "achievements": [
+                "Payment Integrations: Streamlined payment operations by seamlessly integrating payment gateways like Monnify and",
+                "Loan Investigation: Created an automated loan investigation system, reducing manual processing time by 50% and improving",
+                "Loan Recovery: Integrated multiple agencies for loan recovery, automating updates to Google Sheets, reducing labour by 40%,",
+                "User Credit Levels: Automated customer credit level upgrades, reducing errors by 70% and improving user experience.",
+                "Dynamic Django Global Settings: Implemented a dynamic settings modification system, reducing server downtime by 20%"
+            ]
+        },
+        {
+            "role": "Research & Systems Architecture Intern",
+            "company": "ipNX Nigeria Limited",
+            "companyDescription": "ipNX is an ICT company providing corporate and residential customers with network connectivity, internet, telephony, TV, and cloud-based services.",
+            "period": "Aug. 2019 - Jan. 2020",
+            "techStack": [
+                "Python (Django and Flask)",
+                "JavaScript",
+                "C# (.NET)",
+                "Linux (Ubuntu)",
+                "Git(GitHub)"
+            ],
+            "achievements": [
+                "Internet Subscription Management: Engineered an internet subscription management system featuring real-time data",
+                "Documentation Portal: Created a documentation system with threaded commenting, full-text search, and CRUD"
+            ]
+        },
+        {
+            "role": "Graduate Teaching & Research Assistant",
+            "company": "Stony Brook University",
+            "companyDescription": "New York State flagship University.",
+            "period": "Aug. 2023 - Present",
+            "techStack": [],
+            "achievements": [
+                "Database Design and Practice (ISE305): Enhanced students\u2019 comprehension of database design principles and resolved",
+                "Research: Achieved enhanced data accuracy by streamlining the performance analysis in logic and database systems to",
+                "2D Game Programming (CSE 380) & Software Engineering (CSE 416): Played a pivotal role in spearheading student projects",
+                "Computer Systems Fundamentals I (CSE 220): Designed and administered test cases, supervised exams, and assessed"
+            ]
+        },
+        {
+            "role": "Volunteer Technical Writer and Trusted Member",
+            "company": "DEV Community",
+            "companyDescription": "DEV is a community of software developers getting together to help one another out.",
+            "period": "June 2021 - Present",
+            "techStack": [],
+            "achievements": [
+                "Technical Writer: Drove a significant increase in engagement and readership through over 60 top-tier technical content",
+                "GitHub + DEV 2023 Hackathon Runner-Up: Secured the runner-up position in GitHub + DEV 2023 Hackathon by authoring",
+                "Trusted Member: Fostered positive interactions and maintained community guidelines on DEV Community by managing"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Engineering in Computer Engineering; CGPA: 3.72 (4.65/5.0)",
+            "school": "Federal University of Technology",
+            "schoolDescription": "The Federal University of Technology, Akure is the top public university in Nigeria.",
+            "location": "Akure, Nigeria",
+            "period": "Nov. 2015 \u2013 Oct. 2021",
+            "achievements": [
+                "Minor: Electrical and Electronics Engineering.",
+                "Award: Best graduating Computer Engineering student. Top 1% of the class.",
+                "Thesis: Web-based collection, visualization, and analysis of crowd-sourced energy data from commercial and residential"
+            ]
+        }
+    ]
+}
