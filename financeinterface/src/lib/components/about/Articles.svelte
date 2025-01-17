@@ -6,6 +6,9 @@
 	import Caret from '../icons/Caret.svelte';
 	import Article from './mini/Article.svelte';
 	import LoadingArticles from '$lib/components/about/mini/LoadingArticles.svelte';
+	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { slide } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 
 	let { devtoArticles = $bindable() }: { devtoArticles: ProcessedDevToArticles | null } = $props();
 
@@ -42,7 +45,7 @@
 		<!-- Series Posts -->
 		{#if Object.entries(devtoArticles.series).length > 0}
 			<div class="space-y-2">
-				{#each Object.entries(devtoArticles.series) as [seriesName, articles]}
+				{#each Object.entries(devtoArticles.series) as [seriesName, articles], i (seriesName)}
 					<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30">
 						<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 							<!-- Series Header -->
@@ -52,22 +55,34 @@
 							>
 								<h3 class="text-xl font-semibold">{seriesName}</h3>
 								<Caret
-									trend={activeSeries === seriesName ? 'up' : 'down'}
+									trend="down"
 									class="h-6 w-6 transform transition-transform duration-300"
+									style={activeSeries === seriesName ? '' : 'transform: rotate(-90deg)'}
 								/>
 							</button>
 
 							<!-- Series Articles -->
 							{#if activeSeries === seriesName}
-								<div class="relative w-full">
+								<div
+									transition:slide={{ duration: SLIDE_DURATION, easing: cubicOut }}
+									class="relative w-full"
+								>
 									<div
 										class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4"
 									>
-										{#each articles as article}
-											<Article
-												{article}
-												class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
-											/>
+										{#each articles as article, index}
+											<div
+												in:slide={{
+													delay: index * 100,
+													duration: SLIDE_DURATION,
+													easing: cubicOut
+												}}
+											>
+												<Article
+													{article}
+													class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+												/>
+											</div>
 										{/each}
 									</div>
 									<!-- Gradient fades -->
