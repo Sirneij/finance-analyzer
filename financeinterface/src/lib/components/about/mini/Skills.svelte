@@ -52,11 +52,11 @@
 								{/if}
 								{skill}
 							</span>
-							<div
+							<!-- <div
 								class="absolute -top-12 left-1/2 hidden -translate-x-1/2 transform rounded-lg bg-gray-900 px-3 py-1 text-xs text-white group-hover/skill:block dark:bg-gray-700"
 							>
 								View projects
-							</div>
+							</div> -->
 						</div>
 					{/each}
 				</div>
