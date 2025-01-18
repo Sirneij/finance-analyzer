@@ -8,7 +8,11 @@ export class PDFParser extends BaseParser {
 
   async parse(buffer: Buffer): Promise<Partial<ITransaction>[]> {
     const formData = new FormData();
-    formData.append("file", new Blob([buffer]), "document.pdf");
+    formData.append(
+      "file",
+      new Blob([buffer], { type: "application/pdf" }),
+      "file.pdf"
+    );
 
     const response = await fetch(
       `${baseConfig.utility_service_url}/extract-text`,
@@ -19,6 +23,9 @@ export class PDFParser extends BaseParser {
     );
 
     const data = await response.json();
+
+    baseConfig.logger.info(`Parsed data: ${JSON.stringify(data)}`);
+
     const extractedText = data.text;
     const lines = extractedText.split("\n");
 

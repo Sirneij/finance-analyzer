@@ -4,8 +4,13 @@
 	import Email from '$lib/components/icons/Email.svelte';
 	import { CONTACT_EMAIL } from '$lib/utils/contants';
 	import { decodeEmail, encodeEmail } from '$lib/utils/helpers/email.helpers';
+	import Modal from '$lib/components/resuables/Modal.svelte';
+	import FileInput from '$lib/components/transactions/FileInput.svelte';
+	import { page } from '$app/state';
+	import FormError from '$lib/components/resuables/FormError.svelte';
 
 	let { githubUser } = $props();
+	let isModalOpen = $state(false);
 
 	const encodedEmail = encodeEmail(`${CONTACT_EMAIL}`);
 
@@ -26,7 +31,7 @@
 	</p>
 
 	<!-- New Contact Button -->
-	<div class="mt-8">
+	<div class="mt-8 flex items-center justify-center space-x-4">
 		<a
 			href="#contact"
 			onclick={handleEmailClick}
@@ -35,5 +40,26 @@
 			<Email class="h-5 w-5" />
 			Contact Me
 		</a>
+		<button
+			onclick={() => (isModalOpen = true)}
+			class="group relative overflow-hidden rounded-lg bg-blue-500 px-6 py-3 text-white transition-all hover:shadow-lg hover:shadow-blue-500/30"
+		>
+			<span class="relative z-10">Upload Resume</span>
+			<div
+				class="absolute inset-0 z-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100"
+			></div>
+			<div class="absolute inset-0 z-0 animate-pulse bg-blue-400/20"></div>
+		</button>
 	</div>
 </AnimatedSection>
+
+<!-- Modal -->
+{#if isModalOpen}
+	<Modal isOpen={isModalOpen} onClose={() => (isModalOpen = false)}>
+		<div class="space-y-6">
+			<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Upload Resume</h2>
+			<FormError form={page.form} />
+			<FileInput accept=".pdf" formaction="?/upload" />
+		</div>
+	</Modal>
+{/if}

@@ -23,15 +23,13 @@ export class TransactionService {
     }
 
     const parser = ParserFactory.getParser(mimeType, userId);
-    const transactions = await parser.parse(buffer);
+    const data = await parser.parse(buffer);
 
-    baseConfig.logger.info(`Parsed ${transactions.length} transactions`);
-
-    await Transaction.insertMany(transactions);
+    await Transaction.insertMany(data);
 
     return {
-      transactions,
       mimeType,
+      data: data,
     };
   }
 

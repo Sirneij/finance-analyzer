@@ -6,8 +6,14 @@
 
 	type Data = {
 		success: boolean;
-		transactions: any[];
+		data: any;
 	};
+
+	let {
+		accept = '.pdf,.csv,.xlsx',
+		formaction = '/finanalyzer/behavior?/upload',
+		header = ''
+	} = $props();
 
 	let isUploading = $state(false),
 		data = $state({} as Data),
@@ -21,6 +27,14 @@
 			if (uploadSubmitButton) uploadSubmitButton.click();
 		}
 	}
+
+	const makeAcceptReadable = (accept: string) => {
+		// Convert the accept string to a human-readable format
+		// e.g. '.pdf,.csv,.xlsx' => 'PDF, CSV or Excel files'
+		const acceptArr = accept.split(',');
+		const last = acceptArr.pop();
+		return acceptArr.join(', ') + ' or ' + last + ' files';
+	};
 
 	const handleUpload: SubmitFunction = async () => {
 		isUploading = true;
@@ -36,7 +50,9 @@
 </script>
 
 <div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Upload Financial Data</h2>
+	{#if header}
+		<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{header}</h2>
+	{/if}
 	<form
 		class="flex w-full items-center justify-center"
 		enctype="multipart/form-data"
@@ -47,7 +63,7 @@
 			class="group relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-all hover:border-indigo-500 hover:bg-blue-50 dark:border-gray-600 dark:bg-gray-700/50 dark:hover:border-indigo-400 dark:hover:bg-gray-700"
 		>
 			{#if isUploading}
-				<Loader width={20} message="Extracting..." />
+				<Loader width={20} message="Parsing data..." />
 			{:else}
 				<div class="flex flex-col items-center justify-center pb-6 pt-5">
 					<Upload />
@@ -56,23 +72,12 @@
 					>
 						<span class="font-semibold">Click to upload</span> or drag and drop
 					</p>
-					<p class="text-xs text-gray-500 dark:text-gray-400">PDF, CSV or Excel files</p>
+					<p class="text-xs text-gray-500 dark:text-gray-400">{makeAcceptReadable(accept)}</p>
 				</div>
 			{/if}
-			<input
-				type="file"
-				name="file"
-				class="hidden"
-				accept=".pdf,.csv,.xlsx"
-				onchange={handleFileUpload}
-			/>
+			<input type="file" name="file" class="hidden" {accept} onchange={handleFileUpload} />
 		</label>
-		<button
-			bind:this={uploadSubmitButton}
-			type="submit"
-			class="hidden"
-			formaction="/finanalyzer/behavior?/upload"
-		>
+		<button bind:this={uploadSubmitButton} type="submit" class="hidden" {formaction}>
 			Upload
 		</button>
 	</form>

@@ -82,6 +82,7 @@
 				src={page.data.user?.avatar}
 				alt={page.data.user?.name}
 				class="h-12 w-12 rounded-full ring-2 ring-indigo-500 sm:h-14 sm:w-14 md:h-16 md:w-16"
+				loading="lazy"
 			/>
 			<div class="text-center sm:text-left">
 				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
