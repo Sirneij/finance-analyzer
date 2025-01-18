@@ -61,7 +61,7 @@ describe("TransactionController", () => {
       });
 
       jest.spyOn(TransactionService, "processFile").mockResolvedValue({
-        transactions: [],
+        data: [],
         mimeType: "text/csv",
       });
 
@@ -72,7 +72,7 @@ describe("TransactionController", () => {
 
       expect(jsonMock).toHaveBeenCalledWith({
         success: true,
-        transactions: [],
+        data: [],
         mimeType: "text/csv",
       });
     });
