@@ -1,3 +1,12 @@
+interface Contact {
+	phone: string;
+	email: string;
+	location: string;
+	website?: string;
+	linkedin?: string;
+	github?: string;
+}
+
 interface Experience {
 	role: string;
 	company: string;
@@ -21,12 +30,24 @@ type SkillCategories =
 	| 'Programming Languages'
 	| 'Frontend'
 	| 'Backend'
-	| 'Database'
+	| 'Databases'
 	| 'Cloud & DevOps'
-	| 'Others';
+	| 'Other';
 
 type Skills = {
 	[K in SkillCategories]: string[];
 };
 
-export type { Experience, Education, Skills, SkillCategories };
+export interface Resume {
+	name: string;
+	title: string;
+	contact: Contact;
+	summary: string;
+	skills: Skills;
+	experiences: Experience[];
+	educations: Education[];
+	createAt: string;
+	updateAt: string;
+}
+
+export type { Experience, Education, Skills, SkillCategories, Contact };

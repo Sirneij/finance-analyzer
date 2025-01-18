@@ -1,3 +1,4 @@
+import { baseConfig } from "$config/base.config.js";
 import { TransactionService } from "$services/transaction.service.js";
 import { RouteDoc } from "$utils/docs.utils.js";
 import busboy from "busboy";
@@ -32,21 +33,23 @@ export class TransactionController {
               const result = await TransactionService.processFile(
                 buffer,
                 info.mimeType,
-                userId,
-                name
+                userId
               );
+              baseConfig.logger.info(`Result: ${JSON.stringify(result)}`);
               if (!isFileProcessed) {
                 isFileProcessed = true;
                 res.json({ success: true, ...result });
                 resolve();
               }
             } catch (err) {
+              baseConfig.logger.error(`Catch: ${err}`);
               reject(err);
             }
           });
         });
 
         bb.on("error", (err) => {
+          baseConfig.logger.error(`OnError: ${err}`);
           reject(err);
         });
 
@@ -55,7 +58,7 @@ export class TransactionController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error instanceof Error ? error.message : "Upload failed",
+        message: error instanceof Error ? error.message : "Upload failed",
       });
     }
   }

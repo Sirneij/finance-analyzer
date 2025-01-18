@@ -1,8 +1,15 @@
 <script lang="ts">
 	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { normalizeTechnologyNameAndGetIcon } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
 
-	let { experiences, expandedSections, toggleExpand, expandedExp = $bindable() } = $props();
+	let { experiences, expandedSections = $bindable() } = $props();
+
+	let expandedExp = $state<number | null>(null);
+
+	const toggleExpand = (index: number) => {
+		expandedExp = expandedExp === index ? null : index;
+	};
 </script>
 
 {#if expandedSections.experience}
@@ -62,6 +69,14 @@
 									<span
 										class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-teal-50 px-3 py-1 text-sm text-indigo-800 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 									>
+										{#if normalizeTechnologyNameAndGetIcon(tech)}
+											<img
+												src={normalizeTechnologyNameAndGetIcon(tech)}
+												alt={tech}
+												class="h-4 w-4"
+												loading="lazy"
+											/>
+										{/if}
 										{tech}
 									</span>
 								{/each}

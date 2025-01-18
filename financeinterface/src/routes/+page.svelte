@@ -44,7 +44,7 @@
 		<Profile {data} />
 
 		<!-- Resume -->
-		<Resume />
+		<Resume resumeData={data.resume} />
 
 		<!-- GitHub Overview -->
 		<GitHubOverview githubUser={data.githubData.user} bind:devtoArticles />

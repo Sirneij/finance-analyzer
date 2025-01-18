@@ -61,3 +61,19 @@ pre code {
 .group:hover .timeline-node {
 	@apply scale-125 shadow-lg;
 }
+
+@layer components {
+	.animate-pulse {
+		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+}

@@ -13,7 +13,6 @@ export const actions: Actions = {
 	upload: async ({ fetch, request, cookies }) => {
 		const formData = await request.formData();
 		const file = formData.get('file') as File;
-
 		// Some validations
 		const errors: Array<CustomError> = [];
 
@@ -42,7 +41,7 @@ export const actions: Actions = {
 		if (!res.ok) {
 			const response = await res.json();
 			const errors: Array<CustomError> = [];
-			errors.push({ error: response.error, id: Math.floor(Math.random() * 100) });
+			errors.push({ error: response.message, id: Math.floor(Math.random() * 100) });
 			return fail(400, { errors: errors });
 		}
 

@@ -32,7 +32,7 @@ type SkillCategories =
   | "Backend"
   | "Databases"
   | "Cloud & DevOps"
-  | "Others";
+  | "Other";
 
 type Skills = {
   [K in SkillCategories]: string[];
@@ -45,7 +45,7 @@ export interface Resume {
   summary: string;
   skills: Skills;
   experiences: Experience[];
-  education: Education[];
+  educations: Education[];
 }
 
 export type { Experience, Education, Skills, SkillCategories, Contact };

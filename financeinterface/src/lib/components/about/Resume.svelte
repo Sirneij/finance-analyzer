@@ -3,78 +3,10 @@
 	import Experiences from '$lib/components/about/mini/Experiences.svelte';
 	import EducationComp from '$lib/components/about/mini/Education.svelte';
 	import SkillsComp from '$lib/components/about/mini/Skills.svelte';
-	import type { Experience, Education, Skills } from '$lib/types/resume.types';
+	import type { Resume } from '$lib/types/resume.types';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
-	const experiences: Experience[] = [
-		{
-			role: 'Senior Software Engineer',
-			company: 'Tech Corp',
-			companyDescription: 'A leading cloud solutions provider specializing in enterprise software',
-			period: 'Jan 2020 - Present',
-			description:
-				'Led development of cloud-native applications, managing a team of 5 engineers and implementing microservices architecture',
-			techStack: ['AWS', 'Kubernetes', 'Node.js', 'TypeScript', 'React'],
-			achievements: [
-				'Led team of 5 engineers',
-				'Reduced deployment time by 60%',
-				'Implemented CI/CD pipeline'
-			]
-		},
-		{
-			role: 'Software Engineer',
-			company: 'Tech Startup',
-			companyDescription: 'A fast-growing startup specializing in AI-driven solutions',
-			period: 'Jun 2018 - Dec 2019',
-			description:
-				'Developed and maintained AI-driven applications, working closely with data scientists and product managers',
-			techStack: ['Python', 'Django', 'React', 'PostgreSQL'],
-			achievements: [
-				'Developed AI-driven applications',
-				'Collaborated with data scientists',
-				'Maintained and improved existing applications'
-			]
-		},
-		{
-			role: 'Software Engineering Intern',
-			company: 'Tech Corp',
-			companyDescription: 'A leading cloud solutions provider specializing in enterprise software',
-			period: 'Jan 2018 - May 2018',
-			description:
-				'Developed and maintained cloud-native applications, working closely with senior engineers and architects',
-			techStack: ['Java', 'Spring Boot', 'React', 'PostgreSQL'],
-			achievements: [
-				'Developed cloud-native applications',
-				'Collaborated with senior engineers',
-				'Maintained and improved existing applications'
-			]
-		}
-	];
-
-	const education: Education[] = [
-		{
-			degree: 'Master of Science in Computer Science',
-			school: 'Tech University',
-			location: 'San Francisco, CA',
-			period: '2016 - 2018',
-			description: 'Focus on Distributed Systems and Machine Learning'
-		},
-		{
-			degree: 'Bachelor of Science in Software Engineering',
-			school: 'State University',
-			location: 'Boston, MA',
-			period: '2012 - 2016',
-			description: "Dean's List, Computer Science Society President"
-		}
-	];
-
-	const skills: Skills = {
-		'Programming Languages': ['TypeScript', 'Python', 'Java', 'Rust'],
-		Frontend: ['Svelte', 'React', 'Vue.js', 'HTML/CSS'],
-		Backend: ['Node.js', 'Django', 'Spring Boot'],
-		Database: ['PostgreSQL', 'MongoDB', 'Redis'],
-		'Cloud & DevOps': ['AWS', 'Docker', 'Kubernetes', 'CI/CD']
-	};
+	let { resumeData }: { resumeData: Resume } = $props();
 
 	let expandedExp = $state<number | null>(null),
 		expandedSections = $state({
@@ -82,10 +14,6 @@
 			education: false,
 			skills: false
 		});
-
-	const toggleExpand = (index: number) => {
-		expandedExp = expandedExp === index ? null : index;
-	};
 
 	const toggleSection = (section: keyof typeof expandedSections) => {
 		expandedSections[section] = !expandedSections[section];
@@ -109,7 +37,7 @@
 				/>
 			</button>
 
-			<Experiences {experiences} {expandedSections} {toggleExpand} {expandedExp} />
+			<Experiences experiences={resumeData.experiences} {expandedSections} />
 		</section>
 
 		<!-- Education -->
@@ -126,7 +54,7 @@
 				/>
 			</button>
 
-			<EducationComp {education} {expandedSections} />
+			<EducationComp education={resumeData.educations} {expandedSections} />
 		</section>
 
 		<!-- Skills -->
@@ -143,7 +71,7 @@
 				/>
 			</button>
 
-			<SkillsComp {skills} {expandedSections} />
+			<SkillsComp skills={resumeData.skills} {expandedSections} />
 		</section>
 	</AnimatedSection>
 </div>

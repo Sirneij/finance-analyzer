@@ -1,8 +1,15 @@
 <script lang="ts">
 	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { stripOffCGPAFronDegree } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
 
 	let { education, expandedSections } = $props();
+
+	let expandedEdu = $state<number | null>(null);
+
+	const toggleExpand = (index: number) => {
+		expandedEdu = expandedEdu === index ? null : index;
+	};
 </script>
 
 {#if expandedSections.education}
@@ -28,6 +35,10 @@
 						isEntering: false
 					}}
 					class="group relative pl-8"
+					role="button"
+					tabindex="0"
+					onclick={() => toggleExpand(i)}
+					onkeydown={(e) => e.key === 'Enter' && toggleExpand(i)}
 				>
 					<!-- Timeline Node -->
 					<div class="absolute -left-2.5 flex h-5 w-5 items-center justify-center">
@@ -44,7 +55,7 @@
 						<div class="flex items-center justify-between">
 							<div>
 								<h3 class="text-xl font-bold text-gray-900 dark:text-white">
-									{edu.degree}
+									{stripOffCGPAFronDegree(edu.degree)}
 								</h3>
 								<p class="text-gray-600 dark:text-gray-300">{edu.school}</p>
 							</div>
@@ -54,8 +65,25 @@
 								{edu.period}
 							</span>
 						</div>
+						<p class="mt-2 text-sm italic text-gray-500 dark:text-gray-400">
+							{edu.schoolDescription}
+						</p>
 						<p class="mt-2 text-gray-500 dark:text-gray-400">{edu.location}</p>
 						<p class="mt-4 text-gray-700 dark:text-gray-200">{edu.description}</p>
+
+						<!-- Expandable content for achievements -->
+						{#if expandedEdu === i}
+							<div transition:slide>
+								<ul class="mt-4 space-y-2">
+									{#each edu.achievements as achievement}
+										<li class="flex items-center text-gray-700 dark:text-gray-200">
+											<span class="mr-2 text-indigo-500">•</span>
+											{achievement}
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
 					</div>
 				</div>
 			{/each}

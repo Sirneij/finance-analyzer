@@ -25,7 +25,6 @@ async def main():
         json.dump(text_2, f)
 
 
-
 if __name__ == '__main__':
 
     asyncio.run(main())

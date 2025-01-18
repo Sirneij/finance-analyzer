@@ -45,11 +45,15 @@ async def parse_resume(request: Request) -> Response:
             base_settings.logger.warning('No file field in request')
             return web.json_response({'error': 'No file uploaded'}, status=400)
 
-        # Read the file content
+        # Read the file content as bytes directly
         base_settings.logger.info('Reading uploaded file')
-        file_content: bytes = await field.read()
+        file_content = await field.read(decode=True)  # Add decode=True
 
+        base_settings.logger.info('Extracting text from PDF')
+
+        # Pass the raw bytes to the PDF processor
         text: str = await extract_text_with_pymupdf(file_content)
+        base_settings.logger.info('Extracted text from PDF')
         resume_data = await parse_resume_text(text)
         base_settings.logger.info('Successfully processed request')
         return web.json_response(resume_data)

@@ -25,7 +25,12 @@
 		class="block h-full rounded-xl bg-gray-100 dark:bg-gray-800/50"
 	>
 		{#if article.cover_image}
-			<img src={article.cover_image} alt="" class="h-48 w-full rounded-t-xl object-cover" />
+			<img
+				src={article.cover_image}
+				alt=""
+				class="h-48 w-full rounded-t-xl object-cover"
+				loading="lazy"
+			/>
 		{/if}
 		<div class="p-4">
 			{#if !isSeriesArticle(article)}

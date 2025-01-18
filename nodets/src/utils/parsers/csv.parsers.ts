@@ -2,7 +2,6 @@ import { parse } from "csv-parse";
 import { BaseParser } from "$utils/file.utils.js";
 import { ITransaction } from "$types/transaction.types.js";
 import { baseConfig } from "$config/base.config.js";
-import { Resume } from "$types/resume.types.js";
 
 export class CSVParser extends BaseParser {
   private readonly CHASE_COLUMNS = {
@@ -37,10 +36,7 @@ export class CSVParser extends BaseParser {
     return isNaN(value) ? 0 : value;
   }
 
-  async parse(
-    buffer: Buffer,
-    _name: string
-  ): Promise<Partial<ITransaction>[] | Resume> {
+  async parse(buffer: Buffer): Promise<Partial<ITransaction>[]> {
     return new Promise((resolve, reject) => {
       const transactions: Partial<ITransaction>[] = [];
 

@@ -1,11 +1,24 @@
 import re
+from typing import Union
 
 import fitz  # PyMuPDF
 
 
-async def extract_text_with_pymupdf(file_path: str) -> str:
-    """Extracts text from PDF file using PyMuPDF (fitz)."""
-    doc = fitz.open(file_path)
+async def extract_text_with_pymupdf(file_content: Union[str, bytes]) -> str:
+    """Extracts text from PDF using PyMuPDF (fitz).
+
+    Args:
+        file_content: Either file path (str) or PDF bytes
+    Returns:
+        Extracted text from PDF
+    """
+    if isinstance(file_content, str):
+        # Handle file path
+        doc = fitz.open(file_content)
+    else:
+        # Handle bytes
+        doc = fitz.open(stream=file_content, filetype="pdf")
+
     text = ''
     for page in doc:
         text += page.get_text() + '\n'
@@ -60,6 +73,9 @@ async def parse_skills(section_lines: list[str]) -> dict[str, list[str]]:
                 skill.strip()
                 for skill in split_on_commas_outside_parentheses(skills_raw)
             ]
+            # For each skill, remove trailing periods
+            skill_list = [skill.rstrip('.') for skill in skill_list]
+
             skills_dict[category] = skill_list
     return skills_dict
 
@@ -198,7 +214,7 @@ async def parse_resume_text(text: str) -> dict[str, dict[str, str]]:
         'summary': summary,
         'skills': skills,
         'experiences': experiences,
-        'education': education,
+        'educations': education,
     }
 
     return resume_data

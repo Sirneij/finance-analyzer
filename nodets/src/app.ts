@@ -20,6 +20,7 @@ import transactionRoutes from "$routes/transaction.routes.js";
 import { ApiDocumentationGenerator } from "$services/docs.services.js";
 import endpointRouters from "$routes/docs.routes.js";
 import { TransactionWebSocketHandler } from "$websockets/transaction.websocket.js";
+import resumeRoutes from "$routes/resume.routes.js";
 
 const app: Application = express();
 const server: HttpServer = createServer(app);
@@ -152,6 +153,9 @@ app.use(handleAuthError);
 
 // Transaction routes
 app.use("/api/v1/transactions", transactionRoutes);
+
+// Resume routes
+app.use("/api/v1/resumes", resumeRoutes);
 
 // Handle WebSocket connections
 wss.on("connection", (ws) => {

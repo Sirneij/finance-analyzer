@@ -77,10 +77,28 @@ export const NAME_OF_TOOLS_ON_DEVICON_TO_INCLUDE = {
 	batchfile: 'windows11',
 	procfile: 'heroku',
 	'jupyter notebook': 'jupyter',
-	dockerfile: 'docker'
+	dockerfile: 'docker',
+	golang: 'go',
+	sveltekit: 'svelte',
+	axum: 'rust',
+	'actix-web': 'rust',
+	net: 'dot-net',
+	aws: 'amazonwebservices',
+	gcp: 'googlecloud'
 };
 
-export const NAME_OF_TOOLS_ON_DEVICON_TO_EXCLUDE = ['openedge abl'];
+export const NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN = ['django'];
+export const NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA = ['amazonwebservices'];
+export const NAME_OF_TOOLS_ON_DEVICON_TO_EXCLUDE = [
+	'openedge abl',
+	'mvc',
+	'rest',
+	'duckdb',
+	'cockroachdb',
+	'orm',
+	'aiohttp',
+	'htmx'
+];
 export const GITHUB_LANGUAGE_COLORS = {
 	javascript: '#f1e05a',
 	typescript: '#3178c6',
@@ -113,38 +131,6 @@ export const GITHUB_LANGUAGE_COLORS = {
 	flask: '#000000',
 	tex: '#3D6117'
 };
-
-export const TESTIMONIALS = [
-	{
-		name: 'Frances Nnamadim',
-		title: 'Senior Specialist, IT Business Analyst, IHS Towers',
-		text: 'John is a person with excellent programming and software development skills. He carries out his duties with due diligence and enthusiasm thus giving out his best. He is dedicated to providing quality work. He is very determined and focused. John would be an asset to any organization.',
-		image:
-			'https://media.licdn.com/dms/image/v2/D4D03AQHss3lJD-yAtg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1663930667664?e=1742428800&v=beta&t=UJGU_-YKojjkCMDWknpz7guT63VV2tOPyuDqoriiQ7g',
-		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
-	},
-	{
-		name: 'Oluwaseun Oyeyemi',
-		title: 'Software Engineer, Andela',
-		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.',
-		image:
-			'https://media.licdn.com/dms/image/C5603AQH6lN5z6v9VzQ/profile-displayphoto-shrink_400_400/0/1517346844421?e=1742428800&v=beta&t=O4pYX0j6r3vQFw6Uj5ZKj5K0V8X5p1o9g9Z8YRf5o0s',
-		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
-	},
-	{
-		name: 'Oluwaseun Oyeyemi',
-		title: 'Software Engineer, Andela',
-		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.',
-		image:
-			'https://media.licdn.com/dms/image/C5603AQH6lN5z6v9VzQ/profile-displayphoto-shrink_400_400/0/1517346844421?e=1742428800&v=beta&t=O4pYX0j6r3vQFw6Uj5ZKj5K0V8X5p1o9g9Z8YRf5o0s',
-		link: 'https://www.linkedin.com/in/john-owolabi-idogun/details/recommendations/'
-	},
-	{
-		name: 'Oluwaseun Oyeyemi',
-		title: 'Software Engineer, Andela',
-		text: 'John is a very dedicated and hardworking individual. He is very passionate about his work and is always willing to go the extra mile to get things done. He is a great team player and is always willing to help others. I would highly recommend John for any software development role.'
-	}
-];
 
 export const SKILLS = [
 	{ name: 'Frontend', level: 90 },

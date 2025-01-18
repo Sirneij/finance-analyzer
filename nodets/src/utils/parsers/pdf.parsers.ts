@@ -1,5 +1,4 @@
 import { baseConfig } from "$config/base.config.js";
-import { Resume } from "$types/resume.types.js";
 import { ITransaction } from "$types/transaction.types.js";
 import { BaseParser } from "$utils/file.utils.js";
 
@@ -7,27 +6,25 @@ export class PDFParser extends BaseParser {
   private static readonly TRANSACTION_PATTERN =
     /(\d{2}\/\d{2})(?!.*Page)\s*([^-\d].*?)\s*(-\s*|\s+)?(\d{1,3}(?:,\d{3})*|\d+)\.(\d{2})\s*([\d,]+\.\d{2})?/;
 
-  async parse(
-    buffer: Buffer,
-    name: string
-  ): Promise<Partial<ITransaction>[] | Resume> {
+  async parse(buffer: Buffer): Promise<Partial<ITransaction>[]> {
     const formData = new FormData();
-    formData.append("file", new Blob([buffer]), name);
+    formData.append(
+      "file",
+      new Blob([buffer], { type: "application/pdf" }),
+      "file.pdf"
+    );
 
-    let url = name.startsWith("John_")
-      ? `${baseConfig.utility_service_url}/parse-resume`
-      : `${baseConfig.utility_service_url}/extract-text`;
-
-    const response = await fetch(url, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `${baseConfig.utility_service_url}/extract-text`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const data = await response.json();
 
-    if (name.startsWith("John_")) {
-      return data as Promise<Resume>;
-    }
+    baseConfig.logger.info(`Parsed data: ${JSON.stringify(data)}`);
 
     const extractedText = data.text;
     const lines = extractedText.split("\n");

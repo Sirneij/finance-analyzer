@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Skills } from '$lib/types/resume.types';
 	import { sequencedFly } from '$lib/utils/helpers/misc.transitions';
+	import { normalizeTechnologyNameAndGetIcon } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
 
 	let {
@@ -10,24 +11,26 @@
 		skills: Skills;
 		expandedSections: { skills: boolean };
 	} = $props();
+
+	const skillEntries = $derived(Object.entries(skills).filter(([key]) => key !== '_id'));
 </script>
 
 {#if expandedSections.skills}
 	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" transition:slide={{ duration: 300 }}>
-		{#each Object.entries(skills) as [category, categorySkills], i (category)}
+		{#each skillEntries as [category, categorySkills], i (category)}
 			<div
 				in:sequencedFly={{
 					y: 100,
 					x: -50,
 					index: i,
-					total: Object.entries(skills).length,
+					total: skillEntries.length,
 					isEntering: true
 				}}
 				out:sequencedFly={{
 					y: -100,
 					x: 50,
 					index: i,
-					total: Object.entries(skills).length,
+					total: skillEntries.length,
 					isEntering: false
 				}}
 				class="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/30"
@@ -39,7 +42,14 @@
 							<span
 								class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-teal-50 px-4 py-1.5 text-sm font-medium text-indigo-800 transition-all duration-300 hover:from-indigo-100 hover:to-teal-100 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 							>
-								<!-- <Icon icon="devicon:{skill.toLowerCase()}" class="h-4 w-4" /> -->
+								{#if normalizeTechnologyNameAndGetIcon(skill)}
+									<img
+										src={normalizeTechnologyNameAndGetIcon(skill)}
+										alt={skill}
+										class="h-4 w-4"
+										loading="lazy"
+									/>
+								{/if}
 								{skill}
 							</span>
 							<div

@@ -1,5 +1,4 @@
 import { ITransaction } from "$types/transaction.types.js";
-import { Resume } from "$types/resume.types.js";
 
 export type SupportedFileTypes =
   | "text/csv"
@@ -9,8 +8,5 @@ export type SupportedFileTypes =
   | "image/png";
 
 export interface IFileParser {
-  parse(
-    buffer: Buffer,
-    name: string
-  ): Promise<Partial<ITransaction>[] | Resume>;
+  parse(buffer: Buffer): Promise<Partial<ITransaction>[]>;
 }
