@@ -43,8 +43,10 @@
 		<!-- Profile Section -->
 		<Profile {data} />
 
-		<!-- Resume -->
-		<Resume resumeData={data.resume} />
+		<!-- Resume only when rug -->
+		{#if data.resume}
+			<Resume resumeData={data.resume} />
+		{/if}
 
 		<!-- GitHub Overview -->
 		<GitHubOverview githubUser={data.githubData.user} bind:devtoArticles />
