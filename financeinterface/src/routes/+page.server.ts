@@ -12,12 +12,19 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 				'Content-Type': 'application/json',
 				Cookie: `connect.sid=${cookies.get('connect.sid')}`
 			}
-		}).then((res) => res.json())
+		})
+			.then((res) => res.json())
+			.catch(() => ({
+				educations: [],
+				experiences: [],
+				skills: {},
+				projects: []
+			}))
 	]);
 
 	return {
 		githubData: githubDetails,
-		resume: resume || {}
+		resume: resume
 	};
 };
 
