@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 
 	return {
 		githubData: githubDetails,
-		resume: resume
+		resume: resume || {}
 	};
 };
 
