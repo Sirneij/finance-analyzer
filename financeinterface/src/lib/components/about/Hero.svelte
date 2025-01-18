@@ -40,16 +40,18 @@
 			<Email class="h-5 w-5" />
 			Contact Me
 		</a>
-		<button
-			onclick={() => (isModalOpen = true)}
-			class="group relative overflow-hidden rounded-lg bg-blue-500 px-6 py-3 text-white transition-all hover:shadow-lg hover:shadow-blue-500/30"
-		>
-			<span class="relative z-10">Upload Resume</span>
-			<div
-				class="absolute inset-0 z-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100"
-			></div>
-			<div class="absolute inset-0 z-0 animate-pulse bg-blue-400/20"></div>
-		</button>
+		{#if page.data.user && page.data.user.email === 'Sirneij@gmail.com'}
+			<button
+				onclick={() => (isModalOpen = true)}
+				class="group relative overflow-hidden rounded-lg bg-blue-500 px-6 py-3 text-white transition-all hover:shadow-lg hover:shadow-blue-500/30"
+			>
+				<span class="relative z-10">Upload Resume</span>
+				<div
+					class="absolute inset-0 z-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100"
+				></div>
+				<div class="absolute inset-0 z-0 animate-pulse bg-blue-400/20"></div>
+			</button>
+		{/if}
 	</div>
 </AnimatedSection>
 
