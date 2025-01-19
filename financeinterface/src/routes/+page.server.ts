@@ -42,7 +42,7 @@ export const actions: Actions = {
 		const res = await fetch(apiURL, requestInitOptions);
 
 		if (!res.ok) {
-			const response = await res.json();
+			const response = (await res.json()) as { message: string };
 			const errors: Array<CustomError> = [];
 			errors.push({ error: response.message, id: Math.floor(Math.random() * 100) });
 			return fail(400, { errors: errors });

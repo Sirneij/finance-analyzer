@@ -154,7 +154,7 @@ export async function fetchFollowers(): Promise<DevToFollowerCount> {
 		console.warn('Failed to cache followers:', error);
 	}
 
-	return followers;
+	return followers as DevToFollowerCount;
 }
 
 export const calculateTotalReactions = (articles: ProcessedDevToArticles) => {
