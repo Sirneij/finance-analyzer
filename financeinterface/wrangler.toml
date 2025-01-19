@@ -1,0 +1,10 @@
+name = "analyzer"
+account_id = "0e8114804b7c08866436b7ed0bbb5082"
+
+main = "./.cloudflare/worker.js"
+site.bucket = "./.cloudflare/public"
+
+build.command = "npm run build"
+
+compatibility_date = "2021-11-12"
+workers_dev = true
