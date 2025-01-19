@@ -7,6 +7,7 @@ import type {
 	StandaloneBlogPost,
 	UserData
 } from '$lib/types/github.types';
+
 import {
 	GITHUB_AUTH_TOKEN,
 	GITHUB_USERNAME,
@@ -42,7 +43,7 @@ async function fetchWithRetry(
 	try {
 		console.log(`Fetching URL: ${url}`, options);
 		const response = await fetch(url, options);
-		console.log('Response headers:', response.headers);
+		console.log('Response headers:', JSON.stringify(response.headers));
 		console.log('Response status:', response.status);
 		if (!response.ok) {
 			if (response.status === 429 && retries > 0) {
