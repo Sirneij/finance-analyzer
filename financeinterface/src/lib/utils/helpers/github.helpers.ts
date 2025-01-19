@@ -1,6 +1,5 @@
 import type {
 	BlogPost,
-	BlogSeries,
 	GithubUserDetails,
 	ProcessedBlogs,
 	Repository,
