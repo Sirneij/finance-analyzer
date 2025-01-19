@@ -1,7 +1,14 @@
+import {sequence} from '@sveltejs/kit/hooks';
+import * as Sentry from '@sentry/sveltekit';
 import { BASE_API_URI } from '$lib/utils/contants';
 import type { Handle } from '@sveltejs/kit';
 
-export const handle: Handle = async ({ event, resolve }) => {
+Sentry.init({
+    dsn: "https://348b21971fe395af3a7a3a544534b35c@o4508670763663360.ingest.us.sentry.io/4508670765629440",
+    tracesSampleRate: 1
+})
+
+export const handle: Handle = sequence(Sentry.sentryHandle(), async ({ event, resolve }) => {
 	if (event.locals.user) {
 		// if there is already a user  in session load page as normal
 		return await resolve(event);
@@ -37,4 +44,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	// load page as normal
 	return await resolve(event);
-};
+});
+export const handleError = Sentry.handleErrorWithSentry();

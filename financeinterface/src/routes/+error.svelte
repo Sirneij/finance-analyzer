@@ -73,6 +73,10 @@
 	};
 
 	const err = $derived(page.error as ErrorWithStack);
+
+	// Log the real error to the console
+
+	$inspect(err, 'error');
 </script>
 
 <div
