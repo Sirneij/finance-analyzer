@@ -18,8 +18,6 @@
 		"@eslint/compat": "^1.2.3",
 		"@sentry/types": "^8.50.0",
 		"@sveltejs/adapter-cloudflare": "^5.0.1",
-		"@sveltejs/adapter-node": "^5.2.9",
-		"@sveltejs/adapter-vercel": "^5.5.2",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/marked": "^5.0.2",
@@ -41,8 +39,6 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"@sentry/cloudflare": "^8.50.0",
-		"@sentry/sveltekit": "^8.50.0",
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
