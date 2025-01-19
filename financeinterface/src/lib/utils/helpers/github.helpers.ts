@@ -42,7 +42,8 @@ async function fetchWithRetry(
 	try {
 		console.log(`Fetching URL: ${url}`, options);
 		const response = await fetch(url, options);
-		console.log(`Response Status: ${response.status}`);
+		console.log('Response headers:', response.headers);
+		console.log('Response status:', response.status);
 		if (!response.ok) {
 			if (response.status === 429 && retries > 0) {
 				const retryAfter = parseInt(response.headers.get('Retry-After') || '5000');
