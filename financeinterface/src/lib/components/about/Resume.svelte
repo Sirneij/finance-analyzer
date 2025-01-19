@@ -11,8 +11,7 @@
 
 	let { resumeData = $bindable() }: { resumeData: Resume } = $props();
 
-	let expandedExp = $state<number | null>(null),
-		expandedSections = $state({
+	let expandedSections = $state({
 			experience: false,
 			education: false,
 			skills: false
@@ -25,9 +24,14 @@
 
 	$effect(() => {
 		onMount(async () => {
-			const res = await fetchResume();
-			resumeData = res;
-			isLoading = false;
+			try {
+				const data = await fetchResume();
+				resumeData = data;
+			} catch (error) {
+				console.error(error);
+			} finally {
+				isLoading = false;
+			}
 		});
 	});
 </script>
@@ -89,5 +93,9 @@
 				<SkillsComp skills={resumeData.skills} {expandedSections} />
 			</section>
 		</AnimatedSection>
+	</div>
+{:else if !isLoading && !resumeData}
+	<div class="mb-24 space-y-24 rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800/50">
+		<p class="text-3xl font-bold text-gray-900 dark:text-white">No resume data found</p>
 	</div>
 {/if}
