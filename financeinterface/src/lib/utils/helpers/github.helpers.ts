@@ -41,7 +41,9 @@ async function fetchWithRetry(
 	retries = MAX_RETRIES
 ): Promise<Response> {
 	try {
+		console.log(`Fetching URL: ${url}`, options);
 		const response = await fetch(url, options);
+		console.log(`Response Status: ${response.status}`);
 		if (!response.ok) {
 			if (response.status === 429 && retries > 0) {
 				const retryAfter = parseInt(response.headers.get('Retry-After') || '5000');
@@ -52,6 +54,7 @@ async function fetchWithRetry(
 		}
 		return response;
 	} catch (error) {
+		console.error(`Error during fetch: ${url}`, error);
 		if (retries > 0) return fetchWithRetry(url, options, retries - 1);
 		throw error;
 	}
@@ -133,10 +136,6 @@ export const getGithubDetails = async (
 	if (!GITHUB_AUTH_TOKEN) throw new Error('GitHub token is required');
 
 	const headers = createGitHubHeaders(GITHUB_AUTH_TOKEN);
-
-	console.log(
-		`Fetching GitHub data for ${GITHUB_USERNAME} with headers: ${JSON.stringify(headers)}`
-	);
 
 	try {
 		const [userData, reposData] = await Promise.all([
