@@ -4,27 +4,11 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
 
-export const load: PageServerLoad = async ({ fetch, cookies }) => {
-	const [githubDetails, resume] = await Promise.all([
-		getGithubDetails(fetch),
-		fetch(`${BASE_API_URI}/v1/resumes/JOHN_OWOLABI_IDOGUN_RESUME`, {
-			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			}
-		})
-			.then((res) => res.json())
-			.catch(() => ({
-				educations: [],
-				experiences: [],
-				skills: {},
-				projects: []
-			}))
-	]);
+export const load: PageServerLoad = async ({ fetch }) => {
+	const [githubDetails] = await Promise.all([getGithubDetails(fetch)]);
 
 	return {
-		githubData: githubDetails,
-		resume: resume
+		githubData: githubDetails
 	};
 };
 

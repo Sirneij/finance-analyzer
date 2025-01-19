@@ -10,11 +10,14 @@
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types.js';
 	import type { PageData } from './$types';
 	import JI from '$lib/components/logos/JI.svelte';
-	import Resume from '$lib/components/about/Resume.svelte';
+	import ResumeComp from '$lib/components/about/Resume.svelte';
+	import type { Resume } from '$lib/types/resume.types';
+	import Footer from '$lib/components/about/Footer.svelte';
 
 	let { data }: { data: PageData } = $props();
 
-	let devtoArticles: ProcessedDevToArticles | null = $state(null);
+	let devtoArticles: ProcessedDevToArticles | null = $state(null),
+		resumeData = $state({} as Resume);
 </script>
 
 <SEO {data} />
@@ -26,7 +29,7 @@
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
-				size={48}
+				size={40}
 				class="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
 			/>
 		</a>
@@ -41,12 +44,11 @@
 		<Hero githubUser={data.githubData.user} />
 
 		<!-- Profile Section -->
-		<Profile {data} />
+		<Profile {resumeData} githubData={data.githubData} />
 
 		<!-- Resume only when rug -->
-		{#if data.resume}
-			<Resume resumeData={data.resume} />
-		{/if}
+
+		<ResumeComp bind:resumeData />
 
 		<!-- GitHub Overview -->
 		<GitHubOverview githubUser={data.githubData.user} bind:devtoArticles />
@@ -56,4 +58,5 @@
 
 		<Articles bind:devtoArticles />
 	</AnimatedContainer>
+	<Footer />
 </div>

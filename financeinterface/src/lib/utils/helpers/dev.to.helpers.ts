@@ -10,7 +10,7 @@ const API_TIMEOUT = 10000; // 10 seconds
 const RETRY_ATTEMPTS = 3;
 const RETRY_DELAY = 1000; // 1 second
 
-async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
+export async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), API_TIMEOUT);
 
@@ -29,7 +29,7 @@ async function fetchWithTimeout(url: string, options: RequestInit): Promise<Resp
 	}
 }
 
-async function retryFetch<T>(
+export async function retryFetch<T>(
 	fetchFn: () => Promise<T>,
 	attempts: number = RETRY_ATTEMPTS
 ): Promise<T> {

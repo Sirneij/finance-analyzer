@@ -4,7 +4,7 @@
 	import { marked } from 'marked';
 	import SkillChart from './SkillChart.svelte';
 
-	let { data } = $props();
+	let { resumeData, githubData } = $props();
 </script>
 
 <div class="mb-16 grid gap-8 md:grid-cols-2">
@@ -17,7 +17,7 @@
 				>
 					<div class="h-full w-full rounded-full bg-white dark:bg-gray-900">
 						<img
-							src={data.githubData.user.avatar_url}
+							src={githubData.user.avatar_url}
 							alt="Profile"
 							class="h-full w-full rounded-full object-cover"
 							loading="lazy"
@@ -26,11 +26,11 @@
 				</div>
 			</div>
 		</div>
-		<h2 class="text-3xl font-semibold">Hello, I'm {data.githubData.user.name},</h2>
+		<h2 class="text-3xl font-semibold">Hello, I'm {githubData.user.name},</h2>
 		<p
 			class="mb-6 max-w-prose text-justify leading-8 tracking-wide text-gray-600 dark:text-gray-300"
 		>
-			{@html marked(data.resume.summary || data.githubData.specialRepo?.bio)}
+			{@html marked(resumeData.summary || githubData.specialRepo?.bio)}
 		</p>
 		<div class="flex space-x-4">
 			<a
@@ -56,7 +56,7 @@
 		<!-- New Tools/Languages Section -->
 		<div class="mt-6">
 			<div class="flex flex-wrap -space-x-4">
-				{#each data.githubData.languages as tool, i}
+				{#each githubData.languages as tool, i}
 					<div
 						class="relative mb-4 transform transition-all duration-300 hover:z-50 hover:-translate-y-2"
 					>
