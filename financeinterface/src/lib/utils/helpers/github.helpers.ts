@@ -134,6 +134,10 @@ export const getGithubDetails = async (
 
 	const headers = createGitHubHeaders(GITHUB_AUTH_TOKEN);
 
+	console.log(
+		`Fetching GitHub data for ${GITHUB_USERNAME} with headers: ${JSON.stringify(headers)}`
+	);
+
 	try {
 		const [userData, reposData] = await Promise.all([
 			fetchUserData(sveltekitFetch, headers),
