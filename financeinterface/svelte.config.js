@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-cloudflare';
+import adapter from '@sveltejs/adapter-netlify';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -12,17 +12,14 @@ const config = {
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
-			// See below for an explanation of these options
-			routes: {
-				include: ['/*'],
-				exclude: ['<all>']
-			},
-			platformProxy: {
-				configPath: 'wrangler.toml',
-				environment: undefined,
-				experimentalJsonConfig: false,
-				persist: false
-			}
+			// if true, will create a Netlify Edge Function rather
+			// than using standard Node-based functions
+			edge: false,
+
+			// if true, will split your app into multiple functions
+			// instead of creating a single one for the entire app.
+			// if `edge` is true, this option cannot be used
+			split: false
 		})
 	}
 };
