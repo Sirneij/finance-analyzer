@@ -57,6 +57,9 @@
     "winston": "^3.17.0",
     "ws": "^8.18.0"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "jest": {
     "extensionsToTreatAsEsm": [
       ".ts"
