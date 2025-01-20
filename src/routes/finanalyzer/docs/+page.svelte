@@ -26,7 +26,7 @@ const BASE_API_URI = 'https://finanalyzer.johnowolabiidogun.dev/api/v1';
 
 	const sampleAuth = `
 \`\`\`javascript
-const response = await fetch(\`\${BASE_API_URI}/v1/...\`, {
+const response = await fetch(\`\${BASE_API_URI}/...\`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
