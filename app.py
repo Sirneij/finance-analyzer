@@ -209,7 +209,7 @@ if __name__ == '__main__':
         web.run_app(
             app,
             host='0.0.0.0',
-            port=os.environ.get('PORT', 5173),
+            port=int(os.environ.get('PORT', 5173)),
         )
     except KeyboardInterrupt:
         base_settings.logger.info('Received keyboard interrupt...')
