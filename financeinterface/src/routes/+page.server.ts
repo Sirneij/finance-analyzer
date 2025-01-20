@@ -4,8 +4,8 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const [githubDetails] = await Promise.all([getGithubDetails(fetch)]);
+export const load: PageServerLoad = async () => {
+	const [githubDetails] = await Promise.all([getGithubDetails()]);
 
 	return {
 		githubData: githubDetails

@@ -41,10 +41,7 @@ async function fetchWithRetry(
 	retries = MAX_RETRIES
 ): Promise<Response> {
 	try {
-		console.log(`Fetching URL: ${url}`, options);
 		const response = await fetch(url, options);
-		console.log('Response headers:', JSON.stringify(response.headers));
-		console.log('Response status:', response.status);
 		if (!response.ok) {
 			if (response.status === 429 && retries > 0) {
 				const retryAfter = parseInt(response.headers.get('Retry-After') || '5000');
@@ -61,18 +58,12 @@ async function fetchWithRetry(
 	}
 }
 
-async function fetchUserData(
-	fetch: typeof globalThis.fetch,
-	headers: HeadersInit
-): Promise<UserData> {
+async function fetchUserData(headers: HeadersInit): Promise<UserData> {
 	const response = await fetchWithRetry(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}`, { headers });
 	return response.json();
 }
 
-async function fetchRepositories(
-	fetch: typeof globalThis.fetch,
-	headers: HeadersInit
-): Promise<Repository[]> {
+async function fetchRepositories(headers: HeadersInit): Promise<Repository[]> {
 	const response = await fetchWithRetry(
 		`${GITHUB_API_BASE}/user/repos?sort=updated&visibility=public`,
 		{ headers }
@@ -121,7 +112,7 @@ async function fetchLanguages(repos: Repository[], headers: HeadersInit) {
 		.sort((a, b) => b.bytes - a.bytes);
 }
 
-async function fetchReadmeContent(fetch: typeof globalThis.fetch, headers: HeadersInit) {
+async function fetchReadmeContent(headers: HeadersInit) {
 	const response = await fetchWithRetry(
 		`${GITHUB_API_BASE}/repos/${GITHUB_USERNAME}/${GITHUB_USERNAME}/readme`,
 		{
@@ -131,17 +122,15 @@ async function fetchReadmeContent(fetch: typeof globalThis.fetch, headers: Heade
 	return response.text();
 }
 
-export const getGithubDetails = async (
-	sveltekitFetch: typeof fetch
-): Promise<GithubUserDetails> => {
+export const getGithubDetails = async (): Promise<GithubUserDetails> => {
 	if (!GITHUB_AUTH_TOKEN) throw new Error('GitHub token is required');
 
 	const headers = createGitHubHeaders(GITHUB_AUTH_TOKEN);
 
 	try {
 		const [userData, reposData] = await Promise.all([
-			fetchUserData(sveltekitFetch, headers),
-			fetchRepositories(sveltekitFetch, headers)
+			fetchUserData(headers),
+			fetchRepositories(headers)
 		]);
 
 		const topRepos = reposData
@@ -149,7 +138,7 @@ export const getGithubDetails = async (
 			.slice(0, TOP_REPOS_LIMIT);
 
 		const languages = await fetchLanguages(reposData, headers);
-		const readmeContent = await fetchReadmeContent(sveltekitFetch, headers);
+		const readmeContent = await fetchReadmeContent(headers);
 
 		const bio =
 			readmeContent
