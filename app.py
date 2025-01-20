@@ -1,3 +1,4 @@
+import os
 from asyncio import Lock
 
 from aiohttp import WSMsgType, web
@@ -205,7 +206,11 @@ def init_app() -> web.Application:
 if __name__ == '__main__':
     app = init_app()
     try:
-        web.run_app(app, host='0.0.0.0', port=5173)
+        web.run_app(
+            app,
+            host='0.0.0.0',
+            port=os.environ.get('PORT', 5173),
+        )
     except KeyboardInterrupt:
         base_settings.logger.info('Received keyboard interrupt...')
     except Exception as e:

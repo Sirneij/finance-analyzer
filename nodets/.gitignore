@@ -1,8 +1,0 @@
-node_modules
-dist
-.env
-github.json
-test.json
-test.txt
-*/test.pdf
-coverage
