@@ -1,0 +1,11 @@
+tests/
+*.md
+*.pdf
+*.pyc
+*.log
+*.gz
+*.zip
+*.tar.gz
+__pycache__/
+*.pkl
+*.db
