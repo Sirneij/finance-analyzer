@@ -35,7 +35,7 @@
 		isCreating = true;
 		event.preventDefault();
 
-		const response = await fetch('/api/docs/create', {
+		const response = await fetch('/finanalyzer/api/docs/create', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

@@ -29,7 +29,7 @@
 		isUpdating = true;
 		event.preventDefault();
 
-		const response = await fetch(`/api/docs/${page.params.id}`, {
+		const response = await fetch(`/finanalyzer/api/docs/${page.params.id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
