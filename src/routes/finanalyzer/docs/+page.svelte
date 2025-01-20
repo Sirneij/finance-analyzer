@@ -7,9 +7,51 @@
 	import Calculator from '$lib/components/icons/Calculator.svelte';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
+	import hljs from 'highlight.js';
+	import 'highlight.js/styles/night-owl.min.css';
+	import { marked } from 'marked';
+	import type { ApiDoc } from '$lib/types/docs.types';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props<{ data: PageData }>();
-	let searchQuery = $state('');
+
+	let searchQuery = $state(''),
+		gettingStartedContainer = $state<HTMLDivElement>();
+
+	const sampleBaseURL = `
+\`\`\`javascript
+const BASE_API_URI = 'https://finanalyzer.johnowolabiidogun.dev/api/v1';
+\`\`\`
+`;
+
+	const sampleAuth = `
+\`\`\`javascript
+const response = await fetch(\`\${BASE_API_URI}/v1/...\`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Cookie: \`connect.sid=\${cookies.get('connect.sid')}\`
+    }
+});
+\`\`\`
+`;
+
+	$effect(() => {
+		if (gettingStartedContainer) {
+			hljs.highlightAll();
+		}
+	});
+
+	const suggestions: ApiDoc[] = $derived(
+		data.docs.filter((doc: ApiDoc) => {
+			const combined = (doc.path + doc.method + doc.description).toLowerCase();
+			return combined.includes(searchQuery.toLowerCase());
+		})
+	);
+	function handleSelect(doc: ApiDoc) {
+		searchQuery = '';
+		goto(`/finanalyzer/docs/${doc._id}`);
+	}
 </script>
 
 <div
@@ -57,6 +99,27 @@
 						placeholder="Search endpoints..."
 						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					/>
+
+					{#if suggestions.length > 0}
+						<ul class="absolute z-10 w-full rounded-lg border bg-white shadow-md dark:bg-gray-800">
+							{#each suggestions as doc}
+								<li>
+									<button
+										type="button"
+										class="w-full cursor-pointer px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+										onclick={() => handleSelect(doc)}
+										onkeydown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') {
+												handleSelect(doc);
+											}
+										}}
+									>
+										{doc.path} - {doc.method}
+									</button>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			</div>
 		</AnimatedSection>
@@ -66,15 +129,14 @@
 			<h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-white">API Categories</h2>
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each data.categories as category}
-					<a
-						href="/finanalyzer/docs/category/{category}"
+					<div
 						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 					>
 						<h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">{category}</h3>
 						<p class="text-sm text-gray-600 dark:text-gray-400">
 							{data.docs.filter((doc: { category: any }) => doc.category === category).length} endpoints
 						</p>
-					</a>
+					</div>
 				{/each}
 			</div>
 		</AnimatedSection>
@@ -115,14 +177,16 @@
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Getting Started
 			</h2>
-			<div class="space-y-6">
+			<div class="space-y-6" bind:this={gettingStartedContainer}>
 				<!-- Documentation Cards -->
 				<div
 					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
 				>
 					<p class="text-gray-600 dark:text-gray-300">
 						Our API uses REST architecture and returns responses in JSON format. All API requests
-						must be made over HTTPS and authenticated using your API key.
+						must be made over HTTPS and authenticated by including your cookies in the request
+						headers. This means you must be logged in to access the API and on only the server-side
+						of your frontend applications.
 					</p>
 				</div>
 
@@ -130,8 +194,7 @@
 					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
 				>
 					<h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Base URL</h3>
-					<pre
-						class="overflow-x-auto rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 p-4 font-mono text-sm text-white shadow-lg dark:from-black dark:to-gray-900">https://api.example.com/v1</pre>
+					{@html marked(sampleBaseURL)}
 				</div>
 
 				<div
@@ -139,10 +202,9 @@
 				>
 					<h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Authentication</h3>
 					<p class="mb-4 text-gray-600 dark:text-gray-300">
-						Include your API key in the Authorization header:
+						Include your session cookies in the request headers:
 					</p>
-					<pre
-						class="overflow-x-auto rounded-xl bg-gradient-to-br from-gray-900 to-gray-800 p-4 font-mono text-sm text-white shadow-lg dark:from-black dark:to-gray-900">Authorization: Bearer YOUR_API_KEY</pre>
+					{@html marked(sampleAuth)}
 				</div>
 			</div>
 		</AnimatedSection>
