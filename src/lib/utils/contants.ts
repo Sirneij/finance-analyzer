@@ -10,6 +10,9 @@ export const DEVTO_API_KEY = import.meta.env.VITE_DEVTO_API_KEY;
 
 export const BASE_WS_URI = BASE_API_URI.replace(/^http/, 'ws').replace('/api', '/ws');
 
+export const GITHUB_AUTH_TOKEN: string = import.meta.env.VITE_GITHUB_AUTH_TOKEN;
+export const GITHUB_USERNAME: string = import.meta.env.VITE_GITHUB_USERNAME;
+
 export const COLORS = {
 	income: {
 		chart: '#22C55E',
@@ -59,9 +62,6 @@ export const LANGUAGES_MAP: Record<SupportedLanguage, Language> = {
 		hljsLanguage: 'rust'
 	}
 };
-
-export const GITHUB_AUTH_TOKEN: string = import.meta.env.VITE_GITHUB_AUTH_TOKEN;
-export const GITHUB_USERNAME: string = import.meta.env.VITE_GITHUB_USERNAME;
 
 export const NAME_OF_TOOLS_ON_DEVICON_TO_INCLUDE = {
 	'c++': 'cplusplus',

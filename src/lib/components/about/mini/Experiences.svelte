@@ -1,15 +1,26 @@
 <script lang="ts">
+	import type { Experience } from '$lib/types/resume.types';
 	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { parseEndDate } from '$lib/utils/helpers/resume.helpers';
 	import { normalizeTechnologyNameAndGetIcon } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
 
-	let { experiences, expandedSections = $bindable() } = $props();
+	let {
+		experiences,
+		expandedSections = $bindable()
+	}: { experiences: Experience[]; expandedSections: { experience: boolean } } = $props();
 
 	let expandedExp = $state<number | null>(null);
 
 	const toggleExpand = (index: number) => {
 		expandedExp = expandedExp === index ? null : index;
 	};
+
+	const sortedExperiences: Experience[] = $derived(
+		experiences
+			.slice()
+			.sort((a: Experience, b: Experience) => parseEndDate(b.period) - parseEndDate(a.period))
+	);
 </script>
 
 {#if expandedSections.experience}
@@ -23,7 +34,7 @@
 
 			<!-- The items themselves -->
 			<div class="space-y-16">
-				{#each experiences as exp, i (exp.company + exp.period)}
+				{#each sortedExperiences as exp, i (exp.company + exp.period)}
 					<div
 						in:sequencedFly={{
 							y: 100,

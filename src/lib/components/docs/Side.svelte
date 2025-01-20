@@ -62,12 +62,12 @@
 					<ul class="space-y-1">
 						{#each docs.filter((doc: ApiDoc) => doc.category === category) as doc}
 							<li
-								class={page.url.pathname === `/docs/${doc._id}`
+								class={page.url.pathname === `/finanalyzer/docs/${doc._id}`
 									? 'bg-gray-50 dark:bg-gray-800/50'
 									: ''}
 							>
 								<a
-									href={`/docs/${doc._id}`}
+									href={`/finanalyzer/docs/${doc._id}`}
 									class="group flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800/50"
 									title={doc.path}
 								>
@@ -98,7 +98,7 @@
 				{#each docs as doc}
 					<li>
 						<a
-							href={`/docs/${doc._id}`}
+							href={`/finanalyzer/docs/${doc._id}`}
 							class="flex justify-center rounded-lg py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50"
 							title={doc.path}
 						>

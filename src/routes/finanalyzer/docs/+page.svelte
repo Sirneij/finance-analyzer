@@ -67,7 +67,7 @@
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each data.categories as category}
 					<a
-						href="/docs/category/{category}"
+						href="/finanalyzer/docs/category/{category}"
 						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 					>
 						<h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">{category}</h3>
@@ -87,7 +87,7 @@
 			<div class="space-y-4">
 				{#each data.popularEndpoints as endpoint}
 					<a
-						href="/docs/{endpoint._id}"
+						href="/finanalyzer/docs/{endpoint._id}"
 						class="group block overflow-hidden rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-gray-700/50 dark:bg-gray-800/50"
 					>
 						<div class="flex items-center justify-between">

@@ -1,15 +1,26 @@
 <script lang="ts">
+	import type { Education } from '$lib/types/resume.types';
 	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { parseEndDate } from '$lib/utils/helpers/resume.helpers';
 	import { stripOffCGPAFronDegree } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
 
-	let { education, expandedSections } = $props();
+	let {
+		education,
+		expandedSections
+	}: { education: Education[]; expandedSections: { education: boolean } } = $props();
 
 	let expandedEdu = $state<number | null>(null);
 
 	const toggleExpand = (index: number) => {
 		expandedEdu = expandedEdu === index ? null : index;
 	};
+
+	const sortedEducation: Education[] = $derived(
+		education
+			.slice()
+			.sort((a: Education, b: Education) => parseEndDate(b.period) - parseEndDate(a.period))
+	);
 </script>
 
 {#if expandedSections.education}
@@ -18,7 +29,7 @@
 			class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-indigo-500 to-teal-500 opacity-20"
 		></div>
 		<div class="space-y-16">
-			{#each education as edu, i (edu.school + edu.period)}
+			{#each sortedEducation as edu, i (edu.school + edu.period)}
 				<div
 					in:sequencedFly={{
 						y: 100,

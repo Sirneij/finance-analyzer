@@ -15,3 +15,26 @@ export const fetchResume = async () => {
 
 	return resume as Resume;
 };
+
+const monthMap = {
+	Jan: 0,
+	Feb: 1,
+	Mar: 2,
+	Apr: 3,
+	May: 4,
+	Jun: 5,
+	Jul: 6,
+	Aug: 7,
+	Sep: 8,
+	Oct: 9,
+	Nov: 10,
+	Dec: 11
+} as const;
+
+export function parseEndDate(period: string): number {
+	// ...existing code...
+	const [_, end] = period.split(' - ');
+	if (!end || /present/i.test(end)) return Number.MAX_SAFE_INTEGER;
+	const [month, year] = end.replace('.', '').split(' ');
+	return new Date(parseInt(year), monthMap[month as keyof typeof monthMap] ?? 0).getTime();
+}

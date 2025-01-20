@@ -42,7 +42,7 @@
 				Create Doc
 			</a>
 			<a
-				href="/docs"
+				href="/finanalyzer/docs"
 				class="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400"
 			>
 				View all docs
