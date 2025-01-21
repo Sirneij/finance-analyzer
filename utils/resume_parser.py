@@ -98,15 +98,34 @@ async def parse_single_experience(
     while j < len(exp_lines):
         if exp_lines[j].startswith('• '):
             break
+
         if exp_lines[j].startswith('◦Technologies:'):
             tech_str = exp_lines[j].split('Technologies:', 1)[1].strip()
-            # Split only on commas outside parentheses
+            j += 1
+            while (
+                j < len(exp_lines)
+                and not exp_lines[j].startswith('◦')
+                and not exp_lines[j].startswith('• ')
+            ):
+                tech_str += ' ' + exp_lines[j].strip()
+                j += 1
             items = split_on_commas_outside_parentheses(tech_str)
             tech_stack = [t.strip() for t in items if t.strip()]
 
         elif exp_lines[j].startswith('◦'):
-            achievements.append(exp_lines[j].lstrip('◦').strip())
-        j += 1
+            achievement = exp_lines[j].lstrip('◦').strip()
+            j += 1
+            while (
+                j < len(exp_lines)
+                and not exp_lines[j].startswith('◦')
+                and not exp_lines[j].startswith('• ')
+            ):
+                achievement += ' ' + exp_lines[j].strip()
+                j += 1
+            achievements.append(achievement)
+
+        else:
+            j += 1
 
     return {
         'role': role,
@@ -151,8 +170,18 @@ async def parse_single_education(
         if edu_lines[j].startswith('• '):
             break
         if edu_lines[j].startswith('◦'):
-            achievements.append(edu_lines[j].lstrip('◦').strip())
-        j += 1
+            achievement = edu_lines[j].lstrip('◦').strip()
+            j += 1
+            while (
+                j < len(edu_lines)
+                and not edu_lines[j].startswith('◦')
+                and not edu_lines[j].startswith('• ')
+            ):
+                achievement += ' ' + edu_lines[j].strip()
+                j += 1
+            achievements.append(achievement)
+        else:
+            j += 1
 
     return {
         'degree': degree_line,
