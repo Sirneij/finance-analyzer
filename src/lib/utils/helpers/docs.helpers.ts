@@ -49,3 +49,35 @@ export function formatRange(num: number): string {
 	const hundreds = Math.floor(num / 100) * 100;
 	return `${hundreds}+`;
 }
+
+export function getStatusColorClass(status: string): string {
+	const statusCode = parseInt(status, 10);
+	if (statusCode >= 200 && statusCode < 300) {
+		return 'from-green-500 to-emerald-500';
+	} else if (statusCode >= 300 && statusCode < 400) {
+		return 'from-blue-500 to-indigo-500';
+	} else if (statusCode >= 400 && statusCode < 500) {
+		return 'from-yellow-500 to-orange-500';
+	} else if (statusCode >= 500) {
+		return 'from-red-500 to-rose-500';
+	}
+	return 'from-gray-500 to-slate-500'; // default
+}
+
+export const sampleBaseURL = `
+\`\`\`javascript
+const BASE_API_URI = 'https://finanalyzer.johnowolabiidogun.dev/api/v1';
+\`\`\`
+`;
+
+export const sampleAuth = `
+\`\`\`javascript
+const response = await fetch(\`\${BASE_API_URI}/...\`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Cookie: \`connect.sid=\${cookies.get('connect.sid')}\`
+    }
+});
+\`\`\`
+`;

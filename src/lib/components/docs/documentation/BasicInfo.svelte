@@ -13,7 +13,7 @@
 </script>
 
 {#if selectedEndpoint}
-	<div class="flex items-center gap-3">
+	<div class="mb-4 flex items-center gap-3">
 		<MethodBadge method={formState.method} />
 		<span class="text-gray-900 dark:text-white">{formState.path}</span>
 	</div>

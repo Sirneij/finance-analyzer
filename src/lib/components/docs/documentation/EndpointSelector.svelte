@@ -1,9 +1,8 @@
 <script lang="ts">
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
-	import MethodBadge from '$lib/components/docs/MethodBadge.svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import type { Endpoint } from '$lib/types/docs.types';
-	import { slide } from 'svelte/transition';
+	import Endpoints from './Endpoints.svelte';
 
 	let {
 		endpoints,
@@ -28,7 +27,7 @@
 	}
 </script>
 
-<AnimatedSection x={-50} class="relative mb-8">
+<AnimatedSection x={-50} class="relative mb-4">
 	<button
 		onclick={() => (isOpen = !isOpen)}
 		class="flex w-full items-center justify-between bg-white px-4 py-3 text-left hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600"
@@ -39,17 +38,5 @@
 		<Caret trend={isOpen ? 'up' : 'down'} class="h-5 w-5 transition-transform dark:text-white" />
 	</button>
 
-	{#if isOpen}
-		<div transition:slide class="absolute z-10 mt-2 w-full bg-white shadow-lg dark:bg-gray-700">
-			{#each endpoints as endpoint}
-				<button
-					onclick={() => handleEndpointSelect(endpoint)}
-					class="w-full px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-600"
-				>
-					<MethodBadge method={endpoint.method} />
-					<span class="ml-2 text-gray-800 dark:text-gray-200">{endpoint.path}</span>
-				</button>
-			{/each}
-		</div>
-	{/if}
+	<Endpoints {endpoints} {isOpen} {handleEndpointSelect} />
 </AnimatedSection>

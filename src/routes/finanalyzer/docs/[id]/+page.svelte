@@ -1,43 +1,25 @@
 <script lang="ts">
-	import { marked } from 'marked';
 	import Side from '$lib/components/docs/Side.svelte';
 	import type { PageData } from '../$types';
 	import CodeSnippets from '$lib/components/docs/CodeSnippets.svelte';
 	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
 	import { fly } from 'svelte/transition';
-	import hljs from 'highlight.js';
-	import 'highlight.js/styles/night-owl.min.css';
 	import type { CodeExample } from '$lib/types/docs.types';
 	import { LANGUAGES_MAP } from '$lib/utils/contants';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
+	import hljs from 'highlight.js';
+	import 'highlight.js/styles/night-owl.min.css';
+
+	import Description from '$lib/components/docs/Description.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	let isSidebarOpen = $state(false),
 		isCollapsed = $state(false),
 		currentExample = $state<CodeExample>(data.currentDoc.examples[0]),
-		codeSnippetContainer = $state<HTMLDivElement>();
-
-	// Handle mobile responsiveness
-	let isMobile = $state(false);
-
-	$effect(() => {
-		hljs.highlightAll();
-		// Check screen size on mount and resize
-		const checkMobile = () => {
-			isMobile = window.innerWidth < 1024;
-			if (isMobile) {
-				isCollapsed = true;
-				isSidebarOpen = false;
-			}
-		};
-
-		checkMobile();
-		window.addEventListener('resize', checkMobile);
-		window.scrollTo(0, 0);
-
-		return () => window.removeEventListener('resize', checkMobile);
-	});
+		codeSnippetContainer = $state<HTMLDivElement>(),
+		// Handle mobile responsiveness
+		isMobile = $state(false);
 
 	$effect(() => {
 		if (currentExample && codeSnippetContainer) {
@@ -61,6 +43,23 @@
 				}
 			});
 		}
+	});
+
+	$effect(() => {
+		// Check screen size on mount and resize
+		const checkMobile = () => {
+			isMobile = window.innerWidth < 1024;
+			if (isMobile) {
+				isCollapsed = true;
+				isSidebarOpen = false;
+			}
+		};
+
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		window.scrollTo(0, 0);
+
+		return () => window.removeEventListener('resize', checkMobile);
 	});
 </script>
 
@@ -106,56 +105,8 @@
 				<div
 					class="grid gap-8 {data.currentDoc.examples.length ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}"
 				>
-					<div class="space-y-8">
-						<AnimatedSection y={20}>
-							<h1 class="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl lg:text-4xl">
-								{data.currentDoc.path}
-							</h1>
-							<div class="mt-4 flex flex-wrap items-center gap-2">
-								<span
-									class="rounded border border-indigo-200 bg-blue-50 px-4 py-1 text-xs font-medium text-indigo-700 dark:border-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300"
-								>
-									{data.currentDoc.method}
-								</span>
-								<span class="text-sm text-gray-600 dark:text-gray-400">
-									{data.currentDoc.category}
-								</span>
-							</div>
-						</AnimatedSection>
-
-						<AnimatedSection
-							y={30}
-							delay={200}
-							class="prose prose-blue max-w-none dark:prose-invert"
-						>
-							{@html marked(data.currentDoc.description)}
-						</AnimatedSection>
-
-						{#if data.currentDoc.responses.length}
-							<AnimatedSection y={40} delay={400} class="space-y-4">
-								<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Responses</h2>
-								{#each data.currentDoc.responses as response}
-									<div
-										class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6"
-									>
-										<div class="mb-4 flex flex-wrap items-center gap-2">
-											<span
-												class="rounded-full bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-1 text-xs font-medium text-white shadow-sm"
-											>
-												{response.status}
-											</span>
-											<span class="text-sm text-gray-600 dark:text-gray-400">
-												{@html marked(response.description)}
-											</span>
-										</div>
-										<div class="prose prose-blue max-w-none dark:prose-invert">
-											{@html marked(response.example)}
-										</div>
-									</div>
-								{/each}
-							</AnimatedSection>
-						{/if}
-					</div>
+					<!-- Description -->
+					<Description currentDoc={data.currentDoc} />
 
 					{#if data.currentDoc.examples.length}
 						<!-- Code Snippets -->

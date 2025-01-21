@@ -11,30 +11,16 @@
 	import 'highlight.js/styles/night-owl.min.css';
 	import { marked } from 'marked';
 	import type { ApiDoc } from '$lib/types/docs.types';
-	import { goto } from '$app/navigation';
+	import { sampleAuth, sampleBaseURL } from '$lib/utils/helpers/docs.helpers';
+	import MethodBadge from '$lib/components/docs/MethodBadge.svelte';
+	import { flip } from 'svelte/animate';
+	import { fade, slide } from 'svelte/transition';
+	import Endpoints from '$lib/components/docs/documentation/Endpoints.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
 	let searchQuery = $state(''),
 		gettingStartedContainer = $state<HTMLDivElement>();
-
-	const sampleBaseURL = `
-\`\`\`javascript
-const BASE_API_URI = 'https://finanalyzer.johnowolabiidogun.dev/api/v1';
-\`\`\`
-`;
-
-	const sampleAuth = `
-\`\`\`javascript
-const response = await fetch(\`\${BASE_API_URI}/...\`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        Cookie: \`connect.sid=\${cookies.get('connect.sid')}\`
-    }
-});
-\`\`\`
-`;
 
 	$effect(() => {
 		if (gettingStartedContainer) {
@@ -48,10 +34,6 @@ const response = await fetch(\`\${BASE_API_URI}/...\`, {
 			return combined.includes(searchQuery.toLowerCase());
 		})
 	);
-	function handleSelect(doc: ApiDoc) {
-		searchQuery = '';
-		goto(`/finanalyzer/docs/${doc._id}`);
-	}
 </script>
 
 <div
@@ -100,25 +82,14 @@ const response = await fetch(\`\${BASE_API_URI}/...\`, {
 						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					/>
 
-					{#if suggestions.length > 0}
-						<ul class="absolute z-10 w-full rounded-lg border bg-white shadow-md dark:bg-gray-800">
-							{#each suggestions as doc}
-								<li>
-									<button
-										type="button"
-										class="w-full cursor-pointer px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
-										onclick={() => handleSelect(doc)}
-										onkeydown={(e) => {
-											if (e.key === 'Enter' || e.key === ' ') {
-												handleSelect(doc);
-											}
-										}}
-									>
-										{doc.path} - {doc.method}
-									</button>
-								</li>
-							{/each}
-						</ul>
+					{#if searchQuery.length >= 2}
+						<div class="absolute z-10 w-full rounded-lg border bg-white shadow-md dark:bg-gray-800">
+							{#if suggestions.length === 0}
+								<div class="p-4 text-gray-600 dark:text-gray-400">No results found</div>
+							{:else}
+								<Endpoints endpoints={suggestions} isOpen={true} handleEndpointSelect={null} />
+							{/if}
+						</div>
 					{/if}
 				</div>
 			</div>
@@ -127,7 +98,7 @@ const response = await fetch(\`\${BASE_API_URI}/...\`, {
 		<!-- Categories -->
 		<AnimatedSection y={30} delay={200} class="mb-16">
 			<h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-white">API Categories</h2>
-			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				{#each data.categories as category}
 					<div
 						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
@@ -146,27 +117,24 @@ const response = await fetch(\`\${BASE_API_URI}/...\`, {
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Popular Endpoints
 			</h2>
-			<div class="space-y-4">
-				{#each data.popularEndpoints as endpoint}
+			<div class="flex flex-row flex-wrap gap-4">
+				{#each data.popularEndpoints as endpoint (endpoint._id)}
 					<a
 						href="/finanalyzer/docs/{endpoint._id}"
-						class="group block overflow-hidden rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-xl dark:border-gray-700/50 dark:bg-gray-800/50"
+						animate:flip={{ duration: 300 }}
+						in:fade|local={{ duration: 300 }}
+						out:slide|local={{ duration: 300 }}
+						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
 					>
 						<div class="flex items-center justify-between">
-							<div>
-								<div class="font-mono text-sm font-medium text-gray-900 dark:text-white">
-									{endpoint.path}
-								</div>
-								<div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-									{endpoint.category}
-								</div>
-							</div>
-							<span
-								class="rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-4 py-1 text-xs font-medium text-white shadow-lg"
-							>
-								{endpoint.method}
+							<MethodBadge method={endpoint.method} />
+							<span class="text-sm font-medium text-gray-500 dark:text-gray-400">
+								{endpoint.category}
 							</span>
 						</div>
+						<p class="mt-4 text-left font-mono text-sm text-gray-900 dark:text-white">
+							{endpoint.path}
+						</p>
 					</a>
 				{/each}
 			</div>

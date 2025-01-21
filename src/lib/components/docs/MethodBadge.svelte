@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HttpMethod } from '$lib/types/docs.types';
-	export let method: HttpMethod;
+	let { method }: { method: HttpMethod } = $props();
 
 	const colors = {
 		GET: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',

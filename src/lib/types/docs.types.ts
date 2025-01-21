@@ -32,7 +32,7 @@ export interface CodeExample {
 export interface ApiDoc {
 	_id: string;
 	path: string;
-	method: string;
+	method: HttpMethod;
 	middlewares: string[];
 	category: string;
 	description: string;
