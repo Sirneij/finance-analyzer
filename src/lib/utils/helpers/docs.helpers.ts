@@ -101,10 +101,9 @@ interface Code {
 
 const renderer = new marked.Renderer();
 
-renderer.code = function ({ text, lang, escaped }: Code) {
+renderer.code = function ({ text, lang }: Code) {
 	const validLanguage = lang || 'text';
 	const lines = text.split('\n');
-	const uniqueId = Math.random().toString(36).substring(7);
 
 	return `
 	  <div class="relative group rounded-lg overflow-hidden">

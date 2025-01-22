@@ -129,7 +129,13 @@ export const GITHUB_LANGUAGE_COLORS = {
 	django: '#092e20',
 	perl: '#0298c3',
 	flask: '#000000',
-	tex: '#3D6117'
+	tex: '#3D6117',
+	json: '#292929',
+	apache: '#D22128',
+	nginx: '#269539',
+	redis: '#DC382D',
+	oracle: '#F80000',
+	shell: '#89e051'
 };
 
 export const SKILLS = [
