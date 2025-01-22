@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
-	import type { Endpoint } from '$lib/types/docs.types';
+	import type { Endpoint, FormState } from '$lib/types/docs.types';
 	import Endpoints from './Endpoints.svelte';
 
 	let {
@@ -11,7 +11,7 @@
 	}: {
 		endpoints: Endpoint[];
 		selectedEndpoint: Endpoint | null;
-		formState: any;
+		formState: FormState;
 	} = $props();
 
 	let isOpen = $state(false);

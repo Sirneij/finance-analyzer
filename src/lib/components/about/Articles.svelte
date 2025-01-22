@@ -45,7 +45,7 @@
 		<!-- Series Posts -->
 		{#if Object.entries(devtoArticles.series).length > 0}
 			<div class="space-y-2">
-				{#each Object.entries(devtoArticles.series) as [seriesName, articles], i (seriesName)}
+				{#each Object.entries(devtoArticles.series) as [seriesName, articles] (seriesName)}
 					<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30">
 						<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 							<!-- Series Header -->

@@ -2,15 +2,16 @@
 	import Close from '$lib/components/icons/Close.svelte';
 	import { LANGUAGES } from '$lib/utils/contants';
 	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import type { ExampleCode, FormState } from '$lib/types/docs.types';
 
-	let { formState = $bindable() }: { formState: any } = $props();
+	let { formState = $bindable() }: { formState: FormState } = $props();
 
 	function addCodeExample() {
 		formState.examples = [...formState.examples, { language: 'nodejs', code: '' }];
 	}
 
 	function removeExample(index: number) {
-		formState.examples = formState.examples.filter((_: any, i: number) => i !== index);
+		formState.examples = formState.examples.filter((_: ExampleCode, i: number) => i !== index);
 	}
 </script>
 

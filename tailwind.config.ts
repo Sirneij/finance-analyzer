@@ -11,6 +11,10 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Fira Sans', 'sans-serif']
+			},
+			screens: {
+				xs: { max: '455px' },
+				sw: '555px'
 			}
 		}
 	},

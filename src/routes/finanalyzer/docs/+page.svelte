@@ -16,6 +16,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade, slide } from 'svelte/transition';
 	import Endpoints from '$lib/components/docs/documentation/Endpoints.svelte';
+	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -83,7 +84,10 @@
 					/>
 
 					{#if searchQuery.length >= 2}
-						<div class="absolute z-10 w-full rounded-lg border bg-white shadow-md dark:bg-gray-800">
+						<div
+							class="absolute z-10 w-full rounded-lg border bg-white shadow-md dark:bg-gray-800"
+							transition:slide={{ duration: SLIDE_DURATION }}
+						>
 							{#if suggestions.length === 0}
 								<div class="p-4 text-gray-600 dark:text-gray-400">No results found</div>
 							{:else}
@@ -99,15 +103,20 @@
 		<AnimatedSection y={30} delay={200} class="mb-16">
 			<h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-white">API Categories</h2>
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-				{#each data.categories as category}
-					<div
+				{#each data.categoryDocMappings as categoryDocMapping}
+					<a
+						href="/finanalyzer/docs/{categoryDocMapping.docId}#{categoryDocMapping.category}"
 						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 					>
-						<h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">{category}</h3>
+						<h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+							{categoryDocMapping.category}
+						</h3>
 						<p class="text-sm text-gray-600 dark:text-gray-400">
-							{data.docs.filter((doc: { category: any }) => doc.category === category).length} endpoints
+							{data.docs.filter(
+								(doc: { category: string }) => doc.category === categoryDocMapping.category
+							).length} endpoints
 						</p>
-					</div>
+					</a>
 				{/each}
 			</div>
 		</AnimatedSection>

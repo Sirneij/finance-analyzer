@@ -15,7 +15,7 @@
 	<!-- Animated loading bars background -->
 	<div class="absolute inset-0 z-0 h-full w-full">
 		<div class="flex h-full w-full items-end justify-between gap-1.5 px-4">
-			{#each Array(12) as _, i}
+			{#each Array(12) as i}
 				<div
 					class="w-full animate-[pulse_2s_ease-in-out_infinite] rounded-t-sm bg-gray-200 dark:bg-gray-700"
 					style="height: {Math.random() * 80 + 10}%; animation-delay: {i * 150}ms;"

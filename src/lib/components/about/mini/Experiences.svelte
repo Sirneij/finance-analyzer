@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Experience } from '$lib/types/resume.types';
-	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 	import { parseEndDate } from '$lib/utils/helpers/resume.helpers';
 	import { normalizeTechnologyNameAndGetIcon } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
@@ -25,7 +25,7 @@
 
 {#if expandedSections.experience}
 	<!-- Parent container has a slide in/out transition -->
-	<div transition:slide={{ duration: SLIDE_DURATION }}>
+	<div>
 		<div class="relative">
 			<!-- Vertical line behind items -->
 			<div
@@ -33,23 +33,9 @@
 			></div>
 
 			<!-- The items themselves -->
-			<div class="space-y-16">
+			<div class="space-y-16" transition:slide={{ duration: SLIDE_DURATION }}>
 				{#each sortedExperiences as exp, i (exp.company + exp.period)}
 					<div
-						in:sequencedFly={{
-							y: 100,
-							x: -50,
-							index: i,
-							total: experiences.length,
-							isEntering: true
-						}}
-						out:sequencedFly={{
-							y: -100,
-							x: 50,
-							index: i,
-							total: experiences.length,
-							isEntering: false
-						}}
 						class="group relative pl-8"
 						role="button"
 						tabindex="0"

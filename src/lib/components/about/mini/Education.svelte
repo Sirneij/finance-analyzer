@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Education } from '$lib/types/resume.types';
-	import { sequencedFly, SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 	import { parseEndDate } from '$lib/utils/helpers/resume.helpers';
 	import { stripOffCGPAFronDegree } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
@@ -24,27 +24,13 @@
 </script>
 
 {#if expandedSections.education}
-	<div class="relative" transition:slide={{ duration: SLIDE_DURATION }}>
+	<div class="relative">
 		<div
 			class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-indigo-500 to-teal-500 opacity-20"
 		></div>
-		<div class="space-y-16">
+		<div class="space-y-16" transition:slide={{ duration: SLIDE_DURATION }}>
 			{#each sortedEducation as edu, i (edu.school + edu.period)}
 				<div
-					in:sequencedFly={{
-						y: 100,
-						x: -50,
-						index: i,
-						total: education.length,
-						isEntering: true
-					}}
-					out:sequencedFly={{
-						y: -100,
-						x: 50,
-						index: i,
-						total: education.length,
-						isEntering: false
-					}}
 					class="group relative pl-8"
 					role="button"
 					tabindex="0"
@@ -80,7 +66,6 @@
 							{edu.schoolDescription}
 						</p>
 						<p class="mt-2 text-gray-500 dark:text-gray-400">{edu.location}</p>
-						<p class="mt-4 text-gray-700 dark:text-gray-200">{edu.description}</p>
 
 						<!-- Expandable content for achievements -->
 						{#if expandedEdu === i}

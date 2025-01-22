@@ -47,7 +47,36 @@ export interface ApiDoc {
 		code: string;
 		_id: string;
 	}>;
-	parameters: any[];
+	parameters: Parameter[];
 	createdAt: string;
 	updatedAt: string;
+}
+
+export interface Parameter {
+	name: string;
+	type: string;
+	required: boolean;
+	description: string;
+}
+
+export interface Response {
+	status: number;
+	description: string;
+	example: string;
+}
+
+export interface ExampleCode {
+	language: SupportedLanguage;
+	code: string;
+}
+
+export interface FormState {
+	path: string;
+	method: HttpMethod;
+	middlewares: string[];
+	category: string;
+	description: string;
+	params: Parameter[];
+	responses: Response[];
+	examples: ExampleCode[];
 }

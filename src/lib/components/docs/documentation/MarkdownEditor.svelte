@@ -41,6 +41,7 @@
 		<div class="prose prose-blue max-w-none dark:prose-invert">{@html htmlContent}</div>
 	{:else}
 		<textarea
+			{id}
 			{required}
 			{rows}
 			{placeholder}

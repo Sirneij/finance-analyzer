@@ -18,7 +18,7 @@
 	let formState = $state(data.doc);
 
 	let selectedEndpoint = $state<Endpoint | null>(
-			data.endpoints.find((e: any) => e.path === formState.path)
+			data.endpoints.find((e: Endpoint) => e.path === formState.path)
 		),
 		form = $state({ errors: [] }),
 		isUpdating = $state(false);

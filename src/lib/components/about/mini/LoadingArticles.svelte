@@ -1,7 +1,7 @@
 <div class="space-y-8">
 	<!-- Series Skeletons -->
-	{#each Array(2) as _}
-		<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30 p-[1px]">
+	{#each Array(2) as i}
+		<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30 p-[1px]" id={i}>
 			<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 				<div class="p-4">
 					<div class="flex items-center justify-between">
@@ -18,8 +18,8 @@
 		<div class="mb-6 h-8 w-40 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700"></div>
 		<div class="relative w-full">
 			<div class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4">
-				{#each Array(3) as _}
-					<div class="w-[350px] flex-none">
+				{#each Array(3) as i}
+					<div class="w-[350px] flex-none" id={i}>
 						<div class="h-48 animate-pulse rounded-t-xl bg-gray-200 dark:bg-gray-700"></div>
 						<div class="space-y-4 p-4">
 							<div class="h-6 w-3/4 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700"></div>

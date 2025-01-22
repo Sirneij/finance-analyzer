@@ -1,6 +1,7 @@
 <script lang="ts">
 	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
-	let { formState = $bindable() }: { formState: any } = $props();
+	import type { FormState } from '$lib/types/docs.types';
+	let { formState = $bindable() }: { formState: FormState } = $props();
 
 	const addParameter = () => {
 		formState.params = [
@@ -22,7 +23,11 @@
 		</button>
 	</div>
 	{#each formState.params as param, i}
-		<div class="grid gap-4 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700">
+		<div
+			class="grid gap-4 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700 {i === 0
+				? 'rounded-t-lg'
+				: ''}"
+		>
 			<div class="grid gap-4 md:grid-cols-3">
 				<input
 					bind:value={param.name}

@@ -10,7 +10,7 @@
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/night-owl.min.css';
-
+	import Search from '$lib/components/docs/Search.svelte';
 	import Description from '$lib/components/docs/Description.svelte';
 
 	let { data } = $props<{ data: PageData }>();
@@ -64,8 +64,9 @@
 </script>
 
 <div class="relative min-h-screen bg-white dark:bg-gray-900">
+	<Search docs={data.docs} />
 	<ThemeSwitcher
-		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-sm hover:shadow-md dark:bg-gray-800"
+		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-sm hover:shadow-md dark:bg-gray-800 xs:left-[16.5rem] xs:right-auto"
 	/>
 
 	<!-- Mobile Menu Button -->

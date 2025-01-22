@@ -23,7 +23,7 @@ interface Education {
 	location: string;
 	period: string;
 	schoolDescription: string;
-	achievements?: string[];
+	achievements: string[];
 }
 
 type SkillCategories =

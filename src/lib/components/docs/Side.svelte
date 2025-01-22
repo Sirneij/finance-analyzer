@@ -2,6 +2,9 @@
 	import type { ApiDoc } from '$lib/types/docs.types';
 	import Logo from '$lib/components/logos/Logo.svelte';
 	import { page } from '$app/state';
+	import MethodBadge from './MethodBadge.svelte';
+	import Caret from '../icons/Caret.svelte';
+	import { slide } from 'svelte/transition';
 
 	let {
 		docs,
@@ -15,17 +18,25 @@
 		isCollapsed: boolean;
 	}>();
 
-	const categories = $derived([...new Set(docs.map((doc: ApiDoc) => doc.category))]);
+	const categories = $derived([...new Set<string>(docs.map((doc: ApiDoc) => doc.category))]);
 
-	const methodColors = {
-		GET: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800',
-		POST: 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-800',
-		PUT: 'bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-800',
-		DELETE:
-			'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/50 dark:text-red-300 dark:border-red-800',
-		PATCH:
-			'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/50 dark:text-purple-300 dark:border-purple-800'
-	};
+	// Change to simple object
+	let expandedCategories = $state<Record<string, boolean>>({});
+
+	// Update effect to use object
+	$effect(() => {
+		expandedCategories = categories.reduce(
+			(acc, category) => {
+				acc[category] = true;
+				return acc;
+			},
+			{} as Record<string, boolean>
+		);
+	});
+
+	function toggleCategory(category: string) {
+		expandedCategories[category] = !expandedCategories[category];
+	}
 </script>
 
 <aside class="{className} {isCollapsed ? 'w-20' : 'w-64'} transition-all duration-300">
@@ -53,44 +64,50 @@
 	<nav class="p-4">
 		{#if !isCollapsed}
 			{#each categories as category}
-				<div class="mb-6">
-					<h3
-						class="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+				<div class="mb-6" id={category}>
+					<button
+						onclick={() => toggleCategory(category)}
+						class="mb-3 flex w-full items-center justify-between"
 					>
-						{category}
-					</h3>
-					<ul class="space-y-1">
-						{#each docs.filter((doc: ApiDoc) => doc.category === category) as doc}
-							<li
-								class={page.url.pathname === `/finanalyzer/docs/${doc._id}`
-									? 'bg-gray-50 dark:bg-gray-800/50'
-									: ''}
-							>
-								<a
-									href={`/finanalyzer/docs/${doc._id}`}
-									class="group flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800/50"
-									title={doc.path}
+						<h3
+							class="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+						>
+							{category}
+						</h3>
+						<Caret
+							class="h-4 w-4 transform text-gray-500 transition-transform duration-300 dark:text-gray-400"
+							style={expandedCategories[category] ? '' : 'transform: rotate(-90deg)'}
+							trend="down"
+						/>
+					</button>
+					{#if expandedCategories[category]}
+						<ul class="space-y-1" transition:slide>
+							{#each docs.filter((doc: ApiDoc) => doc.category === category) as doc}
+								<li
+									class={page.url.pathname === `/finanalyzer/docs/${doc._id}`
+										? 'bg-gray-50 dark:bg-gray-800/50'
+										: ''}
 								>
-									<span
-										class="inline-flex w-16 items-center justify-center rounded border px-2 py-0.5 text-xs font-medium uppercase {methodColors[
-											doc.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-										]}"
+									<a
+										href={`/finanalyzer/docs/${doc._id}`}
+										class="group flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800/50"
+										title={doc.path}
 									>
-										{doc.method}
-									</span>
-									<div class="min-w-0 flex-1">
-										<span
-											class="block truncate {activeDoc === doc._id
-												? 'font-medium text-indigo-600 dark:text-indigo-400'
-												: 'text-gray-700 dark:text-gray-300'}"
-										>
-											{doc.path}
-										</span>
-									</div>
-								</a>
-							</li>
-						{/each}
-					</ul>
+										<MethodBadge method={doc.method} />
+										<div class="min-w-0 flex-1">
+											<span
+												class="block truncate {activeDoc === doc._id
+													? 'font-medium text-indigo-600 dark:text-indigo-400'
+													: 'text-gray-700 dark:text-gray-300'}"
+											>
+												{doc.path}
+											</span>
+										</div>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 				</div>
 			{/each}
 		{:else}
@@ -102,13 +119,7 @@
 							class="flex justify-center rounded-lg py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50"
 							title={doc.path}
 						>
-							<span
-								class="inline-flex w-12 items-center justify-center rounded border px-2 py-0.5 text-xs font-medium uppercase {methodColors[
-									doc.method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-								]}"
-							>
-								{doc.method}
-							</span>
+							<MethodBadge method={doc.method} />
 						</a>
 					</li>
 				{/each}

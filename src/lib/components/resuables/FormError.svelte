@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { receive, send } from '$lib/utils/helpers/misc.transitions';
 
-	const { form }: { form: any } = $props();
+	const { form }: { form: Record<string, any> } = $props();
 </script>
 
 {#if form?.errors}

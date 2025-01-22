@@ -68,8 +68,8 @@ export interface GithubUserDetails {
 		html_url: string;
 	}>;
 	languages: {
-		name: any;
-		bytes: any;
+		name: string;
+		bytes: number;
 		icon: string;
 	}[];
 	specialRepo: {

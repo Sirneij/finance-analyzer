@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
+import type { Endpoint } from '$lib/types/docs.types';
 
 export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	// TODO: Only admins should be able to access this page
@@ -15,6 +16,6 @@ export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 
 	return {
 		doc,
-		endpoints
+		endpoints: endpoints as Endpoint[]
 	};
 };

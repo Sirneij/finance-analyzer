@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Endpoint } from '$lib/types/docs.types';
+	import type { Endpoint, FormState } from '$lib/types/docs.types';
 	import MethodBadge from '$lib/components/docs/MethodBadge.svelte';
 	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
 
@@ -8,7 +8,7 @@
 		formState = $bindable()
 	}: {
 		selectedEndpoint: Endpoint | null;
-		formState: any;
+		formState: FormState;
 	} = $props();
 </script>
 

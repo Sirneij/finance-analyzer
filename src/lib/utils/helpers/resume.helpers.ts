@@ -38,3 +38,20 @@ export function parseEndDate(period: string): number {
 	const [month, year] = end.replace('.', '').split(' ');
 	return new Date(parseInt(year), monthMap[month as keyof typeof monthMap] ?? 0).getTime();
 }
+
+export function debounce<T extends (...args: any[]) => any>(
+	func: T,
+	wait: number
+): (...args: Parameters<T>) => void {
+	let timeout: NodeJS.Timeout;
+
+	return function executedFunction(...args: Parameters<T>) {
+		const later = () => {
+			clearTimeout(timeout);
+			func(...args);
+		};
+
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+	};
+}

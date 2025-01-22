@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Endpoint, HttpMethod, SupportedLanguage } from '$lib/types/docs.types';
+	import type { Endpoint, FormState, HttpMethod } from '$lib/types/docs.types';
 	import type { PageData } from './$types';
 	import EndpointSelector from '$lib/components/docs/documentation/EndpointSelector.svelte';
 	import BasicInfo from '$lib/components/docs/documentation/BasicInfo.svelte';
@@ -14,15 +14,15 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let formState = $state({
+	let formState: FormState = $state({
 		path: '',
 		method: 'GET' as HttpMethod,
 		middlewares: [] as string[],
 		category: '',
 		description: '',
-		params: [] as { name: string; type: string; required: boolean; description: string }[],
-		responses: [] as { status: number; description: string; example: string }[],
-		examples: [] as { language: SupportedLanguage; code: string }[]
+		params: [],
+		responses: [],
+		examples: []
 	});
 
 	let selectedEndpoint = $state<Endpoint | null>(null),

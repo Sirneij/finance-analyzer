@@ -1,15 +1,16 @@
 <script lang="ts">
 	import Close from '$lib/components/icons/Close.svelte';
 	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import type { FormState, Response } from '$lib/types/docs.types';
 
-	let { formState = $bindable() }: { formState: any } = $props();
+	let { formState = $bindable() }: { formState: FormState } = $props();
 
 	const addResponse = () => {
 		formState.responses = [...formState.responses, { status: 200, description: '', example: '{}' }];
 	};
 
 	const removeResponse = (index: number) => {
-		formState.responses = formState.responses.filter((_: any, i: number) => i !== index);
+		formState.responses = formState.responses.filter((_: Response, i: number) => i !== index);
 	};
 </script>
 
