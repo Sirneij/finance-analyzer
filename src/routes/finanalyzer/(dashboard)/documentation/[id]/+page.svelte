@@ -17,7 +17,7 @@
 
 	let formState = $state(data.doc);
 
-	let selectedEndpoint = $state<Endpoint | null>(
+	let selectedEndpoint = $state<Endpoint | undefined>(
 			data.endpoints.find((e: Endpoint) => e.path === formState.path)
 		),
 		form = $state({ errors: [] }),

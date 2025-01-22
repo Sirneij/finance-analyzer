@@ -25,7 +25,7 @@
 		examples: []
 	});
 
-	let selectedEndpoint = $state<Endpoint | null>(null),
+	let selectedEndpoint = $state<Endpoint | undefined>(undefined),
 		form = $state({ errors: [] }),
 		isCreating = $state(false);
 

@@ -7,7 +7,7 @@
 		selectedEndpoint = $bindable(),
 		formState = $bindable()
 	}: {
-		selectedEndpoint: Endpoint | null;
+		selectedEndpoint: Endpoint | undefined;
 		formState: FormState;
 	} = $props();
 </script>

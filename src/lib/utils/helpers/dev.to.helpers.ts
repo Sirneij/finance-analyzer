@@ -45,7 +45,7 @@ export async function retryFetch<T>(
 }
 
 export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArticles> {
-	const articles = await retryFetch(async () => {
+	let articles = await retryFetch(async () => {
 		const response = await fetchWithTimeout('/finanalyzer/api/about/devto/articles', {
 			headers: {
 				'Content-Type': 'application/json'
@@ -55,6 +55,11 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 		if (!Array.isArray(data)) throw new Error('Invalid response format');
 		return data as DevToArticle[];
 	});
+
+	// Sort articles by published date
+	articles = articles.sort(
+		(a, b) => new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
+	);
 
 	const seriesMap = new Map<string, SeriesDevToArticle[]>();
 	const standalone: DevToArticle[] = [];
@@ -81,10 +86,7 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 	// Sort series articles by part number
 	for (const articles of seriesMap.values()) {
 		articles.sort((a, b) => {
-			if (typeof a.part === 'number' && typeof b.part === 'number') {
-				return a.part - b.part;
-			}
-			return String(a.part).localeCompare(String(b.part));
+			return new Date(a.published_timestamp).getTime() - new Date(b.published_timestamp).getTime();
 		});
 	}
 
