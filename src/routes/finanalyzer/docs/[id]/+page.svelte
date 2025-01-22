@@ -9,7 +9,6 @@
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import hljs from 'highlight.js';
-	import 'highlight.js/styles/night-owl.min.css';
 	import Search from '$lib/components/docs/Search.svelte';
 	import Description from '$lib/components/docs/Description.svelte';
 

@@ -8,7 +8,6 @@
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import hljs from 'highlight.js';
-	import 'highlight.js/styles/night-owl.min.css';
 	import { marked } from 'marked';
 	import type { ApiDoc } from '$lib/types/docs.types';
 	import { sampleAuth, sampleBaseURL } from '$lib/utils/helpers/docs.helpers';
@@ -77,7 +76,7 @@
 						class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-indigo-500"
 					/>
 					<input
-						type="text"
+						type="search"
 						bind:value={searchQuery}
 						placeholder="Search endpoints..."
 						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"

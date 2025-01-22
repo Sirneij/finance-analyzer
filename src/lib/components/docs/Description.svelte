@@ -4,27 +4,29 @@
 	import MethodBadge from './MethodBadge.svelte';
 	import { getStatusColorClass } from '$lib/utils/helpers/docs.helpers';
 	import hljs from 'highlight.js';
-	import 'highlight.js/styles/night-owl.min.css';
 
 	let { currentDoc } = $props();
 
 	let descriptionContainer = $state<HTMLDivElement>();
 
+	function highlightCode() {
+		requestAnimationFrame(() => {
+			const codeBlocks = descriptionContainer?.querySelectorAll('pre code');
+			codeBlocks?.forEach((codeBlock) => {
+				if (codeBlock instanceof HTMLElement) {
+					try {
+						hljs.highlightElement(codeBlock);
+					} catch (error) {
+						console.error('Error applying syntax highlighting:', error);
+					}
+				}
+			});
+		});
+	}
+
 	$effect(() => {
 		if (descriptionContainer && currentDoc) {
-			requestAnimationFrame(() => {
-				const codeBlocks = descriptionContainer?.querySelectorAll('pre code');
-				codeBlocks?.forEach((codeBlock) => {
-					if (codeBlock instanceof HTMLElement) {
-						// Type check
-						try {
-							hljs.highlightElement(codeBlock);
-						} catch (error) {
-							console.error('Error applying syntax highlighting:', error);
-						}
-					}
-				});
-			});
+			highlightCode();
 		}
 	});
 </script>
@@ -43,12 +45,12 @@
 		</div>
 	</AnimatedSection>
 
-	<AnimatedSection y={30} delay={200} class="prose prose-blue max-w-none dark:prose-invert">
+	<AnimatedSection y={30} class="prose prose-blue max-w-none dark:prose-invert" delay={200}>
 		{@html marked(currentDoc.description)}
 	</AnimatedSection>
 
 	{#if currentDoc.responses.length}
-		<AnimatedSection y={40} delay={400} class="space-y-4">
+		<AnimatedSection y={40} class="space-y-4" delay={400}>
 			<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Responses</h2>
 			{#each currentDoc.responses as response}
 				<div

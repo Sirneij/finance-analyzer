@@ -4,6 +4,37 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@layer base {
+	input,
+	input[type='text'],
+	input[type='email'],
+	input[type='password'],
+	input[type='number'],
+	input[type='search'],
+	input[type='tel'],
+	input[type='url'],
+	input[type='date'],
+	input[type='datetime-local'],
+	input[type='month'],
+	input[type='week'],
+	input[type='time'],
+	input[type='color'],
+	input[type='file'],
+	input[type='range'],
+	textarea,
+	select {
+		@apply appearance-none border-none outline-none ring-0;
+
+		&:focus {
+			@apply border-none outline-none ring-0;
+		}
+
+		&:focus-visible {
+			@apply border-none outline-none ring-0;
+		}
+	}
+}
+
 .logo-container svg {
 	transition: all 0.3s;
 }

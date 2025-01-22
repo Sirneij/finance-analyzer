@@ -81,3 +81,13 @@ const response = await fetch(\`\${BASE_API_URI}/...\`, {
 });
 \`\`\`
 `;
+
+export function changeCodeBlockTheme(themeName: string) {
+	document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]').forEach((link) => {
+		// Only target theme CSS files
+		if (link.href.includes('/themes/')) {
+			const shouldEnable = link.href.includes(themeName);
+			link.disabled = !shouldEnable;
+		}
+	});
+}

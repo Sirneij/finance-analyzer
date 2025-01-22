@@ -19,19 +19,23 @@
 		<link rel="manifest" href="%sveltekit.assets%/finanalyzer/site.webmanifest" />
 		%sveltekit.head%
 		<script>
-			// Check for saved theme preference, otherwise use system preference
-			const theme =
-				localStorage.getItem('theme') ||
-				(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+			// Get user's explicit preference
+			const userTheme = localStorage.getItem('theme');
 
-			// Apply theme immediately to prevent flash
+			// Get system preference
+			const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+			// Use user preference if set, otherwise follow system
+			const theme = userTheme || (systemTheme.matches ? 'dark' : 'light');
+
+			// Apply theme
 			document.documentElement.classList.toggle('dark', theme === 'dark');
 
-			// Listen for system theme changes
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+			// Listen for system changes
+			systemTheme.addEventListener('change', (e) => {
+				// Only follow system if user hasn't set preference
 				if (!localStorage.getItem('theme')) {
 					document.documentElement.classList.toggle('dark', e.matches);
-					localStorage.setItem('theme', e.matches ? 'dark' : 'light');
 				}
 			});
 		</script>
