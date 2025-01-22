@@ -1,4 +1,5 @@
 import type { Endpoint, HttpMethod } from '$lib/types/docs.types';
+import { marked } from 'marked';
 
 export function groupEndpointsByCategory(endpoints: Endpoint[]): Record<string, Endpoint[]> {
 	return endpoints.reduce(
@@ -91,3 +92,69 @@ export function changeCodeBlockTheme(themeName: string) {
 		}
 	});
 }
+
+interface Code {
+	text: string;
+	lang?: string;
+	escaped?: boolean;
+}
+
+const renderer = new marked.Renderer();
+
+renderer.code = function ({ text, lang, escaped }: Code) {
+	const validLanguage = lang || 'text';
+	const lines = text.split('\n');
+	const uniqueId = Math.random().toString(36).substring(7);
+
+	return `
+	  <div class="relative group rounded-lg overflow-hidden">
+		<!-- Controls Container -->
+		<div class="absolute right-2 top-2 z-10 flex items-center gap-2">
+		  <!-- Copy Button -->
+		  <button 
+			onclick="(() => {
+			  const button = this;
+			  navigator.clipboard.writeText(this.parentElement.parentElement.querySelector('code').textContent)
+				.then(() => {
+				  button.querySelector('.copy-icon').style.display = 'none';
+				  button.querySelector('.check-icon').style.display = 'block';
+				  setTimeout(() => {
+					button.querySelector('.copy-icon').style.display = 'block';
+					button.querySelector('.check-icon').style.display = 'none';
+				  }, 2000);
+				});
+			})()"
+			class="opacity-0 group-hover:opacity-100 rounded-md bg-gray-100/80 dark:bg-gray-700/80 p-2 text-gray-600 dark:text-gray-300 transition-all hover:bg-gray-200 dark:hover:bg-gray-600 backdrop-blur flex items-center gap-1"
+			title="Copy code"
+		  >
+			<svg class="copy-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+			</svg>
+			<svg class="check-icon h-4 w-4" style="display: none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+			</svg>
+		  </button>
+		  
+		  <!-- Language Badge -->
+		  <span class="rounded-md bg-gray-100/80 dark:bg-gray-700/80 px-2 py-1 text-xs font-mono text-gray-600 dark:text-gray-300 transition-colors backdrop-blur">
+			${validLanguage}
+		  </span>
+		</div>
+  
+		<!-- Code Block -->
+		<div class="flex">
+		  <!-- Line Numbers -->
+		  <div class="hidden sm:flex flex-col items-end px-4 py-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none font-mono">
+			${lines.map((_, i) => `<span class="leading-6">${i + 1}</span>`).join('')}
+		  </div>
+		  
+		  <!-- Code Content -->
+		  <pre class="flex-1"><code class="language-${validLanguage}">${text}</code></pre>
+		</div>
+	  </div>
+	`;
+};
+
+marked.setOptions({ renderer });
+
+export { marked };

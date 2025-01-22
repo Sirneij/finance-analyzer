@@ -8,7 +8,7 @@
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import hljs from 'highlight.js';
-	import { marked } from 'marked';
+	import { marked } from '$lib/utils/helpers/docs.helpers';
 	import type { ApiDoc } from '$lib/types/docs.types';
 	import { sampleAuth, sampleBaseURL } from '$lib/utils/helpers/docs.helpers';
 	import MethodBadge from '$lib/components/docs/MethodBadge.svelte';

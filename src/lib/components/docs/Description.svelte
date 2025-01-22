@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
-	import { marked } from 'marked';
+	import { marked } from '$lib/utils/helpers/docs.helpers';
 	import MethodBadge from './MethodBadge.svelte';
 	import { getStatusColorClass } from '$lib/utils/helpers/docs.helpers';
 	import hljs from 'highlight.js';
