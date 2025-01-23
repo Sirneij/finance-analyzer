@@ -190,3 +190,11 @@ pre code {
 .admonition > :not(.title) {
 	@apply px-6 py-4 text-gray-700 dark:text-gray-300;
 }
+
+.tag {
+	@apply inline-flex items-center rounded px-2 py-0.5 text-sm before:mr-1 before:content-['#'];
+}
+
+.tag-name {
+	@apply bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200;
+}

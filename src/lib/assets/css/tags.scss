@@ -1,0 +1,90 @@
+:root {
+	--c-language: #555555;
+	--csharp: #178600;
+	--cpp: #f34b7d;
+	--rust: #dea584;
+	--css: #563d7c;
+	--scss: #c6538c;
+	--dart: #00b4ab;
+	--go: #00add8;
+	--toml: #9c4221;
+	--javascript: #f1e05a;
+	--python: #3572a5;
+	--sh: rgb(255, 215, 0);
+	--html: #e34c26;
+	--typescript: #3178c6;
+	--json: #292929;
+	--java: #b07219;
+	--jinja: #a52a22;
+	--julia: #a270ba;
+	--jupiter: #da5b0b;
+	--kotlin: #a97bff;
+	--less: #1d365d;
+	--matlab: #e16737;
+	--markdown: #083fa1;
+	--nginx: #009639;
+	--numpy: #9c8af9;
+	--php: #4f5d95;
+	--postgresql: #336790;
+	--sql: #e38c00;
+	--shell: #89e051;
+	--solidity: #aa6746;
+	--svelte: #ff3e00;
+	--swift: #f05138;
+	--latex: #3d6117;
+	--vhdl: #adb2cb;
+	--verilog: #b2b7f8;
+	--webassemby: #04133b;
+	--yaml: #cb171e;
+	--webdev: #562765;
+	--others: #059669;
+}
+$languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html,
+	typescript, json, java, jinja, julia, julia, jupiter, kotlin, less, matlab, markdown, nginx,
+	numpy, php, postgresql, sql, shell, solidity, svelte, swift, latex, vhdl, verilog, webassembly,
+	yaml, webdev, others;
+$other-languages: django, actix-web, software;
+@each $language in $languages {
+	@if $language == c {
+		.tag.#{$language} {
+			transition: all 0.3s ease-in-out;
+			background: rgba(var(--c-language), 0.2);
+		}
+		.tag.#{$language}::before {
+			color: var(--c-language);
+		}
+		.tag.#{$language}:hover {
+			border-color: var(--c-language);
+			color: var(--c-language);
+			background: transparent;
+		}
+	} @else {
+		.tag.#{$language} {
+			transition: all 0.3s ease-in-out;
+			background: rgba(var(--#{$language}), 0.2);
+		}
+		.tag.#{$language}::before {
+			color: var(--#{$language});
+		}
+		.tag.#{$language}:hover {
+			border-color: var(--#{$language});
+			color: var(--#{$language});
+			background: transparent;
+		}
+	}
+}
+
+@each $language in $other-languages {
+	.tag.#{$language} {
+		transition: all 0.3s ease-in-out;
+		background: rgba(var(--others), 0.2);
+	}
+	.tag.#{$language}::before {
+		color: var(--others);
+	}
+	.tag.#{$language}:hover {
+		border-color: var(--others);
+		color: var(--others);
+		background: transparent;
+	}
+}

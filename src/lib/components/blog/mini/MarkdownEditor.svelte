@@ -31,23 +31,83 @@
 	const tags: Tag[] = [
 		{
 			id: '1',
-			name: 'Tag 1',
-			description: 'Tag 1 description'
+			name: 'javaScript',
+			description:
+				'JavaScript is a programming language that conforms to the ECMAScript specification.'
 		},
 		{
 			id: '2',
-			name: 'Tag 2',
-			description: 'Tag 2 description'
+			name: 'react',
+			description: 'React is a JavaScript library for building user interfaces.'
 		},
 		{
 			id: '3',
-			name: 'Tag 3',
-			description: 'Tag 3 description'
+			name: 'svelte',
+			description: 'Svelte is a radical new approach to building user interfaces.'
 		},
 		{
 			id: '4',
-			name: 'Tag 4',
-			description: 'Tag 4 description'
+			name: 'tailwindcss',
+			description: 'A utility-first CSS framework for rapidly building custom designs.'
+		},
+		{
+			id: '5',
+			name: 'nodejs',
+			description:
+				'Node.js is an open-source, cross-platform, back-end JavaScript runtime environment.'
+		},
+		{
+			id: '6',
+			name: 'expressjs',
+			description: 'Fast, unopinionated, minimalist web framework for Node.js.'
+		},
+		{
+			id: '7',
+			name: 'mongodb',
+			description:
+				'A general-purpose, document-based, distributed database built for modern application developers.'
+		},
+		{
+			id: '8',
+			name: 'postgresql',
+			description: 'A powerful, open-source object-relational database system.'
+		},
+		{
+			id: '9',
+			name: 'firebase',
+			description: 'A platform developed by Google for creating mobile and web applications.'
+		},
+		{
+			id: '10',
+			name: 'flutter',
+			description: 'An open-source UI software development kit created by Google.'
+		},
+		{
+			id: '11',
+			name: 'dart',
+			description: 'A client-optimized programming language for fast apps on any platform.'
+		},
+		{
+			id: '12',
+			name: 'python',
+			description: 'An interpreted, high-level, general-purpose programming language.'
+		},
+		{
+			id: '13',
+			name: 'django',
+			description:
+				'A high-level Python web framework that encourages rapid development and clean, pragmatic design.'
+		},
+		{
+			id: '14',
+			name: 'flask',
+			description: 'A lightweight WSGI web application framework.'
+		},
+		{
+			id: '15',
+			name: 'fastapi',
+			description:
+				'A modern, fast (high-performance), web framework for building APIs with Python 3.6+.'
 		}
 	];
 
