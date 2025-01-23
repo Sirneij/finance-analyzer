@@ -1,4 +1,6 @@
 import type { SupportedLanguage } from '$lib/types/docs.types';
+import type { Command } from '$lib/types/markdown.types';
+import { detectOS, getAltOrOption, getModifierKey } from '$lib/utils/commons';
 
 export const BASE_API_URI = import.meta.env.DEV
 	? import.meta.env.VITE_BASE_API_URI_DEV
@@ -143,4 +145,130 @@ export const SKILLS = [
 	{ name: 'Backend', level: 95 },
 	{ name: 'Database Design', level: 90 },
 	{ name: 'System Architecture', level: 85 }
+];
+
+const modKey = getModifierKey();
+const altOrOption = getAltOrOption();
+
+export const COMMANDS: Command[] = [
+	{
+		title: 'Bold',
+		shortcut: {
+			display: `${modKey}+B`,
+			combo: { key: 'b', [modKey === '⌘' ? 'cmd' : 'ctrl']: true }
+		}
+	},
+	{
+		title: 'Italize',
+		shortcut: {
+			display: `${modKey}+I`,
+			combo: { key: 'i', [modKey === '⌘' ? 'cmd' : 'ctrl']: true }
+		}
+	},
+	{
+		title: 'Link',
+		shortcut: {
+			display: `${modKey}+K`,
+			combo: { key: 'k', [modKey === '⌘' ? 'cmd' : 'ctrl']: true }
+		}
+	},
+	{
+		title: 'Code',
+		shortcut: {
+			display: `${modKey}+Shift+C`,
+			combo: { key: 'c', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'UploadImage',
+		shortcut: {
+			display: `${modKey}+Shift+I`,
+			combo: { key: 'i', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'UnorderedList',
+		shortcut: {
+			display: `${modKey}+Shift+U`,
+			combo: { key: 'u', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'OrderedList',
+		shortcut: {
+			display: `${modKey}+Shift+O`,
+			combo: { key: 'o', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'BlockQuote',
+		shortcut: {
+			display: '', //`${modKey}+${altOrOption}+Q`,
+			combo: { key: 'q', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, alt: true }
+		}
+	},
+	{
+		title: 'Heading',
+
+		shortcut: {
+			display: `${modKey}+Shift+H`,
+			combo: { key: 'h', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Table',
+
+		shortcut: {
+			display: `${modKey}+Shift+T`,
+			combo: { key: 't', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Task',
+
+		shortcut: {
+			display: `${modKey}+Shift+X`,
+			combo: { key: 'x', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'CodeBlock',
+
+		shortcut: {
+			display: `${modKey}+Shift+L`,
+			combo: { key: 'l', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'GitHub',
+
+		shortcut: {
+			display: `${modKey}+Shift+G`,
+			combo: { key: 'g', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Note',
+
+		shortcut: {
+			display: `${modKey}+Shift+N`,
+			combo: { key: 'n', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Tip',
+
+		shortcut: {
+			display: '', //`${modKey}+Shift+B`,
+			combo: { key: 't', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Warning',
+
+		shortcut: {
+			display: '', //`${modKey}+Shift+W`,
+			combo: { key: 'w', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	}
 ];

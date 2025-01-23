@@ -1,32 +1,16 @@
 <script lang="ts">
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
-	import { marked } from '$lib/utils/helpers/docs.helpers';
+	import { highlightCode, marked } from '$lib/utils/helpers/docs.helpers';
 	import MethodBadge from './MethodBadge.svelte';
 	import { getStatusColorClass } from '$lib/utils/helpers/docs.helpers';
-	import hljs from 'highlight.js';
 
 	let { currentDoc } = $props();
 
 	let descriptionContainer = $state<HTMLDivElement>();
 
-	function highlightCode() {
-		requestAnimationFrame(() => {
-			const codeBlocks = descriptionContainer?.querySelectorAll('pre code');
-			codeBlocks?.forEach((codeBlock) => {
-				if (codeBlock instanceof HTMLElement) {
-					try {
-						hljs.highlightElement(codeBlock);
-					} catch (error) {
-						console.error('Error applying syntax highlighting:', error);
-					}
-				}
-			});
-		});
-	}
-
 	$effect(() => {
 		if (descriptionContainer && currentDoc) {
-			highlightCode();
+			highlightCode(descriptionContainer);
 		}
 	});
 </script>

@@ -22,9 +22,7 @@
 
 <SEO {data} />
 
-<div
-	class="min-h-screen bg-white p-8 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 dark:text-gray-100"
->
+<div class="relative min-h-screen bg-white p-8 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
 	<!-- Logo -->
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">

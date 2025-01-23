@@ -1,5 +1,6 @@
 import type { Endpoint, HttpMethod } from '$lib/types/docs.types';
 import { marked } from 'marked';
+import hljs from 'highlight.js';
 
 export function groupEndpointsByCategory(endpoints: Endpoint[]): Record<string, Endpoint[]> {
 	return endpoints.reduce(
@@ -157,3 +158,23 @@ renderer.code = function ({ text, lang }: Code) {
 marked.setOptions({ renderer });
 
 export { marked };
+
+export function highlightCode(descriptionContainer: HTMLDivElement) {
+	requestAnimationFrame(() => {
+		const codeBlocks = descriptionContainer?.querySelectorAll('pre code');
+		codeBlocks?.forEach((codeBlock) => {
+			if (codeBlock instanceof HTMLElement) {
+				try {
+					// If the code block is already highlighted, first unset `dataset.highlighted` by deleting it
+					if (codeBlock.dataset.highlighted) {
+						delete codeBlock.dataset.highlighted;
+					}
+
+					hljs.highlightElement(codeBlock);
+				} catch (error) {
+					console.error('Error applying syntax highlighting:', error);
+				}
+			}
+		});
+	});
+}
