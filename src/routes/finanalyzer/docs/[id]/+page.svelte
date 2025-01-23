@@ -2,7 +2,7 @@
 	import Side from '$lib/components/docs/Side.svelte';
 	import type { PageData } from '../$types';
 	import CodeSnippets from '$lib/components/docs/CodeSnippets.svelte';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 	import type { CodeExample } from '$lib/types/docs.types';
 	import { LANGUAGES_MAP } from '$lib/utils/contants';

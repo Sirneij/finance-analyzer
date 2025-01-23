@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import NewArticle from '$lib/components/blog/NewArticle.svelte';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import JI from '$lib/components/logos/JI.svelte';
 </script>
 

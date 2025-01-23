@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import SEO from '$lib/components/about/SEO.svelte';
 	import Profile from '$lib/components/about/Profile.svelte';
 	import GitHubOverview from '$lib/components/about/GitHubOverview.svelte';

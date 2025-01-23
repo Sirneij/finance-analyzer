@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Anomaly } from '$lib/types/transaction.types';
-	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
+	import LoadingInsight from '$lib/components/reusables/LoadingInsight.svelte';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';
 
 	let {

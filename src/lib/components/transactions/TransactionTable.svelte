@@ -5,7 +5,7 @@
 	import Amount from '$lib/components/icons/Amount.svelte';
 	import Balance from '$lib/components/icons/Balance.svelte';
 	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 	import type { Transaction } from '$lib/types/transaction.types';
 	import { applyAction, enhance } from '$app/forms';
 	import { fade } from 'svelte/transition';

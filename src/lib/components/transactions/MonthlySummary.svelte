@@ -4,8 +4,8 @@
 	import Chart from 'chart.js/auto';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
-	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
+	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
 	import { transformMonthlyChartData } from '$lib/utils/helpers/transactions.helpers';
 	import { COLORS } from '$lib/utils/contants';
 	import type { ProgressSteps } from '$lib/types/notification.types';

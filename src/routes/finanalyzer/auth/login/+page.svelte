@@ -6,7 +6,7 @@
 	import GitHub from '$lib/components/icons/GitHub.svelte';
 	import Google from '$lib/components/icons/Google.svelte';
 	import Logo from '$lib/components/logos/Logo.svelte';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import { BASE_API_URI } from '$lib/utils/contants';
 	import { fade } from 'svelte/transition';
 

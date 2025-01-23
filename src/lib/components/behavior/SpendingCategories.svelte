@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
-	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
+	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
 	import type { CategoriesData } from '$lib/types/transaction.types';
 	import {
 		generateChartColors,
 		spendingCategoriesChartConfig
 	} from '$lib/utils/helpers/charts.helpers';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';

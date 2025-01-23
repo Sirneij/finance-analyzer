@@ -4,10 +4,10 @@
 	import Email from '$lib/components/icons/Email.svelte';
 	import { CONTACT_EMAIL } from '$lib/utils/contants';
 	import { decodeEmail, encodeEmail } from '$lib/utils/helpers/email.helpers';
-	import Modal from '$lib/components/resuables/Modal.svelte';
+	import Modal from '$lib/components/reusables/Modal.svelte';
 	import FileInput from '$lib/components/transactions/FileInput.svelte';
 	import { page } from '$app/state';
-	import FormError from '$lib/components/resuables/FormError.svelte';
+	import FormError from '$lib/components/reusables/FormError.svelte';
 
 	let { githubUser } = $props();
 	let isModalOpen = $state(false);

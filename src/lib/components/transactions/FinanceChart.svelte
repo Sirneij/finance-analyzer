@@ -3,8 +3,8 @@
 	import { financialChartConfig } from '$lib/utils/helpers/charts.helpers';
 	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
-	import LoadingChart from '$lib/components/resuables/LoadingChart.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import { COLORS } from '$lib/utils/contants';

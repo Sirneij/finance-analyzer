@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { receive, send } from '$lib/utils/helpers/misc.transitions';
+	import type { ActionData } from '../../../routes/$types';
 
-	const { form }: { form: Record<string, any> } = $props();
+	const { form }: { form: ActionData | null } = $props();
 </script>
 
 {#if form?.errors}

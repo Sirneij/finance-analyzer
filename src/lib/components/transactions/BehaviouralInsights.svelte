@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { CategoriesData } from '$lib/types/transaction.types';
 	import { transformCategoriesToArray } from '$lib/utils/helpers/transactions.helpers';
-	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import LoadingInsight from '$lib/components/reusables/LoadingInsight.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';
 
 	let {

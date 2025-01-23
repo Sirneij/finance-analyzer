@@ -2,7 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Upload from '$lib/components/icons/Upload.svelte';
-	import Loader from '$lib/components/resuables/Loader.svelte';
+	import Loader from '$lib/components/reusables/Loader.svelte';
 
 	type Data = {
 		success: boolean;

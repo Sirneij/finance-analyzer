@@ -6,8 +6,8 @@
 	import ParameterSection from '$lib/components/docs/documentation/ParameterSection.svelte';
 	import ResponseSection from '$lib/components/docs/documentation/ResponseSection.svelte';
 	import CodeExampleSection from '$lib/components/docs/documentation/CodeExampleSection.svelte';
-	import FormError from '$lib/components/resuables/FormError.svelte';
-	import Loader from '$lib/components/resuables/Loader.svelte';
+	import FormError from '$lib/components/reusables/FormError.svelte';
+	import Loader from '$lib/components/reusables/Loader.svelte';
 	import { page } from '$app/state';
 	import { addNotification } from '$lib/states/notification';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';

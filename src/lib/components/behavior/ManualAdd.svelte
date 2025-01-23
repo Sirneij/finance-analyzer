@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import Loader from '$lib/components/resuables/Loader.svelte';
+	import Loader from '$lib/components/reusables/Loader.svelte';
 
 	let isAdding = $state(false);
 

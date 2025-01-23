@@ -106,3 +106,87 @@ pre code {
 		opacity: 1;
 	}
 }
+
+/* Base admonition styles */
+.admonition {
+	@apply relative my-6 overflow-hidden rounded-xl border border-gray-200/10 bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-200/20 hover:shadow-lg dark:border-gray-700/10 dark:bg-gray-900/50 dark:hover:border-gray-700/20;
+}
+
+.admonition .title {
+	@apply m-0 block break-all bg-[length:20px] bg-[center_left_20px] bg-no-repeat px-12 py-3 font-semibold tracking-wide;
+}
+
+.admonition .title::before {
+	@apply absolute left-4 text-xl opacity-90;
+}
+
+.admonition.note .title::before {
+	content: '\00270D';
+}
+
+.admonition.tip .title::before {
+	content: '\01F4A1';
+}
+
+.admonition.warning .title::before {
+	content: '\0026A0';
+}
+
+.admonition.github .title::before {
+	content: '\002388';
+}
+
+/* Variants */
+.admonition.note {
+	@apply border-l-8 border-blue-500/80 bg-blue-50/30 dark:bg-blue-950/30;
+}
+
+.admonition.note .title {
+	@apply border-b border-blue-200/30 bg-blue-100/30 text-blue-800 dark:border-blue-700/30 dark:bg-blue-900/30 dark:text-blue-200;
+}
+
+.admonition.tip {
+	@apply border-l-8 border-emerald-500/80 bg-emerald-50/30 dark:bg-emerald-950/30;
+}
+
+.admonition.tip .title {
+	@apply border-b border-emerald-200/30 bg-emerald-100/30 text-emerald-800 dark:border-emerald-700/30 dark:bg-emerald-900/30 dark:text-emerald-200;
+}
+
+.admonition.warning {
+	@apply border-l-8 border-orange-500/80 bg-orange-50/30 dark:bg-orange-950/30;
+}
+
+.admonition.warning .title {
+	@apply border-b border-orange-200/30 bg-orange-100/30 text-orange-800 dark:border-orange-700/30 dark:bg-orange-900/30 dark:text-orange-200;
+}
+
+/* Github variant */
+.admonition.github {
+	@apply border-l-8 border-gray-300 bg-gray-100/90 text-gray-900 dark:border-gray-600 dark:bg-gray-800/90 dark:text-gray-100;
+}
+
+.admonition.github .title {
+	@apply border-b border-gray-200/50 bg-gray-200/80 text-gray-900 dark:border-gray-600/50 dark:bg-gray-700/80 dark:text-gray-100;
+}
+
+.admonition.github .repo-details {
+	@apply flex items-center gap-6 p-4 hover:bg-gray-200/50 dark:hover:bg-gray-700/50;
+}
+
+.admonition.github .repo-details p span:not(.repo-stats) {
+	@apply text-4xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl;
+}
+
+.admonition.github .repo-details p .repo-stats {
+	@apply mt-4 flex flex-wrap gap-4 border-t border-gray-300/50 pt-4 text-sm font-medium text-gray-600 dark:border-gray-600/50 dark:text-gray-300;
+}
+
+.admonition.github .repo-details img {
+	@apply h-24 w-24 rounded-full bg-gray-100 object-cover ring-2 ring-gray-300/50 transition-all hover:ring-4 dark:bg-gray-700 dark:ring-gray-600/50 md:h-20 md:w-20;
+}
+
+/* Content area */
+.admonition > :not(.title) {
+	@apply px-6 py-4 text-gray-700 dark:text-gray-300;
+}

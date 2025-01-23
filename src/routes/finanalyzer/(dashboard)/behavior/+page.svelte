@@ -4,9 +4,9 @@
 	import Insight from '$lib/components/behavior/Insight.svelte';
 	import ManualAdd from '$lib/components/behavior/ManualAdd.svelte';
 	import SpendingCategories from '$lib/components/behavior/SpendingCategories.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
-	import FormError from '$lib/components/resuables/FormError.svelte';
-	import LoadingInsight from '$lib/components/resuables/LoadingInsight.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
+	import FormError from '$lib/components/reusables/FormError.svelte';
+	import LoadingInsight from '$lib/components/reusables/LoadingInsight.svelte';
 	import FileInput from '$lib/components/transactions/FileInput.svelte';
 	import type { SpendingReport } from '$lib/types/transaction.types';
 	import { getFinancialInsights } from '$lib/utils/helpers/transactions.helpers';

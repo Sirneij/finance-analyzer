@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 </script>
 
 <div
@@ -24,6 +24,23 @@
 		</ul>
 	</div>
 
+	<div
+		id="tags-info"
+		class="hidden"
+		aria-labelledby="tags-info"
+		aria-hidden="true"
+		transition:fade={{ duration: SLIDE_DURATION }}
+	>
+		<h2 class="text-lg font-bold">Adding Tags</h2>
+		<ul role="list" class="list-disc space-y-3 pl-5 marker:text-gray-500">
+			<li>Tags help others find your post and are a great way to browse content.</li>
+			<li>Choose up to 4 tags that best describe your post. At least 1 tag is required.</li>
+			<li>
+				You can also add tags by typing in the input field. Press Enter, type a comma, or click on a
+				tag to add it.
+			</li>
+		</ul>
+	</div>
 	<div
 		id="editor-info"
 		class="hidden"

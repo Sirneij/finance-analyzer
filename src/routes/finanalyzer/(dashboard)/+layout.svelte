@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
-	import Notifications from '$lib/components/resuables/Notifications.svelte';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import Notifications from '$lib/components/reusables/Notifications.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 
 	let isMobile = $state(false);
 	let isSidebarOpen = $state(true);

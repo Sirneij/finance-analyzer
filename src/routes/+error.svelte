@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import { fly } from 'svelte/transition';
@@ -73,10 +73,6 @@
 	};
 
 	const err = $derived(page.error as ErrorWithStack);
-
-	// Log the real error to the console
-
-	$inspect(err, 'error');
 </script>
 
 <div

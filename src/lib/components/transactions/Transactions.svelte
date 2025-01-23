@@ -2,7 +2,7 @@
 	import { truncateText } from '$lib/utils/helpers/text.helpers';
 	import type { Transaction } from '$lib/types/transaction.types';
 	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
-	import Empty from '$lib/components/resuables/Empty.svelte';
+	import Empty from '$lib/components/reusables/Empty.svelte';
 
 	let { transactions }: { transactions: Transaction[] } = $props();
 </script>

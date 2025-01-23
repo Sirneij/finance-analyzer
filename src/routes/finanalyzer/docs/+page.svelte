@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Search from '$lib/components/icons/Search.svelte';
 	import type { PageData } from './$types';
-	import ThemeSwitcher from '$lib/components/resuables/ThemeSwitcher.svelte';
+	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import AiNode from '$lib/components/icons/AINode.svelte';
 	import FinChart from '$lib/components/icons/FinChart.svelte';
 	import Calculator from '$lib/components/icons/Calculator.svelte';
