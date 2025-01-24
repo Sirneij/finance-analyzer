@@ -47,26 +47,24 @@ $other-languages: django, actix-web, software;
 @each $language in $languages {
 	@if $language == c {
 		.tag.#{$language} {
-			transition: all 0.3s ease-in-out;
 			background: rgba(var(--c-language), 0.2);
 		}
 		.tag.#{$language}::before {
 			color: var(--c-language);
 		}
-		.tag.#{$language}:hover {
+		.card-tag .tag.#{$language}:hover {
 			border-color: var(--c-language);
 			color: var(--c-language);
 			background: transparent;
 		}
 	} @else {
 		.tag.#{$language} {
-			transition: all 0.3s ease-in-out;
 			background: rgba(var(--#{$language}), 0.2);
 		}
 		.tag.#{$language}::before {
 			color: var(--#{$language});
 		}
-		.tag.#{$language}:hover {
+		.card-tag .tag.#{$language}:hover {
 			border-color: var(--#{$language});
 			color: var(--#{$language});
 			background: transparent;
@@ -76,13 +74,12 @@ $other-languages: django, actix-web, software;
 
 @each $language in $other-languages {
 	.tag.#{$language} {
-		transition: all 0.3s ease-in-out;
 		background: rgba(var(--others), 0.2);
 	}
 	.tag.#{$language}::before {
 		color: var(--others);
 	}
-	.tag.#{$language}:hover {
+	.card-tag .tag.#{$language}:hover {
 		border-color: var(--others);
 		color: var(--others);
 		background: transparent;

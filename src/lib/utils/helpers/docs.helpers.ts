@@ -155,6 +155,19 @@ renderer.code = function ({ text, lang }: Code) {
 	`;
 };
 
+renderer.heading = ({ text, depth }: { text: string; depth: number }) => {
+	if (depth === 2 || depth === 3) {
+		const id = text
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/(^-|-$)/g, '');
+
+		return `<h${depth} id="${id}">${text}</h${depth}>`;
+	}
+	return `<h${depth}>${text}</h${depth}>`;
+};
+
 marked.setOptions({ renderer });
 
 export { marked };
