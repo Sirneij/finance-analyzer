@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { baseConfig } from "$config/base.config.js";
 import { RedisStore } from "connect-redis";
 import { createClient } from "redis";
+import { v2 as cloudinary } from "cloudinary";
 
 const MAX_RETRIES = 3;
 const RETRY_INTERVAL = 5000;
@@ -42,7 +43,7 @@ export async function connectToCluster(retryCount = 0) {
 
 export const connectToRedis = (): RedisStore => {
   const redisClient = createClient({
-    url: baseConfig.redis_url,
+    url: baseConfig.redisUrl,
   });
 
   redisClient.connect().catch((error) => {
@@ -55,3 +56,28 @@ export const connectToRedis = (): RedisStore => {
 
   return new RedisStore({ client: redisClient, prefix: "session:" });
 };
+
+export class CloudinaryService {
+  private static instance: CloudinaryService;
+  private cloudinaryInstance: typeof cloudinary;
+
+  private constructor() {
+    this.cloudinaryInstance = cloudinary;
+    this.cloudinaryInstance.config({
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
+
+  public static getInstance(): CloudinaryService {
+    if (!CloudinaryService.instance) {
+      CloudinaryService.instance = new CloudinaryService();
+    }
+    return CloudinaryService.instance;
+  }
+
+  public getCloudinary(): typeof cloudinary {
+    return this.cloudinaryInstance;
+  }
+}
+
+export const cloudinaryService = CloudinaryService.getInstance();

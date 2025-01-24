@@ -12,7 +12,8 @@ export interface BaseConfig {
   db: DbConfig;
   frontendUrl: string;
   logger: winston.Logger;
-  utility_service_url: string;
-  redis_url: string;
+  utilityServiceUrl: string;
+  redisUrl: string;
   cookieDomain: string;
+  cloudinaryURL: string;
 }

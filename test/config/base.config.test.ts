@@ -25,29 +25,27 @@ describe("baseConfig", () => {
     });
   });
 
-  describe("utility_service_url", () => {
+  describe("utilityServiceUrl", () => {
     it("should use default utility service URL when environment variable is not set", () => {
       delete process.env.UTILITY_SERVICE_URL;
-      expect(baseConfig.utility_service_url).toBe("http://localhost:5173");
+      expect(baseConfig.utilityServiceUrl).toBe("http://localhost:5173");
     });
 
     it("should use environment utility service URL when set", () => {
       process.env.UTILITY_SERVICE_URL = "https://utility.example.com";
-      expect(baseConfig.utility_service_url).toBe(
-        "https://utility.example.com"
-      );
+      expect(baseConfig.utilityServiceUrl).toBe("https://utility.example.com");
     });
   });
 
-  describe("redis_url", () => {
+  describe("redisUrl", () => {
     it("should use default Redis URL when environment variable is not set", () => {
       delete process.env.REDIS_URL;
-      expect(baseConfig.redis_url).toBe("redis://localhost:6379");
+      expect(baseConfig.redisUrl).toBe("redis://localhost:6379");
     });
 
     it("should use environment Redis URL when set", () => {
       process.env.REDIS_URL = "redis://redis.example.com:6379";
-      expect(baseConfig.redis_url).toBe("redis://redis.example.com:6379");
+      expect(baseConfig.redisUrl).toBe("redis://redis.example.com:6379");
     });
   });
 

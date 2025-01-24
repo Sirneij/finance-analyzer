@@ -70,7 +70,7 @@ export class TransactionService {
     try {
       const results = await this.findTransactionsByUserId(userId, 1, -1);
       const response = await fetch(
-        `${baseConfig.utility_service_url}/summarize`,
+        `${baseConfig.utilityServiceUrl}/summarize`,
         {
           method: "POST",
           headers: {
@@ -95,16 +95,13 @@ export class TransactionService {
   ): Promise<SpendingReport> {
     try {
       const transactions = await Transaction.find({ userId });
-      const response = await fetch(
-        `${baseConfig.utility_service_url}/analyze`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(transactions),
-        }
-      );
+      const response = await fetch(`${baseConfig.utilityServiceUrl}/analyze`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transactions),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to analyze transactions");
@@ -143,7 +140,7 @@ export class TransactionService {
     transactions: ITransaction[],
     frontendWs: WebSocket
   ) {
-    const wsUrl = baseConfig.utility_service_url.replace(/^http/, "ws");
+    const wsUrl = baseConfig.utilityServiceUrl.replace(/^http/, "ws");
     const ws = new WebSocket(`${wsUrl}/ws`);
 
     ws.on("open", () => {

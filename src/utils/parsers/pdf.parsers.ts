@@ -15,7 +15,7 @@ export class PDFParser extends BaseParser {
     );
 
     const response = await fetch(
-      `${baseConfig.utility_service_url}/extract-text`,
+      `${baseConfig.utilityServiceUrl}/extract-text`,
       {
         method: "POST",
         body: formData,

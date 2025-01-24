@@ -16,7 +16,7 @@ export class ResumeService {
     );
 
     const response = await fetch(
-      `${baseConfig.utility_service_url}/parse-resume`,
+      `${baseConfig.utilityServiceUrl}/parse-resume`,
       {
         method: "POST",
         body: formData,

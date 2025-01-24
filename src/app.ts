@@ -21,6 +21,7 @@ import { ApiDocumentationGenerator } from "$services/docs.services.js";
 import endpointRouters from "$routes/docs.routes.js";
 import { TransactionWebSocketHandler } from "$websockets/transaction.websocket.js";
 import resumeRoutes from "$routes/resume.routes.js";
+import articleRoutes from "$routes/article.routes.js";
 
 const app: Application = express();
 const server: HttpServer = createServer(app);
@@ -56,7 +57,7 @@ app.use(
 // 4. Session configuration
 app.use(
   session({
-    store: baseConfig.redis_url ? connectToRedis() : new session.MemoryStore(),
+    store: baseConfig.redisUrl ? connectToRedis() : new session.MemoryStore(),
     secret: baseConfig.auth.session.secret,
     resave: false,
     saveUninitialized: false,
@@ -156,6 +157,9 @@ app.use("/api/v1/transactions", transactionRoutes);
 
 // Resume routes
 app.use("/api/v1/resumes", resumeRoutes);
+
+// Article routes
+app.use("/api/v1/articles", articleRoutes);
 
 // Handle WebSocket connections
 wss.on("connection", (ws) => {
