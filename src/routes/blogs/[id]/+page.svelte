@@ -22,7 +22,7 @@
 	import BackToTop from '$lib/components/icons/BackToTop.svelte';
 	import Check from '$lib/components/icons/Check.svelte';
 	import { getModifierKey } from '$lib/utils/commons';
-	import { addNotification } from '$lib/states/notification';
+	import { addNotification } from '$lib/states/notification.svelte.js';
 
 	const { data } = $props();
 

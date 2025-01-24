@@ -9,7 +9,7 @@
 	import FormError from '$lib/components/reusables/FormError.svelte';
 	import Loader from '$lib/components/reusables/Loader.svelte';
 	import { page } from '$app/state';
-	import { addNotification } from '$lib/states/notification';
+	import { addNotification } from '$lib/states/notification.svelte';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 

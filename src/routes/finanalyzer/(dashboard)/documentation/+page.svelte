@@ -7,7 +7,7 @@
 	import { flip } from 'svelte/animate';
 	import { fade, slide } from 'svelte/transition';
 	import Add from '$lib/components/icons/Add.svelte';
-	import { addNotification } from '$lib/states/notification';
+	import { addNotification } from '$lib/states/notification.svelte';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 
