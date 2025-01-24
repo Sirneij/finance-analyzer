@@ -18,7 +18,8 @@
 		currentExample = $state<CodeExample>(data.currentDoc.examples[0]),
 		codeSnippetContainer = $state<HTMLDivElement>(),
 		// Handle mobile responsiveness
-		isMobile = $state(false);
+		isMobile = $state(false),
+		innerWidth = $state(0);
 
 	$effect(() => {
 		if (currentExample && codeSnippetContainer) {
@@ -44,23 +45,17 @@
 		}
 	});
 
-	$effect(() => {
-		// Check screen size on mount and resize
-		const checkMobile = () => {
-			isMobile = window.innerWidth < 1024;
-			if (isMobile) {
-				isCollapsed = true;
-				isSidebarOpen = false;
-			}
-		};
-
-		checkMobile();
-		window.addEventListener('resize', checkMobile);
-		window.scrollTo(0, 0);
-
-		return () => window.removeEventListener('resize', checkMobile);
-	});
+	// Check screen size on mount and resize
+	const checkMobile = () => {
+		isMobile = innerWidth < 1024;
+		if (isMobile) {
+			isCollapsed = true;
+			isSidebarOpen = false;
+		}
+	};
 </script>
+
+<svelte:window on:resize={checkMobile} bind:innerWidth />
 
 <div class="relative min-h-screen bg-white dark:bg-gray-900">
 	<Search docs={data.docs} />

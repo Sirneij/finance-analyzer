@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { onMount } from 'svelte';
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 	import Close from '$lib/components/icons/Close.svelte';
 
@@ -14,14 +13,15 @@
 	} = $props();
 
 	let dialog: HTMLDivElement,
-		dialogPosition = $state({ top: 0, left: 0 });
+		dialogPosition = $state({ top: 0, left: 0 }),
+		innerWidth = $state(0);
 
 	function updatePosition() {
 		if (!triggerEl || !dialog) return;
 
 		const triggerRect = triggerEl.getBoundingClientRect();
 		const dialogRect = dialog.getBoundingClientRect();
-		const viewportWidth = window.innerWidth;
+		const viewportWidth = innerWidth;
 
 		// Position above the trigger button
 		let top = triggerRect.top - dialogRect.height - 8;
@@ -34,8 +34,8 @@
 		}
 
 		// Adjust horizontal position if dialog would overflow
-		if (left + dialogRect.width > window.innerWidth) {
-			left = window.innerWidth - dialogRect.width - 16;
+		if (left + dialogRect.width > innerWidth) {
+			left = innerWidth - dialogRect.width - 16;
 		}
 
 		if (viewportWidth >= 1920) {
@@ -75,26 +75,17 @@
 			// Initial position
 			updatePosition();
 
-			// Window resize handling
-			window.addEventListener('resize', updatePosition);
-
 			return () => {
 				mutationObserver?.disconnect();
-				window.removeEventListener('resize', updatePosition);
 			};
 		}
 	});
 
-	onMount(() => {
-		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape' && isOpen) {
-				onClose();
-			}
-		};
-
-		window.addEventListener('keydown', handleEscape);
-		return () => window.removeEventListener('keydown', handleEscape);
-	});
+	const handleEscape = (e: KeyboardEvent) => {
+		if (e.key === 'Escape' && isOpen) {
+			onClose();
+		}
+	};
 
 	function handleOutsideClick(e: MouseEvent) {
 		if (e.target === dialog) {
@@ -102,6 +93,8 @@
 		}
 	}
 </script>
+
+<svelte:window bind:innerWidth on:keydown={handleEscape} on:resize={updatePosition} />
 
 <div
 	bind:this={dialog}

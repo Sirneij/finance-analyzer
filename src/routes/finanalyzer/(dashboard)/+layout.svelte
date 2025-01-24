@@ -3,26 +3,23 @@
 	import Notifications from '$lib/components/reusables/Notifications.svelte';
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 
-	let isMobile = $state(false);
-	let isSidebarOpen = $state(true);
+	let isMobile = $state(false),
+		isSidebarOpen = $state(true),
+		innerWidth = $state(0);
 
 	function toggleSidebar() {
 		isSidebarOpen = !isSidebarOpen;
 	}
 
-	$effect(() => {
-		const checkWidth = () => {
-			isMobile = window.innerWidth < 768;
-			if (isMobile) isSidebarOpen = false;
-		};
-
-		checkWidth();
-		window.addEventListener('resize', checkWidth);
-		return () => window.removeEventListener('resize', checkWidth);
-	});
+	const checkWidth = () => {
+		isMobile = innerWidth < 768;
+		if (isMobile) isSidebarOpen = false;
+	};
 
 	let { children } = $props();
 </script>
+
+<svelte:window on:resize={checkWidth} bind:innerWidth />
 
 <div class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
 	<Notifications />

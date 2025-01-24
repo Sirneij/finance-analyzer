@@ -1,3 +1,4 @@
+import { browser } from '$app/environment';
 import { WEBSITE_URL } from '$lib/utils/contants';
 
 export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
@@ -83,3 +84,77 @@ export const truncateSeriesArticles = (
 	}
 	return seriesArticles;
 };
+
+export const tocObserver = (setActiveId: (id: string) => void) => {
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					setActiveId(entry.target.id);
+				}
+			});
+		},
+		{
+			rootMargin: '-20% 0px -80% 0px'
+		}
+	);
+	return observer;
+};
+
+// Throttle scroll updates
+export function throttle<T extends (...args: any[]) => any>(fn: T, wait: number) {
+	let lastFn: number, lastTime: number;
+	return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+		const now = Date.now();
+
+		if (lastTime && now < lastTime + wait) {
+			clearTimeout(lastFn);
+			lastFn = window.setTimeout(() => {
+				lastTime = now;
+				fn.apply(this, args);
+			}, wait);
+			return undefined as any as ReturnType<T>;
+		} else {
+			lastTime = now;
+			return fn.apply(this, args);
+		}
+	};
+}
+
+// Copy URL handler
+export async function copyUrl(): Promise<boolean> {
+	try {
+		await navigator.clipboard.writeText(window.location.href);
+		return true;
+	} catch (error) {
+		console.error('Failed to copy URL:', error);
+		return false;
+	}
+}
+
+export async function shareContent(data: {
+	title: string;
+	text: string;
+	url: string;
+}): Promise<boolean> {
+	if (!browser) return false;
+
+	try {
+		if (typeof navigator !== 'undefined' && navigator.share) {
+			await navigator.share(data);
+			return true;
+		}
+
+		// Fallback: Copy to clipboard
+		if (typeof navigator !== 'undefined' && navigator.clipboard) {
+			const shareText = `${data.title}\n\n${data.text}\n\n${data.url}`;
+			await navigator.clipboard.writeText(shareText);
+			return true;
+		}
+
+		return false;
+	} catch (error) {
+		console.error('Failed to share:', error);
+		return false;
+	}
+}
