@@ -200,3 +200,17 @@ pre code {
 .article-content {
 	@apply dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:p-4 dark:prose-a:text-blue-400;
 }
+
+.detail {
+	nav::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	nav::-webkit-scrollbar-track {
+		@apply rounded bg-transparent;
+	}
+
+	nav::-webkit-scrollbar-thumb {
+		@apply rounded bg-gray-300 dark:bg-gray-700;
+	}
+}

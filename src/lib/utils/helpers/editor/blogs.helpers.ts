@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import type { IArticlePopulated } from '$lib/types/articles.types';
 import { WEBSITE_URL } from '$lib/utils/contants';
 
 export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
@@ -72,15 +73,21 @@ export const estimateReadingTime = (content: string) => {
 	return `${time} min read`;
 };
 
-export const truncateSeriesArticles = (
-	seriesArticles: Record<string, string>[],
+interface IEllipsisArticle {
+	_id: 'ellipsis';
+	title: string;
+}
+
+export const truncateSeriesArticles = <T extends { _id: string; title: string }>(
+	seriesArticles: T[],
 	showAllSeries: boolean
-) => {
+): (T | IEllipsisArticle)[] => {
 	if (!showAllSeries && seriesArticles.length > 5) {
 		const start = seriesArticles.slice(0, 2);
 		const end = seriesArticles.slice(-2);
 		const hidden = seriesArticles.length - 4;
-		return [...start, { id: 'ellipsis', title: `${hidden} more parts` }, ...end];
+		const ellipsis: IEllipsisArticle = { _id: 'ellipsis', title: `${hidden} more parts` };
+		return [...start, ellipsis, ...end];
 	}
 	return seriesArticles;
 };
@@ -158,3 +165,5 @@ export async function shareContent(data: {
 		return false;
 	}
 }
+
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
