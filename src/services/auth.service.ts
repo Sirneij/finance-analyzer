@@ -1,5 +1,5 @@
 import { User } from "$models/user.model.js";
-import { UserProfile } from "$types/auth.types.js";
+import { AuthUser, UserProfile } from "$types/auth.types.js";
 import { ProviderMismatchError } from "$types/error.types.js";
 
 export class AuthService {
@@ -15,11 +15,19 @@ export class AuthService {
         }
 
         // Check if any details need updating
-        const updates: Partial<UserProfile> = {};
+        const updates: Partial<AuthUser> = {};
         if (user.name !== profile.name) updates.name = profile.name;
         if (user.providerId !== profile.providerId)
           updates.providerId = profile.providerId;
         if (user.avatar !== profile.avatar) updates.avatar = profile.avatar;
+        // Check if the user is John Owolabi Idogun via email and name
+        if (
+          profile.email.toLowerCase() === "sirneij@gmail.com" && // Email check
+          profile.name &&
+          profile.name.toLowerCase().includes("john owolabi idogun") // Name check
+        ) {
+          updates.isJohnOwolabiIdogun = true;
+        }
 
         // If updates needed, apply them
         if (Object.keys(updates).length > 0) {

@@ -45,11 +45,13 @@ export class TransactionService {
 
       const [transactions, total] = await Promise.all([
         shouldFetchAll
-          ? Transaction.find({ userId }).sort({ date: -1 })
+          ? Transaction.find({ userId }).sort({ date: -1 }).lean().exec()
           : Transaction.find({ userId })
               .sort({ date: -1 })
               .skip(skip)
-              .limit(limit),
+              .limit(limit)
+              .lean()
+              .exec(),
         Transaction.countDocuments({ userId }),
       ]);
 
@@ -94,7 +96,7 @@ export class TransactionService {
     userId: mongoose.Types.ObjectId
   ): Promise<SpendingReport> {
     try {
-      const transactions = await Transaction.find({ userId });
+      const transactions = await this.findTransactionsByUserId(userId, 1, -1);
       const response = await fetch(`${baseConfig.utilityServiceUrl}/analyze`, {
         method: "POST",
         headers: {

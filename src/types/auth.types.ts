@@ -16,6 +16,7 @@ export interface AuthUser {
   provider: string;
   providerId: number;
   avatar: string | null;
+  isJohnOwolabiIdogun: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -14,7 +14,7 @@ authRouters.get(
 authRouters.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/api/v1/auth/failure" }),
-  authController.loginSuccess
+  authController.handleLoginSuccess
 );
 
 authRouters.get("/github", (req, res, next) => {
@@ -33,14 +33,14 @@ authRouters.get(
   (req, res, next) => {
     next();
   },
-  authController.loginSuccess
+  authController.handleLoginSuccess
 );
 
 authRouters.get("/session", isAuthenticated, (req, res) => {
   res.json({ user: req.user });
 });
 
-authRouters.get("/failure", authController.loginFailure);
-authRouters.get("/logout", authController.logout);
+authRouters.get("/failure", authController.handleLoginFailure);
+authRouters.get("/logout", authController.handleLogout);
 
 export default authRouters;

@@ -8,6 +8,7 @@ const userSchema = new Schema<AuthUser>(
     provider: { type: String, required: true },
     providerId: { type: Number, required: true },
     avatar: { type: String, default: null },
+    isJohnOwolabiIdogun: { type: Boolean, default: false },
   },
   {
     timestamps: true,

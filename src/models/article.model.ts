@@ -4,7 +4,13 @@ import mongoose, { Schema } from "mongoose";
 // Schemas
 const ArticleSeriesSchema = new Schema<IArticleSeries>(
   {
-    title: { type: String, required: true, unique: true },
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
   },
   {
     timestamps: true,
@@ -12,7 +18,13 @@ const ArticleSeriesSchema = new Schema<IArticleSeries>(
 );
 
 const TagSchema = new Schema<ITag>({
-  name: { type: String, required: true, unique: true },
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
   description: String,
 });
 
@@ -33,12 +45,18 @@ const ArticleSchema = new Schema<IArticle>(
 );
 
 // Add index separately using schema.index() method
-ArticleSchema.index({ slug: 1, createdAt: 1, isPublished: 1 });
+ArticleSchema.index({
+  slug: 1,
+  createdAt: 1,
+  isPublished: 1,
+  _id: 1,
+  updatedAt: 1,
+});
 
 // Models
-export const ArticleSeries = mongoose.model<IArticleSeries>(
+export const ArticleSeriesModel = mongoose.model<IArticleSeries>(
   "ArticleSeries",
   ArticleSeriesSchema
 );
-export const Tag = mongoose.model<ITag>("Tag", TagSchema);
-export const Article = mongoose.model<IArticle>("Article", ArticleSchema);
+export const TagModel = mongoose.model<ITag>("Tag", TagSchema);
+export const ArticleModel = mongoose.model<IArticle>("Article", ArticleSchema);

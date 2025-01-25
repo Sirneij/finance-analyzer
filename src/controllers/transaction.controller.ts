@@ -63,7 +63,7 @@ export class TransactionController {
     }
   }
 
-  async getTransactions(req: Request, res: Response): Promise<void> {
+  async handleGetTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
@@ -84,11 +84,12 @@ export class TransactionController {
           limit: result.limit,
           totalPages: Math.ceil(result.total / result.limit),
         },
+        success: true,
       });
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to fetch transactions",
@@ -96,7 +97,10 @@ export class TransactionController {
     }
   }
 
-  async getIncomeExpensesSavings(req: Request, res: Response): Promise<void> {
+  async handleGetIncomeExpensesSavings(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
@@ -104,11 +108,11 @@ export class TransactionController {
         userId
       );
 
-      res.json(summary);
+      res.status(200).json({ summary, success: true });
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to fetch income/expenses/savings",
@@ -116,17 +120,17 @@ export class TransactionController {
     }
   }
 
-  async analyzeTransactions(req: Request, res: Response): Promise<void> {
+  async handleAnalyzeTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
       const data = await TransactionService.analyzeTransactionsByUserId(userId);
 
-      res.json(data);
+      res.status(200).json({ data, success: true });
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to analyze transactions",
@@ -134,7 +138,7 @@ export class TransactionController {
     }
   }
 
-  async createTransactions(req: Request, res: Response): Promise<void> {
+  async handleCreateTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
@@ -142,11 +146,11 @@ export class TransactionController {
 
       await TransactionService.createTransactionsByUserId(userId, transactions);
 
-      res.json({ success: true });
+      res.status(200).json({ success: true });
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to create transactions",
@@ -154,7 +158,7 @@ export class TransactionController {
     }
   }
 
-  async deleteTransactions(req: Request, res: Response): Promise<void> {
+  async handleDeleteTransactions(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
@@ -169,7 +173,7 @@ export class TransactionController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to delete transactions",

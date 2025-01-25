@@ -10,7 +10,24 @@ export const isAuthenticated = (
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json({ message: "Unauthorized" });
+  res
+    .status(401)
+    .json({ message: "Unauthenticated. Kindly login to proceed." });
+};
+
+export const isJohnOwolabiIdogun = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.isAuthenticated() && req.user?.isJohnOwolabiIdogun) {
+    return next();
+  }
+  res
+    .status(403)
+    .json({
+      message: "Forbidden. You are not authorized to perform this action.",
+    });
 };
 
 export const handleAuthError: ErrorRequestHandler = (

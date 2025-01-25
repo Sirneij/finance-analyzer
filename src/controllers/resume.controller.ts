@@ -4,7 +4,11 @@ import busboy from "busboy";
 import { baseConfig } from "$config/base.config.js";
 
 export class ResumeController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async handleGetResume(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const resume = await ResumeService.getResume(req.params.id);
       if (!resume) {
@@ -17,7 +21,11 @@ export class ResumeController {
     }
   }
 
-  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async handleCreateOrUpdateResume(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       await new Promise<void>((resolve, reject) => {
         const bb = busboy({ headers: req.headers });

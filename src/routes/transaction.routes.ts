@@ -8,19 +8,19 @@ const transactionController = new TransactionController();
 transactionRoutes.get(
   "/",
   isAuthenticated,
-  transactionController.getTransactions
+  transactionController.handleGetTransactions
 );
 
 transactionRoutes.post(
   "/",
   isAuthenticated,
-  transactionController.createTransactions
+  transactionController.handleCreateTransactions
 );
 
 transactionRoutes.delete(
   "/",
   isAuthenticated,
-  transactionController.deleteTransactions
+  transactionController.handleDeleteTransactions
 );
 
 transactionRoutes.post(
@@ -32,13 +32,13 @@ transactionRoutes.post(
 transactionRoutes.get(
   "/summary",
   isAuthenticated,
-  transactionController.getIncomeExpensesSavings
+  transactionController.handleGetIncomeExpensesSavings
 );
 
 transactionRoutes.get(
   "/analyze",
   isAuthenticated,
-  transactionController.analyzeTransactions
+  transactionController.handleAnalyzeTransactions
 );
 
 export default transactionRoutes;

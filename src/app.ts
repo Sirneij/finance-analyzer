@@ -22,6 +22,8 @@ import endpointRouters from "$routes/docs.routes.js";
 import { TransactionWebSocketHandler } from "$websockets/transaction.websocket.js";
 import resumeRoutes from "$routes/resume.routes.js";
 import articleRoutes from "$routes/article.routes.js";
+import tagsRoutes from "$routes/tags.routes.js";
+import seriesRoutes from "$routes/series.routes.js";
 
 const app: Application = express();
 const server: HttpServer = createServer(app);
@@ -160,6 +162,12 @@ app.use("/api/v1/resumes", resumeRoutes);
 
 // Article routes
 app.use("/api/v1/articles", articleRoutes);
+
+// Tag routes
+app.use("/api/v1/tags", tagsRoutes);
+
+// Series routes
+app.use("/api/v1/series", seriesRoutes);
 
 // Handle WebSocket connections
 wss.on("connection", (ws) => {
