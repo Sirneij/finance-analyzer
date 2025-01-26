@@ -139,11 +139,9 @@ export class ArticleController {
 
   async handleGetArticles(req: Request, res: Response): Promise<void> {
     try {
-      const { page, limit } = req.query;
-      const result = await ArticleService.getPublishedArticles(
-        Number(page) || 1,
-        Number(limit) || 10
-      );
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const result = await ArticleService.getPublishedArticles(page, limit);
 
       res.json({
         success: true,
@@ -166,7 +164,7 @@ export class ArticleController {
 
   async handleArticleCreate(req: Request, res: Response): Promise<void> {
     try {
-      let { title, foreImage, content, tags, series, published } = req.body;
+      let { title, foreImage, content, tags, series, isPublished } = req.body;
       if (!title || !content || !tags || !foreImage) {
         throw new Error("Title, content, tags, and foreImage are required");
       }
@@ -189,7 +187,7 @@ export class ArticleController {
         content,
         tags,
         series,
-        isPublished: published,
+        isPublished,
       });
 
       res.json({ success: true, article });
@@ -264,7 +262,7 @@ export class ArticleController {
         articles = await ArticleService.getArticlesBySeries(series as string);
       }
 
-      res.json({ success: true, ...articles });
+      res.json({ success: true, articles });
     } catch (error) {
       res.status(400).json({
         success: false,
