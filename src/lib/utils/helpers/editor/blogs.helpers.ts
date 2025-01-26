@@ -167,3 +167,36 @@ export async function shareContent(data: {
 }
 
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+export function formatArticleDate(date: string) {
+	const articleDate = new Date(date);
+	const now = new Date();
+	const diffInSeconds = Math.floor((now.getTime() - articleDate.getTime()) / 1000);
+	const month = articleDate.toLocaleString('default', { month: 'short' });
+	const day = articleDate.getDate();
+	const currentYear = now.getFullYear();
+	const isCurrentYear = articleDate.getFullYear() === currentYear;
+
+	let ago = '';
+
+	// Calculate "ago" text for recent dates
+	if (diffInSeconds < 60) {
+		ago = `${diffInSeconds} seconds ago`;
+	} else if (diffInSeconds < 3600) {
+		const mins = Math.floor(diffInSeconds / 60);
+		ago = `${mins} minute${mins === 1 ? '' : 's'} ago`;
+	} else if (diffInSeconds < 86400) {
+		const hours = Math.floor(diffInSeconds / 3600);
+		ago = `${hours} hour${hours === 1 ? '' : 's'} ago`;
+	} else if (diffInSeconds < 604800) {
+		const days = Math.floor(diffInSeconds / 86400);
+		ago = `${days} day${days === 1 ? '' : 's'} ago`;
+	}
+
+	// Format final date string
+	if (ago) {
+		return `${month} ${day} (${ago})`;
+	}
+
+	return isCurrentYear ? `${month} ${day}` : `${month} ${day}, ${articleDate.getFullYear()}`;
+}

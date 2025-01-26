@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { applyAction, enhance } from '$app/forms';
 	import Check from '$lib/components/icons/Check.svelte';
 	import Clock from '$lib/components/icons/Clock.svelte';
 	import Copy from '$lib/components/icons/Copy.svelte';
 	import Delete from '$lib/components/icons/Delete.svelte';
 	import Edit from '$lib/components/icons/Edit.svelte';
 	import Share from '$lib/components/icons/Share.svelte';
+	import ModelessDialog from '$lib/components/reusables/ModelessDialog.svelte';
 	import { addNotification } from '$lib/states/notification.svelte';
 	import type { IArticlePopulated } from '$lib/types/articles.types';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
@@ -14,17 +16,42 @@
 		estimateReadingTime,
 		shareContent
 	} from '$lib/utils/helpers/editor/blogs.helpers';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
-	let {
-		article
-	}: {
-		article: IArticlePopulated;
-	} = $props();
+	let { article }: { article: IArticlePopulated } = $props();
 
-	let copySuccess = $state(false);
-
+	let copySuccess = $state(false),
+		triggerButton = $state<HTMLButtonElement>(),
+		isSubmitted = $state(false),
+		isOpen = $state(false);
 	// Calculate reading time
 	const readingTime = $derived.by(() => estimateReadingTime(article.content));
+
+	function confirmDelete() {
+		isSubmitted = true;
+		// triggerButton?.form?.requestSubmit();
+		triggerButton?.click();
+	}
+
+	function onClose() {
+		isOpen = false;
+	}
+
+	const handleDelete: SubmitFunction = async ({ formElement, formData, action, cancel }) => {
+		// Prevent form submission
+		if (!isSubmitted) {
+			isOpen = true;
+			cancel();
+		}
+
+		return async ({ result, update }) => {
+			if (result.type === 'success' || result.type === 'redirect') {
+				addNotification('Article deleted successfully', 'success');
+				await update();
+			}
+			await applyAction(result);
+		};
+	};
 </script>
 
 <header class="mt-8 space-y-4">
@@ -33,25 +60,30 @@
 			{article.title}
 		</h1>
 
-		<div class="flex gap-2">
-			<button
-				class="rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+		<form method="POST" use:enhance={handleDelete} class="flex gap-2">
+			<a
+				href="/blogs/{article._id}/edit"
+				class=" rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
 				aria-label="Edit article"
 			>
 				<Edit class="h-5 w-5" />
-			</button>
+			</a>
+			<input type="hidden" name="article-id" value={article._id} />
 			<button
+				bind:this={triggerButton}
+				type="submit"
 				class="rounded-full p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
 				aria-label="Delete article"
+				formaction="/blogs/{article._id}?/deleteArticle"
 			>
 				<Delete class="h-5 w-5" />
 			</button>
-		</div>
+		</form>
 	</div>
 
 	<div class="flex flex-wrap items-center gap-4">
 		<!-- Tags -->
-		<div class="card-tag flex flex-wrap gap-2 text-gray-800 dark:text-white">
+		<div class="flex flex-wrap gap-2">
 			{#each article.tags as tag}
 				<span class="tag {tag.name}">
 					{tag.name}
@@ -126,3 +158,27 @@
 		</div>
 	</div>
 </header>
+
+<ModelessDialog {isOpen} {onClose} title="Delete article?" triggerEl={triggerButton}>
+	<p class="mb-2 text-gray-700 dark:text-gray-300">
+		Are you sure you want to delete this article? This action cannot be undone.
+	</p>
+
+	<button
+		type="button"
+		onclick={confirmDelete}
+		class="rounded bg-rose-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-600"
+	>
+		Confirm
+	</button>
+	<button
+		type="button"
+		onclick={() => {
+			isSubmitted = false;
+			isOpen = false;
+		}}
+		class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+	>
+		Cancel
+	</button>
+</ModelessDialog>

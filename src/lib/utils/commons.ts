@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 
 let cachedOS: string | null = null;
 
@@ -52,3 +53,17 @@ export const detectOS = (): string => {
 
 	return cachedOS || 'unknown';
 };
+
+export function calculateVisiblePages(currentPage: number, total: number) {
+	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+	if (currentPage <= 4) return [1, 2, 3, 4, 5, '...', total];
+	if (currentPage >= total - 3)
+		return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+
+	return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', total];
+}
+
+export async function handlePageChange(newPage: number) {
+	await goto(`?page=${newPage}`, { invalidateAll: true });
+}

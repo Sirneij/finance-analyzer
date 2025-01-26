@@ -7,5 +7,6 @@ export interface User {
 	providerId: number;
 	createdAt: string;
 	updatedAt: string;
+	isJohn: boolean;
 	__v: number;
 }

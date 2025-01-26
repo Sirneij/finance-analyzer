@@ -38,50 +38,64 @@
 	--yaml: #cb171e;
 	--webdev: #562765;
 	--others: #059669;
+	--flutter: #02569b;
+	--django: #092e20;
+	--actix-web: #002c91;
+	--mongodb: #13aa52;
+	--aws: #ff9900;
+	--docker: #0db7ed;
+	--kubernetes: #326ce5;
+	--graphql: #e10098;
+	--restapi: #ff7f50;
+	--react: #61dafb;
 }
 $languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html,
-	typescript, json, java, jinja, julia, julia, jupiter, kotlin, less, matlab, markdown, nginx,
-	numpy, php, postgresql, sql, shell, solidity, svelte, swift, latex, vhdl, verilog, webassembly,
-	yaml, webdev, others;
-$other-languages: django, actix-web, software;
+	typescript, json, java, jinja, julia, jupiter, kotlin, less, matlab, markdown, nginx, numpy, php,
+	postgresql, sql, shell, solidity, svelte, swift, latex, vhdl, verilog, webassembly, docker, react,
+	kubernetes, graphql, restapi, flutter, django, actix-web, mongodb, aws, yaml, webdev, others;
+
+// ...existing code...
+
 @each $language in $languages {
 	@if $language == c {
 		.tag.#{$language} {
-			background: rgba(var(--c-language), 0.2);
-		}
-		.tag.#{$language}::before {
+			background: rgb(from var(--c-language) r g b / 0.1);
+			border: 1px solid rgb(from var(--c-language) r g b / 0.3);
 			color: var(--c-language);
-		}
-		.card-tag .tag.#{$language}:hover {
-			border-color: var(--c-language);
-			color: var(--c-language);
-			background: transparent;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background: rgb(from var(--c-language) r g b / 0.15);
+				border-color: rgb(from var(--c-language) r g b / 0.5);
+				transform: scale(1.03);
+			}
+
+			&.active {
+				background: var(--c-language);
+				border-color: var(--c-language);
+				color: white;
+				box-shadow: 0 2px 4px rgb(from var(--c-language) r g b / 0.2);
+			}
 		}
 	} @else {
 		.tag.#{$language} {
-			background: rgba(var(--#{$language}), 0.2);
-		}
-		.tag.#{$language}::before {
+			background: rgb(from var(--#{$language}) r g b / 0.1);
+			border: 1px solid rgb(from var(--#{$language}) r g b / 0.3);
 			color: var(--#{$language});
-		}
-		.card-tag .tag.#{$language}:hover {
-			border-color: var(--#{$language});
-			color: var(--#{$language});
-			background: transparent;
-		}
-	}
-}
+			transition: all 0.2s ease;
 
-@each $language in $other-languages {
-	.tag.#{$language} {
-		background: rgba(var(--others), 0.2);
-	}
-	.tag.#{$language}::before {
-		color: var(--others);
-	}
-	.card-tag .tag.#{$language}:hover {
-		border-color: var(--others);
-		color: var(--others);
-		background: transparent;
+			&:hover {
+				background: rgb(from var(--#{$language}) r g b / 0.15);
+				border-color: rgb(from var(--#{$language}) r g b / 0.5);
+				transform: scale(1.03);
+			}
+
+			&.active {
+				background: var(--#{$language});
+				border-color: var(--#{$language});
+				color: white;
+				box-shadow: 0 2px 4px rgb(from var(--#{$language}) r g b / 0.2);
+			}
+		}
 	}
 }

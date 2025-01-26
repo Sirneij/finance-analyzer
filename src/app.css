@@ -4,6 +4,14 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	overflow-y: scroll;
+}
+
 @layer base {
 	input,
 	input[type='text'],
@@ -192,11 +200,9 @@ pre code {
 }
 
 .tag {
-	@apply flex items-center rounded px-2 py-0.5 text-sm before:mr-1 before:content-['#'];
+	@apply flex items-center rounded px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
 }
-.card-tag .tag {
-	@apply border border-transparent transition-all duration-300 ease-in-out;
-}
+
 .article-content {
 	@apply dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:p-4 dark:prose-a:text-blue-400;
 }

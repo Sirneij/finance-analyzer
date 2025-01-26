@@ -55,9 +55,11 @@ export interface UpdateArticleInput {
 
 export interface PaginatedArticles {
 	articles: IArticlePopulated[];
-	total: number;
-	page: number;
-	limit: number;
+	metadata: {
+		total: number;
+		page: number;
+		limit: number;
+	};
 }
 
 export interface CreateTagInput {

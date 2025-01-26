@@ -21,7 +21,7 @@
 	const seriesDisplay = $derived.by(() => truncateSeriesArticles(seriesArticles, showAllSeries));
 </script>
 
-{#if article.series}
+{#if article.series && seriesArticles.length > 1}
 	<div class="mt-8 rounded-lg border border-gray-200 p-4 dark:border-gray-800">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-white">
 			{capitalize(article.series.title)} Series
@@ -42,7 +42,7 @@
 					</button>
 				{:else}
 					<a
-						href="/blogs/{sArticle._id}"
+						href="/blogs/{article.slug}/{sArticle._id}"
 						class="block rounded-md p-2 hover:bg-gray-50 dark:hover:bg-gray-800 {sArticle._id ===
 						article._id
 							? 'bg-indigo-50 dark:bg-indigo-900/20'

@@ -41,7 +41,7 @@ export const actions: Actions = {
 		if (!res.ok) {
 			const response = await res.json();
 			const errors: Array<CustomError> = [];
-			errors.push({ error: response.error, id: Math.floor(Math.random() * 100) });
+			errors.push({ error: response.message, id: Math.floor(Math.random() * 100) });
 			return fail(400, { errors });
 		}
 
