@@ -2,12 +2,29 @@
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import GitFork from '$lib/components/icons/GitFork.svelte';
 	import GitStar from '$lib/components/icons/GitStar.svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
+	import Repo from '$lib/components/icons/Repo.svelte';
 
-	let { topRepos } = $props();
+	interface TopReposSectionProps extends HTMLAttributes<HTMLElement> {
+		topRepos: Array<{
+			name: string;
+			description: string | null;
+			stargazers_count: number;
+			forks_count: number;
+			language: string | null;
+			html_url: string;
+		}>;
+	}
+
+	let { topRepos, ...props }: TopReposSectionProps = $props();
 </script>
 
-<AnimatedSection class="space-y-12" y={50} delay={300}>
-	<h2 class="mb-8 text-3xl font-semibold">Featured Repositories</h2>
+<AnimatedSection class="space-y-12" y={50} delay={300} {...props}>
+	<div class="mb-8 flex items-center gap-3">
+		<Repo class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+		<h2 class="text-3xl font-semibold">Featured Repositories</h2>
+	</div>
+
 	<div class="relative w-full">
 		<!-- Scroll container -->
 		<div class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4">

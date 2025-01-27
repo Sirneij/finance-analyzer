@@ -10,11 +10,17 @@
 	import { formatRange } from '$lib/utils/helpers/docs.helpers';
 	import { onMount } from 'svelte';
 	import { icons } from '../icons';
+	import type { HTMLAttributes } from 'svelte/elements';
+	import Platform from '$lib/components/icons/Platform.svelte';
+	import GitHub from '$lib/components/icons/GitHub.svelte';
+	import Devto from '../icons/Devto.svelte';
 
-	let {
-		githubUser,
-		devtoArticles = $bindable()
-	}: { githubUser: BasicUserData; devtoArticles: ProcessedDevToArticles | null } = $props();
+	interface OverviewSectionProps extends HTMLAttributes<HTMLElement> {
+		githubUser: BasicUserData;
+		devtoArticles: ProcessedDevToArticles | null;
+	}
+
+	let { githubUser, devtoArticles = $bindable(), ...props }: OverviewSectionProps = $props();
 
 	const githubStats = [
 		{
@@ -79,12 +85,18 @@
 	});
 </script>
 
-<AnimatedSection class="space-y-12" y={50} delay={200}>
-	<h2 class="mb-8 text-3xl font-semibold">Platform Overview</h2>
+<AnimatedSection class="space-y-12" y={50} {...props}>
+	<div class="mb-8 flex items-center gap-3">
+		<Platform class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+		<h2 class="text-3xl font-semibold">Platform Overview</h2>
+	</div>
 
 	<!-- GitHub Stats -->
 	<div>
-		<h3 class="mb-6 text-2xl font-semibold">GitHub</h3>
+		<div class="mb-6 flex items-center gap-3">
+			<GitHub class="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+			<h3 class="text-2xl font-semibold">GitHub</h3>
+		</div>
 		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 			{#each githubStats as stat}
 				{@const Icon = icons[stat.iconName as keyof typeof icons]}
@@ -110,7 +122,10 @@
 	</div>
 	<!-- Dev.to Stats -->
 	<div>
-		<h3 class="mb-6 text-2xl font-semibold">Dev.to</h3>
+		<div class="mb-6 flex items-center gap-3">
+			<Devto class="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+			<h3 class="text-2xl font-semibold">Dev.to</h3>
+		</div>
 		<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 			{#each devToStats as stat}
 				{@const Icon = icons[stat.iconName as keyof typeof icons]}

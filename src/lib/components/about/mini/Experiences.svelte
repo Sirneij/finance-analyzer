@@ -4,6 +4,7 @@
 	import { parseEndDate } from '$lib/utils/helpers/resume.helpers';
 	import { normalizeTechnologyNameAndGetIcon } from '$lib/utils/helpers/technologies.helpers';
 	import { slide } from 'svelte/transition';
+	import Work from '$lib/components/icons/Work.svelte';
 
 	let {
 		experiences,
@@ -46,8 +47,11 @@
 						<div class="absolute -left-2.5 flex h-5 w-5 items-center justify-center">
 							<div
 								class="h-5 w-5 rounded-full bg-gradient-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
-							></div>
-							<div class="absolute h-3 w-3 rounded-full bg-white dark:bg-gray-900"></div>
+							>
+								<Work
+									class="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
+								/>
+							</div>
 						</div>
 
 						<!-- Card content -->

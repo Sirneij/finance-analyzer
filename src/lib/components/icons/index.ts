@@ -20,6 +20,14 @@ import CodeBlock from '$lib/components/icons/editor/CodeBlock.svelte';
 import Note from '$lib/components/icons/editor/Note.svelte';
 import Tip from '$lib/components/icons/editor/Tip.svelte';
 import Warning from '$lib/components/icons/editor/Warning.svelte';
+import Articles from '$lib/components/icons/Articles.svelte';
+import Seen from '$lib/components/icons/Seen.svelte';
+import Tags from '$lib/components/icons/Tags.svelte';
+import Stacks from '$lib/components/icons/Stacks.svelte';
+import ArticlesIcon from '$lib/components/icons/Articles.svelte';
+import ResumeIcon from '$lib/components/icons/Resume.svelte';
+import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
+import Platform from '$lib/components/icons/Platform.svelte';
 
 export const icons = {
 	repo: Repo,
@@ -47,4 +55,20 @@ export const EditorIcons = {
 	note: Note,
 	tip: Tip,
 	warning: Warning
+} as const;
+
+export const MetricsIcons = {
+	totalReactions: Hearts,
+	totalArticles: Articles,
+	totalViews: Seen,
+	totalTags: Tags,
+	totalSeries: Stacks
+} as const;
+
+export const SectionIcons = {
+	Home: ProfileIcon,
+	Resume: ResumeIcon,
+	Articles: ArticlesIcon,
+	Platform: Platform,
+	Repos: Repo
 } as const;

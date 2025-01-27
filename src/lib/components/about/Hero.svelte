@@ -9,7 +9,7 @@
 	import { page } from '$app/state';
 	import FormError from '$lib/components/reusables/FormError.svelte';
 
-	let { githubUser } = $props();
+	let { githubUser, ...props } = $props();
 	let isModalOpen = $state(false);
 
 	const encodedEmail = encodeEmail(`${CONTACT_EMAIL}`);
@@ -20,7 +20,7 @@
 	};
 </script>
 
-<AnimatedSection class="mb-16 space-y-4 text-center" y={50}>
+<AnimatedSection class="mb-16 space-y-4 text-center" y={50} {...props}>
 	<h1
 		class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text text-5xl font-bold text-transparent dark:from-indigo-400 dark:to-teal-400"
 	>

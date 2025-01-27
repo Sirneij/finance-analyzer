@@ -3,14 +3,20 @@
 	import { fetchAndProcessDevToArticles } from '$lib/utils/helpers/dev.to.helpers';
 	import { onMount } from 'svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
-	import Caret from '../icons/Caret.svelte';
-	import Article from './mini/Article.svelte';
+	import Caret from '$lib/components/icons/Caret.svelte';
+	import Article from '$lib/components/about/mini/Article.svelte';
 	import LoadingArticles from '$lib/components/about/mini/LoadingArticles.svelte';
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 	import { slide } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
+	import type { HTMLAttributes } from 'svelte/elements';
+	import Devto from '$lib/components/icons/Devto.svelte';
 
-	let { devtoArticles = $bindable() }: { devtoArticles: ProcessedDevToArticles | null } = $props();
+	interface ArticlesSectionProps extends HTMLAttributes<HTMLElement> {
+		devtoArticles: ProcessedDevToArticles | null;
+	}
+
+	let { devtoArticles = $bindable(), ...props }: ArticlesSectionProps = $props();
 
 	let isLoading = $state(true),
 		error = $state<string | null>(null),
@@ -32,8 +38,11 @@
 	});
 </script>
 
-<AnimatedSection class="space-y-12" y={50} delay={300}>
-	<h2 class="mb-8 text-3xl font-semibold">Latest Blog Posts</h2>
+<AnimatedSection class="space-y-12" y={50} delay={300} {...props}>
+	<div class="mb-8 flex items-center gap-3">
+		<Devto class="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+		<h2 class="text-3xl font-semibold">Dev.to Articles</h2>
+	</div>
 
 	{#if isLoading}
 		<LoadingArticles />
@@ -103,7 +112,7 @@
 		<!-- Standalone Posts -->
 		{#if devtoArticles.standalone.length > 0}
 			<div class="mt-12">
-				<h3 class="mb-6 text-2xl font-semibold">Other Articles</h3>
+				<h3 class="mb-6 text-2xl font-semibold">Standalone Articles</h3>
 				<div class="relative w-full">
 					<div class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4">
 						{#each devtoArticles.standalone as article}

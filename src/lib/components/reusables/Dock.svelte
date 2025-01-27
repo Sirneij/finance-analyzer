@@ -33,7 +33,7 @@
 		<div
 			in:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="w-64 rounded-r-lg bg-white/90 shadow-xl backdrop-blur-sm
+			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl backdrop-blur-sm
             transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/90"
 		>
 			<div class="max-h-[90vh] overflow-y-auto p-4">
