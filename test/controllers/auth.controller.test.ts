@@ -33,6 +33,7 @@ describe("AuthController", () => {
         email: "john@example.com",
         name: "John Doe",
         provider: "google",
+        isJohnOwolabiIdogun: true,
         providerId: Providers.GOOGLE,
         avatar: "https://example.com/avatar.jpg",
         createdAt: new Date(),
@@ -58,7 +59,7 @@ describe("AuthController", () => {
     it("should return JSON response when xhr is true", async () => {
       mockReq.xhr = true;
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -74,7 +75,7 @@ describe("AuthController", () => {
     it("should return JSON response when accept header includes application/json", async () => {
       mockReq.headers = { accept: "application/json" };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -88,7 +89,7 @@ describe("AuthController", () => {
     });
 
     it("should redirect to frontend URL with root path when no state parameter", async () => {
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -102,7 +103,7 @@ describe("AuthController", () => {
       const encodedPath = Buffer.from("/dashboard").toString("base64");
       mockReq.query = { state: encodedPath };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -117,7 +118,7 @@ describe("AuthController", () => {
       baseConfig.logger = mockLogger;
       mockReq.query = { state: "invalid-base64!" };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -134,7 +135,7 @@ describe("AuthController", () => {
     it("should handle empty string state parameter", async () => {
       mockReq.query = { state: "" };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -149,7 +150,7 @@ describe("AuthController", () => {
       const encodedPath = Buffer.from(path).toString("base64");
       mockReq.query = { state: encodedPath };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -162,7 +163,7 @@ describe("AuthController", () => {
     it("should handle missing user object", async () => {
       mockReq.user = undefined;
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -176,7 +177,7 @@ describe("AuthController", () => {
       const encodedPath = Buffer.from(path).toString("base64");
       mockReq.query = { state: encodedPath };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -191,7 +192,7 @@ describe("AuthController", () => {
       const encodedPath = Buffer.from(path).toString("base64");
       mockReq.query = { state: encodedPath };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -206,7 +207,7 @@ describe("AuthController", () => {
       const encodedPath = Buffer.from(path).toString("base64");
       mockReq.query = { state: encodedPath };
 
-      await authController.loginSuccess(
+      await authController.handleLoginSuccess(
         mockReq as Request,
         mockRes as Response
       );
@@ -219,7 +220,7 @@ describe("AuthController", () => {
 
   describe("loginFailure", () => {
     it("should redirect to login page with error parameter", async () => {
-      await authController.loginFailure(
+      await authController.handleLoginFailure(
         mockReq as Request,
         mockRes as Response
       );
@@ -232,7 +233,10 @@ describe("AuthController", () => {
 
   describe("logout", () => {
     it("should logout and redirect to login page", async () => {
-      await authController.logout(mockReq as Request, mockRes as Response);
+      await authController.handleLogout(
+        mockReq as Request,
+        mockRes as Response
+      );
 
       expect(mockReq.logout).toHaveBeenCalled();
       expect(mockRes.redirect).toHaveBeenCalledWith(

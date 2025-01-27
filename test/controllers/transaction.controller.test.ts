@@ -32,6 +32,7 @@ describe("TransactionController", () => {
         email: "",
         provider: "",
         providerId: 0,
+        isJohnOwolabiIdogun: true,
         avatar: null,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -117,7 +118,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "findTransactionsByUserId")
         .mockResolvedValue(mockResult);
 
-      await controller.getTransactions(
+      await controller.handleGetTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -144,7 +145,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "findTransactionsByUserId")
         .mockRejectedValue(new Error("Service error"));
 
-      await controller.getTransactions(
+      await controller.handleGetTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -195,7 +196,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "summarizeTransactionsbyUserId")
         .mockResolvedValue(mockSummary);
 
-      await controller.getIncomeExpensesSavings(
+      await controller.handleGetIncomeExpensesSavings(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -208,7 +209,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "summarizeTransactionsbyUserId")
         .mockRejectedValue(new Error("Service error"));
 
-      await controller.getIncomeExpensesSavings(
+      await controller.handleGetIncomeExpensesSavings(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -269,7 +270,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "analyzeTransactionsByUserId")
         .mockResolvedValue(mockAnalysis);
 
-      await controller.analyzeTransactions(
+      await controller.handleAnalyzeTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -282,7 +283,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "analyzeTransactionsByUserId")
         .mockRejectedValue(new Error("Service error"));
 
-      await controller.analyzeTransactions(
+      await controller.handleAnalyzeTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -302,7 +303,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "createTransactionsByUserId")
         .mockResolvedValue(undefined);
 
-      await controller.createTransactions(
+      await controller.handleCreateTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -316,7 +317,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "createTransactionsByUserId")
         .mockRejectedValue(new Error("Service error"));
 
-      await controller.createTransactions(
+      await controller.handleCreateTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -336,7 +337,7 @@ describe("TransactionController", () => {
         .spyOn(TransactionService, "deleteTransactionsByUserId")
         .mockResolvedValue(undefined);
 
-      await controller.deleteTransactions(
+      await controller.handleDeleteTransactions(
         mockRequest as Request,
         mockResponse as Response
       );
@@ -351,7 +352,7 @@ describe("TransactionController", () => {
       .spyOn(TransactionService, "deleteTransactionsByUserId")
       .mockRejectedValue(new Error("Service error"));
 
-    await controller.deleteTransactions(
+    await controller.handleDeleteTransactions(
       mockRequest as Request,
       mockResponse as Response
     );

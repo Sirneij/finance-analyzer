@@ -47,7 +47,7 @@ describe("EndpointController", () => {
         .spyOn(EndpointService, "createEndpoint")
         .mockResolvedValue(mockEndpoint);
 
-      await controller.create(
+      await controller.handleCreateDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -61,7 +61,7 @@ describe("EndpointController", () => {
       const error = new Error("Creation failed");
       jest.spyOn(EndpointService, "createEndpoint").mockRejectedValue(error);
 
-      await controller.create(
+      await controller.handleCreateDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -77,7 +77,11 @@ describe("EndpointController", () => {
         .spyOn(EndpointService, "getEndpoint")
         .mockResolvedValue(mockEndpoint);
 
-      await controller.get(mockReq as Request, mockRes as Response, mockNext);
+      await controller.handleGetDoc(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
 
       expect(mockRes.json).toHaveBeenCalledWith(mockEndpoint);
     });
@@ -85,7 +89,11 @@ describe("EndpointController", () => {
     it("should return 404 when endpoint not found", async () => {
       jest.spyOn(EndpointService, "getEndpoint").mockResolvedValue(null);
 
-      await controller.get(mockReq as Request, mockRes as Response, mockNext);
+      await controller.handleGetDoc(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(404);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -96,7 +104,11 @@ describe("EndpointController", () => {
       const error = new Error("Database error");
       jest.spyOn(EndpointService, "getEndpoint").mockRejectedValue(error);
 
-      await controller.get(mockReq as Request, mockRes as Response, mockNext);
+      await controller.handleGetDoc(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(error);
     });
@@ -109,7 +121,7 @@ describe("EndpointController", () => {
         .spyOn(EndpointService, "getAllEndpoints")
         .mockResolvedValue(mockEndpoints);
 
-      await controller.getAll(
+      await controller.handleGetDocs(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -121,7 +133,7 @@ describe("EndpointController", () => {
       const error = new Error("Database error");
       jest.spyOn(EndpointService, "getAllEndpoints").mockRejectedValue(error);
 
-      await controller.getAll(
+      await controller.handleGetDocs(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -137,7 +149,7 @@ describe("EndpointController", () => {
         .spyOn(EndpointService, "updateEndpoint")
         .mockResolvedValue(mockEndpoint);
 
-      await controller.update(
+      await controller.handleUpdateDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -149,7 +161,7 @@ describe("EndpointController", () => {
     it("should return 404 when endpoint not found", async () => {
       jest.spyOn(EndpointService, "updateEndpoint").mockResolvedValue(null);
 
-      await controller.update(
+      await controller.handleUpdateDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -164,7 +176,7 @@ describe("EndpointController", () => {
       const error = new Error("Database error");
       jest.spyOn(EndpointService, "updateEndpoint").mockRejectedValue(error);
 
-      await controller.update(
+      await controller.handleUpdateDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -178,7 +190,7 @@ describe("EndpointController", () => {
     it("should delete and return 204", async () => {
       jest.spyOn(EndpointService, "deleteEndpoint").mockResolvedValue(true);
 
-      await controller.delete(
+      await controller.handleDeleteDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -191,7 +203,7 @@ describe("EndpointController", () => {
     it("should return 404 when endpoint not found", async () => {
       jest.spyOn(EndpointService, "deleteEndpoint").mockResolvedValue(false);
 
-      await controller.delete(
+      await controller.handleDeleteDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext
@@ -205,7 +217,7 @@ describe("EndpointController", () => {
     it("should pass error to next middleware", async () => {
       const error = new Error("Database error");
       jest.spyOn(EndpointService, "deleteEndpoint").mockRejectedValue(error);
-      await controller.delete(
+      await controller.handleDeleteDoc(
         mockReq as Request,
         mockRes as Response,
         mockNext

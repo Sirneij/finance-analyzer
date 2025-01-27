@@ -67,8 +67,16 @@ export class TransactionController {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
 
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 9;
+      let page = Number(req.query.page);
+      let limit = Number(req.query.limit);
+
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      if (isNaN(limit)) {
+        limit = 10;
+      }
 
       const result = await TransactionService.findTransactionsByUserId(
         userId,

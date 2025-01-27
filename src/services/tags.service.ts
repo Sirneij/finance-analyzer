@@ -11,7 +11,7 @@ export class TagsService {
       throw error;
     }
   }
-  static async getTags(page: number = 1, limit: number = 10) {
+  static async getTags(page: number, limit: number) {
     try {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;

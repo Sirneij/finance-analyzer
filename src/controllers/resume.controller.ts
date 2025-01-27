@@ -12,7 +12,7 @@ export class ResumeController {
     try {
       const resume = await ResumeService.getResume(req.params.id);
       if (!resume) {
-        res.status(404).json({ error: "Resume not found" });
+        res.status(404).json({ message: "Resume not found" });
         return;
       }
       res.json(resume);

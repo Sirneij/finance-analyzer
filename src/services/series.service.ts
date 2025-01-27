@@ -18,10 +18,30 @@ export class SeriesService {
     }
   }
 
-  static async getSeries(): Promise<IArticleSeries[]> {
+  static async getSeries(page: number = 1, limit: number = 10) {
     try {
-      const series = await ArticleSeriesModel.find().lean().exec();
-      return series;
+      const shouldFetchAll = limit === -1;
+      const skip = shouldFetchAll ? 0 : (page - 1) * limit;
+
+      const query = ArticleSeriesModel.find()
+        .sort({ createdAt: -1 })
+        .skip(skip);
+
+      if (!shouldFetchAll) {
+        query.limit(limit);
+      }
+
+      const [series, total] = await Promise.all([
+        query.lean().exec(),
+        ArticleSeriesModel.countDocuments(),
+      ]);
+
+      return {
+        series,
+        total,
+        page: shouldFetchAll ? 1 : page,
+        limit: shouldFetchAll ? total : limit,
+      };
     } catch (error) {
       console.error("Error in getSeries:", error);
       throw error;

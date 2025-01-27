@@ -29,8 +29,16 @@ export class TagsController {
 
   async handleGetTags(req: Request, res: Response): Promise<void> {
     try {
-      const page = Math.max(1, Number(req.query.page) || 1);
-      const limit = Math.min(100, Math.max(1, Number(req.query.limit) || 10));
+      let page = Number(req.query.page);
+      let limit = Number(req.query.limit);
+
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      if (isNaN(limit)) {
+        limit = 10;
+      }
 
       const result = await TagsService.getTags(page, limit);
       res.status(200).json({

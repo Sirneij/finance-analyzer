@@ -67,7 +67,7 @@ export class ArticleController {
                   }
                 );
 
-                res.json({ success: true, ...uploadResult });
+                res.json({ success: true, uploadResult });
               } catch (error) {
                 baseConfig.logger.error("Error uploading file: ", error);
                 next(error);
@@ -89,19 +89,21 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error instanceof Error ? error.message : "Failed to upload file",
+        message:
+          error instanceof Error ? error.message : "Failed to upload file",
       });
     }
   }
 
   async handleFileDelete(req: Request, res: Response): Promise<void> {
     try {
-      const { url } = req.body;
+      const { url } = req.query;
+      baseConfig.logger.info(`URL: ${url} `);
       if (!url) {
         throw new Error("image URL is required");
       }
 
-      const publicId = getPublicId(url);
+      const publicId = getPublicId(url as string);
 
       const cloudinary = cloudinaryService.getCloudinary();
       const deleteResult = await cloudinary.uploader.destroy(publicId);
@@ -110,7 +112,8 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error instanceof Error ? error.message : "Failed to delete file",
+        message:
+          error instanceof Error ? error.message : "Failed to delete file",
       });
     }
   }
@@ -131,7 +134,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to fetch article",
       });
     }
@@ -139,8 +142,17 @@ export class ArticleController {
 
   async handleGetArticles(req: Request, res: Response): Promise<void> {
     try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
+      let page = Number(req.query.page);
+      let limit = Number(req.query.limit);
+
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      if (isNaN(limit)) {
+        limit = 10;
+      }
+
       const result = await ArticleService.getPublishedArticles(page, limit);
 
       res.json({
@@ -156,7 +168,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to fetch articles",
       });
     }
@@ -194,7 +206,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to create article",
       });
     }
@@ -226,7 +238,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to update article",
       });
     }
@@ -245,7 +257,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to delete article",
       });
     }
@@ -266,7 +278,7 @@ export class ArticleController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error
             ? error.message
             : "Failed to fetch articles by tag",
@@ -276,16 +288,22 @@ export class ArticleController {
 
   async handleGetAllArticles(req: Request, res: Response): Promise<void> {
     try {
-      const { page, limit } = req.query;
-      const articles = await ArticleService.getAllArticles(
-        Number(page) || 1,
-        Number(limit) || 10
-      );
+      let page = Number(req.query.page);
+      let limit = Number(req.query.limit);
+
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      if (isNaN(limit)) {
+        limit = 10;
+      }
+      const articles = await ArticleService.getAllArticles(page, limit);
       res.json({ success: true, articles });
     } catch (error) {
       res.status(400).json({
         success: false,
-        error:
+        message:
           error instanceof Error ? error.message : "Failed to fetch articles",
       });
     }
