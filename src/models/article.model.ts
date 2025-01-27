@@ -38,19 +38,18 @@ const ArticleSchema = new Schema<IArticle>(
     language: { type: String, default: "english" },
     series: { type: Schema.Types.ObjectId, ref: "ArticleSeries" },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
+    views: { type: Number, default: 0 },
   },
   {
     timestamps: true,
   }
 );
 
-// Add index separately using schema.index() method
+// Add compound index for efficient querying
 ArticleSchema.index({
-  slug: 1,
-  createdAt: 1,
+  createdAt: -1,
+  views: -1,
   isPublished: 1,
-  _id: 1,
-  updatedAt: 1,
 });
 
 // Models

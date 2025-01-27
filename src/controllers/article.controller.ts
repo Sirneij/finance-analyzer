@@ -1,16 +1,22 @@
 import { baseConfig } from "$config/base.config.js";
 import { ArticleService } from "$services/article.service.js";
 import { cloudinaryService } from "$services/db.service.js";
-import { IArticlePopulated, UpdateArticleInput } from "$types/article.types.js";
+import {
+  IArticlePopulated,
+  SearchQuery,
+  UpdateArticleInput,
+} from "$types/article.types.js";
 import {
   generateSlug,
   getPublicId,
+  parseQueryParams,
   processSeriesTitle,
   processTags,
 } from "$utils/article.utils.js";
 import busboy from "busboy";
 import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 
 export class ArticleController {
   async handleFileUpload(
@@ -265,23 +271,37 @@ export class ArticleController {
 
   async handleSearchArticles(req: Request, res: Response): Promise<void> {
     try {
-      const { tag, series } = req.query;
-      let articles: IArticlePopulated[] = [];
-
-      if (tag) {
-        articles = await ArticleService.getArticlesByTag(tag as string);
-      } else if (series) {
-        articles = await ArticleService.getArticlesBySeries(series as string);
+      const params = parseQueryParams(req.query);
+      let tags: string[] | mongoose.Types.ObjectId[] = [];
+      if (params.tags) {
+        tags = await processTags(params.tags);
       }
+      // Validate sortBy parameter
+      const sortBy = params.sortBy === "popular" ? "popular" : "recent";
 
-      res.json({ success: true, articles });
+      const searchParams: SearchQuery = {
+        ...params,
+        sortBy,
+        ...(tags && { tags: tags }),
+      };
+
+      const result = await ArticleService.searchArticles(searchParams);
+
+      res.json({
+        success: true,
+        articles: result.articles,
+        metadata: {
+          total: result.total,
+          page: result.page,
+          limit: result.limit,
+          totalPages: Math.ceil(result.total / result.limit),
+        },
+      });
     } catch (error) {
       res.status(400).json({
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Failed to fetch articles by tag",
+          error instanceof Error ? error.message : "Failed to fetch articles",
       });
     }
   }
@@ -298,8 +318,17 @@ export class ArticleController {
       if (isNaN(limit)) {
         limit = 10;
       }
-      const articles = await ArticleService.getAllArticles(page, limit);
-      res.json({ success: true, articles });
+      const result = await ArticleService.getAllArticles(page, limit);
+      res.json({
+        success: true,
+        articles: result.articles,
+        metadata: {
+          total: result.total,
+          page: result.page,
+          limit: result.limit,
+          totalPages: Math.ceil(result.total / result.limit),
+        },
+      });
     } catch (error) {
       res.status(400).json({
         success: false,

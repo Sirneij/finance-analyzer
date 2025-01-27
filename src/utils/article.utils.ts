@@ -107,3 +107,32 @@ export const processSeriesTitle = async (
 
   return series._id as Types.ObjectId;
 };
+
+export const parseQueryParams = (query: Record<string, any>) => {
+  return {
+    tags: query.tags
+      ? Array.isArray(query.tags)
+        ? query.tags.map(String)
+        : [String(query.tags)]
+      : undefined,
+
+    series: query.series ? String(query.series) : undefined,
+
+    sortBy: query.sortBy === "popular" ? "popular" : "recent",
+
+    period: ["week", "month", "year"].includes(String(query.period))
+      ? (query.period as "week" | "month" | "year")
+      : undefined,
+
+    page: Math.max(1, Number(query.page) || 1),
+
+    limit: Math.max(1, Math.min(100, Number(query.limit) || 10)),
+  };
+};
+
+const validateSortBy = (sort: unknown): "popular" | "recent" => {
+  if (sort === "popular" || sort === "recent") {
+    return sort;
+  }
+  return "recent"; // default value
+};

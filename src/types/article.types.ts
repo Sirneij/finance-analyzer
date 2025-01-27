@@ -20,6 +20,7 @@ export interface IArticle extends Document {
   createdAt: Date;
   updatedAt: Date;
   language: string;
+  views: number;
   series?: mongoose.Types.ObjectId;
   tags: mongoose.Types.ObjectId[];
 }
@@ -68,4 +69,13 @@ export interface UpdateTagInput {
 
 export interface CreateArticleSeriesInput {
   title: string;
+}
+
+export interface SearchQuery {
+  tags?: string[] | mongoose.Types.ObjectId[];
+  series?: string;
+  sortBy: "popular" | "recent";
+  period?: "week" | "month" | "year";
+  page: number;
+  limit: number;
 }
