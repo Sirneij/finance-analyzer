@@ -1,5 +1,4 @@
 import { browser } from '$app/environment';
-import type { IArticlePopulated } from '$lib/types/articles.types';
 import { WEBSITE_URL } from '$lib/utils/contants';
 
 export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
@@ -7,9 +6,8 @@ export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
 export interface EditorState {
 	content: string;
 	title: string;
-	coverImage: string;
+	foreImage: string;
 	selectedSeries: string;
-	seriesName: string;
 	tags: string[];
 }
 
@@ -20,9 +18,8 @@ export const getEditorState = (): EditorState => {
 		: {
 				content: '',
 				title: '',
-				coverImage: '',
+				foreImage: '',
 				selectedSeries: '',
-				seriesName: '',
 				tags: []
 			};
 };

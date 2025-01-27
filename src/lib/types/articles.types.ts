@@ -36,7 +36,6 @@ export interface IArticlePopulated extends Omit<IArticle, 'series' | 'tags'> {
 export interface CreateArticleInput {
 	foreImage?: string;
 	title: string;
-	slug: string;
 	content: string;
 	isPublished: boolean;
 	series?: string;
@@ -46,7 +45,6 @@ export interface CreateArticleInput {
 export interface UpdateArticleInput {
 	foreImage?: string;
 	title?: string;
-	slug?: string;
 	content?: string;
 	isPublished?: boolean;
 	series?: string;
@@ -74,4 +72,45 @@ export interface UpdateTagInput {
 
 export interface CreateArticleSeriesInput {
 	title: string;
+}
+
+export interface UploadApiResponse {
+	public_id: string;
+	version: number;
+	signature: string;
+	width: number;
+	height: number;
+	format: string;
+	resource_type: 'image' | 'video' | 'raw' | 'auto';
+	created_at: string;
+	tags: Array<string>;
+	pages: number;
+	bytes: number;
+	type: string;
+	etag: string;
+	placeholder: boolean;
+	url: string;
+	secure_url: string;
+	access_mode: string;
+	original_filename: string;
+	moderation: Array<string>;
+	access_control: Array<string>;
+	context: object;
+	metadata: object;
+	colors?: [string, number][];
+
+	[futureKey: string]: any;
+}
+
+export interface NewITag {
+	name: string;
+	description: string;
+}
+export interface UpdateITag {
+	name?: string;
+	description?: string;
+}
+
+export interface TagInputState {
+	selectedTags: ITag[];
 }

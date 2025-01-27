@@ -10,12 +10,11 @@
 			class="flex flex-col items-center justify-center space-y-2 text-sm text-gray-600 dark:text-gray-400"
 		>
 			<p class="flex items-center justify-center space-x-1">
-				&copy; {currentYear} John Owolabi Idogun. All rights reserved <Hearts
-					class=" h-4 w-4 text-red-500 dark:text-red-400"
-				/>.
+				&copy; {currentYear} John Owolabi Idogun. All rights reserved.
 			</p>
-			<p class="text-center">
-				Built from scratch with Svelte 5 (SvelteKit), NodeJS, Python and TailwindCSS.
+			<p class="flex text-center">
+				Built with <Hearts class="ml-1 mr-1 h-4 w-4 text-red-500 dark:text-red-400" /> from scratch with
+				Svelte 5 (SvelteKit), NodeJS, Python and TailwindCSS.
 			</p>
 		</div>
 	</div>

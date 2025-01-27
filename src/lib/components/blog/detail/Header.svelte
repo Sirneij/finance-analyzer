@@ -37,7 +37,7 @@
 		isOpen = false;
 	}
 
-	const handleDelete: SubmitFunction = async ({ formElement, formData, action, cancel }) => {
+	const handleDelete: SubmitFunction = async ({ cancel }) => {
 		// Prevent form submission
 		if (!isSubmitted) {
 			isOpen = true;
@@ -62,7 +62,7 @@
 
 		<form method="POST" use:enhance={handleDelete} class="flex gap-2">
 			<a
-				href="/blogs/{article._id}/edit"
+				href="/blogs/{article.slug}/{article._id}/edit"
 				class=" rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
 				aria-label="Edit article"
 			>
@@ -74,7 +74,7 @@
 				type="submit"
 				class="rounded-full p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
 				aria-label="Delete article"
-				formaction="/blogs/{article._id}?/deleteArticle"
+				formaction="/blogs/{article.slug}/{article._id}?/deleteArticle"
 			>
 				<Delete class="h-5 w-5" />
 			</button>

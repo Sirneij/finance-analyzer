@@ -9,110 +9,44 @@
 	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blogs.helpers';
 	import ImageInput from '$lib/components/blog/mini/ImageInput.svelte';
 	import TagInput from './TagInput.svelte';
-	import type { Tag } from '$lib/types/tags.types';
+	import { page } from '$app/state';
+	import FormError from '$lib/components/reusables/FormError.svelte';
+	import { applyAction, enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import Loader from '$lib/components/reusables/Loader.svelte';
+
+	type EditorProps = {
+		container: HTMLDivElement;
+		textArea: HTMLTextAreaElement;
+		title: string;
+		foreImage: string;
+		selectedSeries: string;
+		textAreaContent: string;
+		formActionURL: string;
+	};
 
 	let {
 		container = $bindable(),
-		textArea
-	}: { container: HTMLDivElement; textArea: HTMLTextAreaElement } = $props();
+		textArea,
+		title = $bindable(),
+		foreImage = $bindable(),
+		selectedSeries = $bindable(),
+		textAreaContent = $bindable(),
+		formActionURL
+	}: EditorProps = $props();
 
-	let textAreaContent = $state(''),
-		coverImage = $state(''),
-		isPreviewMode = $state(false),
-		title = $state(''),
+	let isPreviewMode = $state(false),
 		containerHeight = $state(0),
 		lineHeight = $state(20),
 		isOpen = $state(false),
-		triggerButton = $state<HTMLButtonElement>();
-
-	let seriesName = $state('');
-	let selectedSeries = $state('');
-	const series = ['Series 1', 'Series 2', 'Series 3'];
-	const tags: Tag[] = [
-		{
-			id: '1',
-			name: 'javaScript',
-			description:
-				'JavaScript is a programming language that conforms to the ECMAScript specification.'
-		},
-		{
-			id: '2',
-			name: 'react',
-			description: 'React is a JavaScript library for building user interfaces.'
-		},
-		{
-			id: '3',
-			name: 'svelte',
-			description: 'Svelte is a radical new approach to building user interfaces.'
-		},
-		{
-			id: '4',
-			name: 'tailwindcss',
-			description: 'A utility-first CSS framework for rapidly building custom designs.'
-		},
-		{
-			id: '5',
-			name: 'nodejs',
-			description:
-				'Node.js is an open-source, cross-platform, back-end JavaScript runtime environment.'
-		},
-		{
-			id: '6',
-			name: 'expressjs',
-			description: 'Fast, unopinionated, minimalist web framework for Node.js.'
-		},
-		{
-			id: '7',
-			name: 'mongodb',
-			description:
-				'A general-purpose, document-based, distributed database built for modern application developers.'
-		},
-		{
-			id: '8',
-			name: 'postgresql',
-			description: 'A powerful, open-source object-relational database system.'
-		},
-		{
-			id: '9',
-			name: 'firebase',
-			description: 'A platform developed by Google for creating mobile and web applications.'
-		},
-		{
-			id: '10',
-			name: 'flutter',
-			description: 'An open-source UI software development kit created by Google.'
-		},
-		{
-			id: '11',
-			name: 'dart',
-			description: 'A client-optimized programming language for fast apps on any platform.'
-		},
-		{
-			id: '12',
-			name: 'python',
-			description: 'An interpreted, high-level, general-purpose programming language.'
-		},
-		{
-			id: '13',
-			name: 'django',
-			description:
-				'A high-level Python web framework that encourages rapid development and clean, pragmatic design.'
-		},
-		{
-			id: '14',
-			name: 'flask',
-			description: 'A lightweight WSGI web application framework.'
-		},
-		{
-			id: '15',
-			name: 'fastapi',
-			description:
-				'A modern, fast (high-performance), web framework for building APIs with Python 3.6+.'
-		}
-	];
+		triggerButton = $state<HTMLButtonElement>(),
+		formAction = $state('draft'),
+		isCreating = $state(false),
+		isSaving = $state(false);
 
 	// Parse markdown preview
 	let previewContent = $derived(marked.parse(textAreaContent));
+	let isPublished = $derived(formAction === 'publish');
 
 	$effect(() => {
 		if (textArea && container) {
@@ -141,30 +75,70 @@
 
 	onMount(() => {
 		const state = getEditorState();
-		textAreaContent = state.content;
-		coverImage = state.coverImage;
-		title = state.title;
-		selectedSeries = state.selectedSeries;
-		seriesName = state.seriesName;
+		textAreaContent = textAreaContent || state.content;
+		foreImage = foreImage || state.foreImage;
+		title = title || state.title;
+		selectedSeries = selectedSeries || state.selectedSeries;
 	});
 
 	$effect(() => {
 		setEditorState({
 			content: textAreaContent,
-			coverImage,
+			foreImage,
 			title,
-			selectedSeries,
-			seriesName
+			selectedSeries
 		});
 	});
+
+	const handlePostOptionsFormSubmit: SubmitFunction = async ({ cancel }) => {
+		isSaving = true;
+		if (selectedSeries) {
+			isSaving = false;
+			onClose();
+			cancel();
+		}
+		return async ({ result }) => {
+			isSaving = false;
+			if (result.type === 'success' || result.type === 'redirect') {
+				const res = result as any;
+				if (res.data.success && res.data.series.length > 0) {
+					selectedSeries = res.data.series[0]._id;
+					onClose();
+				}
+			}
+			await applyAction(result);
+		};
+	};
+
+	const handleFormSubmit: SubmitFunction = async ({ submitter, formData }) => {
+		isCreating = true;
+		// Set publish status based on button clicked
+		formAction = submitter?.dataset.action || 'draft';
+
+		formData.append('isPublished', isPublished.toString());
+
+		return async ({ result, update }) => {
+			isCreating = false;
+			if (result.type === 'success' || result.type === 'redirect') {
+				await update();
+			}
+			await applyAction(result);
+		};
+	};
 </script>
 
 <div class="flex h-[calc(100vh-12rem)] w-full flex-col transition-all duration-300" id="editor">
-	<!-- Cover Image -->
-	<ImageInput bind:coverImage />
+	<FormError form={page.form} />
+	<!-- Fore Image -->
+	<ImageInput bind:foreImage />
 
-	<form class="flex h-full flex-col">
-		<TagInput bind:container tagsFromServer={tags} />
+	<form
+		class="flex h-full flex-col"
+		method="POST"
+		action={formActionURL}
+		use:enhance={handleFormSubmit}
+	>
+		<TagInput bind:container tagsFromServer={page.data.tags} />
 		<!-- Title -->
 		<TitleInput bind:container bind:title />
 
@@ -176,11 +150,12 @@
 		<!-- Editor -->
 		<div class="relative flex-1 overflow-auto p-4">
 			{#if isPreviewMode}
-				<div class="prose prose-blue h-full max-w-none overflow-auto dark:prose-invert">
+				<div class="prose prose-blue dark:prose-invert h-full max-w-none overflow-auto">
 					{@html previewContent}
 				</div>
 			{:else}
 				<textarea
+					name="content"
 					bind:this={textArea}
 					bind:value={textAreaContent}
 					use:showInfo={{ container: container, infoId: 'editor-info' }}
@@ -190,6 +165,12 @@
 				></textarea>
 			{/if}
 		</div>
+
+		<!-- Series hidden -->
+		<input type="hidden" name="series" value={selectedSeries} />
+
+		<!-- ForeImage hidden -->
+		<input type="hidden" name="foreImage" value={foreImage} />
 
 		<!-- Status Bar -->
 		<div
@@ -207,9 +188,18 @@
 					{isPreviewMode ? 'Edit' : 'Preview'}
 				</button>
 				<button
+					type="submit"
+					data-action="draft"
+					class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+				>
+					Save Draft
+				</button>
+				<button
+					type="submit"
+					data-action="publish"
 					class="rounded bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
 				>
-					Save
+					Publish
 				</button>
 				<button
 					bind:this={triggerButton}
@@ -226,35 +216,41 @@
 </div>
 
 <!-- Series Dialog -->
-
 <ModelessDialog {isOpen} {onClose} title="Post Options" triggerEl={triggerButton}>
-	<form class="space-y-4">
+	<form
+		class="space-y-4"
+		method="POST"
+		action="/blogs/create?/savePostOptions"
+		use:enhance={handlePostOptionsFormSubmit}
+	>
 		<div>
-			<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="seriesName">
+			<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="series-title">
 				Select Existing Series
 			</label>
 			<select
-				id="seriesName"
-				name="seriesName"
+				id="series-title"
+				name="series-title"
 				bind:value={selectedSeries}
 				class="mt-1 block w-full rounded-md bg-white px-3 py-2 text-gray-800 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
 			>
 				<option value="">Select a series</option>
-				{#each series as s}
-					<option value={s}>{s}</option>
+				{#each page.data.series as s}
+					<option value={s._id}>{s.title}</option>
 				{/each}
 			</select>
 		</div>
 
 		<div>
-			<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="seriesName">
+			<label
+				class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+				for="newseries-title"
+			>
 				Create New Series
 			</label>
 			<input
 				type="text"
-				id="seriesName"
-				name="seriesName"
-				bind:value={seriesName}
+				id="newseries-title"
+				name="newseries-title"
 				class="mt-1 block w-full rounded-md bg-white px-3 py-2 text-gray-800 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
 				placeholder="Enter series name"
 			/>
@@ -268,12 +264,17 @@
 			>
 				Cancel
 			</button>
-			<button
-				type="submit"
-				class="rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-			>
-				Save
-			</button>
+			{#if isSaving}
+				<Loader message="Saving..." width={20} />
+			{:else}
+				<button
+					type="submit"
+					class="rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+					aria-label={selectedSeries ? 'Save existing series' : 'Create new series'}
+				>
+					Save
+				</button>
+			{/if}
 		</div>
 	</form>
 </ModelessDialog>

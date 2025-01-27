@@ -4,9 +4,9 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	type Props = {
-		coverImage: string;
+		foreImage: string;
 	};
-	let { coverImage = $bindable() }: Props = $props();
+	let { foreImage = $bindable() }: Props = $props();
 	function handleFileChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 		if (input.files && input.files[0]) {
@@ -24,7 +24,7 @@
 
 	function triggerFileInput() {
 		if (fileInput) fileInput.click();
-		coverImage = '';
+		foreImage = '';
 	}
 
 	const handleUpload: SubmitFunction = async () => {
@@ -33,8 +33,14 @@
 			isUploading = false;
 			if (result.type === 'success' || result.type === 'redirect') {
 				const res = result as any;
-				coverImage = res.data.coverImage;
-				if (res.data.delete && fileInput) fileInput.value = '';
+
+				if (res.data.uploadResult) {
+					foreImage = res.data.uploadResult.secure_url;
+				}
+				if (res.data.delete && fileInput) {
+					fileInput.value = '';
+					foreImage = '';
+				}
 			}
 			await applyAction(result);
 		};
@@ -43,8 +49,8 @@
 
 <form enctype="multipart/form-data" use:enhance={handleUpload} method="post">
 	<div class="flex items-center space-x-6">
-		{#if coverImage}
-			<img src={coverImage} alt="Cover" width="100" height="40" />
+		{#if foreImage}
+			<img src={foreImage} alt="Cover" width="100" height="40" />
 			<div class="flex space-x-2">
 				<button
 					type="button"
@@ -59,14 +65,14 @@
 					</span>
 				</button>
 
-				<input type="hidden" name="cover-image-url" value={coverImage} required />
+				<input type="hidden" name="foreimage" value={foreImage} required />
 				{#if isUploading}
 					<Loader width={20} message="Removing..." />
 				{:else}
 					<button
 						type="submit"
 						class="rounded px-4 py-1 text-sm font-medium text-rose-600 transition-all hover:bg-gray-100 dark:text-rose-400 dark:hover:bg-gray-700"
-						formaction="/apple/create?/deleteUpload"
+						formaction="/blogs?/deleteUpload"
 					>
 						Remove
 					</button>
@@ -86,7 +92,7 @@
 						<span
 							class="pointer-events-none absolute -left-4 top-10 z-50 w-48 rounded bg-gray-800 p-2 text-xs font-medium text-white opacity-0 shadow transition-opacity group-hover:opacity-100 dark:bg-gray-700"
 						>
-							Ideal dimensions: 1200x630 pixels
+							Ideal dimensions: 1000x420 pixels
 						</span>
 					</button>
 				{/if}
@@ -100,13 +106,7 @@
 			class="hidden"
 			onchange={handleFileChange}
 		/>
-		<input type="hidden" name="namespace" value="portfolio" required />
-		<button
-			bind:this={submitButton}
-			type="submit"
-			class="hidden"
-			formaction="/apple/create?/upload"
-		>
+		<button bind:this={submitButton} type="submit" class="hidden" formaction="/blogs?/upload">
 			Upload
 		</button>
 	</div>

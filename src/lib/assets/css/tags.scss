@@ -70,6 +70,13 @@ $languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python,
 				transform: scale(1.03);
 			}
 
+			&.borderless {
+				background: transparent;
+				border: none;
+				color: var(--c-language);
+				box-shadow: none;
+			}
+
 			&.active {
 				background: var(--c-language);
 				border-color: var(--c-language);
@@ -88,6 +95,13 @@ $languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python,
 				background: rgb(from var(--#{$language}) r g b / 0.15);
 				border-color: rgb(from var(--#{$language}) r g b / 0.5);
 				transform: scale(1.03);
+			}
+
+			&.borderless {
+				background: transparent;
+				border: none;
+				color: var(--#{$language});
+				box-shadow: none;
 			}
 
 			&.active {

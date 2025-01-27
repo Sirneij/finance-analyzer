@@ -106,6 +106,14 @@ renderer.code = function ({ text, lang }: Code) {
 	const validLanguage = lang || 'text';
 	const lines = text.split('\n');
 
+	// Escape HTML characters
+	const escapedText = text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+
 	return `
 	  <div class="relative group rounded-lg overflow-hidden">
 		<!-- Controls Container -->
@@ -149,7 +157,7 @@ renderer.code = function ({ text, lang }: Code) {
 		  </div>
 		  
 		  <!-- Code Content -->
-		  <pre class="flex-1"><code class="language-${validLanguage}">${text}</code></pre>
+		  <pre class="flex-1"><code class="language-${validLanguage}">${escapedText}</code></pre>
 		</div>
 	  </div>
 	`;

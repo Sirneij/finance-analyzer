@@ -1,23 +1,23 @@
 <script lang="ts">
-	import type { Tag } from '$lib/types/tags.types';
 	import { showInfo } from '$lib/utils/helpers/editor/markdown.helpers';
 	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blogs.helpers';
 	import { onMount } from 'svelte';
 	import Close from '$lib/components/icons/Close.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
+	import type { ITag } from '$lib/types/articles.types';
 
 	type Props = {
 		container: HTMLDivElement;
-		tagsFromServer: Tag[];
+		tagsFromServer: ITag[];
 	};
 
 	let { tagsFromServer, container = $bindable() }: Props = $props();
 
 	let tagInput = $state<HTMLInputElement>(),
 		inputValue = $state(''),
-		selectedTags = $state<Tag[]>([]),
-		filteredTags = $state<Tag[]>([]),
+		selectedTags = $state<ITag[]>([]),
+		filteredTags = $state<ITag[]>([]),
 		inputContainer = $state<HTMLDivElement>(),
 		activeIndex = $state(-1);
 
@@ -55,15 +55,15 @@
 		}
 	}
 
-	function addTag(tag: Tag) {
-		if (selectedTags.length >= 4 || selectedTags.some((t) => t.id === tag.id)) return;
+	function addTag(tag: ITag) {
+		if (selectedTags.length >= 4 || selectedTags.some((t) => t._id === tag._id)) return;
 		selectedTags = [...selectedTags, tag];
 		inputValue = '';
 		setEditorState({ tags: selectedTags.map((t) => t.name) });
 	}
 
 	function removeTag(tagId: string) {
-		selectedTags = selectedTags.filter((tag) => tag.id !== tagId);
+		selectedTags = selectedTags.filter((tag) => tag._id !== tagId);
 		setEditorState({ tags: selectedTags.map((t) => t.name) });
 	}
 
@@ -93,13 +93,8 @@
 		if (state.tags?.length) {
 			selectedTags = state.tags
 				.map((tagName) => tagsFromServer.find((t) => t.name === tagName))
-				.filter(Boolean) as Tag[];
+				.filter(Boolean) as ITag[];
 		}
-	});
-
-	onMount(() => {
-		document.addEventListener('click', handleClickOutside);
-		return () => document.removeEventListener('click', handleClickOutside);
 	});
 
 	// Filter tags as user types
@@ -114,11 +109,15 @@
 			.filter(
 				(tag) =>
 					tag.name.toLowerCase().includes(searchTerm) &&
-					!selectedTags.some((selected) => selected.id === tag.id)
+					!selectedTags.some((selected) => selected._id === tag._id)
 			)
 			.slice(0, 5);
 	});
+
+	const selectedTagsIds = $derived(selectedTags.map((tag) => tag._id).join(','));
 </script>
+
+<svelte:document onclick={handleClickOutside} />
 
 <div class="space-y-2">
 	<div
@@ -142,13 +141,16 @@
 				<button
 					type="button"
 					class="ml-2 text-red-400 transition-all hover:scale-110 hover:text-red-600 dark:text-red-500 dark:hover:text-red-400"
-					onclick={(e) => handleTagRemove(e, tag.id)}
+					onclick={(e) => handleTagRemove(e, tag._id)}
 					aria-label={`Remove ${tag.name} tag`}
 				>
 					<Close class="h-4 w-4" />
 				</button>
 			</span>
 		{/each}
+
+		<!-- Hidden input of selected tags ids -->
+		<input type="hidden" name="tags" value={selectedTagsIds} />
 
 		<input
 			bind:this={tagInput}
@@ -189,7 +191,7 @@
 					aria-selected={i === activeIndex}
 					transition:slide={{ duration: SLIDE_DURATION }}
 				>
-					<span class="tag {tag.name.toLowerCase()}">
+					<span class="tag {tag.name.toLowerCase()} borderless">
 						{tag.name}
 					</span>
 					<small class="ml-6 mt-1 text-sm italic text-gray-500 dark:text-gray-400">
