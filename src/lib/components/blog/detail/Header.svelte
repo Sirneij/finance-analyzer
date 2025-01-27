@@ -61,7 +61,7 @@
 			{article.title}
 		</h1>
 
-		{#if page.data.user && page.data.user.isJohn}
+		{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
 			<form method="POST" use:enhance={handleDelete} class="flex gap-2">
 				<a
 					href="/blogs/{article.slug}/{article._id}/edit"

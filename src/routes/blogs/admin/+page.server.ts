@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
 		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
 	}
-	if (!locals.user.isJohn) {
+	if (!locals.user.isJohnOwolabiIdogun) {
 		throw redirect(302, '/blogs?message=You are not authorized to access this page');
 	}
 	const [tagData, seriesData] = await Promise.all([

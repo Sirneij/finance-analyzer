@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	if (!locals.user) {
 		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation/' + params.id);
 	}
-	if (!locals.user.isJohn) {
+	if (!locals.user.isJohnOwolabiIdogun) {
 		throw redirect(302, '/finanalyzer?message=You are not authorized to access this page');
 	}
 

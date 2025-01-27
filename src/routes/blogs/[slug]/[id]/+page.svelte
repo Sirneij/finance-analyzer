@@ -127,6 +127,6 @@
 		</div>
 	</main>
 </article>
-{#if page.data.user && page.data.user.isJohn}
+{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
 	<Dock title="Navigation" />
 {/if}

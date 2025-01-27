@@ -58,7 +58,7 @@
 				</div>
 
 				<div class="space-y-4">
-					{#if page.data.user && page.data.user.isJohn}
+					{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
 						<ul class="flex flex-col space-y-4">
 							<li>
 								<a

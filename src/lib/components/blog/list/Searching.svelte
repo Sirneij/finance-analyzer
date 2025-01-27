@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Adjust from '$lib/components/icons/Adjust.svelte';
 	import Close from '$lib/components/icons/Close.svelte';
 	import Search from '$lib/components/icons/Search.svelte';
 
@@ -40,21 +41,11 @@
 	<div class="relative">
 		<button
 			type="button"
-			class="flex h-[46px] items-center gap-2 rounded-lg border border-gray-200
-               bg-white px-4 py-3 text-gray-700 shadow-sm transition-all
-               hover:bg-gray-50 focus:border-blue-500 focus:outline-none
-               focus:ring-2 focus:ring-blue-500/50
-               dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+			class="flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
 			onclick={() => (isFilterOpen = !isFilterOpen)}
 			aria-expanded={isFilterOpen}
 		>
-			<svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-				<path
-					fill-rule="evenodd"
-					d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-					clip-rule="evenodd"
-				/>
-			</svg>
+			<Adjust class="h-5 w-5" />
 			<span class="hidden sm:inline">Filter</span>
 			{#if sortBy !== 'recent' || dateRange !== 'all'}
 				<span
@@ -67,9 +58,7 @@
 
 		{#if isFilterOpen}
 			<div
-				class="animate-in fade-in-0 zoom-in-95 absolute right-0 top-[calc(100%+0.5rem)] w-72
-                 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-all
-                 dark:border-gray-700 dark:bg-gray-800"
+				class="animate-in fade-in-0 zoom-in-95 absolute right-0 top-[calc(100%+0.5rem)] z-50 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-all dark:border-gray-700 dark:bg-gray-800"
 				role="dialog"
 				aria-label="Filter options"
 			>
@@ -103,9 +92,7 @@
 					<h3 class="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">Time Period</h3>
 					<select
 						bind:value={dateRange}
-						class="w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm
-                     shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2
-                     focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800"
+						class="w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					>
 						<option value="all">All Time</option>
 						<option value="week">Past Week</option>
