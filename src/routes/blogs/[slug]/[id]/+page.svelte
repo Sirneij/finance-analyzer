@@ -9,6 +9,8 @@
 	import TOC from '$lib/components/blog/detail/TOC.svelte';
 	import Header from '$lib/components/blog/detail/Header.svelte';
 	import Series from '$lib/components/blog/detail/Series.svelte';
+	import { page } from '$app/state';
+	import Dock from '$lib/components/reusables/Dock.svelte';
 
 	const { data } = $props();
 
@@ -125,3 +127,6 @@
 		</div>
 	</main>
 </article>
+{#if page.data.user && page.data.user.isJohn}
+	<Dock title="Navigation" />
+{/if}

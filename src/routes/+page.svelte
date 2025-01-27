@@ -1,12 +1,12 @@
 <script lang="ts">
-	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
+	import { fly } from 'svelte/transition';
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import SEO from '$lib/components/about/SEO.svelte';
 	import Profile from '$lib/components/about/Profile.svelte';
 	import PlatformsOverview from '$lib/components/about/PlatformsOverview.svelte';
 	import TopRepos from '$lib/components/about/TopRepos.svelte';
 	import Hero from '$lib/components/about/Hero.svelte';
-	import Articles from '$lib/components/about/DevArticles.svelte';
+	import DevtoArticles from '$lib/components/about/DevArticles.svelte';
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types.js';
 	import type { PageData } from './$types';
 	import JI from '$lib/components/logos/JI.svelte';
@@ -14,14 +14,15 @@
 	import type { Resume } from '$lib/types/resume.types';
 	import Footer from '$lib/components/about/Footer.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
-	import GitFork from '$lib/components/icons/GitFork.svelte';
 	import { SectionIcons } from '$lib/components/icons';
+	import JoiArticles from '$lib/components/about/JOIArticles.svelte';
 
 	let { data }: { data: PageData } = $props();
 
 	let devtoArticles: ProcessedDevToArticles | null = $state(null),
 		resumeData = $state({} as Resume),
-		activeSection = $state('hero');
+		activeSection = $state('hero'),
+		intersectingSections = $state<string[]>([]);
 
 	function scrollToSection(id: string) {
 		const element = document.getElementById(id);
@@ -30,19 +31,20 @@
 		}
 	}
 
-	// Track active section on scroll
 	$effect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
-					if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+					if (entry.isIntersecting) {
+						intersectingSections = [...intersectingSections, entry.target.id];
 						activeSection = entry.target.id;
+					} else {
+						intersectingSections = intersectingSections.filter((id) => id !== entry.target.id);
 					}
 				});
 			},
 			{
-				threshold: [0.3, 0.5, 0.7],
-				rootMargin: '-10% 0px -10% 0px'
+				threshold: 0.5
 			}
 		);
 
@@ -58,13 +60,16 @@
 		{ id: 'resume', label: 'Resume' },
 		{ id: 'platforms', label: 'Platform' },
 		{ id: 'top-repos', label: 'Repos' },
-		{ id: 'dev-articles', label: 'Articles' }
+		{ id: 'articles', label: 'Articles' },
+		{ id: 'dev-articles', label: 'DEVArticles' }
 	];
 </script>
 
 <SEO {data} />
 
-<div class="relative min-h-screen bg-white p-8 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+<div
+	class="h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
+>
 	<!-- Logo -->
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
@@ -79,25 +84,159 @@
 	<div class="fixed right-4 top-4 z-50">
 		<ThemeSwitcher />
 	</div>
-	<AnimatedContainer class="mx-auto max-w-4xl space-y-24">
+	<div class="relative">
 		<!-- Hero Section -->
-		<Hero githubUser={data.githubData.user} id="hero" />
+		<section
+			id="hero"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('hero')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<Hero githubUser={data.githubData.user} />
+								<Profile {resumeData} githubData={data.githubData} />
+								<!-- Fade overlay -->
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
 
-		<!-- Profile Section -->
-		<Profile {resumeData} githubData={data.githubData} />
+		<!-- Resume Section -->
+		<section
+			id="resume"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('resume')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<ResumeComp bind:resumeData />
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
 
-		<!-- Resume only when rug -->
-
-		<ResumeComp bind:resumeData id="resume" />
-
-		<!-- GitHub Overview -->
-		<PlatformsOverview githubUser={data.githubData.user} bind:devtoArticles id="platforms" />
+		<!-- Platforms Overview -->
+		<section
+			id="platforms"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('platforms')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<PlatformsOverview githubUser={data.githubData.user} bind:devtoArticles />
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
 
 		<!-- Top Repos -->
-		<TopRepos topRepos={data.githubData.topRepos} id="top-repos" />
+		<section
+			id="top-repos"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('top-repos')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<TopRepos topRepos={data.githubData.topRepos} />
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
 
-		<Articles bind:devtoArticles id="dev-articles" />
-	</AnimatedContainer>
+		<!-- Articles -->
+		<section
+			id="articles"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('articles')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<JoiArticles articles={data.articles} />
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
+
+		<!-- dev.to Articles -->
+		<section
+			id="dev-articles"
+			class="relative flex min-h-screen snap-start items-center justify-center px-4 py-20"
+		>
+			<div class="mx-auto w-full max-w-5xl overflow-hidden">
+				<div class="relative">
+					{#if intersectingSections.includes('dev-articles')}
+						<div
+							in:fly={{ y: 50, duration: 1000 }}
+							out:fly={{ y: -50, duration: 1000 }}
+							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
+						>
+							<div class="relative">
+								<DevtoArticles bind:devtoArticles />
+								<div
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+								></div>
+							</div>
+						</div>
+					{/if}
+				</div>
+			</div>
+		</section>
+	</div>
 	<Footer />
 </div>
 

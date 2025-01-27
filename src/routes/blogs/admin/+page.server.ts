@@ -1,16 +1,16 @@
 import type { CreateTagInput, IArticleSeries, ITag } from '$lib/types/articles.types';
 import type { CustomError } from '$lib/types/errors.types';
 import { BASE_API_URI } from '$lib/utils/contants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
-	// if (!locals.user) {
-	// 	throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
-	// }
-	// if (!locals.user.isJohn) {
-	// 	throw redirect(302, '/blogs?message=You are not authorized to access this page');
-	// }
+	if (!locals.user) {
+		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
+	}
+	if (!locals.user.isJohn) {
+		throw redirect(302, '/blogs?message=You are not authorized to access this page');
+	}
 	const [tagData, seriesData] = await Promise.all([
 		fetch(`${BASE_API_URI}/v1/tags?page=1&limit=-1`).then((res) => res.json()),
 		fetch(`${BASE_API_URI}/v1/series?page=1&limit=-1`).then((res) => res.json())

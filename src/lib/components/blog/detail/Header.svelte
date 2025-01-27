@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { applyAction, enhance } from '$app/forms';
+	import { page } from '$app/state';
 	import Check from '$lib/components/icons/Check.svelte';
 	import Clock from '$lib/components/icons/Clock.svelte';
 	import Copy from '$lib/components/icons/Copy.svelte';
@@ -60,25 +61,27 @@
 			{article.title}
 		</h1>
 
-		<form method="POST" use:enhance={handleDelete} class="flex gap-2">
-			<a
-				href="/blogs/{article.slug}/{article._id}/edit"
-				class=" rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-				aria-label="Edit article"
-			>
-				<Edit class="h-5 w-5" />
-			</a>
-			<input type="hidden" name="article-id" value={article._id} />
-			<button
-				bind:this={triggerButton}
-				type="submit"
-				class="rounded-full p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
-				aria-label="Delete article"
-				formaction="/blogs/{article.slug}/{article._id}?/deleteArticle"
-			>
-				<Delete class="h-5 w-5" />
-			</button>
-		</form>
+		{#if page.data.user && page.data.user.isJohn}
+			<form method="POST" use:enhance={handleDelete} class="flex gap-2">
+				<a
+					href="/blogs/{article.slug}/{article._id}/edit"
+					class=" rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+					aria-label="Edit article"
+				>
+					<Edit class="h-5 w-5" />
+				</a>
+				<input type="hidden" name="article-id" value={article._id} />
+				<button
+					bind:this={triggerButton}
+					type="submit"
+					class="rounded-full p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
+					aria-label="Delete article"
+					formaction="/blogs/{article.slug}/{article._id}?/deleteArticle"
+				>
+					<Delete class="h-5 w-5" />
+				</button>
+			</form>
+		{/if}
 	</div>
 
 	<div class="flex flex-wrap items-center gap-4">

@@ -28,6 +28,7 @@ import ArticlesIcon from '$lib/components/icons/Articles.svelte';
 import ResumeIcon from '$lib/components/icons/Resume.svelte';
 import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 import Platform from '$lib/components/icons/Platform.svelte';
+import Devto from '$lib/components/icons/Devto.svelte';
 
 export const icons = {
 	repo: Repo,
@@ -69,6 +70,7 @@ export const SectionIcons = {
 	Home: ProfileIcon,
 	Resume: ResumeIcon,
 	Articles: ArticlesIcon,
+	DEVArticles: Devto,
 	Platform: Platform,
 	Repos: Repo
 } as const;

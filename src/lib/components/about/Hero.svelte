@@ -1,5 +1,4 @@
 <script lang="ts">
-	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import TypewriterEffect from '$lib/components/animations/TypewriterEffect.svelte';
 	import Email from '$lib/components/icons/Email.svelte';
 	import { CONTACT_EMAIL } from '$lib/utils/contants';
@@ -9,7 +8,7 @@
 	import { page } from '$app/state';
 	import FormError from '$lib/components/reusables/FormError.svelte';
 
-	let { githubUser, ...props } = $props();
+	let { githubUser } = $props();
 	let isModalOpen = $state(false);
 
 	const encodedEmail = encodeEmail(`${CONTACT_EMAIL}`);
@@ -20,7 +19,7 @@
 	};
 </script>
 
-<AnimatedSection class="mb-16 space-y-4 text-center" y={50} {...props}>
+<div class="mb-10 text-center">
 	<h1
 		class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text text-5xl font-bold text-transparent dark:from-indigo-400 dark:to-teal-400"
 	>
@@ -53,7 +52,7 @@
 			</button>
 		{/if}
 	</div>
-</AnimatedSection>
+</div>
 
 <!-- Modal -->
 {#if isModalOpen}

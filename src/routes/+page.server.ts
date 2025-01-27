@@ -3,12 +3,17 @@ import { getGithubDetails } from '$lib/utils/helpers/github.helpers';
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
+import type { IArticlePopulated } from '$lib/types/articles.types';
 
-export const load: PageServerLoad = async () => {
-	const [githubDetails] = await Promise.all([getGithubDetails()]);
+export const load: PageServerLoad = async ({ fetch }) => {
+	const [githubDetails, articleData] = await Promise.all([
+		getGithubDetails(),
+		fetch(`${BASE_API_URI}/v1/articles?page=1&limit=5`).then((res) => res.json())
+	]);
 
 	return {
-		githubData: githubDetails
+		githubData: githubDetails,
+		articles: articleData.articles as IArticlePopulated[]
 	};
 };
 

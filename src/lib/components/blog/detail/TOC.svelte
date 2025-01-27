@@ -53,21 +53,22 @@
 
 <!-- TOC Sidebar -->
 <nav
-	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform lg:sticky lg:top-8 lg:mt-8 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none dark:bg-gray-900 lg:dark:bg-transparent {showTocMobile
-		? 'translate-x-0'
-		: 'translate-x-full lg:translate-x-0'}"
+	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none dark:bg-gray-900 lg:dark:bg-transparent
+    {showTocMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}"
 	aria-label="Table of Contents"
 >
 	<h2 class="mb-6 text-lg font-semibold text-gray-900 dark:text-white">On this page</h2>
 
-	<ul class="space-y-3 text-sm">
-		{#each tableOfContents as { text, id, level }, index}
-			<li style="margin-left: {(level - 2) * 1.5}rem" transition:fade>
+	<ul class="space-y-0.5">
+		{#each tableOfContents as { text, id, level }}
+			<li>
 				<a
 					href="#{id}"
-					class="group relative flex items-center gap-4 py-1 transition-all {activeId === id
-						? 'text-indigo-600 dark:text-indigo-400'
-						: 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'}"
+					class="group block border-l-2 px-4 py-2 transition-all duration-200
+						{level === 2 ? 'text-sm font-medium' : 'pl-8 text-xs'}
+						{activeId === id
+						? 'border-l-indigo-600 bg-indigo-50/50 text-indigo-600 dark:border-l-indigo-400 dark:bg-indigo-900/20 dark:text-indigo-400'
+						: 'border-l-transparent text-gray-600 hover:border-l-gray-300 hover:bg-gray-50/50 dark:text-gray-400 dark:hover:border-l-gray-600 dark:hover:bg-gray-800/30'}"
 					onclick={(e) => {
 						e.preventDefault();
 						showTocMobile = false;
@@ -77,22 +78,9 @@
 						});
 					}}
 				>
-					<span
-						class="flex h-5 w-5 items-center justify-center rounded-full transition-colors {activeId ===
-						id
-							? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
-							: 'bg-gray-100 text-gray-600 group-hover:bg-indigo-100 group-hover:text-indigo-600 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-indigo-900/30 dark:group-hover:text-indigo-400'}"
-					>
-						{index + 1}
+					<span class="line-clamp-1">
+						{text}
 					</span>
-
-					<span class="flex-1">{text}</span>
-
-					<span
-						class="absolute -left-3 h-full w-1 rounded-full bg-indigo-500 {activeId === id
-							? 'opacity-100'
-							: 'opacity-0 group-hover:opacity-100'}"
-					></span>
 				</a>
 			</li>
 		{/each}
