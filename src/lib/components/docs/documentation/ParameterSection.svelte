@@ -3,9 +3,11 @@
 	import type { FormState } from '$lib/types/docs.types';
 	let { formState = $bindable() }: { formState: FormState } = $props();
 
+	formState.parameters ??= [];
+
 	const addParameter = () => {
-		formState.params = [
-			...formState.params,
+		formState.parameters = [
+			...(formState.parameters ?? []),
 			{ name: '', type: '', required: false, description: '' }
 		];
 	};
@@ -22,39 +24,41 @@
 			Add Parameter
 		</button>
 	</div>
-	{#each formState.params as param, i}
-		<div
-			class="grid gap-4 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700 {i === 0
-				? 'rounded-t-lg'
-				: ''}"
-		>
-			<div class="grid gap-4 md:grid-cols-3">
-				<input
-					bind:value={param.name}
-					placeholder="Name"
-					class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
-				/>
-				<input
-					bind:value={param.type}
-					placeholder="Type"
-					class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
-				/>
-				<label class="flex items-center space-x-2">
+	{#if formState.parameters}
+		{#each formState.parameters as param, i}
+			<div
+				class="grid gap-4 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-700 {i === 0
+					? 'rounded-t-lg'
+					: ''}"
+			>
+				<div class="grid gap-4 md:grid-cols-3">
 					<input
-						type="checkbox"
-						bind:checked={param.required}
-						class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+						bind:value={param.name}
+						placeholder="Name"
+						class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
 					/>
-					<span class="text-sm text-gray-700 dark:text-gray-300">Required</span>
-				</label>
+					<input
+						bind:value={param.type}
+						placeholder="Type"
+						class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+					/>
+					<label class="flex items-center space-x-2">
+						<input
+							type="checkbox"
+							bind:checked={param.required}
+							class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+						/>
+						<span class="text-sm text-gray-700 dark:text-gray-300">Required</span>
+					</label>
+				</div>
+				<MarkdownEditor
+					bind:value={param.description}
+					id="description"
+					rows={4}
+					placeholder="Parameter description"
+					required={true}
+				></MarkdownEditor>
 			</div>
-			<MarkdownEditor
-				bind:value={param.description}
-				id="description"
-				rows={4}
-				placeholder="Parameter description"
-				required={true}
-			></MarkdownEditor>
-		</div>
-	{/each}
+		{/each}
+	{/if}
 </div>
