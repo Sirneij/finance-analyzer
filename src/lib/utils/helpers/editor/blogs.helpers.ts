@@ -197,3 +197,19 @@ export function formatArticleDate(date: string) {
 
 	return isCurrentYear ? `${month} ${day}` : `${month} ${day}, ${articleDate.getFullYear()}`;
 }
+
+export const isBot = (userAgent: string): boolean => {
+	const botPatterns = [
+		'bot',
+		'spider',
+		'crawler',
+		'wget',
+		'curl',
+		'Mozilla/5.0 (compatible; Googlebot',
+		'Mozilla/5.0 (compatible; Bingbot',
+		'Mozilla/5.0 (compatible; YandexBot',
+		'Twitterbot'
+	];
+
+	return botPatterns.some((pattern) => userAgent.toLowerCase().includes(pattern.toLowerCase()));
+};

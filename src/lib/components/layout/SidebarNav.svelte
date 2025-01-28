@@ -41,7 +41,7 @@
 			title: 'About Developer'
 		}
 	];
-	if (page.data.user.isJohnOwolabiIdogun) {
+	if (page.data.user && page.data.user.isJohnOwolabiIdogun) {
 		mainNavItems.push({
 			href: '/finanalyzer/documentation',
 			label: 'Documentation',

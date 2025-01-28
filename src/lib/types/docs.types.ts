@@ -7,21 +7,24 @@ export interface Endpoint {
 	middlewares: string[];
 	category: string;
 	description: string;
-	parameters?: {
-		name: string;
-		type: string;
-		required: boolean;
-		description: string;
-	}[];
+	parameters?: Parameter[];
 	responses: {
 		status: number;
 		description: string;
 		example: Record<string, unknown>;
 	}[];
-	examples: {
-		language: SupportedLanguage;
-		code: string;
-	}[];
+	examples: ExampleCode[];
+}
+
+export interface FormState {
+	path: string;
+	method: HttpMethod;
+	middlewares: string[];
+	category: string;
+	description: string;
+	parameters?: Parameter[];
+	responses: Response[];
+	examples: ExampleCode[];
 }
 
 export interface CodeExample {
@@ -62,21 +65,10 @@ export interface Parameter {
 export interface Response {
 	status: number;
 	description: string;
-	example: string;
+	example: Record<string, unknown> | string;
 }
 
 export interface ExampleCode {
 	language: SupportedLanguage;
 	code: string;
-}
-
-export interface FormState {
-	path: string;
-	method: HttpMethod;
-	middlewares: string[];
-	category: string;
-	description: string;
-	params: Parameter[];
-	responses: Response[];
-	examples: ExampleCode[];
 }

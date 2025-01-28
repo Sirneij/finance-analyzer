@@ -3,7 +3,6 @@ import type { PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
-	// TODO: Only John should be able to access this page
 	if (!locals.user) {
 		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
 	}

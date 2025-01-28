@@ -1,6 +1,7 @@
 import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
+import type { ApiDoc } from '$lib/types/docs.types';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
@@ -18,7 +19,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	const data = await response.json();
 
 	return {
-		docs: data
+		docs: data.endpoints as ApiDoc[]
 	};
 };
 

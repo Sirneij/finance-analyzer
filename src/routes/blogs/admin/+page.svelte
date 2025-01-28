@@ -4,6 +4,7 @@
 	import { MetricsIcons } from '$lib/components/icons';
 	import TagMgt from '$lib/components/admin/TagMGT.svelte';
 	import SeriesMgt from '$lib/components/admin/SeriesMGT.svelte';
+	import Dock from '$lib/components/reusables/Dock.svelte';
 
 	let metrics = $state({
 		totalArticles: 0,
@@ -43,7 +44,7 @@
 	</AnimatedSection>
 
 	<!-- Content Management -->
-	<div class="grid gap-8 lg:grid-cols-2">
+	<div class="flex w-full flex-col space-y-8">
 		<!-- Tags Management -->
 		<TagMgt />
 
@@ -51,3 +52,5 @@
 		<SeriesMgt />
 	</div>
 </AnimatedContainer>
+
+<Dock title="Navigation" />

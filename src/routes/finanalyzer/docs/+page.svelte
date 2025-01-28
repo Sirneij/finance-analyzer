@@ -34,6 +34,15 @@
 			return combined.includes(searchQuery.toLowerCase());
 		})
 	);
+
+	const categoryDocMappings = (data.docs as ApiDoc[])
+		.reduce((map, doc) => {
+			if (!map.has(doc.category)) {
+				map.set(doc.category, { category: doc.category, docId: doc._id });
+			}
+			return map;
+		}, new Map())
+		.values();
 </script>
 
 <div
@@ -102,7 +111,7 @@
 		<AnimatedSection y={30} delay={200} class="mb-16">
 			<h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-white">API Categories</h2>
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-				{#each data.categoryDocMappings as categoryDocMapping}
+				{#each categoryDocMappings as categoryDocMapping}
 					<a
 						href="/finanalyzer/docs/{categoryDocMapping.docId}#{categoryDocMapping.category}"
 						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
@@ -132,7 +141,7 @@
 						animate:flip={{ duration: 300 }}
 						in:fade|local={{ duration: 300 }}
 						out:slide|local={{ duration: 300 }}
-						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
+						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)] dark:border-gray-700 dark:bg-gray-800"
 					>
 						<div class="flex items-center justify-between">
 							<MethodBadge method={endpoint.method} />

@@ -4,7 +4,9 @@
 	import { slide } from 'svelte/transition';
 	import Empty from '$lib/components/reusables/Empty.svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
-	import Loader from '../reusables/Loader.svelte';
+	import Loader from '$lib/components/reusables/Loader.svelte';
+	import SeriesArticle from '$lib/components/admin/mini/SeriesArticle.svelte';
+	import SeriesArticleHeader from './mini/SeriesArticleHeader.svelte';
 
 	let expandedSeries = $state<string | null>(null),
 		loadingStates = $state<Record<string, boolean>>({}),
@@ -91,31 +93,10 @@
 										<Loader width={24} message="Loading series articles..." />
 									</div>
 								{:else if seriesArticles[series._id]?.length}
+									<SeriesArticleHeader />
 									<div class="space-y-3">
 										{#each seriesArticles[series._id] as article, index}
-											<div
-												class="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900"
-											>
-												<div class="flex items-center space-x-3">
-													<span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-														{index + 1}
-													</span>
-													<h4 class="font-medium text-gray-900 dark:text-white">
-														{article.title}
-													</h4>
-												</div>
-												<div class="flex items-center space-x-2">
-													<span class="text-sm text-gray-500 dark:text-gray-400">
-														{new Date(article.createdAt).toLocaleDateString()}
-													</span>
-													<a
-														href="/blogs/{article.slug}/{article._id}"
-														class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
-													>
-														View
-													</a>
-												</div>
-											</div>
+											<SeriesArticle {article} {index} />
 										{/each}
 									</div>
 								{:else}
