@@ -48,28 +48,46 @@ export class ArticleService {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;
 
-      const queryParams = { isPublished: true };
-
-      const query = ArticleModel.find(queryParams)
-        .populate<{ tags: ITag[] }>("tags")
-        .populate<{ series: IArticleSeries }>("series")
-        .sort({ createdAt: -1 })
-        .skip(skip);
-
-      if (!shouldFetchAll) {
-        query.limit(limit);
-      }
-
-      const [articles, total] = await Promise.all([
-        query.lean().exec(),
-        ArticleModel.countDocuments(query),
+      const [result] = await ArticleModel.aggregate([
+        { $match: { isPublished: true } },
+        {
+          $facet: {
+            articles: [
+              { $sort: { createdAt: -1 } },
+              { $skip: skip },
+              ...(!shouldFetchAll ? [{ $limit: limit }] : []),
+              {
+                $lookup: {
+                  from: "tags",
+                  localField: "tags",
+                  foreignField: "_id",
+                  as: "tags",
+                },
+              },
+              {
+                $lookup: {
+                  from: "series",
+                  localField: "series",
+                  foreignField: "_id",
+                  as: "series",
+                },
+              },
+              {
+                $addFields: {
+                  series: { $arrayElemAt: ["$series", 0] },
+                },
+              },
+            ],
+            total: [{ $count: "count" }],
+          },
+        },
       ]);
 
       return {
-        articles,
-        total,
+        articles: result.articles || [],
+        total: result.total[0]?.count || 0,
         page: shouldFetchAll ? 1 : page,
-        limit: shouldFetchAll ? total : limit,
+        limit: shouldFetchAll ? result.total[0]?.count || 0 : limit,
       };
     } catch (error) {
       throw new Error(`Failed to fetch articles: ${error}`);
@@ -141,26 +159,45 @@ export class ArticleService {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;
 
-      const query = ArticleModel.find()
-        .populate<{ tags: ITag[] }>("tags")
-        .populate<{ series: IArticleSeries }>("series")
-        .sort({ createdAt: -1 })
-        .skip(skip);
-
-      if (!shouldFetchAll) {
-        query.limit(limit);
-      }
-
-      const [articles, total] = await Promise.all([
-        query.lean().exec(),
-        ArticleModel.countDocuments(query),
+      const [result] = await ArticleModel.aggregate([
+        {
+          $facet: {
+            articles: [
+              { $sort: { createdAt: -1 } },
+              { $skip: skip },
+              ...(!shouldFetchAll ? [{ $limit: limit }] : []),
+              {
+                $lookup: {
+                  from: "tags",
+                  localField: "tags",
+                  foreignField: "_id",
+                  as: "tags",
+                },
+              },
+              {
+                $lookup: {
+                  from: "series",
+                  localField: "series",
+                  foreignField: "_id",
+                  as: "series",
+                },
+              },
+              {
+                $addFields: {
+                  series: { $arrayElemAt: ["$series", 0] },
+                },
+              },
+            ],
+            total: [{ $count: "count" }],
+          },
+        },
       ]);
 
       return {
-        articles,
-        total,
+        articles: result.articles || [],
+        total: result.total[0]?.count || 0,
         page: shouldFetchAll ? 1 : page,
-        limit: shouldFetchAll ? total : limit,
+        limit: shouldFetchAll ? result.total[0]?.count || 0 : limit,
       };
     } catch (error) {
       console.error("Error in getAllArticles:", error);
@@ -178,6 +215,7 @@ export class ArticleService {
   }> {
     try {
       const {
+        q,
         tags,
         series,
         sortBy = "recent",
@@ -214,6 +252,12 @@ export class ArticleService {
             series: new Types.ObjectId(series),
           }),
         ...(!isJohnOwolabiIdogun && { isPublished: true }),
+        ...(q && {
+          $or: [
+            { title: { $regex: q, $options: "i" } },
+            { content: { $regex: q, $options: "i" } },
+          ],
+        }),
       };
 
       // Clean query by removing empty values
@@ -222,26 +266,48 @@ export class ArticleService {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;
 
-      const articlesQuery = ArticleModel.find(query)
-        .populate<{ tags: ITag[] }>("tags")
-        .populate<{ series: IArticleSeries }>("series")
-        .sort(sortBy === "popular" ? { views: -1 } : { createdAt: -1 })
-        .skip(skip);
-
-      if (!shouldFetchAll) {
-        articlesQuery.limit(limit);
-      }
-
-      const [articles, total] = await Promise.all([
-        articlesQuery.lean().exec(),
-        ArticleModel.countDocuments(query),
+      const [result] = await ArticleModel.aggregate([
+        { $match: query },
+        {
+          $facet: {
+            articles: [
+              {
+                $sort: sortBy === "popular" ? { views: -1 } : { createdAt: -1 },
+              },
+              { $skip: skip },
+              ...(!shouldFetchAll ? [{ $limit: limit }] : []),
+              {
+                $lookup: {
+                  from: "tags",
+                  localField: "tags",
+                  foreignField: "_id",
+                  as: "tags",
+                },
+              },
+              {
+                $lookup: {
+                  from: "series",
+                  localField: "series",
+                  foreignField: "_id",
+                  as: "series",
+                },
+              },
+              {
+                $addFields: {
+                  series: { $arrayElemAt: ["$series", 0] },
+                },
+              },
+            ],
+            total: [{ $count: "count" }],
+          },
+        },
       ]);
 
       return {
-        articles,
-        total,
+        articles: result.articles || [],
+        total: result.total[0]?.count || 0,
         page: shouldFetchAll ? 1 : page,
-        limit: shouldFetchAll ? total : limit,
+        limit: shouldFetchAll ? result.total[0]?.count || 0 : limit,
       };
     } catch (error) {
       console.error("Error in searchArticles:", error);

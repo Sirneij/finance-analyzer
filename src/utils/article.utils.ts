@@ -121,7 +121,10 @@ export function parseQueryParams(query: any): SearchQuery {
       ? query.series
       : undefined;
 
+  const q = query.q ? query.q.toString() : undefined;
+
   return {
+    q,
     tags: parsedTags,
     series,
     sortBy: query.sortBy === "popular" ? "popular" : "recent",

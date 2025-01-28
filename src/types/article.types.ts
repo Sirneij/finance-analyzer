@@ -72,6 +72,7 @@ export interface CreateArticleSeriesInput {
 }
 
 export interface SearchQuery {
+  q?: string;
   tags?: string[] | mongoose.Types.ObjectId[];
   series?: string;
   sortBy: "popular" | "recent";

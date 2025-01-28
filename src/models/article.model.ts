@@ -45,12 +45,17 @@ const ArticleSchema = new Schema<IArticle>(
   }
 );
 
-// Add compound index for efficient querying
+// Primary compound index for most common queries
 ArticleSchema.index({
-  createdAt: -1,
-  views: -1,
-  isPublished: 1,
+  isPublished: 1, // Equality filter first
+  createdAt: -1, // Sort by date
+  views: -1, // Sort by popularity
 });
+
+// Secondary indexes for other query patterns
+ArticleSchema.index({ tags: 1, createdAt: -1 }); // For tag-based queries
+ArticleSchema.index({ series: 1, createdAt: -1 }); // For series-based queries
+ArticleSchema.index({ createdAt: -1 }); // For date range queries
 
 // Models
 export const ArticleSeriesModel = mongoose.model<IArticleSeries>(
