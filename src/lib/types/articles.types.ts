@@ -114,3 +114,11 @@ export interface UpdateITag {
 export interface TagInputState {
 	selectedTags: ITag[];
 }
+
+export interface Metadata {
+	page: number;
+	totalPages: number;
+	limit: number;
+	total: number;
+	expanded?: boolean;
+}

@@ -64,6 +64,16 @@ export function calculateVisiblePages(currentPage: number, total: number) {
 	return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', total];
 }
 
-export async function handlePageChange(newPage: number) {
-	await goto(`?page=${newPage}`, { invalidateAll: true });
+export async function handlePageChange(newPage: number, pagePrefix = 'page') {
+	const url = new URL(window.location.href);
+	const params = url.searchParams;
+
+	// Update only the specific page parameter
+	params.set(pagePrefix, newPage.toString());
+
+	// Use replace to prevent history stack buildup
+	await goto(`?${params.toString()}`, {
+		replaceState: true,
+		keepFocus: true
+	});
 }

@@ -1,22 +1,24 @@
 <script lang="ts">
 	import Close from '$lib/components/icons/Close.svelte';
-	import type { ITag } from '$lib/types/articles.types';
-	import { debounce } from '$lib/utils/helpers/resume.helpers.js';
+	import Paginations from '$lib/components/reusables/Paginations.svelte';
+	import type { ITag, Metadata } from '$lib/types/articles.types';
 
-	let { tags, selectedTags = $bindable() }: { tags: ITag[]; selectedTags: string[] } = $props();
+	let {
+		tags,
+		selectedTags = $bindable(),
+		tagsMetadata
+	}: {
+		tags: ITag[];
+		selectedTags: string[];
+		tagsMetadata: Metadata;
+	} = $props();
 
 	let tagSearch = $state('');
 
-	const popularTags = $derived(tags.slice(0, 10));
-
 	const filteredTags = $derived.by(() => {
 		const query = tagSearch.toLowerCase();
-		return query ? tags.filter((tag) => tag.name.toLowerCase().includes(query)) : popularTags;
+		return query ? tags.filter((tag) => tag.name.toLowerCase().includes(query)) : tags;
 	});
-
-	const debouncedSearch = debounce((query: string) => {
-		tagSearch = query;
-	}, 300);
 </script>
 
 <div class="space-y-4">
@@ -45,6 +47,10 @@
 			bind:value={tagSearch}
 			class="w-full rounded-md bg-white px-3 py-1.5 text-sm transition-all placeholder:text-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
 		/>
+
+		{#each selectedTags as tag}
+			<input type="hidden" name="tags[]" value={tag} />
+		{/each}
 	</div>
 
 	<!-- Tag List -->
@@ -70,4 +76,6 @@
 			No tags found matching "{tagSearch}"
 		</p>
 	{/if}
+
+	<Paginations metadata={tagsMetadata} />
 </div>

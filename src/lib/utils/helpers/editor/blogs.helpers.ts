@@ -213,3 +213,21 @@ export const isBot = (userAgent: string): boolean => {
 
 	return botPatterns.some((pattern) => userAgent.toLowerCase().includes(pattern.toLowerCase()));
 };
+
+export const formatSearchResponse = (params: URLSearchParams): string => {
+	const parts: string[] = [];
+
+	const q = params.get('q');
+	if (q) parts.push(`search text: ${q}`);
+
+	const tags = params.getAll('tags[]');
+	if (tags.length) parts.push(`tags: [${tags.join(', ')}]`);
+
+	const sortBy = params.get('sortBy');
+	if (sortBy && sortBy !== 'recent') parts.push(`sortBy: ${sortBy}`);
+
+	const period = params.get('period');
+	if (period && period !== 'all') parts.push(`period: ${period}`);
+
+	return parts.join(', ');
+};

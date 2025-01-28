@@ -39,19 +39,62 @@ export function parseEndDate(period: string): number {
 	return new Date(parseInt(year), monthMap[month as keyof typeof monthMap] ?? 0).getTime();
 }
 
+type DebouncedFunction<T extends (...args: any[]) => any> = {
+	(...args: Parameters<T>): ReturnType<T> | undefined;
+	cancel: () => void;
+	flush: () => ReturnType<T> | undefined;
+};
+
 export function debounce<T extends (...args: any[]) => any>(
 	func: T,
-	wait: number
-): (...args: Parameters<T>) => void {
-	let timeout: NodeJS.Timeout;
+	wait: number,
+	options: { immediate?: boolean } = {}
+): DebouncedFunction<T> {
+	let timeout: NodeJS.Timeout | undefined;
+	let result: ReturnType<T> | undefined;
+	let lastArgs: Parameters<T> | undefined;
+	let lastThis: any;
 
-	return function executedFunction(...args: Parameters<T>) {
-		const later = () => {
+	function later() {
+		timeout = undefined;
+		if (!options.immediate && lastArgs) {
+			result = func.apply(lastThis, lastArgs);
+			lastArgs = lastThis = undefined;
+		}
+	}
+
+	const debounced = function (this: any, ...args: Parameters<T>) {
+		lastThis = this;
+		lastArgs = args;
+
+		if (timeout) {
 			clearTimeout(timeout);
-			func(...args);
-		};
+		}
 
-		clearTimeout(timeout);
+		if (options.immediate && !timeout) {
+			result = func.apply(this, args);
+		}
+
 		timeout = setTimeout(later, wait);
+		return result;
+	} as DebouncedFunction<T>;
+
+	debounced.cancel = function () {
+		if (timeout) {
+			clearTimeout(timeout);
+			timeout = undefined;
+			lastArgs = lastThis = undefined;
+		}
 	};
+
+	debounced.flush = function () {
+		if (timeout && lastArgs) {
+			clearTimeout(timeout);
+			result = func.apply(lastThis, lastArgs);
+			timeout = lastArgs = lastThis = undefined;
+			return result;
+		}
+	};
+
+	return debounced;
 }
