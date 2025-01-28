@@ -130,8 +130,12 @@ export class ArticleController {
       if (!id) {
         throw new Error("Article ID is required");
       }
+      const shouldIncrementViews = req.query.views === "1";
       // Fetch article by ID
-      const article = await ArticleService.getArticleById(id);
+      const article = await ArticleService.getArticleById(
+        id,
+        shouldIncrementViews
+      );
       if (!article) {
         throw new Error("Article not found");
       }
@@ -285,7 +289,13 @@ export class ArticleController {
         ...(tags && { tags: tags }),
       };
 
-      const result = await ArticleService.searchArticles(searchParams);
+      // Set a default value of false when req.user is undefined
+      const isJohnOwolabiIdogun = req.user?.isJohnOwolabiIdogun ?? false;
+
+      const result = await ArticleService.searchArticles(
+        searchParams,
+        isJohnOwolabiIdogun
+      );
 
       res.json({
         success: true,

@@ -7,11 +7,22 @@ import {
   SearchQuery,
   UpdateArticleInput,
 } from "$types/article.types.js";
+import { cleanQuery } from "$utils/article.utils.js";
 import { Types } from "mongoose";
 
 export class ArticleService {
-  static async getArticleById(id: string): Promise<IArticlePopulated | null> {
+  static async getArticleById(
+    id: string,
+    incrementViews: boolean = false
+  ): Promise<IArticlePopulated | null> {
     try {
+      if (incrementViews) {
+        await ArticleModel.findByIdAndUpdate(
+          id,
+          { $inc: { views: 1 } },
+          { new: true }
+        );
+      }
       const article = await ArticleModel.findById({ _id: id })
         .populate<{ tags: ITag[] }>("tags")
         .populate<{ series: IArticleSeries }>("series")
@@ -156,7 +167,10 @@ export class ArticleService {
       throw error;
     }
   }
-  static async searchArticles(params: SearchQuery): Promise<{
+  static async searchArticles(
+    params: SearchQuery,
+    isJohnOwolabiIdogun: boolean
+  ): Promise<{
     articles: IArticlePopulated[];
     total: number;
     page: number;
@@ -191,12 +205,19 @@ export class ArticleService {
         dateFilter = { createdAt: { $gte: startDate } };
       }
 
-      const query = {
-        ...dateFilter,
-        ...(tags && { tags: { $all: tags } }),
-        ...(series && { series }),
-        isPublished: true,
+      // Build base query with null checks
+      const baseQuery = {
+        ...(Object.keys(dateFilter).length > 0 && dateFilter),
+        ...(tags && tags.length > 0 && { tags: { $in: tags } }),
+        ...(series &&
+          Types.ObjectId.isValid(series) && {
+            series: new Types.ObjectId(series),
+          }),
+        ...(!isJohnOwolabiIdogun && { isPublished: true }),
       };
+
+      // Clean query by removing empty values
+      const query = cleanQuery(baseQuery);
 
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;

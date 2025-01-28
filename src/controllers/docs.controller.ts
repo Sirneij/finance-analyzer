@@ -26,7 +26,7 @@ export class EndpointController {
         res.status(404).json({ message: "Endpoint not found", success: false });
         return;
       }
-      res.json(endpoint);
+      res.json({ endpoint, success: true });
     } catch (error) {
       next(error);
     }

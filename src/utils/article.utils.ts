@@ -1,5 +1,6 @@
 import { SeriesService } from "$services/series.service.js";
 import { TagsService } from "$services/tags.service.js";
+import { SearchQuery } from "$types/article.types.js";
 import { createHash } from "crypto";
 import { Types } from "mongoose";
 
@@ -108,31 +109,36 @@ export const processSeriesTitle = async (
   return series._id as Types.ObjectId;
 };
 
-export const parseQueryParams = (query: Record<string, any>) => {
+export function parseQueryParams(query: any): SearchQuery {
+  const parsedTags = query.tags
+    ? Array.isArray(query.tags)
+      ? query.tags
+      : [query.tags]
+    : undefined;
+
+  const series =
+    query.series && Types.ObjectId.isValid(query.series)
+      ? query.series
+      : undefined;
+
   return {
-    tags: query.tags
-      ? Array.isArray(query.tags)
-        ? query.tags.map(String)
-        : [String(query.tags)]
-      : undefined,
-
-    series: query.series ? String(query.series) : undefined,
-
+    tags: parsedTags,
+    series,
     sortBy: query.sortBy === "popular" ? "popular" : "recent",
-
-    period: ["week", "month", "year"].includes(String(query.period))
-      ? (query.period as "week" | "month" | "year")
+    period: ["week", "month", "year"].includes(query.period)
+      ? query.period
       : undefined,
-
-    page: Math.max(1, Number(query.page) || 1),
-
-    limit: Math.max(1, Math.min(100, Number(query.limit) || 10)),
+    page: Math.max(1, parseInt(query.page) || 1),
+    limit: Math.max(1, Math.min(100, parseInt(query.limit) || 10)),
   };
-};
+}
 
-const validateSortBy = (sort: unknown): "popular" | "recent" => {
-  if (sort === "popular" || sort === "recent") {
-    return sort;
-  }
-  return "recent"; // default value
-};
+export function cleanQuery(query: Record<string, any>): Record<string, any> {
+  return Object.entries(query).reduce((acc, [key, value]) => {
+    if (value === undefined || value === null) return acc;
+    if (Array.isArray(value) && value.length === 0) return acc;
+    if (typeof value === "object" && Object.keys(value).length === 0)
+      return acc;
+    return { ...acc, [key]: value };
+  }, {});
+}
