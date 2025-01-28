@@ -248,4 +248,38 @@ export class ArticleService {
       throw error;
     }
   }
+
+  static async getArticleStats(): Promise<{
+    totalArticles: number;
+    totalViews: number;
+    totalReactions: number;
+  }> {
+    try {
+      const [stats] = await ArticleModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalArticles: { $sum: 1 },
+            totalViews: { $sum: { $ifNull: ["$views", 0] } },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            totalArticles: 1,
+            totalViews: 1,
+          },
+        },
+      ]);
+
+      return {
+        totalArticles: stats?.totalArticles || 0,
+        totalViews: stats?.totalViews || 0,
+        totalReactions: 0,
+      };
+    } catch (error) {
+      console.error("Error in getArticleStats:", error);
+      throw error;
+    }
+  }
 }

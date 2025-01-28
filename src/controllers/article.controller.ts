@@ -347,4 +347,19 @@ export class ArticleController {
       });
     }
   }
+
+  async handleGetArticleStats(req: Request, res: Response): Promise<void> {
+    try {
+      const stats = await ArticleService.getArticleStats();
+      res.json({ success: true, stats });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch article stats",
+      });
+    }
+  }
 }

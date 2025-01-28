@@ -35,5 +35,6 @@ articleRouters.delete(
   isJohnOwolabiIdogun,
   articleController.handleArticleDelete
 );
+articleRouters.get("/stats/metrics", articleController.handleGetArticleStats);
 
 export default articleRouters;
