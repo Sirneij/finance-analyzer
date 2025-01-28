@@ -6,20 +6,26 @@
 	import SeriesMgt from '$lib/components/admin/SeriesMGT.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
 
-	let metrics = $state({
-		totalArticles: 0,
-		totalViews: 0,
-		totalReactions: 0,
-		totalSeries: 0,
-		totalTags: 0
+	let { data } = $props();
+
+	const metrics = $derived.by(() => {
+		const res = {
+			totalArticles: data.stats.totalArticles,
+			totalViews: data.stats.totalViews,
+			totalReactions: data.stats.totalReactions,
+			totalSeries: data.seriesMetadata.total,
+			totalTags: data.tagsMetadata.total
+		};
+
+		return res;
 	});
 </script>
 
 <AnimatedContainer class="container mx-auto min-h-screen p-6">
 	<!-- Header Section -->
 	<AnimatedSection y={20} class="mb-8 mt-20 md:mt-0">
-		<h1 class="text-3xl font-bold text-gray-900 dark:text-white">CMS Dashboard</h1>
-		<p class="text-gray-600 dark:text-gray-400">Manage your content, tags, and series</p>
+		<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+		<p class="text-gray-600 dark:text-gray-400">Manage content, tags, and series</p>
 	</AnimatedSection>
 
 	<!-- Metrics Cards -->

@@ -63,7 +63,10 @@
 							<li>
 								<a
 									href="/blogs/create"
-									class="flex flex-col items-center space-y-1 text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400"
+									class="flex flex-col items-center space-y-1
+									{page.url.pathname === '/blogs/create'
+										? 'text-indigo-500'
+										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
 								>
 									<WriteStar class="h-6 w-6" />
 									<span class="text-xs">Write</span>
@@ -72,7 +75,10 @@
 							<li>
 								<a
 									href="/blogs/admin"
-									class="flex flex-col items-center space-y-1 text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400"
+									class="flex flex-col items-center space-y-1
+									{page.url.pathname === '/blogs/admin'
+										? 'text-indigo-500'
+										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
 								>
 									<ShieldStar class="h-6 w-6" />
 									<span class="text-xs">Manage</span>

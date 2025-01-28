@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import NewArticle from '$lib/components/blog/NewArticle.svelte';
+	import Dock from '$lib/components/reusables/Dock.svelte';
 </script>
 
 <AnimatedContainer>
@@ -12,3 +13,5 @@
 		<NewArticle />
 	</div>
 </AnimatedContainer>
+
+<Dock title="Navigation" />
