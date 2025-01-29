@@ -7,6 +7,7 @@ import {
   UpdateArticleInput,
 } from "$types/article.types.js";
 import {
+  deleteFilesFromCloudinary,
   generateSlug,
   getPublicId,
   parseQueryParams,
@@ -108,12 +109,7 @@ export class ArticleController {
       if (!url) {
         throw new Error("image URL is required");
       }
-
-      const publicId = getPublicId(url as string);
-
-      const cloudinary = cloudinaryService.getCloudinary();
-      const deleteResult = await cloudinary.uploader.destroy(publicId);
-
+      const deleteResult = await deleteFilesFromCloudinary([url as string]);
       res.json({ success: true, ...deleteResult });
     } catch (error) {
       res.status(400).json({
@@ -269,6 +265,26 @@ export class ArticleController {
         success: false,
         message:
           error instanceof Error ? error.message : "Failed to delete article",
+      });
+    }
+  }
+
+  async handleBatchArticleDelete(req: Request, res: Response): Promise<void> {
+    try {
+      const { ids } = req.body;
+
+      if (!Array.isArray(ids) || ids.length === 0) {
+        throw new Error("Article IDs array is required");
+      }
+
+      const result = await ArticleService.deleteManyArticles(ids);
+
+      res.json({ success: true, result });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : "Failed to delete articles",
       });
     }
   }

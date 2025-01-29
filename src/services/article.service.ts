@@ -7,7 +7,7 @@ import {
   SearchQuery,
   UpdateArticleInput,
 } from "$types/article.types.js";
-import { cleanQuery } from "$utils/article.utils.js";
+import { cleanQuery, deleteFilesFromCloudinary } from "$utils/article.utils.js";
 import { Types } from "mongoose";
 
 export class ArticleService {
@@ -345,6 +345,44 @@ export class ArticleService {
       };
     } catch (error) {
       console.error("Error in getArticleStats:", error);
+      throw error;
+    }
+  }
+
+  static async deleteManyArticles(ids: string[]) {
+    try {
+      // Validate IDs
+      const validIds = ids.filter((id) => Types.ObjectId.isValid(id));
+      if (validIds.length !== ids.length) {
+        throw new Error("Invalid article ID(s) provided");
+      }
+
+      // Convert strings to ObjectIds
+      const objectIds = validIds.map((id) => new Types.ObjectId(id));
+
+      // Find articles with their foreImage paths
+      const articles = await ArticleModel.find({ _id: { $in: objectIds } });
+
+      if (articles.length !== ids.length) {
+        throw new Error("Some articles do not exist");
+      }
+
+      // Delete foreImages if they exist
+      const foreImages = articles.map((article) => article.foreImage || "");
+
+      const deleteForeimages = await deleteFilesFromCloudinary(foreImages);
+
+      // Delete all articles
+      const deletedArticles = await ArticleModel.deleteMany({
+        _id: { $in: objectIds },
+      }).exec();
+
+      return {
+        deletedArticles,
+        deleteForeimages,
+      };
+    } catch (error) {
+      console.error("Error in deleteManyArticles:", error);
       throw error;
     }
   }

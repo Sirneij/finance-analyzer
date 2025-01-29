@@ -35,6 +35,11 @@ articleRouters.delete(
   isJohnOwolabiIdogun,
   articleController.handleArticleDelete
 );
+articleRouters.post(
+  "/batch/delete",
+  isJohnOwolabiIdogun,
+  articleController.handleBatchArticleDelete
+);
 articleRouters.get("/stats/metrics", articleController.handleGetArticleStats);
 
 export default articleRouters;
