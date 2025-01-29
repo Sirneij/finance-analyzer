@@ -119,7 +119,7 @@
 
 <svelte:document onclick={handleClickOutside} />
 
-<div class="space-y-2">
+<div class="space-y-1">
 	<div
 		bind:this={inputContainer}
 		class="relative mt-4 flex w-full cursor-text flex-wrap items-center gap-1 rounded-md bg-transparent p-2 text-gray-800 dark:text-white"

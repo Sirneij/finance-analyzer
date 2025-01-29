@@ -7,6 +7,7 @@
 	import Loader from '$lib/components/reusables/Loader.svelte';
 	import SeriesArticle from '$lib/components/admin/mini/SeriesArticle.svelte';
 	import SeriesArticleHeader from './mini/SeriesArticleHeader.svelte';
+	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blogs.helpers';
 
 	let expandedSeries = $state<string | null>(null),
 		loadingStates = $state<Record<string, boolean>>({}),
@@ -40,12 +41,6 @@
 				loadingStates[seriesId] = false;
 			}
 		}
-	}
-
-	async function fetchSeriesArticles(seriesId: string) {
-		const res = await fetch(`/blogs/api/series/${seriesId}`);
-		const data = await res.json();
-		return data.articles;
 	}
 </script>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import NewArticle from '$lib/components/blog/NewArticle.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
@@ -14,4 +15,6 @@
 	</div>
 </AnimatedContainer>
 
+<!-- {#if page.data.user && page.data.user.isJohnOwolabiIdogun} -->
 <Dock title="Navigation" />
+<!-- {/if} -->

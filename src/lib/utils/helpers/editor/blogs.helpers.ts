@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import type { IArticlePopulated } from '$lib/types/articles.types';
 import { WEBSITE_URL } from '$lib/utils/contants';
 
 export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
@@ -231,3 +232,9 @@ export const formatSearchResponse = (params: URLSearchParams): string => {
 
 	return parts.join(', ');
 };
+
+export async function fetchSeriesArticles(seriesId: string): Promise<IArticlePopulated[]> {
+	const res = await fetch(`/blogs/api/series/${seriesId}`);
+	const data = await res.json();
+	return data.articles;
+}

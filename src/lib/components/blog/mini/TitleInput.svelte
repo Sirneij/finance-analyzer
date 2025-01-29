@@ -14,7 +14,7 @@
 	type="text"
 	bind:value={title}
 	use:showInfo={{ container: container, infoId: 'title-info' }}
-	class="h-28 w-full bg-inherit px-0 text-6xl text-gray-800 dark:text-white dark:placeholder-gray-400"
+	class="h-24 w-full bg-inherit px-0 text-6xl text-gray-800 dark:text-white dark:placeholder-gray-400"
 	placeholder="New post title here..."
 	autocomplete="off"
 />

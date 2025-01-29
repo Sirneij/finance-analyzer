@@ -25,6 +25,7 @@
 			aria-label="Open {title}"
 			title="Open {title}"
 			in:scale={{ duration: 200, easing: elasticOut }}
+			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
 			class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-sm transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
 		>
 			<Collapse

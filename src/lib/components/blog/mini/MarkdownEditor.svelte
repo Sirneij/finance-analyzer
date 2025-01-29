@@ -53,6 +53,8 @@
 			const observer = new ResizeObserver((entries) => {
 				const entry = entries[0];
 				containerHeight = entry.contentRect.height;
+				console.log(containerHeight);
+
 				const calculatedRows = Math.floor(containerHeight / lineHeight);
 				textArea.rows = calculatedRows;
 			});
@@ -127,27 +129,38 @@
 	};
 </script>
 
-<div class="flex h-[calc(100vh-12rem)] w-full flex-col transition-all duration-300" id="editor">
-	<FormError form={page.form} />
-	<!-- Fore Image -->
-	<ImageInput bind:foreImage />
+<FormError form={page.form} />
+<!-- Fore Image -->
 
-	<form
-		class="flex h-full flex-col"
-		method="POST"
-		action={formActionURL}
-		use:enhance={handleFormSubmit}
-	>
+<div class="px-4">
+	<ImageInput bind:foreImage {selectedSeries} />
+</div>
+
+<form
+	class="flex h-[calc(100vh-12rem)] w-full flex-col transition-all duration-300"
+	id="editor"
+	method="POST"
+	action={formActionURL}
+	use:enhance={handleFormSubmit}
+>
+	<!-- Tag Input -->
+	<div class="px-4">
 		<TagInput bind:container tagsFromServer={page.data.tags} />
-		<!-- Title -->
-		<TitleInput bind:container bind:title />
+	</div>
 
+	<!-- Title Input -->
+	<div class="px-4">
+		<TitleInput bind:container bind:title />
+	</div>
+
+	<!-- Editor Section -->
+	<div class="flex min-h-0 flex-col">
 		<!-- Toolbar -->
 		<div class="border-b border-gray-200 px-4 py-2 dark:border-gray-700">
 			<MarkdownEditorToolbar bind:textArea />
 		</div>
 
-		<!-- Editor -->
+		<!-- Content Area (Scrollable) -->
 		<div class="relative flex-1 overflow-auto p-4">
 			{#if isPreviewMode}
 				<div class="prose prose-blue dark:prose-invert h-full max-w-none overflow-auto">
@@ -165,55 +178,53 @@
 				></textarea>
 			{/if}
 		</div>
+	</div>
 
-		<!-- Series hidden -->
-		<input type="hidden" name="series" value={selectedSeries} />
+	<!-- Hidden inputs -->
+	<input type="hidden" name="series" value={selectedSeries} />
+	<input type="hidden" name="foreImage" value={foreImage} />
 
-		<!-- ForeImage hidden -->
-		<input type="hidden" name="foreImage" value={foreImage} />
-
-		<!-- Status Bar -->
-		<div
-			class="flex items-center justify-between border-t border-gray-200 px-4 py-2 dark:border-gray-700"
-		>
-			<div class="text-sm text-gray-500 dark:text-gray-400">
-				{textAreaContent.length} characters
-			</div>
-			<div class="flex items-center gap-2">
-				<button
-					type="button"
-					onclick={() => (isPreviewMode = !isPreviewMode)}
-					class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-				>
-					{isPreviewMode ? 'Edit' : 'Preview'}
-				</button>
-				<button
-					type="submit"
-					data-action="draft"
-					class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-				>
-					Save Draft
-				</button>
-				<button
-					type="submit"
-					data-action="publish"
-					class="rounded bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-				>
-					Publish
-				</button>
-				<button
-					bind:this={triggerButton}
-					type="button"
-					onclick={() => (isOpen = true)}
-					class="rounded px-1 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-600"
-					title="Post options"
-				>
-					<Settings class="h-5 w-5" />
-				</button>
-			</div>
+	<!-- Status Bar -->
+	<div
+		class="flex items-center justify-between border-t border-gray-200 px-4 py-2 dark:border-gray-700"
+	>
+		<div class="text-sm text-gray-500 dark:text-gray-400">
+			{textAreaContent.length} characters
 		</div>
-	</form>
-</div>
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				onclick={() => (isPreviewMode = !isPreviewMode)}
+				class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+			>
+				{isPreviewMode ? 'Edit' : 'Preview'}
+			</button>
+			<button
+				type="submit"
+				data-action="draft"
+				class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+			>
+				Save Draft
+			</button>
+			<button
+				type="submit"
+				data-action="publish"
+				class="rounded bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+			>
+				Publish
+			</button>
+			<button
+				bind:this={triggerButton}
+				type="button"
+				onclick={() => (isOpen = true)}
+				class="rounded px-1 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-600"
+				title="Post options"
+			>
+				<Settings class="h-5 w-5" />
+			</button>
+		</div>
+	</div>
+</form>
 
 <!-- Series Dialog -->
 <ModelessDialog {isOpen} {onClose} title="Post Options" triggerEl={triggerButton}>

@@ -220,3 +220,20 @@ pre code {
 		@apply rounded bg-gray-300 dark:bg-gray-700;
 	}
 }
+
+.btn-base {
+	@apply rounded px-4 py-1.5 text-sm font-medium transition-all;
+	@apply disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.btn-primary {
+	@apply btn-base;
+	@apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+	@apply dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+}
+
+.btn-danger {
+	@apply btn-base;
+	@apply text-rose-600 hover:bg-gray-100;
+	@apply dark:text-rose-400 dark:hover:bg-gray-700;
+}
