@@ -20,6 +20,7 @@ export interface IArticle {
 	title: string;
 	slug: string;
 	content: string;
+	views: number;
 	isPublished: boolean;
 	createdAt: string;
 	updatedAt: string;

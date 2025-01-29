@@ -13,7 +13,7 @@ import {
 	GITHUB_USERNAME,
 	NAME_OF_TOOLS_ON_DEVICON_TO_EXCLUDE,
 	NAME_OF_TOOLS_ON_DEVICON_TO_INCLUDE
-} from '../contants';
+} from '$lib/utils/contants';
 
 const GITHUB_API_BASE = 'https://api.github.com';
 const MAX_RETRIES = 3;
