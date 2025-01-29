@@ -152,3 +152,19 @@ export async function deleteFilesFromCloudinary(urls: string[]) {
   const cloudinary = cloudinaryService.getCloudinary();
   return await cloudinary.api.delete_resources(publicIds);
 }
+
+export const notifySearchEngines = async () => {
+  const sitemapURL = "https://johnowolabiidogun.dev/sitemap.xml";
+
+  // Notify Google
+  await fetch(`https://www.google.com/ping?sitemap=${sitemapURL}`).catch(
+    console.error
+  );
+
+  // Notify Bing
+  await fetch(`https://www.bing.com/ping?sitemap=${sitemapURL}`).catch(
+    console.error
+  );
+
+  console.log("Search engines notified!");
+};

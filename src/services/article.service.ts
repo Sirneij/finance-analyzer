@@ -7,7 +7,11 @@ import {
   SearchQuery,
   UpdateArticleInput,
 } from "$types/article.types.js";
-import { cleanQuery, deleteFilesFromCloudinary } from "$utils/article.utils.js";
+import {
+  cleanQuery,
+  deleteFilesFromCloudinary,
+  notifySearchEngines,
+} from "$utils/article.utils.js";
 import { Types } from "mongoose";
 
 export class ArticleService {
@@ -97,6 +101,8 @@ export class ArticleService {
   static async createArticle(articleData: CreateArticleInput) {
     try {
       const article = await ArticleModel.create(articleData);
+      // Notify search engines
+      await notifySearchEngines();
       return article;
     } catch (error) {
       console.error("Error in createArticle:", error);
