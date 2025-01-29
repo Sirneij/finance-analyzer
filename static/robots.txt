@@ -1,0 +1,23 @@
+# Main robots.txt file for johnowolabiidogun.dev
+# Last updated: 2024
+
+# Global rules
+User-agent: *
+Crawl-delay: 1
+
+# Allow public sections
+Allow: /
+Allow: /blogs/
+Allow: /finanalyzer/docs/
+Allow: /sitemap.xml
+
+# Restrict private sections
+Disallow: /finanalyzer/
+Disallow: /blogs/admin
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /*.json$
+Disallow: /*?*
+
+# Sitemaps
+Sitemap: https://johnowolabiidogun.dev/sitemap.xml
