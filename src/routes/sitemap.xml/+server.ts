@@ -12,6 +12,7 @@ interface SitemapEntry {
 	changefreq: ChangeFreq;
 	images?: { url: string; caption: string; title?: string }[];
 	lang?: string;
+	lastmod: string;
 }
 
 function formatDate(date: string | undefined): string {
@@ -41,9 +42,9 @@ export async function GET({ cookies }) {
 		const lastmod = formatDate(new Date().toISOString());
 
 		const staticPages: SitemapEntry[] = [
-			{ url: '/', priority: '1.0', changefreq: 'daily', lang: 'en' },
-			{ url: '/finanalyzer/docs', priority: '0.8', changefreq: 'weekly', lang: 'en' },
-			{ url: '/blogs', priority: '0.9', changefreq: 'daily', lang: 'en' }
+			{ url: '/', priority: '1.0', changefreq: 'daily', lang: 'en', lastmod },
+			{ url: '/finanalyzer/docs', priority: '0.8', changefreq: 'weekly', lang: 'en', lastmod },
+			{ url: '/blogs', priority: '0.9', changefreq: 'daily', lang: 'en', lastmod }
 		];
 
 		let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -58,7 +59,7 @@ export async function GET({ cookies }) {
 			xml += `
     <url>
         <loc>${DOMAIN}${page.url}</loc>
-        <lastmod>${lastmod}</lastmod>
+        <lastmod>${page.lastmod}</lastmod>
         <changefreq>${page.changefreq}</changefreq>
         <priority>${page.priority}</priority>
         <xhtml:link rel="alternate" hreflang="${page.lang}" href="${DOMAIN}${page.url}"/>
@@ -68,9 +69,16 @@ export async function GET({ cookies }) {
 		// Add blog articles
 		for (const article of articles) {
 			const formattedLastmod = formatDate(article.updatedAt);
-			const isRecent =
-				new Date(article.updatedAt || '').getTime() > Date.now() - 30 * 24 * 60 * 60 * 1000;
-			const articlePriority = isRecent ? '0.9' : '0.8';
+			const daysSinceUpdate =
+				(Date.now() - new Date(article.updatedAt || '').getTime()) / (1000 * 60 * 60 * 24);
+			const articlePriority =
+				daysSinceUpdate < 7
+					? '1.0' // New articles = High Priority
+					: daysSinceUpdate < 30
+						? '0.9' // 1 Month Old = Medium Priority
+						: daysSinceUpdate < 180
+							? '0.8' // 6 Months Old = Lower Priority
+							: '0.7'; // Older Articles = Lowest Priority
 
 			xml += `
     <url>
@@ -78,24 +86,14 @@ export async function GET({ cookies }) {
         <lastmod>${formattedLastmod}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>${articlePriority}</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blogs/${article.slug}/${article._id}"/>
-        ${article.tags?.length ? `<news:keywords>${article.tags.map((tag) => tag.name).join(', ')}</news:keywords>` : ''}
-        ${article.tags
-					?.map(
-						(tag) => `
-        <tag:info xmlns:tag="http://www.sitemaps.org/schemas/sitemap-tags/0.9">
-            <tag:name>${tag.name}</tag:name>
-            <tag:description>${tag.description || ''}</tag:description>
-        </tag:info>`
-					)
-					.join('')}`;
+        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blogs/${article.slug}/${article._id}"/>`;
 
 			if (article.foreImage) {
 				xml += `
         <image:image>
             <image:loc>${article.foreImage}</image:loc>
-            <image:title>${article.title || ''}</image:title>
-            <image:caption>${article.title || ''}</image:caption>
+            <image:title>${article.title || 'No Title'}</image:title>
+            <image:caption>${article.title || 'No Caption'}</image:caption>
         </image:image>`;
 			}
 

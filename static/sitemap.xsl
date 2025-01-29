@@ -31,7 +31,6 @@
                         <th>Change Frequency</th>
                         <th>Priority</th>
                         <th>Images</th>
-                        <th>Tags</th>
                     </tr>
                     <xsl:for-each select="sitemap:urlset/sitemap:url">
                         <tr>
@@ -42,20 +41,6 @@
                             <td class="image-cell">
                                 <xsl:for-each select="image:image">
                                     <div><xsl:value-of select="image:loc"/></div>
-                                </xsl:for-each>
-                            </td>
-                            <td>
-                                <xsl:if test="news:keywords">
-                                    <div class="tag">Keywords: <xsl:value-of select="news:keywords"/></div>
-                                </xsl:if>
-                                <xsl:for-each select="tag:info">
-                                    <div class="tag">
-                                        <strong><xsl:value-of select="tag:name"/></strong>
-                                        <xsl:if test="tag:description != ''">
-                                            <br/>
-                                            <small><xsl:value-of select="tag:description"/></small>
-                                        </xsl:if>
-                                    </div>
                                 </xsl:for-each>
                             </td>
                         </tr>
