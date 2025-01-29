@@ -2,7 +2,9 @@
 <xsl:stylesheet version="2.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9"
-                xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+                xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+                xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+                xmlns:tag="http://www.sitemaps.org/schemas/sitemap-tags/0.9">
     <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
     <xsl:template match="/">
         <html>
@@ -15,6 +17,8 @@
                     th { background: #f5f5f5; }
                     tr:nth-child(even) { background: #f9f9f9; }
                     .image-cell { max-width: 300px; word-wrap: break-word; }
+                    .tag { margin: 0.2rem 0; padding: 0.2rem 0; border-bottom: 1px solid #eee; }
+                    .tag:last-child { border-bottom: none; }
                 </style>
             </head>
             <body>
@@ -27,6 +31,7 @@
                         <th>Change Frequency</th>
                         <th>Priority</th>
                         <th>Images</th>
+                        <th>Tags</th>
                     </tr>
                     <xsl:for-each select="sitemap:urlset/sitemap:url">
                         <tr>
@@ -37,6 +42,20 @@
                             <td class="image-cell">
                                 <xsl:for-each select="image:image">
                                     <div><xsl:value-of select="image:loc"/></div>
+                                </xsl:for-each>
+                            </td>
+                            <td>
+                                <xsl:if test="news:keywords">
+                                    <div class="tag">Keywords: <xsl:value-of select="news:keywords"/></div>
+                                </xsl:if>
+                                <xsl:for-each select="tag:info">
+                                    <div class="tag">
+                                        <strong><xsl:value-of select="tag:name"/></strong>
+                                        <xsl:if test="tag:description != ''">
+                                            <br/>
+                                            <small><xsl:value-of select="tag:description"/></small>
+                                        </xsl:if>
+                                    </div>
                                 </xsl:for-each>
                             </td>
                         </tr>

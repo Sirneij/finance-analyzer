@@ -1,5 +1,6 @@
 import { BASE_API_URI } from '$lib/utils/contants';
 import { dev } from '$app/environment';
+import type { IArticlePopulated } from '$lib/types/articles.types';
 
 const DOMAIN = dev ? 'http://localhost:8000' : 'https://johnowolabiidogun.dev';
 
@@ -13,16 +14,6 @@ interface SitemapEntry {
 	lang?: string;
 }
 
-interface Article {
-	_id: string;
-	slug: string;
-	title: string;
-	description?: string;
-	foreImage?: string;
-	images?: string[];
-	updatedAt?: string;
-}
-
 function formatDate(date: string | undefined): string {
 	try {
 		return date
@@ -33,15 +24,20 @@ function formatDate(date: string | undefined): string {
 	}
 }
 
-export async function GET() {
+export async function GET({ cookies }) {
 	try {
 		const response = await fetch(`${BASE_API_URI}/v1/articles?limit=-1`, {
-			headers: { Accept: 'application/json' },
-			cache: 'no-cache'
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+			},
+			cache: 'no-cache',
+			credentials: 'include'
 		});
 		if (!response.ok) throw new Error('Failed to fetch articles');
 
-		const { articles } = await response.json();
+		const { articles }: { articles: IArticlePopulated[] } = await response.json();
 		const lastmod = formatDate(new Date().toISOString());
 
 		const staticPages: SitemapEntry[] = [
@@ -54,7 +50,8 @@ export async function GET() {
         <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
                 xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-                xmlns:xhtml="http://www.w3.org/1999/xhtml">`;
+                xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">`;
 
 		// Add static pages
 		staticPages.forEach((page) => {
@@ -81,27 +78,25 @@ export async function GET() {
         <lastmod>${formattedLastmod}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>${articlePriority}</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blogs/${article.slug}/${article._id}"/>`;
+        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blogs/${article.slug}/${article._id}"/>
+        ${article.tags?.length ? `<news:keywords>${article.tags.map((tag) => tag.name).join(', ')}</news:keywords>` : ''}
+        ${article.tags
+					?.map(
+						(tag) => `
+        <tag:info xmlns:tag="http://www.sitemaps.org/schemas/sitemap-tags/0.9">
+            <tag:name>${tag.name}</tag:name>
+            <tag:description>${tag.description || ''}</tag:description>
+        </tag:info>`
+					)
+					.join('')}`;
 
 			if (article.foreImage) {
 				xml += `
         <image:image>
             <image:loc>${article.foreImage}</image:loc>
             <image:title>${article.title || ''}</image:title>
-            <image:caption>${article.description || article.title || ''}</image:caption>
+            <image:caption>${article.title || ''}</image:caption>
         </image:image>`;
-			}
-
-			// Add additional images if present
-			if (article.images?.length) {
-				article.images.forEach((img: string) => {
-					xml += `
-        <image:image>
-            <image:loc>${img}</image:loc>
-            <image:title>${article.title || ''}</image:title>
-            <image:caption>${article.description || article.title || ''}</image:caption>
-        </image:image>`;
-				});
 			}
 
 			xml += `
