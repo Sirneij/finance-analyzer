@@ -80,7 +80,11 @@
 							class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
 						/>
 						<p class="text-sm font-medium text-amber-700 dark:text-amber-200">
-							No articles found matching "<span class="font-semibold">{searchResponse}</span>"
+							{#if searchResponse}
+								No articles found matching "<span class="font-semibold">{searchResponse}</span>"
+							{:else}
+								No articles found
+							{/if}
 						</p>
 					</div>
 				</div>

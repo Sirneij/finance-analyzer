@@ -70,7 +70,7 @@
 			<button
 				type="button"
 				class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 disabled:opacity-50 dark:text-gray-300 dark:hover:bg-gray-700"
-				disabled={metadata.page === metadata.totalPages}
+				disabled={metadata.page === metadata.totalPages || metadata.total === 0}
 				onclick={() => handleClick(metadata.page + 1)}
 			>
 				{#if metadata.expanded}
