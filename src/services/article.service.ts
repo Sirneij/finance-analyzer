@@ -119,9 +119,26 @@ export class ArticleService {
         throw new Error("Invalid article ID");
       }
 
+      // Separate empty and non-empty fields
+      const updateOperation: any = { $set: {} };
+      const fieldsToUnset: any = {};
+
+      Object.entries(articleData).forEach(([key, value]) => {
+        if (value === "") {
+          fieldsToUnset[key] = 1;
+        } else {
+          updateOperation.$set[key] = value;
+        }
+      });
+
+      // Add $unset operator if there are fields to unset
+      if (Object.keys(fieldsToUnset).length > 0) {
+        updateOperation.$unset = fieldsToUnset;
+      }
+
       const article = await ArticleModel.findByIdAndUpdate(
         id,
-        { $set: articleData },
+        updateOperation,
         {
           new: true,
           runValidators: true,
