@@ -124,7 +124,7 @@
 			placeholder="Search articles by title or content... (Press '/' to focus)"
 			bind:value={searchQuery}
 			oninput={handleSearchInput}
-			class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 pl-12 text-base shadow-sm transition-all placeholder:text-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+			class="shadow-xs w-full rounded-lg border border-gray-200 bg-white px-4 py-3 pl-12 text-base transition-all placeholder:text-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
 		/>
 		<Search class="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
 		{#if searchQuery}
@@ -143,7 +143,7 @@
 	<div class="relative">
 		<button
 			type="button"
-			class="flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+			class="shadow-xs focus:outline-hidden flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 transition-all hover:bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-500/50"
 			onclick={() => (isFilterOpen = !isFilterOpen)}
 			aria-expanded={isFilterOpen}
 		>
@@ -175,7 +175,7 @@
 							class="flex-1 rounded-md px-3 py-1.5 text-sm transition-colors
                        {sortBy === 'recent'
 								? 'bg-blue-500 text-white'
-								: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200'}"
+								: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}"
 							onclick={() => (sortBy = 'recent')}
 						>
 							Most Recent
@@ -186,7 +186,7 @@
 							class="flex-1 rounded-md px-3 py-1.5 text-sm transition-colors
                        {sortBy === 'popular'
 								? 'bg-blue-500 text-white'
-								: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200'}"
+								: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}"
 							onclick={() => (sortBy = 'popular')}
 						>
 							Most Popular
@@ -200,7 +200,7 @@
 					<select
 						bind:value={dateRange}
 						name="period"
-						class="w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+						class="shadow-xs focus:outline-hidden w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					>
 						<option value="all">All Time</option>
 						<option value="week">Past Week</option>
@@ -218,13 +218,13 @@
 				<div class="mt-4 flex gap-2 border-t pt-4 dark:border-gray-700">
 					<button
 						type="submit"
-						class="flex-1 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+						class="focus:outline-hidden flex-1 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 focus:ring-2 focus:ring-blue-500/50"
 					>
 						Apply Filters
 					</button>
 					<button
-						class="rounded-md px-4 py-2 text-sm font-medium text-gray-700
-                     transition-colors hover:bg-gray-100 focus:outline-none
+						class="focus:outline-hidden rounded-md px-4 py-2 text-sm font-medium
+                     text-gray-700 transition-colors hover:bg-gray-100
                      focus:ring-2 focus:ring-gray-500/50 dark:text-gray-200
                      dark:hover:bg-gray-700"
 						onclick={() => {

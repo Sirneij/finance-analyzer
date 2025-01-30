@@ -92,7 +92,7 @@
 			class="mb-4 flex items-start gap-3 rounded-lg border border-blue-100 bg-blue-50/50 p-3 text-sm dark:border-blue-800/30 dark:bg-blue-900/10"
 			transition:fade
 		>
-			<Note class="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-400" />
+			<Note class="mt-0.5 h-5 w-5 shrink-0 text-blue-600 dark:text-blue-400" />
 			<div class="flex-1">
 				<p class="font-medium text-blue-800 dark:text-blue-300">Pro tip:</p>
 				<p class="mt-1 text-blue-700/90 dark:text-blue-400/90">
@@ -163,7 +163,7 @@
 			<div class="group relative h-36 w-72">
 				<img src={foreImage} alt="Cover" class="h-full w-full rounded-lg object-cover" />
 				<div
-					class="absolute inset-0 flex items-center justify-center gap-4 rounded-lg bg-black/60 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+					class="absolute inset-0 flex items-center justify-center gap-4 rounded-lg bg-black/60 opacity-0 backdrop-blur-xs transition-opacity group-hover:opacity-100"
 				>
 					<button
 						type="button"

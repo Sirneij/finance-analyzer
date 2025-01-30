@@ -103,7 +103,7 @@
 								<Profile {resumeData} githubData={data.githubData} />
 								<!-- Fade overlay -->
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 							<div class="relative">
 								<ResumeComp bind:resumeData />
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -153,7 +153,7 @@
 							<div class="relative">
 								<PlatformsOverview githubUser={data.githubData.user} bind:devtoArticles />
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -178,7 +178,7 @@
 							<div class="relative">
 								<TopRepos topRepos={data.githubData.topRepos} />
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -203,7 +203,7 @@
 							<div class="relative">
 								<JoiArticles articles={data.articles} />
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -228,7 +228,7 @@
 							<div class="relative">
 								<DevtoArticles bind:devtoArticles />
 								<div
-									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white dark:from-gray-900"
+									class="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>

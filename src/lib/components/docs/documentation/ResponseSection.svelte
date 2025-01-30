@@ -50,7 +50,7 @@
 						type="number"
 						bind:value={response.status}
 						placeholder="200"
-						class="w-full px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+						class="w-full px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 					/>
 				</div>
 				<div class="space-y-1">
@@ -61,7 +61,7 @@
 						id="description"
 						bind:value={response.description}
 						placeholder="Success response"
-						class="w-full px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+						class="w-full px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 					/>
 				</div>
 			</div>

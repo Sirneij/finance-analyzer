@@ -68,7 +68,7 @@
 </script>
 
 <div
-	class="group relative rounded-lg bg-white p-6 shadow-sm transition-all duration-300 dark:bg-gray-800"
+	class="group relative rounded-lg bg-white p-6 shadow-xs transition-all duration-300 dark:bg-gray-800"
 	class:fixed={isFullscreen}
 	class:inset-0={isFullscreen}
 	class:z-50={isFullscreen}
@@ -101,7 +101,7 @@
 {#if isFullscreen}
 	<button
 		type="button"
-		class="fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-sm"
+		class="fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-xs"
 		onclick={toggleFullscreen}
 		onkeydown={(e) => e.key === 'Escape' && toggleFullscreen()}
 		aria-label="Close fullscreen view"

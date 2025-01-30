@@ -60,13 +60,13 @@
 <div class="relative min-h-screen bg-white dark:bg-gray-900">
 	<Search docs={data.docs} />
 	<ThemeSwitcher
-		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-sm hover:shadow-md dark:bg-gray-800 xs:left-[16.5rem] xs:right-auto"
+		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-xs hover:shadow-md dark:bg-gray-800 xs:left-[16.5rem] xs:right-auto"
 	/>
 
 	<!-- Mobile Menu Button -->
 	{#if isMobile}
 		<button
-			class="fixed left-4 top-4 z-50 rounded-lg bg-white p-2 shadow-sm dark:bg-gray-800"
+			class="fixed left-4 top-4 z-50 rounded-lg bg-white p-2 shadow-xs dark:bg-gray-800"
 			onclick={() => (isSidebarOpen = !isSidebarOpen)}
 			aria-label="Toggle menu"
 		>
@@ -119,7 +119,7 @@
 	<!-- Mobile Overlay -->
 	{#if isMobile && isSidebarOpen}
 		<button
-			class="fixed inset-0 z-30 bg-gray-900/50 backdrop-blur-sm"
+			class="fixed inset-0 z-30 bg-gray-900/50 backdrop-blur-xs"
 			onclick={() => (isSidebarOpen = false)}
 			aria-label="Close menu"
 		></button>

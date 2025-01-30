@@ -181,7 +181,7 @@ renderer.code = function ({ text, lang }: Code) {
 				  }, 2000);
 				});
 			})()"
-			class="opacity-0 group-hover:opacity-100 rounded-md bg-gray-100/80 dark:bg-gray-700/80 p-2 text-gray-600 dark:text-gray-300 transition-all hover:bg-gray-200 dark:hover:bg-gray-600 backdrop-blur flex items-center gap-1"
+			class="opacity-0 group-hover:opacity-100 rounded-md bg-gray-100/80 dark:bg-gray-700/80 p-2 text-gray-600 dark:text-gray-300 transition-all hover:bg-gray-200 dark:hover:bg-gray-600 backdrop-blur-sm flex items-center gap-1"
 			title="Copy code"
 		  >
 			<svg class="copy-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -193,13 +193,13 @@ renderer.code = function ({ text, lang }: Code) {
 		  </button>
 		  
 		  <!-- Language Badge -->
-		  <span class="rounded-md bg-gray-100/80 dark:bg-gray-700/80 px-2 py-1 text-xs font-mono text-gray-600 dark:text-gray-300 transition-colors backdrop-blur">
+		  <span class="rounded-md bg-gray-100/80 dark:bg-gray-700/80 px-2 py-1 text-xs font-mono text-gray-600 dark:text-gray-300 transition-colors backdrop-blur-sm">
 			${validLanguage}
 		  </span>
 		</div>
   
 		<!-- Code Block -->
-		<div class="grid grid-cols-[auto,1fr]">
+		<div class="grid grid-cols-[auto_1fr]">
 			<!-- Line Numbers -->
 			<div class="hidden sm:block p-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none">
 				${lines.map((_, i) => `<div class="leading-6">${i + 1}</div>`).join('')}

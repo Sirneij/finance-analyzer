@@ -63,7 +63,7 @@
 	<!-- Hero Section -->
 	<AnimatedSection
 		y={20}
-		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 sm:p-6"
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800 sm:p-6"
 	>
 		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img

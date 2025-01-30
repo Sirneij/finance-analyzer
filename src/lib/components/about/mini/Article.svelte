@@ -40,7 +40,7 @@
 				</p>
 			{:else}
 				<span
-					class="mb-2 inline-block rounded bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200"
+					class="mb-2 inline-block rounded-sm bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200"
 				>
 					Part: {article.part}
 				</span>

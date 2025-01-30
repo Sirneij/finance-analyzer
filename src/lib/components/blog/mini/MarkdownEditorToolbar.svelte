@@ -14,7 +14,7 @@
 			<!-- Added group class here -->
 			<button
 				type="button"
-				class="rounded px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+				class="rounded-sm px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
 				title={command.title}
 				onclick={(e) => Handlers[command.title.toLowerCase()](e, textArea)}
 			>
@@ -24,7 +24,7 @@
 
 			{#if command.shortcut.display}
 				<div
-					class="pointer-events-none invisible absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:visible dark:bg-gray-700"
+					class="pointer-events-none invisible absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-xs text-white group-hover:visible dark:bg-gray-700"
 					transition:fly={{ y: 10, duration: 200 }}
 				>
 					{command.shortcut.display}

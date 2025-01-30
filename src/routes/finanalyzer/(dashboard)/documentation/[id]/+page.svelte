@@ -97,7 +97,7 @@
 				{:else}
 					<button
 						type="submit"
-						class="bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
+						class="bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
 					>
 						Update Documentation
 					</button>

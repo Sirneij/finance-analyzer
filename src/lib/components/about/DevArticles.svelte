@@ -53,12 +53,12 @@
 	{#if Object.entries(devtoArticles.series).length > 0}
 		<div class="space-y-2">
 			{#each Object.entries(devtoArticles.series) as [seriesName, articles] (seriesName)}
-				<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30">
+				<div class="rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30">
 					<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 						<!-- Series Header -->
 						<button
 							onclick={() => toggleSeries(seriesName)}
-							class="flex w-full items-center justify-between p-4 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+							class="flex w-full items-center justify-between p-4 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 						>
 							<h3 class="text-xl font-semibold">{seriesName}</h3>
 							<Caret
@@ -94,10 +94,10 @@
 								</div>
 								<!-- Gradient fades -->
 								<div
-									class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-gray-800"
+									class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 								></div>
 								<div
-									class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-gray-800"
+									class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 								></div>
 							</div>
 						{/if}
@@ -116,16 +116,16 @@
 					{#each devtoArticles.standalone as article}
 						<Article
 							{article}
-							class="group w-[350px] flex-none transform snap-start rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
+							class="group w-[350px] flex-none transform snap-start rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
 						/>
 					{/each}
 				</div>
 				<!-- Gradient fades -->
 				<div
-					class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-gray-800"
+					class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 				></div>
 				<div
-					class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-gray-800"
+					class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 				></div>
 			</div>
 		</div>

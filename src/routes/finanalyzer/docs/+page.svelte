@@ -46,7 +46,7 @@
 </script>
 
 <div
-	class="relative min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+	class="relative min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
 >
 	<!-- Theme Toggle -->
 	<ThemeSwitcher
@@ -70,7 +70,7 @@
 		<!-- Hero Section -->
 		<AnimatedSection y={20} class="py-16 text-center">
 			<h1
-				class="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl"
+				class="bg-linear-to-r from-indigo-600 to-violet-600 bg-clip-text text-5xl font-extrabold tracking-tight text-transparent sm:text-6xl"
 			>
 				API Documentation
 			</h1>
@@ -88,7 +88,7 @@
 						type="search"
 						bind:value={searchQuery}
 						placeholder="Search endpoints..."
-						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-sm transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-xs transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					/>
 
 					{#if searchQuery.length >= 2}
@@ -114,7 +114,7 @@
 				{#each categoryDocMappings as categoryDocMapping}
 					<a
 						href="/finanalyzer/docs/{categoryDocMapping.docId}#{categoryDocMapping.category}"
-						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+						class="group rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 					>
 						<h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
 							{categoryDocMapping.category}
@@ -130,7 +130,7 @@
 		</AnimatedSection>
 
 		<!-- Popular Endpoints -->
-		<AnimatedSection y={40} delay={400} class="mb-20 backdrop-blur-sm">
+		<AnimatedSection y={40} delay={400} class="mb-20 backdrop-blur-xs">
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Popular Endpoints
 			</h2>
@@ -141,7 +141,7 @@
 						animate:flip={{ duration: 300 }}
 						in:fade|local={{ duration: 300 }}
 						out:slide|local={{ duration: 300 }}
-						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
+						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
 					>
 						<div class="flex items-center justify-between">
 							<MethodBadge method={endpoint.method} />
@@ -158,14 +158,14 @@
 		</AnimatedSection>
 
 		<!-- Getting Started -->
-		<AnimatedSection y={50} delay={600} class="mb-20 backdrop-blur-sm">
+		<AnimatedSection y={50} delay={600} class="mb-20 backdrop-blur-xs">
 			<h2 class="mb-8 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Getting Started
 			</h2>
 			<div class="space-y-6" bind:this={gettingStartedContainer}>
 				<!-- Documentation Cards -->
 				<div
-					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
+					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-xs transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
 				>
 					<p class="text-gray-600 dark:text-gray-300">
 						Our API uses REST architecture and returns responses in JSON format. All API requests
@@ -176,14 +176,14 @@
 				</div>
 
 				<div
-					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
+					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-xs transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
 				>
 					<h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Base URL</h3>
 					{@html marked(sampleBaseURL)}
 				</div>
 
 				<div
-					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-sm transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
+					class="rounded-2xl border border-gray-200/50 bg-white/50 p-6 backdrop-blur-xs transition-all hover:shadow-lg dark:border-gray-700/50 dark:bg-gray-800/50"
 				>
 					<h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Authentication</h3>
 					<p class="mb-4 text-gray-600 dark:text-gray-300">

@@ -65,7 +65,7 @@
 		<div class="group relative">
 			<button
 				onclick={() => copyCode(currentExample.code)}
-				class="absolute right-2 top-2 flex items-center gap-1 rounded bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all hover:bg-gray-800/50 group-hover:opacity-100"
+				class="absolute right-2 top-2 flex items-center gap-1 rounded-sm bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all hover:bg-gray-800/50 group-hover:opacity-100"
 				aria-label={copied ? 'Copied!' : 'Copy code'}
 			>
 				{#if copied}

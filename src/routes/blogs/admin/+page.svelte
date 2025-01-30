@@ -33,7 +33,7 @@
 		{#each Object.entries(metrics) as [key, value]}
 			{@const Icon = MetricsIcons[key as keyof typeof MetricsIcons]}
 			<div
-				class="rounded-lg bg-white p-6 shadow-sm transition-all hover:shadow-md dark:bg-gray-800"
+				class="rounded-lg bg-white p-6 shadow-xs transition-all hover:shadow-md dark:bg-gray-800"
 			>
 				<div class="flex items-center justify-between">
 					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">

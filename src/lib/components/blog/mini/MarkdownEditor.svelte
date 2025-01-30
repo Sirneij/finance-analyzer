@@ -177,7 +177,7 @@
 					bind:value={textAreaContent}
 					use:showInfo={{ container: container, infoId: 'editor-info' }}
 					use:useKeyCombinations
-					class="h-full w-full resize-none bg-transparent font-mono text-gray-800 outline-none dark:text-gray-200"
+					class="h-full w-full resize-none bg-transparent font-mono text-gray-800 outline-hidden dark:text-gray-200"
 					placeholder="Write your markdown content here..."
 				></textarea>
 			{/if}
@@ -199,14 +199,14 @@
 			<button
 				type="button"
 				onclick={() => (isPreviewMode = !isPreviewMode)}
-				class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+				class="rounded-sm bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
 			>
 				{isPreviewMode ? 'Edit' : 'Preview'}
 			</button>
 			<button
 				type="submit"
 				data-action="draft"
-				class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+				class="rounded-sm bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
 			>
 				{#if isCreating && formAction === 'draft'}
 					<Loader message="Saving..." width={20} />
@@ -217,7 +217,7 @@
 			<button
 				type="submit"
 				data-action="publish"
-				class="rounded bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+				class="rounded-sm bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
 			>
 				{#if isCreating && formAction === 'publish'}
 					<Loader message="Publishing..." width={20} />
@@ -229,7 +229,7 @@
 				bind:this={triggerButton}
 				type="button"
 				onclick={() => (isOpen = true)}
-				class="rounded px-1 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-600"
+				class="rounded-sm px-1 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:text-gray-200 dark:hover:bg-gray-600"
 				title="Post options"
 			>
 				<Settings class="h-5 w-5" />
@@ -282,7 +282,7 @@
 		<div class="flex justify-end gap-2 pt-4">
 			<button
 				type="button"
-				class="rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+				class="rounded-sm bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
 				onclick={onClose}
 			>
 				Cancel
@@ -292,7 +292,7 @@
 			{:else}
 				<button
 					type="submit"
-					class="rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+					class="rounded-sm bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
 					aria-label={selectedSeries ? 'Save existing series' : 'Create new series'}
 				>
 					Save

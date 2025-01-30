@@ -27,7 +27,7 @@
 {#if expandedSections.education}
 	<div class="relative">
 		<div
-			class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-indigo-500 to-teal-500 opacity-20"
+			class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-linear-to-b from-indigo-500 to-teal-500 opacity-20"
 		></div>
 		<div class="space-y-16" transition:slide={{ duration: SLIDE_DURATION }}>
 			{#each sortedEducation as edu, i (edu.school + edu.period)}
@@ -41,7 +41,7 @@
 					<!-- Timeline Node -->
 					<div class="absolute -left-2.5 flex h-5 w-5 items-center justify-center">
 						<div
-							class="h-5 w-5 rounded-full bg-gradient-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
+							class="h-5 w-5 rounded-full bg-linear-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
 						>
 							<EducationIcon
 								class="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
@@ -51,7 +51,7 @@
 
 					<!-- Content Card -->
 					<div
-						class="rounded-lg border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50"
+						class="rounded-lg border border-gray-100 bg-white p-6 shadow-xs transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50"
 					>
 						<div class="flex items-center justify-between">
 							<div>

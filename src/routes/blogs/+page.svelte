@@ -72,7 +72,7 @@
 		{#if !isSearching && data.articles.length === 0}
 			<div class="flex justify-center px-4">
 				<div
-					class="group relative w-full max-w-2xl animate-[fade-in_0.2s,scale-in_0.2s] rounded-xl bg-amber-50/80 p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-amber-50/90 hover:shadow-xl dark:bg-amber-900/20 dark:hover:bg-amber-900/30"
+					class="group relative w-full max-w-2xl animate-[fade-in_0.2s,scale-in_0.2s] rounded-xl bg-amber-50/80 p-6 shadow-lg backdrop-blur-xs transition-all duration-300 hover:bg-amber-50/90 hover:shadow-xl dark:bg-amber-900/20 dark:hover:bg-amber-900/30"
 					role="alert"
 				>
 					<div class="flex items-center gap-3">
@@ -101,7 +101,7 @@
 			<article
 				in:fly|local={{ y: 20, duration: SLIDE_DURATION, delay: i * 50 }}
 				out:fade|local
-				class="group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+				class="group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-xs transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
 			>
 				<div class="space-y-4">
 					<h2 class="group/title line-clamp-2 text-xl font-semibold">
@@ -111,7 +111,7 @@
                                  decoration-blue-500 decoration-2 underline-offset-4
                                  transition-all duration-200 ease-in-out
                                  hover:text-blue-500 hover:underline
-                                 focus:outline-none focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5
+                                 focus:outline-hidden focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5
                                  dark:text-gray-100"
 						>
 							{article.title}

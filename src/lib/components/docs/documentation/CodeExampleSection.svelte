@@ -45,7 +45,7 @@
 				</label>
 				<select
 					bind:value={example.language}
-					class="block w-full px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+					class="block w-full px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 					id="language"
 				>
 					{#each LANGUAGES as lang}

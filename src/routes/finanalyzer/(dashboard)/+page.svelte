@@ -75,7 +75,7 @@
 	<!-- Welcome Section -->
 	<AnimatedSection
 		y={20}
-		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800 sm:p-6"
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800 sm:p-6"
 	>
 		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
 			<img
@@ -142,7 +142,7 @@
 		/>
 
 		<!-- Recent Transactions -->
-		<div class="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
+		<div class="rounded-xl bg-white p-6 shadow-xs dark:bg-gray-800">
 			<div class="mb-4 flex items-center justify-between">
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h3>
 				<a

@@ -38,11 +38,11 @@
 			<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Responses</h2>
 			{#each currentDoc.responses as response}
 				<div
-					class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6"
+					class="rounded-xl border border-gray-200 bg-white p-4 shadow-xs transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:p-6"
 				>
 					<div class="mb-4 flex flex-wrap items-center gap-2">
 						<span
-							class="rounded-full bg-gradient-to-r px-4 py-1 text-xs font-medium text-white shadow-sm {getStatusColorClass(
+							class="rounded-full bg-linear-to-r px-4 py-1 text-xs font-medium text-white shadow-sm {getStatusColorClass(
 								response.status
 							)}"
 						>

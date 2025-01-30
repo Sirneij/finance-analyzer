@@ -76,7 +76,7 @@
 </script>
 
 <div
-	class="relative min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+	class="relative min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
 >
 	<ThemeSwitcher
 		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
@@ -111,7 +111,7 @@
 
 				<!-- Error Status -->
 				<h1
-					class="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-6xl font-bold text-transparent dark:from-red-400 dark:to-pink-400"
+					class="bg-linear-to-r from-red-600 to-pink-600 bg-clip-text text-6xl font-bold text-transparent dark:from-red-400 dark:to-pink-400"
 				>
 					{status}
 				</h1>
@@ -129,7 +129,7 @@
 				<!-- Back Button -->
 				<a
 					href="/"
-					class="mt-8 inline-flex items-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:from-indigo-400 dark:to-purple-400"
+					class="mt-8 inline-flex items-center rounded-lg bg-linear-to-r from-indigo-600 to-purple-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:from-indigo-400 dark:to-purple-400"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -150,7 +150,7 @@
 						</summary>
 						<div class="mt-2">
 							<pre
-								class="overflow-x-auto rounded bg-gray-100 p-4 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+								class="overflow-x-auto rounded-sm bg-gray-100 p-4 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                                 <code>
                                     {JSON.stringify(err, null, 2)}
                                 </code>
@@ -159,7 +159,7 @@
 								<div class="mt-4">
 									<h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Stack Trace:</h3>
 									<pre
-										class="mt-2 overflow-x-auto rounded bg-gray-100 p-4 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+										class="mt-2 overflow-x-auto rounded-sm bg-gray-100 p-4 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                                         <code>
                                             {err.stack}
                                         </code>

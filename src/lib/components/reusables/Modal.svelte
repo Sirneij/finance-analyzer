@@ -11,7 +11,7 @@
 	>
 		<!-- Backdrop -->
 		<div
-			class="absolute inset-0 bg-black/50 backdrop-blur-sm"
+			class="absolute inset-0 bg-black/50 backdrop-blur-xs"
 			onclick={onClose}
 			onkeydown={(e) => e.key === 'Escape' && onClose()}
 			role="button"

@@ -25,7 +25,7 @@
 							<!-- Front -->
 							<div class="relative h-full w-full rounded-2xl backdrop-blur-xl">
 								<div
-									class="animate-float absolute inset-0 rounded-2xl bg-gradient-to-tr from-indigo-600/20 to-teal-600/20 p-1"
+									class="animate-float absolute inset-0 rounded-2xl bg-linear-to-tr from-indigo-600/20 to-teal-600/20 p-1"
 								>
 									<div class="h-full w-full rounded-2xl bg-white/90 p-1 dark:bg-gray-900/90">
 										<img
@@ -39,7 +39,7 @@
 							</div>
 							<!-- Back -->
 							<div
-								class="rotate-y-180 absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								class="rotate-y-180 absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							>
 								<div class="flex h-full flex-col justify-center text-center">
 									<h3 class="text-xl font-bold">{githubData.user.name}</h3>
@@ -55,7 +55,7 @@
 					<h2 class="text-4xl font-bold tracking-tight">
 						Hello, I'm
 						<span
-							class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
+							class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
 						>
 							{githubData.user.name}
 						</span>
@@ -70,11 +70,11 @@
 					{#each [{ name: 'GitHub', url: `https://github.com/${githubData.user.login}` }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/john-owolabi-idogun/' }] as link}
 						<a
 							href={link.url}
-							class="group relative rounded-xl bg-gradient-to-tr from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
+							class="group relative rounded-xl bg-linear-to-tr from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
 						>
 							<div class="rounded-xl bg-white px-6 py-2 transition-colors dark:bg-gray-900">
 								<span
-									class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text font-medium text-transparent"
+									class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text font-medium text-transparent"
 								>
 									{link.name}
 								</span>

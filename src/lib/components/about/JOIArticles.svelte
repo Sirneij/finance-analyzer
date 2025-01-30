@@ -13,7 +13,7 @@
 	<div class="flex items-center justify-between">
 		<h2 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Latest <span
-				class="bg-gradient-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
+				class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
 			>
 				Articles
 			</span>
@@ -36,7 +36,7 @@
 	{#if articles.length > 0}
 		<div class="group relative">
 			<div
-				class="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-600 to-teal-600 opacity-20 transition duration-300 group-hover:opacity-50"
+				class="absolute inset-0 rounded-2xl bg-linear-to-r from-indigo-600 to-teal-600 opacity-20 transition duration-300 group-hover:opacity-50"
 			></div>
 			<a
 				href="/blogs/{articles[0].slug}/{articles[0]._id}"
@@ -72,7 +72,7 @@
 			{#each articles.slice(1) as article}
 				<a
 					href="/blogs/{article.slug}/{article._id}"
-					class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+					class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 					style="scroll-snap-align: start;"
 				>
 					<h3
@@ -111,10 +111,10 @@
 
 		<!-- Gradient fades for scroll indication -->
 		<div
-			class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-gray-800"
+			class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 		></div>
 		<div
-			class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-gray-800"
+			class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 		></div>
 	</div>
 </div>

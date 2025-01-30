@@ -58,7 +58,7 @@
 <AnimatedContainer class="container mx-auto min-h-screen w-full space-y-4 p-6">
 	<AnimatedSection y={30} identifier={data.metadata.page}>
 		<!-- Header Card with Actions -->
-		<div class="mt-12 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="mt-12 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<div class="flex items-center justify-between">
 				<AnimatedSection y={20}>
 					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Articles</h2>
@@ -99,7 +99,7 @@
 		</div>
 
 		<!-- Table -->
-		<div class="rounded-lg bg-white shadow-sm dark:bg-gray-800">
+		<div class="rounded-lg bg-white shadow-xs dark:bg-gray-800">
 			<div class="w-full overflow-x-auto">
 				<table class="w-full text-left text-sm">
 					<thead class="sticky top-0 bg-gray-50 text-center text-xs uppercase dark:bg-gray-700">
@@ -107,7 +107,7 @@
 							<th class="px-6 py-4 text-left">
 								<input
 									type="checkbox"
-									class="rounded border-gray-100 bg-gray-200 text-indigo-600 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800"
+									class="rounded-sm border-gray-100 bg-gray-200 text-indigo-600 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800"
 									onchange={toggleAll}
 									checked={selectedArticles.size === data.articles.length &&
 										data.articles.length > 0}
@@ -139,7 +139,7 @@
 								<td class="px-6 py-4">
 									<input
 										type="checkbox"
-										class="rounded border-gray-100 bg-gray-200 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+										class="rounded-sm border-gray-100 bg-gray-200 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
 										checked={selectedArticles.has(article._id)}
 										onchange={() => toggleSelection(article._id)}
 									/>

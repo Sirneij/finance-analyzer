@@ -48,7 +48,7 @@
 		</a>
 		<button
 			onclick={() => (isCollapsed = !isCollapsed)}
-			class="rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+			class="rounded-sm p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
 			aria-label="Toggle sidebar"
 		>
 			<svg class="h-6 w-6 text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none">

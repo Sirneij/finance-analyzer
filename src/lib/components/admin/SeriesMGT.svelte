@@ -50,7 +50,7 @@
 		<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Series</h2>
 	</div>
 
-	<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+	<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 		{#if page.data.series?.length}
 			<div class="space-y-4">
 				{#each page.data.series as series}

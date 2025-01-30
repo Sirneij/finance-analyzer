@@ -3,7 +3,7 @@
 </script>
 
 <div
-	class="group relative grid grid-cols-12 items-center gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4 transition-all hover:border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 hover:dark:border-gray-600 hover:dark:bg-gray-800"
+	class="group relative grid grid-cols-12 items-center gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4 transition-all hover:border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-600 dark:hover:bg-gray-800"
 >
 	<!-- Index -->
 	<div class="col-span-1">

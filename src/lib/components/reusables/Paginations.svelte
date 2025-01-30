@@ -22,7 +22,7 @@
 	y={40}
 	delay={200}
 	identifier={metadata.page}
-	class="mt-4 rounded-lg bg-white shadow-sm dark:bg-gray-800"
+	class="mt-4 rounded-lg bg-white shadow-xs dark:bg-gray-800"
 >
 	<div class="flex flex-col items-center justify-between gap-4 p-4 sm:flex-row">
 		<!-- Results counter -->

@@ -22,14 +22,14 @@
 	>
 		{#each skillEntries as [category, categorySkills]}
 			<div
-				class="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/30"
+				class="group rounded-xl border border-gray-100 bg-white p-6 shadow-xs transition-all duration-300 hover:scale-105 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/30"
 			>
 				<h3 class="mb-4 font-bold text-gray-900 dark:text-white">{category}</h3>
 				<div class="flex flex-wrap gap-3">
 					{#each categorySkills as skill}
 						<div class="group/skill relative">
 							<span
-								class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-teal-50 px-4 py-1.5 text-sm font-medium text-indigo-800 transition-all duration-300 hover:from-indigo-100 hover:to-teal-100 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
+								class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-indigo-50 to-teal-50 px-4 py-1.5 text-sm font-medium text-indigo-800 transition-all duration-300 hover:from-indigo-100 hover:to-teal-100 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 							>
 								{#if normalizeTechnologyNameAndGetIcon(skill)}
 									<img

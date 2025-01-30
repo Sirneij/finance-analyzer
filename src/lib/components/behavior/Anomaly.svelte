@@ -12,7 +12,7 @@
 	}: { anomalies: Anomaly[]; loading: boolean; steps: ProgressSteps[] } = $props();
 </script>
 
-<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Suspicious Transactions</h2>
 	<div class="max-h-64 space-y-4 overflow-y-auto">
 		{#if loading}
@@ -24,7 +24,7 @@
 			/>
 		{:else}
 			{#each anomalies as anomaly}
-				<div class="rounded border-l-4 border-red-500 bg-red-50 p-4 dark:bg-gray-700">
+				<div class="rounded-sm border-l-4 border-red-500 bg-red-50 p-4 dark:bg-gray-700">
 					<div class="flex items-start justify-between">
 						<div class="flex-1">
 							<p class="text-sm text-gray-600 dark:text-gray-300">

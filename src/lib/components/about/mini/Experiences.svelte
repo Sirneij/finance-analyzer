@@ -30,7 +30,7 @@
 		<div class="relative">
 			<!-- Vertical line behind items -->
 			<div
-				class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-indigo-500 to-teal-500 opacity-20"
+				class="absolute left-0 h-[calc(100%-1rem)] w-0.5 bg-linear-to-b from-indigo-500 to-teal-500 opacity-20"
 			></div>
 
 			<!-- The items themselves -->
@@ -46,7 +46,7 @@
 						<!-- Timeline node -->
 						<div class="absolute -left-2.5 flex h-5 w-5 items-center justify-center">
 							<div
-								class="h-5 w-5 rounded-full bg-gradient-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
+								class="h-5 w-5 rounded-full bg-linear-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
 							>
 								<Work
 									class="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
@@ -56,7 +56,7 @@
 
 						<!-- Card content -->
 						<div
-							class="rounded-lg border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50"
+							class="rounded-lg border border-gray-100 bg-white p-6 shadow-xs transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50"
 						>
 							<h3 class="text-xl font-bold text-gray-900 dark:text-white">{exp.role}</h3>
 							<p class="text-gray-600 dark:text-gray-300">{exp.company} | {exp.period}</p>
@@ -68,7 +68,7 @@
 							<div class="mt-4 flex flex-wrap gap-2">
 								{#each exp.techStack as tech}
 									<span
-										class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-50 to-teal-50 px-3 py-1 text-sm text-indigo-800 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
+										class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-indigo-50 to-teal-50 px-3 py-1 text-sm text-indigo-800 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 									>
 										{#if normalizeTechnologyNameAndGetIcon(tech)}
 											<img

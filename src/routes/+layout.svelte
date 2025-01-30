@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import Notifications from '$lib/components/reusables/Notifications.svelte';
 	import { clearNotifications } from '$lib/states/notification.svelte';
+	import '$lib/assets/css/dist/tags.min.css';
 	import '../app.css';
 	let { children } = $props();
 </script>

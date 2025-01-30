@@ -102,7 +102,7 @@
 					style="width: {scrollProgress}%"
 				></div>
 				<div
-					class="absolute -bottom-6 right-0 rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
+					class="absolute -bottom-6 right-0 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
 				>
 					{scrollProgress}% read
 				</div>

@@ -109,7 +109,7 @@
 >
 	{#if isOpen}
 		<div
-			class="w-full {maxWidth} rounded-lg border border-gray-200/10 bg-white/50 p-6 backdrop-blur-sm transition-all duration-300 dark:border-gray-700/10 dark:bg-gray-900/50"
+			class="w-full {maxWidth} rounded-lg border border-gray-200/10 bg-white/50 p-6 backdrop-blur-xs transition-all duration-300 dark:border-gray-700/10 dark:bg-gray-900/50"
 			transition:fade={{ duration: SLIDE_DURATION }}
 		>
 			{#if title}

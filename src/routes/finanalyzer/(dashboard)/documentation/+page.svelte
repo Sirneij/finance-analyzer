@@ -26,7 +26,7 @@
 
 <AnimatedContainer class="container mx-auto">
 	<AnimatedSection
-		class="mb-4 flex items-center justify-between rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800"
+		class="mb-4 flex items-center justify-between rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800"
 		y={30}
 	>
 		<div>
@@ -36,7 +36,7 @@
 		<div class="flex items-center space-x-4">
 			<a
 				href="/finanalyzer/documentation/create"
-				class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+				class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs transition-all hover:bg-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-400"
 			>
 				<Add class="h-5 w-5" />
 				Create Doc
@@ -56,7 +56,7 @@
 				animate:flip={{ duration: 300 }}
 				in:fade|local={{ duration: 300 }}
 				out:slide|local={{ duration: 300 }}
-				class="group relative block w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+				class="group relative block w-full rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 			>
 				<form method="POST" action="?/deleteEndpoint" use:enhance={handleDelete}>
 					<input type="hidden" name="id" value={endpoint._id} />

@@ -49,7 +49,7 @@
 	};
 </script>
 
-<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 	{#if header}
 		<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{header}</h2>
 	{/if}

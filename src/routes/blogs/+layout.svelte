@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '$lib/assets/css/dist/tags.min.css';
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import JI from '$lib/components/logos/JI.svelte';
 	import Footer from '$lib/components/about/Footer.svelte';

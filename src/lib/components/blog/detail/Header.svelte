@@ -164,7 +164,7 @@
 	<button
 		type="button"
 		onclick={confirmDelete}
-		class="rounded bg-rose-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-600"
+		class="rounded-sm bg-rose-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-600"
 	>
 		Confirm
 	</button>
@@ -174,7 +174,7 @@
 			isSubmitted = false;
 			isOpen = false;
 		}}
-		class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+		class="rounded-sm bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
 	>
 		Cancel
 	</button>

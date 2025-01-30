@@ -108,12 +108,12 @@ export const showInfo: Action<
 	if (!node || !args?.container || !args.infoId) return;
 
 	node.addEventListener('focus', show);
-	node.addEventListener('blur', hide);
+	node.addEventListener('blur-sm', hide);
 
 	return {
 		destroy() {
 			node.removeEventListener('focus', show);
-			node.removeEventListener('blur', hide);
+			node.removeEventListener('blur-sm', hide);
 		}
 	};
 };

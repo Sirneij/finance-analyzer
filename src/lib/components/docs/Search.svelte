@@ -63,7 +63,7 @@
 			}}
 			onkeydown={handleKeydown}
 			placeholder="Search docs..."
-			class="w-48 rounded-full bg-white px-4 py-2 pr-12 text-sm shadow-sm outline-none transition-all duration-300 ease-in-out placeholder:text-gray-400 hover:shadow-md dark:bg-gray-800 dark:text-gray-200 dark:placeholder:text-gray-500 xs:focus:w-48 sw:focus:w-[26rem]"
+			class="w-48 rounded-full bg-white px-4 py-2 pr-12 text-sm shadow-xs outline-hidden transition-all duration-300 ease-in-out placeholder:text-gray-400 hover:shadow-md dark:bg-gray-800 dark:text-gray-200 dark:placeholder:text-gray-500 xs:focus:w-48 sw:focus:w-[26rem]"
 		/>
 
 		{#if searchQuery}

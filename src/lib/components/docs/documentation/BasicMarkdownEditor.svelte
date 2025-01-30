@@ -46,7 +46,7 @@
 			{rows}
 			{placeholder}
 			bind:value
-			class="w-full px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+			class="w-full px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 		></textarea>
 	{/if}
 </div>

@@ -47,7 +47,7 @@
 	<!-- Mobile Overlay -->
 	{#if isMobile && isSidebarOpen}
 		<button
-			class="fixed inset-0 z-20 bg-gray-900/50 backdrop-blur-sm"
+			class="fixed inset-0 z-20 bg-gray-900/50 backdrop-blur-xs"
 			onclick={() => (isSidebarOpen = false)}
 			aria-label="Close Sidebar"
 		></button>

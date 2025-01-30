@@ -14,7 +14,7 @@
 </script>
 
 <div
-	class="relative min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 transition-colors duration-300 dark:from-gray-900 dark:to-gray-800"
+	class="relative min-h-screen bg-linear-to-br from-gray-100 to-gray-200 transition-colors duration-300 dark:from-gray-900 dark:to-gray-800"
 >
 	<!-- Theme Toggle -->
 	<ThemeSwitcher
@@ -41,7 +41,7 @@
 	<div class="relative z-10 flex min-h-screen items-center justify-center">
 		<div
 			in:fade={{ duration: 300 }}
-			class="w-full max-w-md space-y-8 rounded-xl bg-white/80 p-8 shadow-lg backdrop-blur-sm transition-all duration-300 dark:bg-gray-800/90 dark:shadow-gray-900/30"
+			class="w-full max-w-md space-y-8 rounded-xl bg-white/80 p-8 shadow-lg backdrop-blur-xs transition-all duration-300 dark:bg-gray-800/90 dark:shadow-gray-900/30"
 		>
 			<!-- Logo -->
 			<div class="logo-container flex justify-center">
@@ -65,7 +65,7 @@
 				<!-- GitHub Login Button -->
 				<a
 					href={`${BASE_API_URI}/v1/auth/github?next=${next}`}
-					class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+					class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-xs transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
 				>
 					<GitHub />
 					Continue with GitHub
@@ -73,7 +73,7 @@
 				<!-- Google Login Button -->
 				<a
 					href="/auth/google"
-					class="pointer-events-none flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 opacity-50 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+					class="pointer-events-none flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 opacity-50 shadow-xs transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
 					aria-disabled="true"
 				>
 					<Google />

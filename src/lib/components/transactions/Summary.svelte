@@ -13,7 +13,7 @@
 {#if financialSummaries}
 	<div class="grid gap-6 sm:grid-cols-3">
 		<div
-			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -38,7 +38,7 @@
 		</div>
 
 		<div
-			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -63,7 +63,7 @@
 		</div>
 
 		<div
-			class="rounded-lg bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -92,7 +92,7 @@
 <div class="mt-6 grid gap-4 sm:grid-cols-4">
 	<!-- Transaction Counts -->
 	{#if financialSummaries.total_transactions}
-		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Transactions</h4>
 			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
 				{financialSummaries.total_transactions}
@@ -106,7 +106,7 @@
 
 	<!-- Averages -->
 	{#if financialSummaries.avg_income || financialSummaries.avg_expense}
-		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Average Transaction</h4>
 			<div class="mt-2 flex flex-col gap-1">
 				{#if financialSummaries.avg_income}
@@ -131,7 +131,7 @@
 	{/if}
 	<!-- Date Range -->
 	{#if financialSummaries.start_date || financialSummaries.end_date}
-		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Period</h4>
 			<div class="mt-2 flex flex-col gap-1">
 				{#if financialSummaries.start_date}
@@ -157,7 +157,7 @@
 
 	<!-- Savings Rate -->
 	{#if financialSummaries.savings_rate}
-		<div class="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Savings Rate</h4>
 			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
 				{financialSummaries.savings_rate.toFixed(1)}%
@@ -167,7 +167,7 @@
 
 	<!-- Largest Transactions -->
 	{#if financialSummaries.largest_income}
-		<div class="col-span-2 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="col-span-2 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Income</h4>
 			<p class="mt-2 text-xl font-semibold text-green-500">
 				{formatMoney(financialSummaries.largest_income)}
@@ -176,7 +176,7 @@
 	{/if}
 
 	{#if financialSummaries.largest_expense}
-		<div class="col-span-2 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+		<div class="col-span-2 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Expense</h4>
 			<p class="mt-2 text-xl font-semibold text-red-500">
 				{formatMoney(financialSummaries.largest_expense)}

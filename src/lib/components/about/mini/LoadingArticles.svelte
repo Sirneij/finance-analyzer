@@ -1,7 +1,7 @@
 <div class="space-y-8">
 	<!-- Series Skeletons -->
 	{#each Array(2) as i}
-		<div class="rounded-xl bg-gradient-to-br from-indigo-500/30 to-teal-500/30 p-[1px]" id={i}>
+		<div class="rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px]" id={i}>
 			<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 				<div class="p-4">
 					<div class="flex items-center justify-between">
@@ -36,10 +36,10 @@
 				{/each}
 			</div>
 			<div
-				class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-gray-800"
+				class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 			></div>
 			<div
-				class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-gray-800"
+				class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 			></div>
 		</div>
 	</div>

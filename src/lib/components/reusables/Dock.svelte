@@ -26,7 +26,7 @@
 			title="Open {title}"
 			in:scale={{ duration: 200, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-sm transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
+			class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-xs transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
 		>
 			<Collapse
 				class="h-5 w-5 text-gray-900 transition-transform duration-300 
@@ -38,7 +38,7 @@
 		<div
 			in:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl backdrop-blur-sm
+			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl backdrop-blur-xs
                 transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/90"
 		>
 			<div class="max-h-[80vh] overflow-y-auto p-4">
@@ -50,7 +50,7 @@
 						onclick={() => (isExpanded = false)}
 						aria-label="Close {title}"
 						title="Close {title}"
-						class="rounded p-1 transition-all duration-300 hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700"
+						class="rounded-sm p-1 transition-all duration-300 hover:scale-105 hover:bg-gray-100 dark:hover:bg-gray-700"
 					>
 						<Collapse
 							class="h-5 w-5 text-gray-900 transition-transform duration-300 hover:-translate-x-1 dark:text-gray-100"

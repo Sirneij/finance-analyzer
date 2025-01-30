@@ -35,18 +35,18 @@
 					<input
 						bind:value={param.name}
 						placeholder="Name"
-						class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+						class="px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 					/>
 					<input
 						bind:value={param.type}
 						placeholder="Type"
-						class="px-4 py-2 outline-none dark:bg-gray-700 dark:text-white"
+						class="px-4 py-2 outline-hidden dark:bg-gray-700 dark:text-white"
 					/>
 					<label class="flex items-center space-x-2">
 						<input
 							type="checkbox"
 							bind:checked={param.required}
-							class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+							class="h-4 w-4 rounded-sm border-gray-300 text-indigo-600 focus:ring-indigo-500"
 						/>
 						<span class="text-sm text-gray-700 dark:text-gray-300">Required</span>
 					</label>

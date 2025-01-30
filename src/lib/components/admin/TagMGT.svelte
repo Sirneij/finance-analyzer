@@ -56,13 +56,13 @@
 		<button
 			bind:this={triggerEl}
 			onclick={() => (isOpen = true)}
-			class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
+			class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
 		>
 			Create Tag
 		</button>
 	</div>
 
-	<div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+	<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 		{#if page.data.tags?.length}
 			<div class="flex flex-wrap gap-2">
 				{#each page.data.tags as tag}
@@ -71,7 +71,7 @@
 
 						{#if tag.description}
 							<div
-								class="pointer-events-none invisible absolute -top-16 left-1/2 z-50 min-w-[200px] max-w-[300px] -translate-x-1/2 whitespace-normal rounded bg-gray-800 px-2 py-1 text-center text-xs text-white group-hover:visible dark:bg-gray-700"
+								class="pointer-events-none invisible absolute -top-16 left-1/2 z-50 min-w-[200px] max-w-[300px] -translate-x-1/2 whitespace-normal rounded-sm bg-gray-800 px-2 py-1 text-center text-xs text-white group-hover:visible dark:bg-gray-700"
 								transition:fly={{ y: 10, duration: 200 }}
 							>
 								{tag.description}
@@ -138,7 +138,7 @@
 							id="tag-name-{i}"
 							bind:value={tag.name}
 							required
-							class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+							class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-xs focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
 							placeholder="Enter tag name"
 						/>
 					</div>
@@ -152,7 +152,7 @@
 						<textarea
 							id="tag-description-{i}"
 							bind:value={tag.description}
-							class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+							class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-xs focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
 							placeholder="Enter tag description"
 						></textarea>
 					</div>

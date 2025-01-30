@@ -46,7 +46,7 @@
 		<path d="M4 6h16M4 12h16M4 18h16" />
 	</svg>
 	<span class="text-sm">Contents</span>
-	<kbd class="ml-2 hidden rounded bg-indigo-700 px-2 py-0.5 text-xs sm:inline-block">
+	<kbd class="ml-2 hidden rounded-sm bg-indigo-700 px-2 py-0.5 text-xs sm:inline-block">
 		{getModifierKey()} + K
 	</kbd>
 </button>

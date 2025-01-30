@@ -1,15 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap')
+layer(base);
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
-html {
-	scroll-behavior: smooth;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
 }
 
-body {
-	overflow-y: scroll;
+@utility animate-pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer utilities {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		overflow-y: scroll;
+	}
 }
 
 @layer base {
@@ -31,77 +57,73 @@ body {
 	input[type='range'],
 	textarea,
 	select {
-		@apply appearance-none border-none outline-none ring-0;
+		@apply appearance-none border-none ring-0 outline-hidden;
 
 		&:focus {
-			@apply border-none outline-none ring-0;
+			@apply border-none ring-0 outline-hidden;
 		}
 
 		&:focus-visible {
-			@apply border-none outline-none ring-0;
+			@apply border-none ring-0 outline-hidden;
 		}
 	}
 }
 
-.logo-container svg {
-	transition: all 0.3s;
-}
-
-.dark .logo-container svg text {
-	fill: #ffffff;
-}
-
-.simple-loader {
-	--b: 20px; /* border thickness */
-	--n: 15; /* number of dashes*/
-	--g: 7deg; /* gap  between dashes*/
-	--c: #2596be; /* the color */
-
-	width: 40px; /* size */
-	aspect-ratio: 1;
-	border-radius: 50%;
-	padding: 1px; /* get rid of bad outlines */
-	background: conic-gradient(#0000, var(--c)) content-box;
-	--_m: /* we use +/-1deg between colors to avoid jagged edges */ repeating-conic-gradient(
-			#0000 0deg,
-			#000 1deg calc(360deg / var(--n) - var(--g) - 1deg),
-			#0000 calc(360deg / var(--n) - var(--g)) calc(360deg / var(--n))
-		),
-		radial-gradient(farthest-side, #0000 calc(98% - var(--b)), #000 calc(100% - var(--b)));
-	-webkit-mask: var(--_m);
-	mask: var(--_m);
-	-webkit-mask-composite: destination-in;
-	mask-composite: intersect;
-	animation: load 1s infinite steps(var(--n));
-}
-@keyframes load {
-	to {
-		transform: rotate(1turn);
+@layer utilities {
+	.logo-container svg {
+		transition: all 0.3s;
 	}
-}
 
-pre {
-	display: flex; /* Allows child elements to stretch */
-	padding: 0 !important; /* Reset padding */
-	margin: 0 !important; /* Reset margin */
-	width: 100%; /* Take full width */
-	height: 100%; /* Take full height */
-	overflow-x: auto; /* Enable scrolling for overflowing content */
-	background: transparent; /* Match desired background color */
-}
+	.dark .logo-container svg text {
+		fill: #ffffff;
+	}
 
-pre code {
-	flex: 1; /* Make the code element take the full space */
-	display: block; /* Ensure it behaves like a block-level element */
-}
+	.simple-loader {
+		--b: 20px; /* border thickness */
+		--n: 15; /* number of dashes*/
+		--g: 7deg; /* gap  between dashes*/
+		--c: #2596be; /* the color */
 
-.group:hover .timeline-node {
-	@apply scale-125 shadow-lg;
-}
+		width: 40px; /* size */
+		aspect-ratio: 1;
+		border-radius: 50%;
+		padding: 1px; /* get rid of bad outlines */
+		background: conic-gradient(#0000, var(--c)) content-box;
+		--_m: /* we use +/-1deg between colors to avoid jagged edges */ repeating-conic-gradient(
+				#0000 0deg,
+				#000 1deg calc(360deg / var(--n) - var(--g) - 1deg),
+				#0000 calc(360deg / var(--n) - var(--g)) calc(360deg / var(--n))
+			),
+			radial-gradient(farthest-side, #0000 calc(98% - var(--b)), #000 calc(100% - var(--b)));
+		-webkit-mask: var(--_m);
+		mask: var(--_m);
+		-webkit-mask-composite: destination-in;
+		mask-composite: intersect;
+		animation: load 1s infinite steps(var(--n));
+	}
+	@keyframes load {
+		to {
+			transform: rotate(1turn);
+		}
+	}
 
-@layer components {
-	.animate-pulse {
-		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	pre {
+		display: flex; /* Allows child elements to stretch */
+		padding: 0 !important; /* Reset padding */
+		margin: 0 !important; /* Reset margin */
+		width: 100%; /* Take full width */
+		height: 100%; /* Take full height */
+		overflow-x: auto; /* Enable scrolling for overflowing content */
+		background: transparent; /* Match desired background color */
+	}
+
+	pre code {
+		flex: 1; /* Make the code element take the full space */
+		display: block; /* Ensure it behaves like a block-level element */
+	}
+
+	.group:hover .timeline-node {
+		@apply scale-125 shadow-lg;
 	}
 }
 
@@ -117,11 +139,11 @@ pre code {
 
 /* Base admonition styles */
 .admonition {
-	@apply relative my-6 overflow-hidden rounded-xl border border-gray-200/10 bg-white/50 backdrop-blur-sm transition-all duration-200 hover:border-gray-200/20 hover:shadow-lg dark:border-gray-700/10 dark:bg-gray-900/50 dark:hover:border-gray-700/20;
+	@apply relative my-6 overflow-hidden rounded-xl border border-gray-200/10 bg-white/50 backdrop-blur-xs transition-all duration-200 hover:border-gray-200/20 hover:shadow-lg dark:border-gray-700/10 dark:bg-gray-900/50 dark:hover:border-gray-700/20;
 }
 
 .admonition .title {
-	@apply m-0 block break-all bg-[length:20px] bg-[center_left_20px] bg-no-repeat px-12 py-3 font-semibold tracking-wide;
+	@apply m-0 block bg-[length:20px] bg-[center_left_20px] bg-no-repeat px-12 py-3 font-semibold tracking-wide break-all;
 }
 
 .admonition .title::before {
@@ -190,9 +212,9 @@ pre code {
 	@apply flex gap-2 p-4 text-sm;
 }
 
-/* .admonition.github .languages .lang {
+.admonition.github .languages .lang {
 	@apply rounded-full bg-gray-200 px-2 py-0.5 dark:bg-gray-700;
-} */
+}
 
 .repo-stats .stat {
 	@apply inline-flex items-center gap-1;
@@ -208,7 +230,7 @@ pre code {
 }
 
 .tag {
-	@apply flex items-center rounded px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
+	@apply flex items-center rounded-sm px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
 }
 
 .article-content {
@@ -221,27 +243,26 @@ pre code {
 	}
 
 	nav::-webkit-scrollbar-track {
-		@apply rounded bg-transparent;
+		@apply rounded-sm bg-transparent;
 	}
 
 	nav::-webkit-scrollbar-thumb {
-		@apply rounded bg-gray-300 dark:bg-gray-700;
+		@apply rounded-sm bg-gray-300 dark:bg-gray-700;
 	}
 }
 
-.btn-base {
-	@apply rounded px-4 py-1.5 text-sm font-medium transition-all;
-	@apply disabled:cursor-not-allowed disabled:opacity-50;
-}
+@layer components {
+	.btn-primary {
+		@apply rounded-sm px-4 py-1.5 text-sm font-medium transition-all;
+		@apply disabled:cursor-not-allowed disabled:opacity-50;
+		@apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+		@apply dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+	}
 
-.btn-primary {
-	@apply btn-base;
-	@apply bg-gray-100 text-gray-700 hover:bg-gray-200;
-	@apply dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
-}
-
-.btn-danger {
-	@apply btn-base;
-	@apply text-rose-600 hover:bg-gray-100;
-	@apply dark:text-rose-400 dark:hover:bg-gray-700;
+	.btn-danger {
+		@apply rounded-sm px-4 py-1.5 text-sm font-medium transition-all;
+		@apply disabled:cursor-not-allowed disabled:opacity-50;
+		@apply text-rose-600 hover:bg-gray-100;
+		@apply dark:text-rose-400 dark:hover:bg-gray-700;
+	}
 }
