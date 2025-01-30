@@ -13,7 +13,7 @@ const MARKDOWN_PATTERNS = {
 	HEADING: '\n## Your heading two \n\n',
 	IMAGE: '![alt text](url)',
 	GITHUB: '\n{% github {owner}/{repo-name} %}\n',
-	CODE_BLOCK: '\n```language:filename {line nos} runnable:\n<code here>\n```',
+	CODE_BLOCK: '\n```language :filename [line nos]:\n<code here>\n```',
 	NOTE: '\n<div class="admonition note">\n<span class="title"><b>Note:</b></span>\n<p></p>\n</div>',
 	TIP: '\n<div class="admonition tip">\n<span class="title"><b>Tip:</b></span>\n<p></p>\n</div>',
 	WARNING:
@@ -106,7 +106,7 @@ export const Handlers: HandlersType = {
 	codeblock: createCommandHandler({
 		text: MARKDOWN_PATTERNS.CODE_BLOCK,
 		startOffset: 4,
-		selectionLength: 45
+		selectionLength: 41
 	}),
 	blockquote: createCommandHandler({
 		text: MARKDOWN_PATTERNS.QUOTE,

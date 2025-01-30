@@ -103,7 +103,10 @@ interface Code {
 const renderer = new marked.Renderer();
 
 renderer.code = function ({ text, lang }: Code) {
-	const validLanguage = lang || 'text';
+	const headerMatch = lang?.match(/^(\w+)\s*:(?:([^[\s]+))?(?:\s*\[([^\]]+)\])?:$/);
+	const validLanguage = headerMatch ? headerMatch[1] : lang || 'text';
+	const filename = headerMatch?.[2]?.trim();
+	const lNos = headerMatch?.[3]?.split(',').map((n) => parseInt(n.trim())) || [];
 	const lines = text.split('\n');
 
 	// Escape HTML characters
@@ -114,8 +117,54 @@ renderer.code = function ({ text, lang }: Code) {
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&#039;');
 
+	const filenameHTML = filename
+		? `<div class="px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+		<span class="font-mono text-sm text-gray-600 dark:text-gray-400">${filename}</span>
+		</div>`
+		: '';
+
+	const formatLNosIndexI = (index: number) => {
+		const start = 13;
+		if (index < 1) return start;
+		else if (index === 1) return start + 25;
+		else if (index === 2) return start + 50;
+		else if (index === 3) return start + 73;
+		else if (index === 4) return start + 98;
+		else if (index === 5) return start + 123;
+		else if (index === 6) return start + 145;
+		else if (index === 7) return start + 169;
+		else if (index === 8) return start + 194;
+		else if (index === 9) return start + 219;
+		// Generalized formula
+	};
+
+	const formatLNosIndex = (index: number) => {
+		const start = 0.8125; // 13px / 16px
+		if (index < 0) return `${start}rem`;
+		return `${(start + index * 1.53125).toFixed(4)}rem`; // 24.5px / 16px = 1.53125
+	};
+
+	const formatLNosText = (ls: string[]) => {
+		return ls
+			.map((_, i) =>
+				lNos.includes(i)
+					? `<div class="absolute w-full h-6 bg-white/70 dark:bg-[#011627]/70" style="top: ${formatLNosIndex(i - 1)}"></div>`
+					: ''
+			)
+			.join('');
+	};
+
+	const lNosHTML =
+		lNos.length > 0
+			? `<div class="absolute inset-0 pointer-events-none" style="z-index: 1">${formatLNosText(lines)}</div>`
+			: '';
+
 	return `
 	  <div class="relative group rounded-lg overflow-hidden">
+      ${filenameHTML}
+
+      <div class="relative">
+        ${lNosHTML}
 		<!-- Controls Container -->
 		<div class="absolute right-2 top-2 z-10 flex items-center gap-2">
 		  <!-- Copy Button -->
@@ -152,7 +201,7 @@ renderer.code = function ({ text, lang }: Code) {
 		<!-- Code Block -->
 		<div class="grid grid-cols-[auto,1fr]">
 			<!-- Line Numbers -->
-			<div class="hidden sm:block p-4 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none">
+			<div class="hidden sm:block p-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none">
 				${lines.map((_, i) => `<div class="leading-6">${i + 1}</div>`).join('')}
 			</div>
 			
