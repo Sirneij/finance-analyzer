@@ -44,14 +44,18 @@ export class ArticleController {
                     const uploadStream = cloudinary.uploader.upload_stream(
                       {
                         folder: `media/johnowolabiidogun`,
-                        transformation: {
-                          // crop: "imagga_scale",
-                          format: "auto",
-                          flags: "progressive",
-                          height: 420,
-                          quality: "auto",
-                          width: 1000,
-                        },
+                        transformation: [
+                          {
+                            width: 1000,
+                            height: 420,
+                            crop: "fill",
+                            gravity: "auto",
+                            quality: "auto:best",
+                            fetch_format: "auto",
+                            flags: ["progressive", "preserve_transparency"],
+                            dpr: "auto",
+                          },
+                        ],
                       },
                       (
                         error: UploadApiErrorResponse | undefined,
@@ -234,9 +238,10 @@ export class ArticleController {
       if (foreImage) updateData.foreImage = foreImage;
       if (content) updateData.content = content;
       if (tags) updateData.tags = tags;
-      if (series) updateData.series = series;
       if (isPublished === true || isPublished === false)
         updateData.isPublished = isPublished;
+
+      updateData.series = series;
 
       const article = await ArticleService.updateArticle(id, updateData);
 
