@@ -56,10 +56,13 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 		return data as DevToArticle[];
 	});
 
-	// Sort articles by published date
-	articles = articles.sort(
-		(a, b) => new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
-	);
+	// Sort articles (without `canonical_url`) by published date
+	articles = articles
+		.filter((article) => !article.canonical_url)
+		.sort(
+			(a, b) =>
+				new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
+		);
 
 	const seriesMap = new Map<string, SeriesDevToArticle[]>();
 	const standalone: DevToArticle[] = [];
