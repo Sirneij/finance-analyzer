@@ -76,9 +76,9 @@
 				if (res.data.uploadResult) {
 					foreImage = res.data.uploadResult.secure_url;
 				}
-				if (res.data.delete && fileInput) {
-					fileInput.value = '';
+				if (res.data.delete) {
 					foreImage = '';
+					if (fileInput) fileInput.value = '';
 				}
 			}
 			await applyAction(result);
