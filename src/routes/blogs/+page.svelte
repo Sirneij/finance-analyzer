@@ -134,8 +134,8 @@
 						</span>
 						<span class="flex items-center gap-1.5">
 							<Calendar class="h-4 w-4" />
-							<time datetime={article.createdAt}>
-								{formatArticleDate(article.createdAt)}
+							<time datetime={article.updatedAt}>
+								{formatArticleDate(article.updatedAt)}
 							</time>
 						</span>
 					</div>

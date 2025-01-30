@@ -58,7 +58,7 @@
 					</div>
 				{/if}
 				<div class="mt-6 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-					<span>{formatArticleDate(articles[0].createdAt)}</span>
+					<span>{formatArticleDate(articles[0].updatedAt)}</span>
 					<span class="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
 					<span>{estimateReadingTime(articles[0].content)}</span>
 				</div>
@@ -94,7 +94,7 @@
 							<div class="flex items-center space-x-1">
 								<Calendar class="h-4 w-4 text-gray-500 dark:text-gray-400" />
 								<span class="text-sm font-medium text-gray-600 dark:text-gray-400">
-									{formatArticleDate(article.createdAt)}
+									{formatArticleDate(article.updatedAt)}
 								</span>
 							</div>
 							<div class="flex items-center space-x-1">

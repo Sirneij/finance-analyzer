@@ -163,7 +163,7 @@
 									{article.views}
 								</td>
 								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
-									{formatArticleDate(article.createdAt)}
+									{formatArticleDate(article.updatedAt)}
 								</td>
 								<td>
 									{#if hoveredArticle === article._id && !selectedArticles.size}

@@ -57,7 +57,7 @@
 
 <header class="mt-8 space-y-4">
 	<div class="flex items-start justify-between">
-		<h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+		<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
 			{article.title}
 		</h1>
 
@@ -96,12 +96,6 @@
 
 		<!-- Dates -->
 		<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-			<div class="flex items-center gap-1">
-				<Clock class="h-4 w-4" />
-				<time>
-					Created {formatDate(article.createdAt)}
-				</time>
-			</div>
 			{#if article.updatedAt}
 				<div class="flex items-center gap-1">
 					<Clock class="h-4 w-4" />

@@ -24,15 +24,6 @@
 		</a>
 	</div>
 
-	<!-- Created Date -->
-	<div class="col-span-2 text-sm text-gray-500 dark:text-gray-400">
-		{new Date(article.createdAt).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric'
-		})}
-	</div>
-
 	<!-- Updated Date -->
 	<div class="col-span-2 text-sm text-gray-500 dark:text-gray-400">
 		{new Date(article.updatedAt).toLocaleDateString('en-US', {
