@@ -90,20 +90,26 @@
 		});
 	});
 
-	const handlePostOptionsFormSubmit: SubmitFunction = async ({ cancel }) => {
+	const handlePostOptionsFormSubmit: SubmitFunction = async ({ formData, cancel }) => {
 		isSaving = true;
-		if (selectedSeries) {
+		const newSeriesTitle = formData.get('newseries-title') as string;
+		// If no new series title and just selecting/unselecting existing series
+		if (!newSeriesTitle?.trim()) {
 			isSaving = false;
+			selectedSeries = formData.get('series-title') as string;
 			onClose();
 			cancel();
+			return;
 		}
-		return async ({ result }) => {
+		// Only proceed with form submission if creating new series
+		return async ({ result, update }) => {
 			isSaving = false;
 			if (result.type === 'success' || result.type === 'redirect') {
 				const res = result as any;
 				if (res.data.success && res.data.series.length > 0) {
 					selectedSeries = res.data.series[0]._id;
 					onClose();
+					await update();
 				}
 			}
 			await applyAction(result);
@@ -161,7 +167,7 @@
 		<!-- Content Area (Scrollable) -->
 		<div class="relative flex-1 overflow-auto p-4">
 			{#if isPreviewMode}
-				<div class="prose prose-blue h-full max-w-none overflow-auto dark:prose-invert">
+				<div class="prose prose-blue dark:prose-invert h-full max-w-none overflow-auto">
 					{@html previewContent}
 				</div>
 			{:else}
