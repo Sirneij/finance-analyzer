@@ -5,6 +5,7 @@ import type {
 	ProcessedDevToArticles,
 	SeriesDevToArticle
 } from '$lib/types/dev.to.types';
+import { WEBSITE_URL } from '$lib/utils/contants';
 
 const API_TIMEOUT = 10000; // 10 seconds
 const RETRY_ATTEMPTS = 3;
@@ -56,13 +57,17 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 		return data as DevToArticle[];
 	});
 
+	console.log('(Before)Fetched Dev.to articles:', articles);
+
 	// Sort articles (without `canonical_url`) by published date
 	articles = articles
-		.filter((article) => !article.canonical_url)
+		.filter((article) => !article.canonical_url || !article.canonical_url.includes(WEBSITE_URL))
 		.sort(
 			(a, b) =>
 				new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
 		);
+
+	console.log('Fetched Dev.to articles:', articles);
 
 	const seriesMap = new Map<string, SeriesDevToArticle[]>();
 	const standalone: DevToArticle[] = [];
