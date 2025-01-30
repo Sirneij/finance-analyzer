@@ -1,13 +1,12 @@
 import { BASE_API_URI } from '$lib/utils/contants';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ cookies, fetch, params }) {
+export async function GET({ fetch, params }) {
 	try {
 		const response = await fetch(`${BASE_API_URI}/v1/articles/search?series=${params.id}`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			}
 		});
 

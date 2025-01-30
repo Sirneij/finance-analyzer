@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ fetch, locals, url }) => {
 };
 
 export const actions: Actions = {
-	deleteTransactions: async ({ fetch, request, cookies }) => {
+	deleteTransactions: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const transactionData = data.get('transactions') as string;
 		const transactions = transactionData.split(',');
@@ -30,8 +30,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'DELETE',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(transactions)
 		};

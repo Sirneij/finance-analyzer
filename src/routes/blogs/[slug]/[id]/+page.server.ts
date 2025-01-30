@@ -5,7 +5,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
-	deleteArticle: async ({ fetch, request, cookies }) => {
+	deleteArticle: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const articleId = data.get('article-id') as string;
 
@@ -14,8 +14,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'DELETE',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			}
 		};
 

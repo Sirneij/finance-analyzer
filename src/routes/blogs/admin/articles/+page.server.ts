@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 };
 
 export const actions: Actions = {
-	deleteArticles: async ({ fetch, request, cookies }) => {
+	deleteArticles: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const articleIds = (formData.get('articleIds') as string).split(',');
 
@@ -25,8 +25,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ ids: articleIds })
 		};

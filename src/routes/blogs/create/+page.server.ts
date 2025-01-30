@@ -7,7 +7,7 @@ import { processGithubEmbeds } from '$lib/utils/helpers/github.helpers';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
-		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
+		throw redirect(302, '/finanalyzer/auth/login?next=/blogs/create');
 	}
 	if (!locals.user.isJohnOwolabiIdogun) {
 		throw redirect(302, '/blogs?message=You are not authorized to access this page');
@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 };
 
 export const actions: Actions = {
-	create: async ({ fetch, request, cookies }) => {
+	create: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		// GET tags
 		const tags = (formData.get('tags') as string).split(',');
@@ -59,8 +59,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(createData)
 		};
@@ -80,7 +79,7 @@ export const actions: Actions = {
 
 		throw redirect(303, `/blogs/${article.slug}/${article._id}`);
 	},
-	savePostOptions: async ({ fetch, request, cookies }) => {
+	savePostOptions: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const seriesTitle = formData.get('newseries-title') as string;
 
@@ -98,8 +97,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(data)
 		};

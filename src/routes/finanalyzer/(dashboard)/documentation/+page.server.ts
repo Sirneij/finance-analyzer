@@ -24,15 +24,12 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 };
 
 export const actions: Actions = {
-	deleteEndpoint: async ({ fetch, request, cookies }) => {
+	deleteEndpoint: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const id = data.get('id') as string;
 
 		const response = await fetch(`${BASE_API_URI}/v1/docs/endpoints/${id}`, {
-			method: 'DELETE',
-			headers: {
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			}
+			method: 'DELETE'
 		});
 
 		if (!response.ok) {

@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	upload: async ({ fetch, request, cookies }) => {
+	upload: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const file = formData.get('file') as File;
 		// Some validations
@@ -30,9 +30,6 @@ export const actions: Actions = {
 
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
-			headers: {
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			},
 			body: formData
 		};
 
@@ -52,7 +49,7 @@ export const actions: Actions = {
 			data: response
 		};
 	},
-	addTransaction: async ({ fetch, request, cookies }) => {
+	addTransaction: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const date = data.get('date') as string;
 		const amount = data.get('amount') as unknown as number;
@@ -111,8 +108,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify([body])
 		};

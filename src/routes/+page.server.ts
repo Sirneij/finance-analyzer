@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 };
 
 export const actions: Actions = {
-	upload: async ({ fetch, request, cookies }) => {
+	upload: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const file = formData.get('file') as File;
 		// Some validations
@@ -38,9 +38,6 @@ export const actions: Actions = {
 
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
-			headers: {
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			},
 			body: formData
 		};
 

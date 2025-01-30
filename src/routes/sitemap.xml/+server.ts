@@ -25,16 +25,14 @@ function formatDate(date: string | undefined): string {
 	}
 }
 
-export async function GET({ cookies }) {
+export async function GET() {
 	try {
 		const response = await fetch(`${BASE_API_URI}/v1/articles?limit=-1`, {
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
-			cache: 'no-cache',
-			credentials: 'include'
+			cache: 'no-cache'
 		});
 		if (!response.ok) throw new Error('Failed to fetch articles');
 

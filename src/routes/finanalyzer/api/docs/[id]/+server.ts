@@ -2,12 +2,11 @@ import type { CustomError } from '$lib/types/errors.types';
 import { BASE_API_URI } from '$lib/utils/contants';
 import { json } from '@sveltejs/kit';
 
-export async function PUT({ cookies, fetch, request, params }) {
+export async function PUT({ fetch, request, params }) {
 	const response = await fetch(`${BASE_API_URI}/v1/docs/endpoints/${params.id}`, {
 		method: 'PUT',
 		headers: {
-			'Content-Type': 'application/json',
-			Cookie: `connect.sid=${cookies.get('connect.sid')}`
+			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(await request.json())
 	});

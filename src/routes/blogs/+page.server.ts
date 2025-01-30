@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 };
 
 export const actions: Actions = {
-	upload: async ({ fetch, request, cookies }) => {
+	upload: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const file = formData.get('file') as File;
 		// Some validations
@@ -41,9 +41,6 @@ export const actions: Actions = {
 
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
-			headers: {
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			},
 			body: formData
 		};
 
@@ -61,7 +58,7 @@ export const actions: Actions = {
 		return response as { success: boolean; uploadResult: UploadApiResponse };
 	},
 
-	deleteUpload: async ({ fetch, request, cookies }) => {
+	deleteUpload: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const foreImageURL = formData.get('foreimage') as string;
 
@@ -77,10 +74,7 @@ export const actions: Actions = {
 		const apiURL = `${BASE_API_URI}/v1/articles/delete-upload?url=${foreImageURL}`;
 
 		const requestInitOptions: RequestInit = {
-			method: 'DELETE',
-			headers: {
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
-			}
+			method: 'DELETE'
 		};
 
 		const res = await fetch(apiURL, requestInitOptions);

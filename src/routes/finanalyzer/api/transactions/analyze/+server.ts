@@ -1,12 +1,9 @@
 import { BASE_API_URI } from '$lib/utils/contants';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ cookies, fetch }) {
+export async function GET({ fetch }) {
 	const response = await fetch(`${BASE_API_URI}/v1/transactions/analyze`, {
-		method: 'GET',
-		headers: {
-			Cookie: `connect.sid=${cookies.get('connect.sid')}`
-		}
+		method: 'GET'
 	});
 
 	if (!response.ok) {

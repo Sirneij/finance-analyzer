@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 };
 
 export const actions: Actions = {
-	deleteTag: async ({ fetch, request, cookies }) => {
+	deleteTag: async ({ fetch, request }) => {
 		const formData = await request.formData();
 		const tagId = formData.get('tagId') as string;
 
@@ -30,8 +30,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'DELETE',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			}
 		};
 
@@ -49,7 +48,7 @@ export const actions: Actions = {
 			deleted: true
 		};
 	},
-	createTag: async ({ fetch, request, cookies }) => {
+	createTag: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const tags: CreateTagInput[] = [];
 
@@ -69,8 +68,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(tags)
 		};
@@ -88,7 +86,7 @@ export const actions: Actions = {
 
 		return { ...response };
 	},
-	updateTag: async ({ fetch, request, cookies }) => {
+	updateTag: async ({ fetch, request }) => {
 		const data = await request.formData();
 		const name = data.get('tagName') as string;
 		const description = data.get('tagDescription') as string;
@@ -99,8 +97,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'PATCH',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ name, description })
 		};

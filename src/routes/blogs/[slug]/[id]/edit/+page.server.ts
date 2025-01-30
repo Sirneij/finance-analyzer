@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ params, fetch, request, cookies }) => {
+	default: async ({ params, fetch, request }) => {
 		const formData = await request.formData();
 		// GET tags
 		const tags = (formData.get('tags') as string).split(',');
@@ -52,8 +52,7 @@ export const actions: Actions = {
 		const requestInitOptions: RequestInit = {
 			method: 'PATCH',
 			headers: {
-				'Content-Type': 'application/json',
-				Cookie: `connect.sid=${cookies.get('connect.sid')}`
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(updateData)
 		};

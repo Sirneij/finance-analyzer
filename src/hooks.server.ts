@@ -1,6 +1,17 @@
 import { BASE_API_URI } from '$lib/utils/contants';
 import type { Handle } from '@sveltejs/kit';
 
+// hooks.server.ts
+export const handleFetch = async ({ request, fetch }) => {
+	// Add credentials: 'include' to all outgoing requests
+	const options: RequestInit = {
+		...request,
+		credentials: 'include'
+	};
+
+	return fetch(request, options);
+};
+
 export const handle: Handle = async ({ event, resolve }) => {
 	if (event.locals.user) {
 		// if there is already a user  in session load page as normal
@@ -17,12 +28,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	// find the user based on the session
-	const res = await event.fetch(`${BASE_API_URI}/v1/auth/session`, {
-		credentials: 'include',
-		headers: {
-			Cookie: `connect.sid=${session}`
-		}
-	});
+	const res = await event.fetch(`${BASE_API_URI}/v1/auth/session`);
 
 	if (!res.ok) {
 		// if there an error load page as normal
