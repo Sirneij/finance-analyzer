@@ -150,14 +150,16 @@ renderer.code = function ({ text, lang }: Code) {
 		</div>
   
 		<!-- Code Block -->
-		<div class="flex">
-		  <!-- Line Numbers -->
-		  <div class="hidden sm:flex flex-col items-end px-4 py-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none font-mono">
-			${lines.map((_, i) => `<span class="leading-6">${i + 1}</span>`).join('')}
-		  </div>
-		  
-		  <!-- Code Content -->
-		  <pre class="flex-1"><code class="language-${validLanguage}">${escapedText}</code></pre>
+		<div class="grid grid-cols-[auto,1fr]">
+			<!-- Line Numbers -->
+			<div class="hidden sm:block p-4 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none">
+				${lines.map((_, i) => `<div class="leading-6">${i + 1}</div>`).join('')}
+			</div>
+			
+			<!-- Code Content -->
+			<pre>
+				<code class="language-${validLanguage} leading-6">${escapedText}</code>
+			</pre>
 		</div>
 	  </div>
 	`;
