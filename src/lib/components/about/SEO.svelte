@@ -1,10 +1,61 @@
 <script lang="ts">
 	import { WEBSITE_URL } from '$lib/utils/contants';
+	import { onMount } from 'svelte';
+	import type { PageData } from '../../../routes/$types';
 
 	let { data } = $props();
 
 	const title = `${data.githubData.user.name || 'Developer Portfolio'} - ${data.githubData.user.bio}`;
 	const description = `${data.githubData.user.name} - ${data.githubData.user.bio || 'Software Engineer and Cybersecurity Enthusiast'}`;
+
+	function getJsonLd(data: PageData) {
+		return {
+			'@context': 'https://schema.org',
+			'@type': 'Person',
+			name: `${data.githubData.user.name}`,
+			url: `${WEBSITE_URL}`,
+			image: `${data.githubData.user.avatar_url}`,
+			description: `${description}`,
+			jobTitle: 'Software Engineer, Cybersecurity Enthusiast and Technical Writer',
+			sameAs: [
+				`https://github.com/sirneij`,
+				'https://www.linkedin.com/in/john-owolabi-idogun/',
+				'https://twitter.com/Sirneij'
+			],
+			alumniOf: {
+				'@type': 'University',
+				name: 'Federal University of Technology, Akure, Ondo State, Nigeria'
+			},
+			knowsAbout: [
+				'Software Engineering',
+				'Cybersecurity',
+				'Technical Writing',
+				'Web Development',
+				'DevOps',
+				'Cloud Computing',
+				'Technical Support'
+			],
+			nationality: 'Nigerian',
+
+			worksFor: {
+				'@type': 'Organization',
+				name: 'Stony Brook University, New York, USA'
+			}
+			// award: ['Any relevant awards or certifications'],
+			// colleague: ['https://github.com/colleague1', 'https://github.com/colleague2']
+		};
+	}
+
+	onMount(() => {
+		const script = document.createElement('script');
+		script.type = 'application/ld+json';
+		script.textContent = JSON.stringify(getJsonLd(data));
+		document.head.appendChild(script);
+
+		return () => {
+			document.head.removeChild(script);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -12,9 +63,12 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta name="author" content={data.githubData.user.name} />
-	<meta name="theme-color" content="#ffffff" />
-	<meta name="language" content="en" />
-
+	<meta
+		name="keywords"
+		content="software engineer, cybersecurity, {data.githubData.user
+			.name}, technical writer, web development"
+	/>
+	<meta name="robots" content="index, follow" />
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="/ji/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/ji/favicon.svg" />
@@ -42,27 +96,4 @@
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={data.githubData.user.avatar_url} />
 	<meta name="twitter:image:alt" content="Profile picture of {data.githubData.user.name}" />
-
-	<!-- JSON-LD -->
-	<script type="application/ld+json">
-		{
-			"@context": "https://schema.org",
-			"@type": "Person",
-			"name": `${data.githubData.user.name}`,
-			"url": `${WEBSITE_URL}`,
-			"image": `${data.githubData.user.avatar_url}`,
-			"description": `${description}`,
-			"jobTitle": "Software Engineer, Cybersecurity Enthusiast and Technical Writer",
-			"sameAs": [
-				`https://github.com/sirneij`,
-				"https://www.linkedin.com/in/john-owolabi-idogun/",
-				"https://twitter.com/Sirneij"
-			],
-			"alumniOf": {
-				"@type": "University",
-				"name": "Federal University of Technology, Akure, Ondo State, Nigeria"
-			},
-			"knowsAbout": ["Software Engineering", "Cybersecurity", "Technical Writing"]
-		}
-	</script>
 </svelte:head>
