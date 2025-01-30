@@ -148,7 +148,7 @@ renderer.code = function ({ text, lang }: Code) {
 		return ls
 			.map((_, i) =>
 				lNos.includes(i)
-					? `<div class="absolute w-full h-6 bg-white/70 dark:bg-[#011627]/70" style="top: ${formatLNosIndex(i - 1)}"></div>`
+					? `<div class="absolute w-full h-6 bg-yellow-100/40 dark:bg-yellow-500/10" style="top: ${formatLNosIndex(i - 1)}"></div>`
 					: ''
 			)
 			.join('');
