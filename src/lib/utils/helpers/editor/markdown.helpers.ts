@@ -71,7 +71,7 @@ export const showInfo: Action<
 	node: HTMLDivElement | HTMLTextAreaElement | HTMLInputElement,
 	args?: { container: HTMLDivElement; infoId: string }
 ) => {
-	const show = (e: Event) => {
+	const show = () => {
 		const info = args?.container.querySelector('#info') as HTMLDivElement;
 		if (!info) {
 			console.error('Could not find info element in container');

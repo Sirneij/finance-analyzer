@@ -57,7 +57,7 @@
 
 <header class="mt-8 space-y-4">
 	<div class="flex items-start justify-between">
-		<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+		<h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
 			{article.title}
 		</h1>
 

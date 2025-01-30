@@ -26,6 +26,7 @@
 		shouldPreventSubmit = true,
 		searchQuery = $state('');
 
+	// eslint-disable-next-line no-unused-vars
 	const searchDebounce = debounce((query: string) => {
 		searchForm?.requestSubmit();
 		isSearching = false;

@@ -5,6 +5,30 @@ import {
 	NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA
 } from '$lib/utils/contants';
 export const normalizeTechnologyNameAndGetIcon = (technology: string): string => {
+	// Normalize the technology name
+	const normalizedTechnology = normalizedTechnologyName(technology);
+
+	let icon = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${normalizedTechnology}/${normalizedTechnology}-original.svg`;
+
+	// If technology is in NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN, use `-plain` version of the icon
+	if (NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN.includes(normalizedTechnology)) {
+		icon = icon.replace('-original', '-plain');
+	}
+
+	// If technology is in NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA, use `-original-wordmark` version of the icon
+	if (NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA.includes(normalizedTechnology)) {
+		icon = icon.replace('-original', '-original-wordmark');
+	}
+
+	return icon;
+};
+
+export const stripOffCGPAFronDegree = (degree: string): string => {
+	// From `;` to the end of the string, remove everything
+	return degree.replace(/;.*/, '');
+};
+
+export const normalizedTechnologyName = (technology: string): string => {
 	// Turn the technology to lowercase and remove everything in parentheses
 	let normalizedTechnology = technology.toLowerCase().replace(/\(.*\)/, '');
 
@@ -31,22 +55,5 @@ export const normalizeTechnologyNameAndGetIcon = (technology: string): string =>
 		return '';
 	}
 
-	let icon = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${normalizedTechnology}/${normalizedTechnology}-original.svg`;
-
-	// If technology is in NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN, use `-plain` version of the icon
-	if (NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN.includes(normalizedTechnology)) {
-		icon = icon.replace('-original', '-plain');
-	}
-
-	// If technology is in NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA, use `-original-wordmark` version of the icon
-	if (NAME_OF_TOOLS_ON_DEVICON_WITH_EXTRA.includes(normalizedTechnology)) {
-		icon = icon.replace('-original', '-original-wordmark');
-	}
-
-	return icon;
-};
-
-export const stripOffCGPAFronDegree = (degree: string): string => {
-	// From `;` to the end of the string, remove everything
-	return degree.replace(/;.*/, '');
+	return normalizedTechnology;
 };

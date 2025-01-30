@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { BASE_API_URI } from '$lib/utils/contants';
-import type { ApiDoc, Endpoint } from '$lib/types/docs.types';
+import type { Endpoint } from '$lib/types/docs.types';
 
 export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	if (!locals.user) {

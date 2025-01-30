@@ -141,7 +141,7 @@
 						animate:flip={{ duration: 300 }}
 						in:fade|local={{ duration: 300 }}
 						out:slide|local={{ duration: 300 }}
-						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)] dark:border-gray-700 dark:bg-gray-800"
+						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
 					>
 						<div class="flex items-center justify-between">
 							<MethodBadge method={endpoint.method} />

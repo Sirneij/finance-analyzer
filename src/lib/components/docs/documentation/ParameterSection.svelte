@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import BasicMarkdownEditor from '$lib/components/docs/documentation/BasicMarkdownEditor.svelte';
 	import type { FormState } from '$lib/types/docs.types';
 	let { formState = $bindable() }: { formState: FormState } = $props();
 
@@ -51,13 +51,13 @@
 						<span class="text-sm text-gray-700 dark:text-gray-300">Required</span>
 					</label>
 				</div>
-				<MarkdownEditor
+				<BasicMarkdownEditor
 					bind:value={param.description}
 					id="description"
 					rows={4}
 					placeholder="Parameter description"
 					required={true}
-				></MarkdownEditor>
+				></BasicMarkdownEditor>
 			</div>
 		{/each}
 	{/if}

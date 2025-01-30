@@ -118,7 +118,7 @@
 		<!-- Content -->
 		<div
 			id="content"
-			class="article-content prose prose-lg dark:prose-invert mt-12 max-w-none"
+			class="article-content prose prose-lg mt-12 max-w-none dark:prose-invert"
 			bind:this={contentContainer}
 			itemprop="articleBody"
 			role="main"

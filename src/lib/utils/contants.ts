@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from '$lib/types/docs.types';
 import type { Command } from '$lib/types/markdown.types';
-import { detectOS, getAltOrOption, getModifierKey } from '$lib/utils/commons';
+import { getModifierKey } from '$lib/utils/commons';
 
 export const BASE_API_URI = import.meta.env.DEV
 	? import.meta.env.VITE_BASE_API_URI_DEV
@@ -148,7 +148,6 @@ export const SKILLS = [
 ];
 
 const modKey = getModifierKey();
-const altOrOption = getAltOrOption();
 
 export const COMMANDS: Command[] = [
 	{
@@ -209,7 +208,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Heading',
-
 		shortcut: {
 			display: `${modKey}+Shift+H`,
 			combo: { key: 'h', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -217,7 +215,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Table',
-
 		shortcut: {
 			display: `${modKey}+Shift+T`,
 			combo: { key: 't', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -225,7 +222,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Task',
-
 		shortcut: {
 			display: `${modKey}+Shift+X`,
 			combo: { key: 'x', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -233,7 +229,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'CodeBlock',
-
 		shortcut: {
 			display: `${modKey}+Shift+L`,
 			combo: { key: 'l', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -241,7 +236,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'GitHub',
-
 		shortcut: {
 			display: `${modKey}+Shift+G`,
 			combo: { key: 'g', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -249,7 +243,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Note',
-
 		shortcut: {
 			display: `${modKey}+Shift+N`,
 			combo: { key: 'n', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -257,7 +250,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Tip',
-
 		shortcut: {
 			display: '', //`${modKey}+Shift+B`,
 			combo: { key: 't', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
@@ -265,7 +257,6 @@ export const COMMANDS: Command[] = [
 	},
 	{
 		title: 'Warning',
-
 		shortcut: {
 			display: '', //`${modKey}+Shift+W`,
 			combo: { key: 'w', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }

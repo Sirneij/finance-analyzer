@@ -2,7 +2,7 @@ import type { CategoriesData, InsightMetric, SpendingReport } from '$lib/types/t
 
 export function transformCategoriesToArray(categoryData: CategoriesData) {
 	return Object.entries(categoryData.percentages)
-		.filter(([_, value]) => value > 0)
+		.filter(([, value]) => value > 0)
 		.map(([key, percentage]) => ({
 			title: key.charAt(0).toUpperCase() + key.slice(1),
 			value: `${percentage.toFixed(2)}%`,

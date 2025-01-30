@@ -15,6 +15,6 @@
 	</div>
 </AnimatedContainer>
 
-<!-- {#if page.data.user && page.data.user.isJohnOwolabiIdogun} -->
-<Dock title="Navigation" />
-<!-- {/if} -->
+{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
+	<Dock title="Navigation" />
+{/if}

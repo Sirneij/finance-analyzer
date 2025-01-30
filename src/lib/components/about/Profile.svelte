@@ -60,7 +60,7 @@
 							{githubData.user.name}
 						</span>
 					</h2>
-					<p class="prose prose-lg dark:prose-invert text-justify">
+					<p class="prose prose-lg text-justify dark:prose-invert">
 						{@html marked(resumeData.summary || githubData.specialRepo?.bio)}
 					</p>
 				</div>

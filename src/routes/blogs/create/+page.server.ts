@@ -3,6 +3,7 @@ import type { CustomError } from '$lib/types/errors.types';
 import { BASE_API_URI } from '$lib/utils/contants';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { processGithubEmbeds } from '$lib/utils/helpers/github.helpers';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (!locals.user) {
@@ -32,11 +33,14 @@ export const actions: Actions = {
 		// GET title
 		const title = formData.get('title') as string;
 		// GET content
-		const content = formData.get('content') as string;
+		let content = formData.get('content') as string;
 		// GET foreImage
 		const foreImage = formData.get('foreImage') as string;
 		// GET isPublished
 		const isPublished = (formData.get('isPublished') as string)?.toLowerCase() === 'true';
+
+		// Process content
+		content = await processGithubEmbeds(content);
 
 		const createData: CreateArticleInput = {
 			title,

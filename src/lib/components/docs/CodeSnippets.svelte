@@ -82,7 +82,8 @@
 				<div
 					class="hidden select-none flex-col items-end border-r border-gray-200 bg-gray-50/50 px-4 py-4 font-mono text-gray-400 dark:border-gray-700 dark:bg-gray-800/50 sm:flex"
 				>
-					{#each getCodeLines(currentExample.code) as _, i}
+					{#each getCodeLines(currentExample.code) as line, i}
+						<span class="hidden">{line}</span>
 						<span class="text-sm leading-6">{i + 1}</span>
 					{/each}
 				</div>

@@ -176,7 +176,10 @@ renderer.heading = ({ text, depth }: { text: string; depth: number }) => {
 	return `<h${depth}>${text}</h${depth}>`;
 };
 
-marked.setOptions({ renderer });
+marked.setOptions({
+	renderer,
+	gfm: true
+});
 
 export { marked };
 

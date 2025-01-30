@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Endpoint, FormState } from '$lib/types/docs.types';
 	import MethodBadge from '$lib/components/docs/MethodBadge.svelte';
-	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import BasicMarkdownEditor from '$lib/components/docs/documentation/BasicMarkdownEditor.svelte';
 
 	let {
 		selectedEndpoint = $bindable(),
@@ -37,7 +37,7 @@
 
 <!-- Description -->
 <div>
-	<MarkdownEditor
+	<BasicMarkdownEditor
 		bind:value={formState.description}
 		id="description"
 		rows={4}
@@ -47,5 +47,5 @@
 		<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="description">
 			Description*
 		</label>
-	</MarkdownEditor>
+	</BasicMarkdownEditor>
 </div>

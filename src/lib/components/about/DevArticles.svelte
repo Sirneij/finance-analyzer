@@ -2,7 +2,6 @@
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types';
 	import { fetchAndProcessDevToArticles } from '$lib/utils/helpers/dev.to.helpers';
 	import { onMount } from 'svelte';
-	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import Article from '$lib/components/about/mini/Article.svelte';
 	import LoadingArticles from '$lib/components/about/mini/LoadingArticles.svelte';

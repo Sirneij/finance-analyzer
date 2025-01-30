@@ -58,7 +58,7 @@
 			middlewares: [],
 			category: '',
 			description: '',
-			params: [],
+			parameters: [],
 			responses: [],
 			examples: []
 		};

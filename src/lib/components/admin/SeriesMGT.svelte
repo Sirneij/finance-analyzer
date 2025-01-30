@@ -8,10 +8,11 @@
 	import SeriesArticle from '$lib/components/admin/mini/SeriesArticle.svelte';
 	import SeriesArticleHeader from './mini/SeriesArticleHeader.svelte';
 	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blogs.helpers';
+	import type { IArticlePopulated } from '$lib/types/articles.types';
 
 	let expandedSeries = $state<string | null>(null),
 		loadingStates = $state<Record<string, boolean>>({}),
-		seriesArticles = $state<Record<string, any[]>>({});
+		seriesArticles = $state<Record<string, IArticlePopulated[]>>({});
 
 	function formatTitle(title: string) {
 		return title

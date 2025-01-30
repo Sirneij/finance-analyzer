@@ -9,7 +9,6 @@
 	import { onMount } from 'svelte';
 	import { fetchResume } from '$lib/utils/helpers/resume.helpers';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import AnimatedContainer from '../animations/AnimatedContainer.svelte';
 	import Work from '$lib/components/icons/Work.svelte';
 	import Education from '$lib/components/icons/Education.svelte';
 	import Skills from '$lib/components/icons/Skills.svelte';

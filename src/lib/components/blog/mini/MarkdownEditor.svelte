@@ -53,8 +53,6 @@
 			const observer = new ResizeObserver((entries) => {
 				const entry = entries[0];
 				containerHeight = entry.contentRect.height;
-				console.log(containerHeight);
-
 				const calculatedRows = Math.floor(containerHeight / lineHeight);
 				textArea.rows = calculatedRows;
 			});
@@ -163,7 +161,7 @@
 		<!-- Content Area (Scrollable) -->
 		<div class="relative flex-1 overflow-auto p-4">
 			{#if isPreviewMode}
-				<div class="prose prose-blue dark:prose-invert h-full max-w-none overflow-auto">
+				<div class="prose prose-blue h-full max-w-none overflow-auto dark:prose-invert">
 					{@html previewContent}
 				</div>
 			{:else}
@@ -204,14 +202,22 @@
 				data-action="draft"
 				class="rounded bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
 			>
-				Save Draft
+				{#if isCreating && formAction === 'draft'}
+					<Loader message="Saving..." width={20} />
+				{:else}
+					Save Draft
+				{/if}
 			</button>
 			<button
 				type="submit"
 				data-action="publish"
 				class="rounded bg-indigo-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
 			>
-				Publish
+				{#if isCreating && formAction === 'publish'}
+					<Loader message="Publishing..." width={20} />
+				{:else}
+					Publish
+				{/if}
 			</button>
 			<button
 				bind:this={triggerButton}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Close from '$lib/components/icons/Close.svelte';
-	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import BasicMarkdownEditor from '$lib/components/docs/documentation/BasicMarkdownEditor.svelte';
 	import type { FormState, Response } from '$lib/types/docs.types';
 
 	let { formState = $bindable() }: { formState: FormState } = $props();
@@ -66,8 +66,8 @@
 				</div>
 			</div>
 			<div class="space-y-1">
-				<MarkdownEditor
-					bind:value={response.example}
+				<BasicMarkdownEditor
+					bind:value={response.example as string}
 					id="example"
 					rows={4}
 					placeholder={`{"message": "Resource created successfully"}`}
@@ -76,7 +76,7 @@
 					<label class="text-sm font-medium text-gray-700 dark:text-gray-300" for="example">
 						Example JSON
 					</label>
-				</MarkdownEditor>
+				</BasicMarkdownEditor>
 			</div>
 		</div>
 	{/each}

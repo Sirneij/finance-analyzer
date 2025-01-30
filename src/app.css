@@ -171,27 +171,35 @@ pre code {
 
 /* Github variant */
 .admonition.github {
-	@apply border-l-8 border-gray-300 bg-gray-100/90 text-gray-900 dark:border-gray-600 dark:bg-gray-800/90 dark:text-gray-100;
-}
-
-.admonition.github .title {
-	@apply border-b border-gray-200/50 bg-gray-200/80 text-gray-900 dark:border-gray-600/50 dark:bg-gray-700/80 dark:text-gray-100;
+	@apply border-l-8 border-gray-300 bg-gray-100/90 dark:border-gray-600 dark:bg-gray-800/90;
 }
 
 .admonition.github .repo-details {
 	@apply flex items-center gap-6 p-4 hover:bg-gray-200/50 dark:hover:bg-gray-700/50;
 }
 
-.admonition.github .repo-details p span:not(.repo-stats) {
-	@apply text-4xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl;
-}
-
-.admonition.github .repo-details p .repo-stats {
-	@apply mt-4 flex flex-wrap gap-4 border-t border-gray-300/50 pt-4 text-sm font-medium text-gray-600 dark:border-gray-600/50 dark:text-gray-300;
-}
-
 .admonition.github .repo-details img {
-	@apply h-24 w-24 rounded-full bg-gray-100 object-cover ring-2 ring-gray-300/50 transition-all hover:ring-4 dark:bg-gray-700 dark:ring-gray-600/50 md:h-20 md:w-20;
+	@apply h-24 w-24 rounded-full bg-gray-100 ring-2 ring-gray-300/50 dark:bg-gray-700 dark:ring-gray-600/50;
+}
+
+.admonition.github .repo-stats {
+	@apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.admonition.github .languages {
+	@apply flex gap-2 p-4 text-sm;
+}
+
+/* .admonition.github .languages .lang {
+	@apply rounded-full bg-gray-200 px-2 py-0.5 dark:bg-gray-700;
+} */
+
+.repo-stats .stat {
+	@apply inline-flex items-center gap-1;
+}
+
+.repo-stats svg {
+	@apply text-gray-600 dark:text-gray-400;
 }
 
 /* Content area */

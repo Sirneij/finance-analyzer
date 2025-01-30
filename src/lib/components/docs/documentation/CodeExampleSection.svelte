@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Close from '$lib/components/icons/Close.svelte';
 	import { LANGUAGES } from '$lib/utils/contants';
-	import MarkdownEditor from '$lib/components/docs/documentation/MarkdownEditor.svelte';
+	import BasicMarkdownEditor from '$lib/components/docs/documentation/BasicMarkdownEditor.svelte';
 	import type { ExampleCode, FormState } from '$lib/types/docs.types';
 
 	let { formState = $bindable() }: { formState: FormState } = $props();
@@ -55,7 +55,7 @@
 			</div>
 
 			<div class="space-y-1">
-				<MarkdownEditor
+				<BasicMarkdownEditor
 					bind:value={example.code}
 					id="code"
 					rows={6}
@@ -65,7 +65,7 @@
 					<label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="code">
 						Code
 					</label>
-				</MarkdownEditor>
+				</BasicMarkdownEditor>
 			</div>
 		</div>
 	{/each}

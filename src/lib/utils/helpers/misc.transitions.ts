@@ -5,7 +5,7 @@ export const [send, receive] = crossfade({
 	duration: (d) => Math.sqrt(d * 200),
 
 	// eslint-disable-next-line no-unused-vars
-	fallback(node, _params) {
+	fallback(node, params) {
 		const style = getComputedStyle(node);
 		const transform = style.transform === 'none' ? '' : style.transform;
 
@@ -22,6 +22,7 @@ export const [send, receive] = crossfade({
 
 export const SLIDE_DURATION = 300;
 
+// eslint-disable-next-line no-unused-vars
 export function sequencedFly(
 	node: HTMLElement,
 	{ y = 0, x = 0, delay = 0, duration = 1200, index = 0, total = 1, isEntering = true }

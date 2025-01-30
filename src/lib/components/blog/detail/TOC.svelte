@@ -53,7 +53,7 @@
 
 <!-- TOC Sidebar -->
 <nav
-	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none dark:bg-gray-900 lg:dark:bg-transparent
+	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform dark:bg-gray-900 lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none lg:dark:bg-transparent
     {showTocMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}"
 	aria-label="Table of Contents"
 >

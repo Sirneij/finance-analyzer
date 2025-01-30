@@ -32,8 +32,7 @@ const monthMap = {
 } as const;
 
 export function parseEndDate(period: string): number {
-	// ...existing code...
-	const [_, end] = period.split(' - ');
+	const [, end] = period.split(' - ');
 	if (!end || /present/i.test(end)) return Number.MAX_SAFE_INTEGER;
 	const [month, year] = end.replace('.', '').split(' ');
 	return new Date(parseInt(year), monthMap[month as keyof typeof monthMap] ?? 0).getTime();
