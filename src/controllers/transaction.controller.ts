@@ -100,7 +100,7 @@ export class TransactionController {
       );
 
       res.json({
-        data: result.transactions,
+        transactions: result.transactions,
         metadata: {
           total: result.total,
           page: result.page,
