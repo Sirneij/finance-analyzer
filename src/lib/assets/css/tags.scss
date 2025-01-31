@@ -37,6 +37,7 @@
 	--webassemby: #04133b;
 	--yaml: #cb171e;
 	--webdev: #562765;
+	--node: #026e00;
 	--others: #059669;
 	--flutter: #02569b;
 	--django: #092e20;
@@ -49,7 +50,7 @@
 	--restapi: #ff7f50;
 	--react: #61dafb;
 }
-$languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html,
+$languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html, node,
 	typescript, json, java, jinja, julia, jupiter, kotlin, less, matlab, markdown, nginx, numpy, php,
 	postgresql, sql, shell, solidity, svelte, swift, latex, vhdl, verilog, webassembly, docker, react,
 	kubernetes, graphql, restapi, flutter, django, actix-web, mongodb, aws, yaml, webdev, others;
