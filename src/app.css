@@ -239,7 +239,7 @@ layer(base);
 }
 
 .article-content {
-	@apply dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:p-4 dark:prose-a:text-blue-400;
+	@apply dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:rounded-lg prose-pre:bg-gray-900 dark:prose-a:text-blue-400;
 }
 
 .detail {
