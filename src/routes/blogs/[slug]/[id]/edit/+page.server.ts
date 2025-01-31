@@ -5,9 +5,9 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { processGithubEmbeds } from '$lib/utils/helpers/github.helpers';
 
-export const load: PageServerLoad = async ({ fetch, locals }) => {
+export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	if (!locals.user) {
-		throw redirect(302, '/finanalyzer/auth/login?next=/finanalyzer/documentation');
+		throw redirect(302, `/finanalyzer/auth/login?next=/blogs/${params.slug}/${params.id}/edit`);
 	}
 	if (!locals.user.isJohnOwolabiIdogun) {
 		throw redirect(302, '/blogs?message=You are not authorized to access this page');
