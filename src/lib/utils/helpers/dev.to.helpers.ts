@@ -109,35 +109,7 @@ export async function fetchArticleComments(articleId: number): Promise<DevToComm
 	});
 }
 
-// Cache followers for 5 minutes
-const FOLLOWERS_CACHE_DURATION = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
-
-interface FollowersCache {
-	data: DevToFollowerCount;
-	timestamp: number;
-}
-
-function getFollowersFromCache(): FollowersCache | null {
-	try {
-		const cached = localStorage.getItem('devto_followers_cache');
-		if (!cached) return null;
-
-		const parsedCache: FollowersCache = JSON.parse(cached);
-		if (Date.now() - parsedCache.timestamp > FOLLOWERS_CACHE_DURATION) {
-			localStorage.removeItem('devto_followers_cache');
-			return null;
-		}
-
-		return parsedCache;
-	} catch {
-		return null;
-	}
-}
-
 export async function fetchFollowers(): Promise<DevToFollowerCount> {
-	const cachedData = getFollowersFromCache();
-	if (cachedData) return cachedData.data;
-
 	const followers = await retryFetch(async () => {
 		const response = await fetchWithTimeout('/finanalyzer/api/about/devto/followers', {
 			headers: {
@@ -147,18 +119,6 @@ export async function fetchFollowers(): Promise<DevToFollowerCount> {
 		const data = await response.json();
 		return data;
 	});
-
-	try {
-		localStorage.setItem(
-			'devto_followers_cache',
-			JSON.stringify({
-				data: followers,
-				timestamp: Date.now()
-			})
-		);
-	} catch (error) {
-		console.warn('Failed to cache followers:', error);
-	}
 
 	return followers;
 }
