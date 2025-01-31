@@ -1,152 +1,20 @@
-// test/setup.ts
-import { beforeAll, afterAll, afterEach } from 'vitest';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
-import { redis } from '../src/services/db.service';
+I want to write an article about how to build AI-powered financial data analyzer using NodeJS, Python (PyTorch, aiohttp, and Huggingface transformers), SvelteKit (with Websocket support) and Tailwind CSS v4. Modify this script to generate a PNG banner for the post using the technologies' logos.
 
-let mongoServer: MongoMemoryServer;
+The architecture of the application is that SvelteKit (with svelte 5 and tailwindcss v4) consumes REST apis from NodeJS.
 
-beforeAll(async () => {
-mongoServer = await MongoMemoryServer.create();
-await mongoose.connect(mongoServer.getUri());
-});
+NodeJS (using expressjs) is the backbone of the application with the following responsibilities:
 
-afterAll(async () => {
-await mongoose.disconnect();
-await mongoServer.stop();
-await redis.quit();
-});
+1. Authenticating users via OAuth (GitHub and Google, only GitHub has been implemented for now) and storing their basic information in a MongoDB database.
+2. Provides REST APIs for parsing transaction data (in CSV, PDF and Excel formats, excel still under development) and storing the parsed data in the database.
+3. Serves as a middleman that sends users data to a Python server which analyzes the data and return the analyzed data back to NodeJS which in turn sends them to the frontend. This middleman role is needed since NodeJS needs to authenticate users and filter transactions based on that before analysis. Websocket is used for this communication.
 
-afterEach(async () => {
-await mongoose.connection.dropDatabase();
-});
+The `aiohttp` backed Python server does very specific things:
 
-// test/integration/auth.test.ts
-import { describe, it, expect, beforeEach } from 'vitest';
-import supertest from 'supertest';
-import app from '../../src/app';
-import { User } from '../../src/models/user.model';
+1. Using `pdf2image` and `pytesseract`, parse a PDF which has transaction data and send them back to NodeJS to save in the DB (http communication)
+2. Using `PyTorch`, `transformers`, `numpy`, `pandas` and `sklearn`, analyze transaction data by categorizing them as income/expenses, calculating savings rate, total transactions and so on and sending the result back to NodeJS which in turn sends it (without saving) to the frontend via Websockets.
 
-const request = supertest(app);
+SvelteKit frontend:
 
-describe('Authentication Routes', () => {
-beforeEach(async () => {
-await User.deleteMany({});
-});
-
-    describe('GET /api/v1/auth/google', () => {
-        it('should redirect to Google OAuth', async () => {
-            const response = await request.get('/api/v1/auth/google');
-            expect(response.status).toBe(302);
-            expect(response.header.location).toContain('accounts.google.com');
-        });
-    });
-
-    describe('GET /api/v1/auth/github', () => {
-        it('should redirect to GitHub OAuth', async () => {
-            const response = await request.get('/api/v1/auth/github');
-            expect(response.status).toBe(302);
-            expect(response.header.location).toContain('github.com');
-        });
-    });
-
-    describe('GET /api/v1/auth/session', () => {
-        it('should return 401 for unauthenticated user', async () => {
-            const response = await request.get('/api/v1/auth/session');
-            expect(response.status).toBe(401);
-        });
-    });
-
-});
-
-// test/unit/services/auth.service.test.ts
-import { describe, it, expect, vi } from 'vitest';
-import { AuthService } from '../../../src/services/auth.service';
-import { User } from '../../../src/models/user.model';
-
-describe('AuthService', () => {
-describe('findOrCreateUser', () => {
-it('should create new user if not exists', async () => {
-const profile = {
-id: '123',
-emails: [{ value: 'test@test.com' }],
-provider: 'google'
-};
-
-            const user = await AuthService.findOrCreateUser(profile);
-            expect(user.email).toBe('test@test.com');
-            expect(user.providerId).toBe('123');
-        });
-    });
-
-});
-
-// test/unit/middlewares/auth.middleware.test.ts
-import { describe, it, expect, vi } from 'vitest';
-import { isAuthenticated } from '../../../src/middlewares/auth.middleware';
-
-describe('Auth Middleware', () => {
-it('should allow authenticated requests', () => {
-const req = { isAuthenticated: () => true };
-const res = { status: vi.fn() };
-const next = vi.fn();
-
-        isAuthenticated(req as any, res as any, next);
-        expect(next).toHaveBeenCalled();
-    });
-
-    it('should block unauthenticated requests', () => {
-        const req = { isAuthenticated: () => false };
-        const res = { status: vi.fn().mockReturnThis(), json: vi.fn() };
-        const next = vi.fn();
-
-        isAuthenticated(req as any, res as any, next);
-        expect(res.status).toHaveBeenCalledWith(401);
-    });
-
-});
-
-// test/e2e/auth.flow.test.ts
-import { describe, it, expect } from 'vitest';
-import supertest from 'supertest';
-import app from '../../src/app';
-
-const request = supertest(app);
-
-describe('Authentication Flow', () => {
-it('should complete full auth cycle', async () => {
-// 1. Start with Google login
-const loginResponse = await request.get('/api/v1/auth/google');
-expect(loginResponse.status).toBe(302);
-
-        // 2. Mock callback response
-        const callbackResponse = await request.get('/api/v1/auth/google/callback')
-            .query({ code: 'mock_code' });
-        expect(callbackResponse.status).toBe(302);
-
-        // 3. Check session
-        const sessionResponse = await request.get('/api/v1/auth/session')
-            .set('Cookie', callbackResponse.headers['set-cookie']);
-        expect(sessionResponse.status).toBe(200);
-
-        // 4. Logout
-        const logoutResponse = await request.get('/api/v1/auth/logout');
-        expect(logoutResponse.status).toBe(302);
-    });
-
-});
-
-// test/integration/docs.test.ts
-import { describe, it, expect } from 'vitest';
-import supertest from 'supertest';
-import app from '../../src/app';
-
-const request = supertest(app);
-
-describe('Documentation Routes', () => {
-it('should return API documentation', async () => {
-const response = await request.get('/api/docs');
-expect(response.status).toBe(200);
-expect(response.body).toHaveProperty('paths');
-});
-});
+1. Powered by svelte 5, it allows user registration via GitHub (for now), a requirement for all users.
+2. Provides intuitive interface for users to either upload a file or manually input data in a form.
+3. Using chartjs, provides very interactive charts for users based on their transaction data and provides a very nice and intuitive dashboard for user's displaying financial data and charts in very fancy ways.
