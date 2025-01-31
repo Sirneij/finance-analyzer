@@ -58,7 +58,7 @@
 <AnimatedContainer class="container mx-auto min-h-screen w-full space-y-4 p-6">
 	<AnimatedSection y={30} identifier={data.metadata.page}>
 		<!-- Header Card with Actions -->
-		<div class="mt-12 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs mt-12 rounded-lg bg-white p-4 dark:bg-gray-800">
 			<div class="flex items-center justify-between">
 				<AnimatedSection y={20}>
 					<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Articles</h2>
@@ -68,7 +68,11 @@
 				{#if selectedArticles.size > 0}
 					<div class="flex gap-2">
 						<form method="POST" action="?/togglePublish" use:enhance={handleTogglePublish}>
-							<input type="hidden" name="articles" value={Array.from(selectedArticles).join(',')} />
+							<input
+								type="hidden"
+								name="articleIds"
+								value={Array.from(selectedArticles).join(',')}
+							/>
 							<button
 								class="flex items-center gap-2 rounded-lg bg-indigo-50 px-3 py-2 text-indigo-600 transition-colors hover:bg-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:hover:bg-indigo-900/30"
 								type="submit"
@@ -99,7 +103,7 @@
 		</div>
 
 		<!-- Table -->
-		<div class="rounded-lg bg-white shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs rounded-lg bg-white dark:bg-gray-800">
 			<div class="w-full overflow-x-auto">
 				<table class="w-full text-left text-sm">
 					<thead class="sticky top-0 bg-gray-50 text-center text-xs uppercase dark:bg-gray-700">
@@ -144,7 +148,7 @@
 										onchange={() => toggleSelection(article._id)}
 									/>
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap">
+								<td class="whitespace-nowrap px-6 py-4">
 									<span
 										class={`inline-flex rounded-sm px-2 py-0.5 font-medium ${article.isPublished ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300'}`}
 									>
@@ -159,10 +163,10 @@
 										{article.title}
 									</a>
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
+								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
 									{article.views}
 								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
+								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
 									{formatArticleDate(article.updatedAt)}
 								</td>
 								<td>
@@ -170,7 +174,7 @@
 										<form method="POST" action="?/deleteArticles" use:enhance={handleDelete}>
 											<input type="hidden" name="articleIds" value={article._id} />
 											<button
-												class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+												class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
 												type="submit"
 												aria-label="Delete article"
 											>

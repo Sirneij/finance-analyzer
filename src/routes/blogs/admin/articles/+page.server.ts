@@ -42,5 +42,32 @@ export const actions: Actions = {
 		const response = await res.json();
 
 		return { ...response };
+	},
+	togglePublish: async ({ fetch, request }) => {
+		const formData = await request.formData();
+		const articleIds = (formData.get('articleIds') as string).split(',');
+
+		const apiURL = `${BASE_API_URI}/v1/articles/toggle/publish`;
+
+		const requestInitOptions: RequestInit = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ ids: articleIds })
+		};
+
+		const res = await fetch(apiURL, requestInitOptions);
+
+		if (!res.ok) {
+			const response = await res.json();
+			const errors: Array<CustomError> = [];
+			errors.push({ error: response.message, id: Math.floor(Math.random() * 100) });
+			return fail(400, { errors: errors });
+		}
+
+		const response = await res.json();
+
+		return { ...response };
 	}
 };
