@@ -49,8 +49,9 @@
 	--graphql: #e10098;
 	--restapi: #ff7f50;
 	--react: #61dafb;
+	--ai: #ff4b4b;
 }
-$languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html, node,
+$languages: c, csharp, cpp, rust, css, scss, dart, go, toml, javascript, python, sh, html, node, ai,
 	typescript, json, java, jinja, julia, jupiter, kotlin, less, matlab, markdown, nginx, numpy, php,
 	postgresql, sql, shell, solidity, svelte, swift, latex, vhdl, verilog, webassembly, docker, react,
 	kubernetes, graphql, restapi, flutter, django, actix-web, mongodb, aws, yaml, webdev, others;
