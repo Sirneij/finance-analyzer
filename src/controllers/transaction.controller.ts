@@ -23,6 +23,21 @@ export class TransactionController {
         let isFileProcessed = false;
 
         bb.on("file", (name, file, info) => {
+          // TODO: Handle multiple files and excel files later
+          // But for now, we only handle one file and csv or pdf file
+          // so reject if there are multiple files or non-csv/pdf files
+          if (isFileProcessed) {
+            reject(new Error("Only one file is allowed"));
+            return;
+          }
+          if (
+            info.mimeType !== "text/csv" &&
+            info.mimeType !== "application/pdf"
+          ) {
+            reject(new Error("Only CSV and PDF files are allowed"));
+            return;
+          }
+
           const chunks: Buffer[] = [];
 
           file.on("data", (chunk) => chunks.push(chunk));
