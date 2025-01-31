@@ -15,7 +15,6 @@ articleRouters.delete(
   isJohnOwolabiIdogun,
   articleController.handleFileDelete
 );
-
 articleRouters.post(
   "/",
   isJohnOwolabiIdogun,
@@ -24,6 +23,25 @@ articleRouters.post(
 articleRouters.get("/", articleController.handleGetArticles);
 articleRouters.get("/all", articleController.handleGetAllArticles);
 articleRouters.get("/search", articleController.handleSearchArticles);
+
+// Static routes first
+articleRouters.get(
+  "/stats/metrics",
+  isJohnOwolabiIdogun,
+  articleController.handleGetArticleStats
+);
+articleRouters.post(
+  "/toggle/publish",
+  isJohnOwolabiIdogun,
+  articleController.handleTogglePublish
+);
+articleRouters.post(
+  "/batch/delete",
+  isJohnOwolabiIdogun,
+  articleController.handleBatchArticleDelete
+);
+
+// Parameter routes last
 articleRouters.get("/:id", articleController.handleGetArticle);
 articleRouters.patch(
   "/:id",
@@ -35,11 +53,5 @@ articleRouters.delete(
   isJohnOwolabiIdogun,
   articleController.handleArticleDelete
 );
-articleRouters.post(
-  "/batch/delete",
-  isJohnOwolabiIdogun,
-  articleController.handleBatchArticleDelete
-);
-articleRouters.get("/stats/metrics", articleController.handleGetArticleStats);
 
 export default articleRouters;

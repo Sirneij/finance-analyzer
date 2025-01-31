@@ -80,3 +80,8 @@ export interface SearchQuery {
   page: number;
   limit: number;
 }
+
+export interface BulkArticleUpdate {
+  _id: string;
+  data: Partial<IArticle>;
+}

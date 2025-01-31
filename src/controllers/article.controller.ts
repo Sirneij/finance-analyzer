@@ -1,15 +1,10 @@
 import { baseConfig } from "$config/base.config.js";
 import { ArticleService } from "$services/article.service.js";
 import { cloudinaryService } from "$services/db.service.js";
-import {
-  IArticlePopulated,
-  SearchQuery,
-  UpdateArticleInput,
-} from "$types/article.types.js";
+import { SearchQuery, UpdateArticleInput } from "$types/article.types.js";
 import {
   deleteFilesFromCloudinary,
   generateSlug,
-  getPublicId,
   parseQueryParams,
   processSeriesTitle,
   processTags,
@@ -290,6 +285,28 @@ export class ArticleController {
         success: false,
         message:
           error instanceof Error ? error.message : "Failed to delete articles",
+      });
+    }
+  }
+
+  async handleTogglePublish(req: Request, res: Response): Promise<void> {
+    try {
+      const { ids } = req.body;
+
+      if (!Array.isArray(ids) || ids.length === 0) {
+        throw new Error("Article IDs array is required");
+      }
+
+      const result = await ArticleService.togglePublishManyArticles(ids);
+
+      res.json({ success: true, result });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : "Failed to toggle publish articles",
       });
     }
   }

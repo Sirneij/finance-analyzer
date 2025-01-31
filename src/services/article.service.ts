@@ -1,5 +1,6 @@
 import { ArticleModel } from "$models/article.model.js";
 import {
+  BulkArticleUpdate,
   CreateArticleInput,
   IArticlePopulated,
   IArticleSeries,
@@ -374,38 +375,114 @@ export class ArticleService {
 
   static async deleteManyArticles(ids: string[]) {
     try {
-      // Validate IDs
-      const validIds = ids.filter((id) => Types.ObjectId.isValid(id));
-      if (validIds.length !== ids.length) {
+      // Validate and convert IDs in single pass
+      const objectIds = ids.reduce((valid, id) => {
+        if (Types.ObjectId.isValid(id)) {
+          valid.push(new Types.ObjectId(id));
+        }
+        return valid;
+      }, [] as Types.ObjectId[]);
+
+      if (objectIds.length !== ids.length) {
         throw new Error("Invalid article ID(s) provided");
       }
 
-      // Convert strings to ObjectIds
-      const objectIds = validIds.map((id) => new Types.ObjectId(id));
-
-      // Find articles with their foreImage paths
-      const articles = await ArticleModel.find({ _id: { $in: objectIds } });
+      // Single query to get articles
+      const articles = await ArticleModel.find(
+        { _id: { $in: objectIds } },
+        { foreImage: 1 }
+      )
+        .lean()
+        .exec();
 
       if (articles.length !== ids.length) {
         throw new Error("Some articles do not exist");
       }
 
-      // Delete foreImages if they exist
-      const foreImages = articles.map((article) => article.foreImage || "");
+      // Run deletions in parallel
+      const [deleteForeimages, deletedArticles] = await Promise.all([
+        deleteFilesFromCloudinary(articles.map((a) => a.foreImage || "")),
+        ArticleModel.deleteMany({ _id: { $in: objectIds } }),
+      ]);
 
-      const deleteForeimages = await deleteFilesFromCloudinary(foreImages);
-
-      // Delete all articles
-      const deletedArticles = await ArticleModel.deleteMany({
-        _id: { $in: objectIds },
-      }).exec();
-
-      return {
-        deletedArticles,
-        deleteForeimages,
-      };
+      return { deletedArticles, deleteForeimages };
     } catch (error) {
       console.error("Error in deleteManyArticles:", error);
+      throw error;
+    }
+  }
+
+  static async togglePublishManyArticles(ids: string[]) {
+    try {
+      // Validate and convert IDs in one pass
+      const objectIds = ids.reduce((valid, id) => {
+        if (Types.ObjectId.isValid(id)) {
+          valid.push(new Types.ObjectId(id));
+        }
+        return valid;
+      }, [] as Types.ObjectId[]);
+
+      if (objectIds.length !== ids.length) {
+        throw new Error("Invalid article ID(s) provided");
+      }
+
+      // Update directly using aggregation pipeline
+      const result = await ArticleModel.bulkWrite([
+        {
+          updateMany: {
+            filter: { _id: { $in: objectIds } },
+            update: [
+              {
+                $set: {
+                  isPublished: { $not: "$isPublished" },
+                },
+              },
+            ],
+          },
+        },
+      ]);
+
+      if (result.modifiedCount !== ids.length) {
+        throw new Error("Some articles do not exist");
+      }
+
+      return result;
+    } catch (error) {
+      console.error("Error in togglePublishManyArticles:", error);
+      throw error;
+    }
+  }
+
+  static async bulkUpdateArticles(updates: BulkArticleUpdate[]) {
+    try {
+      // Validate IDs and prepare operations
+      const bulkOps = updates.reduce((ops, update) => {
+        if (Types.ObjectId.isValid(update._id)) {
+          ops.push({
+            updateOne: {
+              filter: { _id: new Types.ObjectId(update._id) },
+              update: { $set: update.data },
+              upsert: false,
+            },
+          });
+        }
+        return ops;
+      }, [] as any[]);
+
+      if (bulkOps.length !== updates.length) {
+        throw new Error("Invalid article ID(s) provided");
+      }
+
+      // Execute bulk update
+      const result = await ArticleModel.bulkWrite(bulkOps);
+
+      if (result.modifiedCount !== updates.length) {
+        throw new Error("Some articles do not exist");
+      }
+
+      return result;
+    } catch (error) {
+      console.error("Error in bulkUpdateArticles:", error);
       throw error;
     }
   }
