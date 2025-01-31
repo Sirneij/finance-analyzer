@@ -32,7 +32,7 @@
 		>
 			<button
 				type="button"
-				class="absolute right-2 top-2 p-1 text-gray-400 hover:bg-red-100 hover:text-red-500"
+				class="absolute top-2 right-2 p-1 text-gray-400 hover:bg-red-100 hover:text-red-500"
 				onclick={() => removeExample(i)}
 				aria-label="Remove example"
 			>

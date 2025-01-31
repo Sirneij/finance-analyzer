@@ -92,7 +92,7 @@
 >
 	<!-- Fullscreen button -->
 	<button
-		class="absolute right-2 top-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
+		class="absolute top-2 right-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
 		onclick={toggleFullscreen}
 	>
 		{#if isFullscreen}

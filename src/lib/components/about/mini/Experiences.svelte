@@ -49,7 +49,7 @@
 								class="h-5 w-5 rounded-full bg-linear-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
 							>
 								<Work
-									class="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
+									class="absolute top-1/2 left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
 								/>
 							</div>
 						</div>
@@ -60,7 +60,7 @@
 						>
 							<h3 class="text-xl font-bold text-gray-900 dark:text-white">{exp.role}</h3>
 							<p class="text-gray-600 dark:text-gray-300">{exp.company} | {exp.period}</p>
-							<p class="mt-2 text-sm italic text-gray-500 dark:text-gray-400">
+							<p class="mt-2 text-sm text-gray-500 italic dark:text-gray-400">
 								{exp.companyDescription}
 							</p>
 
@@ -68,7 +68,7 @@
 							<div class="mt-4 flex flex-wrap gap-2">
 								{#each exp.techStack as tech}
 									<span
-										class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-indigo-50 to-teal-50 px-3 py-1 text-sm text-indigo-800 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
+										class="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-indigo-50 to-teal-50 px-2 py-0.5 text-indigo-800 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 									>
 										{#if normalizeTechnologyNameAndGetIcon(tech)}
 											<img

@@ -3,7 +3,7 @@
 </script>
 
 <span
-	class="pointer-events-none absolute -left-4 top-10 z-50 w-48 rounded-sm bg-gray-800 p-2 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100 dark:bg-gray-700"
+	class="pointer-events-none absolute top-10 -left-4 z-50 w-48 rounded-sm bg-gray-800 p-2 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100 dark:bg-gray-700"
 >
 	{text}
 </span>

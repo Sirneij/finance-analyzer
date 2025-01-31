@@ -8,6 +8,10 @@ export const normalizeTechnologyNameAndGetIcon = (technology: string): string =>
 	// Normalize the technology name
 	const normalizedTechnology = normalizedTechnologyName(technology);
 
+	if (!normalizedTechnology) {
+		return '';
+	}
+
 	let icon = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${normalizedTechnology}/${normalizedTechnology}-original.svg`;
 
 	// If technology is in NAME_OF_TOOLS_ON_DEVICON_ON_PLAIN, use `-plain` version of the icon

@@ -53,55 +53,54 @@
 	{#if Object.entries(devtoArticles.series).length > 0}
 		<div class="space-y-2">
 			{#each Object.entries(devtoArticles.series) as [seriesName, articles] (seriesName)}
-				<div class="rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30">
-					<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
-						<!-- Series Header -->
-						<button
-							onclick={() => toggleSeries(seriesName)}
-							class="flex w-full items-center justify-between p-4 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
-						>
-							<h3 class="text-xl font-semibold">{seriesName}</h3>
-							<Caret
-								trend="down"
-								class="h-6 w-6 transform transition-transform duration-300"
-								style={activeSeries === seriesName ? '' : 'transform: rotate(-90deg)'}
-							/>
-						</button>
+				<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
+					<!-- Series Header -->
+					<button
+						type="button"
+						onclick={() => toggleSeries(seriesName)}
+						class="flex w-full items-center justify-between rounded-lg p-2 pl-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50"
+					>
+						<h3 class="text-xl font-semibold">{seriesName}</h3>
+						<Caret
+							trend="down"
+							class="h-6 w-6 transform transition-transform duration-300"
+							style={activeSeries === seriesName ? '' : 'transform: rotate(-90deg)'}
+						/>
+					</button>
 
-						<!-- Series Articles -->
-						{#if activeSeries === seriesName}
+					<!-- Series Articles -->
+					{#if activeSeries === seriesName}
+						<div
+							transition:slide={{ duration: SLIDE_DURATION, easing: cubicOut }}
+							class="relative mt-4 w-full"
+						>
 							<div
-								transition:slide={{ duration: SLIDE_DURATION, easing: cubicOut }}
-								class="relative w-full"
+								class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4"
 							>
-								<div
-									class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4"
-								>
-									{#each articles as article, index}
-										<div
-											in:slide={{
-												delay: index * 100,
-												duration: SLIDE_DURATION,
-												easing: cubicOut
-											}}
-										>
-											<Article
-												{article}
-												class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
-											/>
-										</div>
-									{/each}
-								</div>
-								<!-- Gradient fades -->
-								<div
-									class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
-								></div>
-								<div
-									class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
-								></div>
+								{#each articles as article, index}
+									<div
+										in:slide={{
+											delay: index * 100,
+											duration: SLIDE_DURATION,
+											easing: cubicOut
+										}}
+									>
+										<Article
+											{article}
+											class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+										/>
+									</div>
+								{/each}
 							</div>
-						{/if}
-					</div>
+							<!-- Gradient fades -->
+							<div
+								class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
+							></div>
+							<div
+								class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
+							></div>
+						</div>
+					{/if}
 				</div>
 			{/each}
 		</div>

@@ -7,6 +7,7 @@
 	import WriteStar from '$lib/components/icons/WriteStar.svelte';
 	import ShieldStar from '$lib/components/icons/ShieldStar.svelte';
 	import type { Snippet } from 'svelte';
+	import Articles from '../icons/Articles.svelte';
 
 	let {
 		title = 'Filters',
@@ -18,7 +19,7 @@
 	let isExpanded = $state(false);
 </script>
 
-<div class="fixed left-0 top-1/2 z-50 -translate-y-1/2">
+<div class="fixed top-1/2 left-0 z-50 -translate-y-1/2">
 	{#if !isExpanded}
 		<button
 			onclick={() => (isExpanded = true)}
@@ -26,7 +27,7 @@
 			title="Open {title}"
 			in:scale={{ duration: 200, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-xs transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
+			class="absolute top-1/2 left-0 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-xs transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
 		>
 			<Collapse
 				class="h-5 w-5 text-gray-900 transition-transform duration-300 
@@ -83,6 +84,18 @@
 								>
 									<ShieldStar class="h-6 w-6" />
 									<span class="text-xs">Manage</span>
+								</a>
+							</li>
+							<li>
+								<a
+									href="/blogs/admin/articles"
+									class="flex flex-col items-center space-y-1
+									{page.url.pathname === '/blogs/tags'
+										? 'text-indigo-500'
+										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
+								>
+									<Articles class="h-6 w-6" />
+									<span class="text-xs"> Articles</span>
 								</a>
 							</li>
 						</ul>

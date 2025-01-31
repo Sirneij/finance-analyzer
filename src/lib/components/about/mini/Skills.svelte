@@ -29,7 +29,7 @@
 					{#each categorySkills as skill}
 						<div class="group/skill relative">
 							<span
-								class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-indigo-50 to-teal-50 px-4 py-1.5 text-sm font-medium text-indigo-800 transition-all duration-300 hover:from-indigo-100 hover:to-teal-100 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
+								class="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-indigo-50 to-teal-50 px-2 py-0.5 font-medium text-indigo-800 transition-all duration-300 hover:from-indigo-100 hover:to-teal-100 dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200"
 							>
 								{#if normalizeTechnologyNameAndGetIcon(skill)}
 									<img

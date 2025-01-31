@@ -1,7 +1,7 @@
 <div class="space-y-8">
 	<!-- Series Skeletons -->
 	{#each Array(2) as i}
-		<div class="rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px]" id={i}>
+		<div class="rounded-xl p-[1px]" id={i}>
 			<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 				<div class="p-4">
 					<div class="flex items-center justify-between">

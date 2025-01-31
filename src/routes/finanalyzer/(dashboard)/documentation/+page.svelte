@@ -36,7 +36,7 @@
 		<div class="flex items-center space-x-4">
 			<a
 				href="/finanalyzer/documentation/create"
-				class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs transition-all hover:bg-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+				class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs transition-all hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:outline-hidden dark:bg-indigo-500 dark:hover:bg-indigo-400"
 			>
 				<Add class="h-5 w-5" />
 				Create Doc
@@ -62,7 +62,7 @@
 					<input type="hidden" name="id" value={endpoint._id} />
 					<button
 						type="submit"
-						class="absolute right-0 top-0 hidden rounded-full p-1.5 text-red-500 opacity-0 transition-opacity hover:bg-red-50 hover:text-red-600 group-hover:inline-flex group-hover:opacity-100 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
+						class="absolute top-0 right-0 hidden rounded-full p-1.5 text-red-500 opacity-0 transition-opacity group-hover:inline-flex group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
 						aria-label="Delete endpoint"
 					>
 						<Delete class="h-5 w-5" />

@@ -86,7 +86,7 @@
 					<th class="px-6 py-4">
 						<input
 							type="checkbox"
-							class="rounded-sm border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+							class="h-5 w-5 rounded-sm border-gray-100 bg-gray-200 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
 							onchange={toggleAll}
 							checked={selectedTransactions.size === transactions.length && transactions.length > 0}
 						/>
@@ -123,12 +123,12 @@
 						<td class="px-6 py-4">
 							<input
 								type="checkbox"
-								class="rounded-sm border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
+								class="h-5 w-5 rounded-sm border-gray-300 bg-gray-100 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
 								checked={selectedTransactions.has(transaction._id)}
 								onchange={() => toggleSelection(transaction._id)}
 							/>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
+						<td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
 							<div class="flex items-center space-x-2">
 								<div
 									class={`h-2 w-2 rounded-full ${
@@ -158,7 +158,7 @@
 								</span>
 							</div>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4">
+						<td class="px-6 py-4 whitespace-nowrap">
 							<span
 								class={`font-medium ${
 									transaction.type === 'income'
@@ -171,7 +171,7 @@
 								)}
 							</span>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4">
+						<td class="px-6 py-4 whitespace-nowrap">
 							<span class="font-medium text-gray-900 dark:text-white">
 								{formatMoney(transaction.balance)}
 							</span>
@@ -185,7 +185,7 @@
 								>
 									<input type="hidden" name="transactions" value={transaction._id} />
 									<button
-										class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+										class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
 										type="submit"
 										aria-label="Delete transaction"
 									>

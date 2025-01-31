@@ -9,7 +9,7 @@
 	<!-- Error Message Display -->
 	{#each form?.errors as error (error.id)}
 		<p
-			class="mb-4 p-3 text-center italic text-red-500"
+			class="mb-4 p-3 text-center text-red-500 italic"
 			in:receive={{ key: error.id }}
 			out:send={{ key: error.id }}
 		>

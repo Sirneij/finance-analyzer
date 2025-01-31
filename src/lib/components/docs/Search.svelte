@@ -51,7 +51,7 @@
 	}
 </script>
 
-<div class="fixed right-20 top-4 z-50 xs:left-16 xs:right-auto">
+<div class="xs:left-16 xs:right-auto fixed top-4 right-20 z-50">
 	<div class="relative">
 		<input
 			type="search"
@@ -63,14 +63,14 @@
 			}}
 			onkeydown={handleKeydown}
 			placeholder="Search docs..."
-			class="w-48 rounded-full bg-white px-4 py-2 pr-12 text-sm shadow-xs outline-hidden transition-all duration-300 ease-in-out placeholder:text-gray-400 hover:shadow-md dark:bg-gray-800 dark:text-gray-200 dark:placeholder:text-gray-500 xs:focus:w-48 sw:focus:w-[26rem]"
+			class="xs:focus:w-48 sw:focus:w-[26rem] w-48 rounded-full bg-white px-4 py-2 pr-12 text-sm shadow-xs outline-hidden transition-all duration-300 ease-in-out placeholder:text-gray-400 hover:shadow-md dark:bg-gray-800 dark:text-gray-200 dark:placeholder:text-gray-500"
 		/>
 
 		{#if searchQuery}
 			<button
 				type="button"
 				aria-label="Clear search"
-				class="absolute right-8 top-2.5 text-gray-400 hover:text-gray-600
+				class="absolute top-2.5 right-8 text-gray-400 hover:text-gray-600
                        dark:text-gray-500 dark:hover:text-gray-300"
 				onclick={clearSearch}
 			>
@@ -80,7 +80,7 @@
 			</button>
 		{/if}
 
-		<Search class="absolute right-3 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
+		<Search class="absolute top-2.5 right-3 h-4 w-4 text-gray-400 dark:text-gray-500" />
 
 		{#if searchQuery.length >= 2}
 			<div

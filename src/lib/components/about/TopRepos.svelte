@@ -31,7 +31,7 @@
 				href={repo.html_url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+				class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 focus:outline-hidden dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 				style="scroll-snap-align: start;"
 			>
 				<h3

@@ -23,7 +23,7 @@
 
 <AnimatedContainer class="container mx-auto min-h-screen p-6">
 	<!-- Header Section -->
-	<AnimatedSection y={20} class="mb-8 mt-20 md:mt-0">
+	<AnimatedSection y={20} class="mt-20 mb-8 md:mt-0">
 		<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
 		<p class="text-gray-600 dark:text-gray-400">Manage content, tags, and series</p>
 	</AnimatedSection>

@@ -50,18 +50,18 @@
 >
 	<!-- Theme Toggle -->
 	<ThemeSwitcher
-		class="absolute right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-md hover:shadow-lg dark:bg-gray-800"
+		class="absolute top-4 right-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-md hover:shadow-lg dark:bg-gray-800"
 	/>
 
 	<!-- Decorative Icons -->
 	<div class="absolute inset-0 z-0 overflow-hidden">
-		<div class="floating-icons absolute left-10 top-10 opacity-10 dark:opacity-20">
+		<div class="floating-icons absolute top-10 left-10 opacity-10 dark:opacity-20">
 			<AiNode />
 		</div>
-		<div class="floating-icons absolute bottom-32 right-20 opacity-10 dark:opacity-20">
+		<div class="floating-icons absolute right-20 bottom-32 opacity-10 dark:opacity-20">
 			<FinChart />
 		</div>
-		<div class="floating-icons absolute right-10 top-20 opacity-10 dark:opacity-20">
+		<div class="floating-icons absolute top-20 right-10 opacity-10 dark:opacity-20">
 			<Calculator />
 		</div>
 	</div>
@@ -82,13 +82,13 @@
 			<div class="mx-auto mt-12 max-w-xl">
 				<div class="group relative">
 					<Search
-						class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-indigo-500"
+						class="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-indigo-500"
 					/>
 					<input
 						type="search"
 						bind:value={searchQuery}
 						placeholder="Search endpoints..."
-						class="w-full rounded-lg border border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 shadow-xs transition-shadow hover:shadow-md focus:border-indigo-500 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+						class="w-full rounded-lg border border-gray-200 bg-white py-3 pr-4 pl-12 text-gray-900 shadow-xs transition-shadow hover:shadow-md focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					/>
 
 					{#if searchQuery.length >= 2}
@@ -141,7 +141,7 @@
 						animate:flip={{ duration: 300 }}
 						in:fade|local={{ duration: 300 }}
 						out:slide|local={{ duration: 300 }}
-						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
+						class="group relative w-full rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all hover:shadow-md sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)] dark:border-gray-700 dark:bg-gray-800"
 					>
 						<div class="flex items-center justify-between">
 							<MethodBadge method={endpoint.method} />

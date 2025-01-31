@@ -77,7 +77,7 @@
 				>
 					<div class="flex items-center gap-3">
 						<Warning
-							class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+							class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
 						/>
 						<p class="text-sm font-medium text-amber-700 dark:text-amber-200">
 							{#if searchResponse}
@@ -110,8 +110,8 @@
 							class="inline-block rounded-sm text-gray-900
                                  decoration-blue-500 decoration-2 underline-offset-4
                                  transition-all duration-200 ease-in-out
-                                 hover:text-blue-500 hover:underline
-                                 focus:outline-hidden focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5
+                                 group-hover/title:translate-x-0.5 hover:text-blue-500
+                                 hover:underline focus:ring-2 focus:ring-blue-500/50 focus:outline-hidden
                                  dark:text-gray-100"
 						>
 							{article.title}

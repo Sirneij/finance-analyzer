@@ -95,14 +95,14 @@
 		<!-- Enhanced reading progress -->
 		{#if browser}
 			<div
-				class="fixed left-0 top-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
+				class="fixed top-0 left-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
 			>
 				<div
 					class="h-full bg-indigo-600 transition-all duration-150 dark:bg-indigo-500"
 					style="width: {scrollProgress}%"
 				></div>
 				<div
-					class="absolute -bottom-6 right-0 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
+					class="absolute right-0 -bottom-6 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
 				>
 					{scrollProgress}% read
 				</div>
@@ -118,7 +118,7 @@
 		<!-- Content -->
 		<div
 			id="content"
-			class="article-content prose prose-lg mt-12 max-w-none dark:prose-invert"
+			class="article-content prose prose-lg dark:prose-invert mt-12 max-w-none"
 			bind:this={contentContainer}
 			itemprop="articleBody"
 			role="main"

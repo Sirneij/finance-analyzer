@@ -12,9 +12,7 @@
 <div class="space-y-12 overflow-hidden">
 	<div class="flex items-center justify-between">
 		<h2 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Latest <span
-				class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
-			>
+			Latest <span class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent">
 				Articles
 			</span>
 		</h2>
@@ -72,7 +70,7 @@
 			{#each articles.slice(1) as article}
 				<a
 					href="/blogs/{article.slug}/{article._id}"
-					class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+					class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 focus:outline-hidden dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 					style="scroll-snap-align: start;"
 				>
 					<h3

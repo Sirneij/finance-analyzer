@@ -26,7 +26,7 @@
 <!-- Back to top button -->
 {#if showBackToTop}
 	<button
-		class="fixed bottom-20 right-4 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
+		class="fixed right-4 bottom-20 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
 		onclick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 		aria-label="Back to top"
 		transition:fade
@@ -37,7 +37,7 @@
 <!-- Enhanced Mobile TOC Toggle -->
 <button
 	id="toc-toggle"
-	class="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
+	class="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
 	onclick={() => (showTocMobile = !showTocMobile)}
 	aria-label="Toggle table of contents"
 	aria-expanded={showTocMobile}
@@ -53,7 +53,7 @@
 
 <!-- TOC Sidebar -->
 <nav
-	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform dark:bg-gray-900 lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none lg:dark:bg-transparent
+	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none dark:bg-gray-900 lg:dark:bg-transparent
     {showTocMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}"
 	aria-label="Table of Contents"
 >

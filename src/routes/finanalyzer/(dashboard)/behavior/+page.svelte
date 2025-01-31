@@ -63,9 +63,9 @@
 	<!-- Hero Section -->
 	<AnimatedSection
 		y={20}
-		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800 sm:p-6"
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-xs sm:p-6 dark:bg-gray-800"
 	>
-		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 			<img
 				src={page.data.user?.avatar}
 				alt={page.data.user?.name}
@@ -73,10 +73,10 @@
 				loading="lazy"
 			/>
 			<div class="text-center sm:text-left">
-				<h1 class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl md:text-3xl">
+				<h1 class="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl dark:text-white">
 					Financial Behavior
 				</h1>
-				<p class="text-sm text-gray-600 dark:text-gray-400 sm:text-base">
+				<p class="text-sm text-gray-600 sm:text-base dark:text-gray-400">
 					Analyze and understand your spending patterns
 				</p>
 			</div>

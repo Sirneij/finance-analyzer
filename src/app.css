@@ -3,6 +3,7 @@ layer(base);
 
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -66,6 +67,10 @@ layer(base);
 		&:focus-visible {
 			@apply border-none ring-0 outline-hidden;
 		}
+	}
+
+	button {
+		@apply cursor-pointer;
 	}
 }
 

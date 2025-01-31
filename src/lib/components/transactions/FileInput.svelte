@@ -65,7 +65,7 @@
 			{#if isUploading}
 				<Loader width={20} message="Parsing data..." />
 			{:else}
-				<div class="flex flex-col items-center justify-center pb-6 pt-5">
+				<div class="flex flex-col items-center justify-center pt-5 pb-6">
 					<Upload />
 					<p
 						class="mb-2 text-sm text-gray-500 transition-colors group-hover:text-indigo-500 dark:text-gray-400"

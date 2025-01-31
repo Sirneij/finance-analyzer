@@ -11,7 +11,7 @@
 	};
 </script>
 
-<div class="fixed right-4 top-4 z-50 flex flex-col gap-2">
+<div class="fixed top-4 right-4 z-50 flex flex-col gap-2">
 	{#each getNotifications() as notification (notification.id)}
 		<div
 			transition:slide

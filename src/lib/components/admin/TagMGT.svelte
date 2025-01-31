@@ -56,7 +56,7 @@
 		<button
 			bind:this={triggerEl}
 			onclick={() => (isOpen = true)}
-			class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
+			class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:hover:bg-indigo-400"
 		>
 			Create Tag
 		</button>
@@ -71,7 +71,7 @@
 
 						{#if tag.description}
 							<div
-								class="pointer-events-none invisible absolute -top-16 left-1/2 z-50 min-w-[200px] max-w-[300px] -translate-x-1/2 whitespace-normal rounded-sm bg-gray-800 px-2 py-1 text-center text-xs text-white group-hover:visible dark:bg-gray-700"
+								class="pointer-events-none invisible absolute -top-16 left-1/2 z-50 max-w-[300px] min-w-[200px] -translate-x-1/2 rounded-sm bg-gray-800 px-2 py-1 text-center text-xs whitespace-normal text-white group-hover:visible dark:bg-gray-700"
 								transition:fly={{ y: 10, duration: 200 }}
 							>
 								{tag.description}
@@ -119,7 +119,7 @@
 					{#if i > 0}
 						<button
 							type="button"
-							class="absolute right-2 top-2 text-red-500"
+							class="absolute top-2 right-2 text-red-500"
 							onclick={() => removeTagField(i)}
 						>
 							<Delete class="h-4 w-4" />

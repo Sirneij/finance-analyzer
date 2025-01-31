@@ -44,7 +44,7 @@
 							class="h-5 w-5 rounded-full bg-linear-to-tr from-indigo-500 to-teal-500 transition-transform duration-300 group-hover:scale-125"
 						>
 							<EducationIcon
-								class="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
+								class="absolute top-1/2 left-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 text-white"
 							/>
 						</div>
 					</div>
@@ -61,12 +61,12 @@
 								<p class="text-gray-600 dark:text-gray-300">{edu.school}</p>
 							</div>
 							<span
-								class="rounded-full bg-indigo-100 px-4 py-1 text-sm font-medium text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200"
+								class="rounded-sm bg-indigo-100 px-2 py-0.5 font-medium text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200"
 							>
 								{edu.period}
 							</span>
 						</div>
-						<p class="mt-2 text-sm italic text-gray-500 dark:text-gray-400">
+						<p class="mt-2 text-sm text-gray-500 italic dark:text-gray-400">
 							{edu.schoolDescription}
 						</p>
 						<p class="mt-2 text-gray-500 dark:text-gray-400">{edu.location}</p>

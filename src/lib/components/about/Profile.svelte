@@ -19,7 +19,7 @@
 				<!-- Floating Avatar -->
 				<div class="perspective-1000">
 					<div
-						class="hover:rotate-y-180 group relative h-56 w-56 transform-gpu transition-all duration-500"
+						class="group relative h-56 w-56 transform-gpu transition-all duration-500 hover:rotate-y-180"
 					>
 						<div class="absolute inset-0">
 							<!-- Front -->
@@ -39,7 +39,7 @@
 							</div>
 							<!-- Back -->
 							<div
-								class="rotate-y-180 absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								class="absolute inset-0 rotate-y-180 rounded-2xl bg-linear-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							>
 								<div class="flex h-full flex-col justify-center text-center">
 									<h3 class="text-xl font-bold">{githubData.user.name}</h3>
@@ -54,13 +54,11 @@
 				<div class="mt-8 space-y-4">
 					<h2 class="text-4xl font-bold tracking-tight">
 						Hello, I'm
-						<span
-							class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent"
-						>
+						<span class="bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-transparent">
 							{githubData.user.name}
 						</span>
 					</h2>
-					<p class="prose prose-lg text-justify dark:prose-invert">
+					<p class="prose prose-lg dark:prose-invert text-justify">
 						{@html marked(resumeData.summary || githubData.specialRepo?.bio)}
 					</p>
 				</div>
@@ -117,7 +115,7 @@
 									/>
 								</div>
 								<span
-									class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white
+									class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white
 						 opacity-0 transition-opacity group-hover:opacity-100"
 								>
 									{tool.name}

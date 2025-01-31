@@ -13,7 +13,7 @@
 				&copy; {currentYear} John Owolabi Idogun. All rights reserved.
 			</p>
 			<p class="flex text-center">
-				Built with <Hearts class="ml-1 mr-1 h-4 w-4 text-red-500 dark:text-red-400" /> from scratch with
+				Built with <Hearts class="mr-1 ml-1 h-4 w-4 text-red-500 dark:text-red-400" /> from scratch with
 				Svelte 5 (SvelteKit), NodeJS, Python and TailwindCSS.
 			</p>
 		</div>

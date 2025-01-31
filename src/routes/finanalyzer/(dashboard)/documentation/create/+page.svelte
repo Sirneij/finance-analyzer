@@ -80,7 +80,7 @@
 
 			<FormError {form} />
 
-			<div class="relative mb-4 mt-2">
+			<div class="relative mt-2 mb-4">
 				<div class="absolute inset-0 flex items-center">
 					<div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
 				</div>
@@ -122,7 +122,7 @@
 				{:else}
 					<button
 						type="submit"
-						class="bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
+						class="bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:hover:bg-indigo-400"
 					>
 						Save Documentation
 					</button>

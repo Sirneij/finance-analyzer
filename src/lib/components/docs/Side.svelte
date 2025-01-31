@@ -70,7 +70,7 @@
 						class="mb-3 flex w-full items-center justify-between"
 					>
 						<h3
-							class="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+							class="text-sm font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400"
 						>
 							{category}
 						</h3>

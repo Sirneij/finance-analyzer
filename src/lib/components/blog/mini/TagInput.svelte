@@ -171,7 +171,7 @@
 	{#if filteredTags.length > 0}
 		<ul
 			id="tag-suggestions"
-			class="absolute z-10 max-h-[250px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-800"
+			class="ring-opacity-5 absolute z-10 max-h-[250px] overflow-y-auto rounded-md bg-white ring-1 shadow-lg ring-black dark:bg-gray-800"
 			style="width: {inputContainer?.offsetWidth * 0.9}px"
 			transition:fade
 			role="listbox"
@@ -194,7 +194,7 @@
 					<span class="tag {tag.name.toLowerCase()} borderless">
 						{tag.name}
 					</span>
-					<small class="ml-6 mt-1 text-sm italic text-gray-500 dark:text-gray-400">
+					<small class="mt-1 ml-6 text-sm text-gray-500 italic dark:text-gray-400">
 						{tag.description}
 					</small>
 				</li>

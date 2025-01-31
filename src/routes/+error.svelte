@@ -79,7 +79,7 @@
 	class="relative min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
 >
 	<ThemeSwitcher
-		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
+		class="fixed top-4 right-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
 	/>
 
 	<AnimatedContainer class="flex min-h-screen items-center justify-center p-4">

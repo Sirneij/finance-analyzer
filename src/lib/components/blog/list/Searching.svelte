@@ -124,13 +124,13 @@
 			placeholder="Search articles by title or content... (Press '/' to focus)"
 			bind:value={searchQuery}
 			oninput={handleSearchInput}
-			class="shadow-xs w-full rounded-lg border border-gray-200 bg-white px-4 py-3 pl-12 text-base transition-all placeholder:text-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+			class="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 pl-12 text-base shadow-xs transition-all placeholder:text-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
 		/>
-		<Search class="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+		<Search class="absolute top-3.5 left-4 h-5 w-5 text-gray-400" />
 		{#if searchQuery}
 			<button
 				type="button"
-				class="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+				class="absolute top-3.5 right-4 text-gray-400 hover:text-gray-600"
 				onclick={() => (searchQuery = '')}
 			>
 				<span class="sr-only">Clear search</span>
@@ -143,7 +143,7 @@
 	<div class="relative">
 		<button
 			type="button"
-			class="shadow-xs focus:outline-hidden flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 transition-all hover:bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-500/50"
+			class="flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 shadow-xs transition-all hover:bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-500/50"
 			onclick={() => (isFilterOpen = !isFilterOpen)}
 			aria-expanded={isFilterOpen}
 		>
@@ -162,7 +162,7 @@
 
 		{#if isFilterOpen}
 			<div
-				class="animate-in fade-in-0 zoom-in-95 absolute right-0 top-[calc(100%+0.5rem)] z-50 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-all dark:border-gray-700 dark:bg-gray-800"
+				class="animate-in fade-in-0 zoom-in-95 absolute top-[calc(100%+0.5rem)] right-0 z-50 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-lg transition-all dark:border-gray-700 dark:bg-gray-800"
 				role="dialog"
 				aria-label="Filter options"
 			>
@@ -200,7 +200,7 @@
 					<select
 						bind:value={dateRange}
 						name="period"
-						class="shadow-xs focus:outline-hidden w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+						class="w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 shadow-xs focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 focus:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					>
 						<option value="all">All Time</option>
 						<option value="week">Past Week</option>
@@ -218,14 +218,14 @@
 				<div class="mt-4 flex gap-2 border-t pt-4 dark:border-gray-700">
 					<button
 						type="submit"
-						class="focus:outline-hidden flex-1 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 focus:ring-2 focus:ring-blue-500/50"
+						class="flex-1 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600 focus:ring-2 focus:ring-blue-500/50 focus:outline-hidden"
 					>
 						Apply Filters
 					</button>
 					<button
-						class="focus:outline-hidden rounded-md px-4 py-2 text-sm font-medium
-                     text-gray-700 transition-colors hover:bg-gray-100
-                     focus:ring-2 focus:ring-gray-500/50 dark:text-gray-200
+						class="rounded-md px-4 py-2 text-sm font-medium text-gray-700
+                     transition-colors hover:bg-gray-100 focus:ring-2
+                     focus:ring-gray-500/50 focus:outline-hidden dark:text-gray-200
                      dark:hover:bg-gray-700"
 						onclick={() => {
 							sortBy = 'recent';

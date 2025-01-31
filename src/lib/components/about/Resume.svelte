@@ -42,21 +42,30 @@
 			}
 		});
 	});
+
+	const isAnySectionExpanded = $derived.by(() => {
+		return Object.values(expandedSections).some((value) => value);
+	});
 </script>
 
 {#if isLoading}
 	<EmptyResume />
 {:else if resumeData}
-	<div class="mb-24 space-y-24 rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800/50">
-		<AnimatedSection class="space-y-20">
+	<div class="rounded-xl bg-white px-16 py-8 shadow-lg dark:bg-gray-800/50">
+		<AnimatedSection class={isAnySectionExpanded ? 'space-y-8' : ''}>
 			<!-- Experience Timeline -->
 			<section class="relative transform transition-all duration-500">
-				<div class="group relative mb-8 flex w-full items-center">
+				<div
+					class="group relative {expandedSections.experience
+						? 'mb-4'
+						: ''} flex w-full items-center"
+				>
 					<!-- Icon positioned outside hover area -->
 					<Work class="-ml-6 h-8 w-8 text-indigo-600 dark:text-indigo-400" />
 
 					<!-- Button with hover effect -->
 					<button
+						type="button"
 						class="flex flex-1 items-center justify-between rounded-lg p-2 pl-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50"
 						onclick={() => toggleSection('experience')}
 					>
@@ -73,7 +82,9 @@
 
 			<!-- Education -->
 			<section class="relative transform transition-all duration-300">
-				<div class="group relative mb-8 flex w-full items-center">
+				<div
+					class="group relative {expandedSections.education ? 'mb-4' : ''} flex w-full items-center"
+				>
 					<!-- Icon positioned outside hover area -->
 					<Education class="-ml-6 h-8 w-8 text-indigo-600 dark:text-indigo-400" />
 
@@ -95,7 +106,9 @@
 
 			<!-- Skills -->
 			<section class="transform transition-all duration-300">
-				<div class="group relative mb-8 flex w-full items-center">
+				<div
+					class="group relative {expandedSections.skills ? 'mb-8' : ''} flex w-full items-center"
+				>
 					<!-- Icon positioned outside hover area -->
 					<Skills class="-ml-6 h-8 w-8 text-indigo-600 dark:text-indigo-400" />
 
