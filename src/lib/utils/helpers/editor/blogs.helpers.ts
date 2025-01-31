@@ -166,6 +166,13 @@ export async function shareContent(data: {
 
 export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
+const TIME_UNITS = {
+	SECOND: { singular: 'sec', plural: 'secs' },
+	MINUTE: { singular: 'min', plural: 'mins' },
+	HOUR: { singular: 'hr', plural: 'hrs' },
+	DAY: { singular: 'day', plural: 'days' }
+} as const;
+
 export function formatArticleDate(date: string) {
 	const articleDate = new Date(date);
 	const now = new Date();
@@ -179,16 +186,16 @@ export function formatArticleDate(date: string) {
 
 	// Calculate "ago" text for recent dates
 	if (diffInSeconds < 60) {
-		ago = `${diffInSeconds} seconds ago`;
+		ago = `${diffInSeconds} ${diffInSeconds === 1 ? TIME_UNITS.SECOND.singular : TIME_UNITS.SECOND.plural} ago`;
 	} else if (diffInSeconds < 3600) {
 		const mins = Math.floor(diffInSeconds / 60);
-		ago = `${mins} minute${mins === 1 ? '' : 's'} ago`;
+		ago = `${mins} ${mins === 1 ? TIME_UNITS.MINUTE.singular : TIME_UNITS.MINUTE.plural} ago`;
 	} else if (diffInSeconds < 86400) {
 		const hours = Math.floor(diffInSeconds / 3600);
-		ago = `${hours} hour${hours === 1 ? '' : 's'} ago`;
+		ago = `${hours} ${hours === 1 ? TIME_UNITS.HOUR.singular : TIME_UNITS.HOUR.plural} ago`;
 	} else if (diffInSeconds < 604800) {
 		const days = Math.floor(diffInSeconds / 86400);
-		ago = `${days} day${days === 1 ? '' : 's'} ago`;
+		ago = `${days} ${days === 1 ? TIME_UNITS.DAY.singular : TIME_UNITS.DAY.plural} ago`;
 	}
 
 	// Format final date string
