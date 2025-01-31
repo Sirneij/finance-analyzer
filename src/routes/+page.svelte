@@ -16,12 +16,14 @@
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import { SectionIcons } from '$lib/components/icons';
 	import JoiArticles from '$lib/components/about/JOIArticles.svelte';
+	import { fetchAndProcessDevToArticles } from '$lib/utils/helpers/dev.to.helpers';
 
 	let { data }: { data: PageData } = $props();
 
 	let devtoArticles: ProcessedDevToArticles | null = $state(null),
 		resumeData = $state({} as Resume),
 		activeSection = $state('hero'),
+		isLoadingDevToData = $state(true),
 		intersectingSections = $state<string[]>([]);
 
 	function scrollToSection(id: string) {
@@ -63,6 +65,22 @@
 		{ id: 'articles', label: 'Articles' },
 		{ id: 'dev-articles', label: 'DEVArticles' }
 	];
+
+	// Fetch data when platforms section becomes visible
+	$effect(() => {
+		if (intersectingSections.includes('platforms') && !devtoArticles) {
+			fetchAndProcessDevToArticles()
+				.then((data) => {
+					devtoArticles = data;
+				})
+				.catch((err) => {
+					console.error('Failed to fetch DEV.to data:', err);
+				})
+				.finally(() => {
+					isLoadingDevToData = false;
+				});
+		}
+	});
 </script>
 
 <SEO {data} />
@@ -71,7 +89,7 @@
 	class="h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
 >
 	<!-- Logo -->
-	<div class="fixed top-4 left-4 z-50">
+	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
 				size={40}
@@ -81,7 +99,7 @@
 	</div>
 
 	<!-- Theme Switcher -->
-	<div class="fixed top-4 right-4 z-50">
+	<div class="fixed right-4 top-4 z-50">
 		<ThemeSwitcher />
 	</div>
 	<div class="relative">
@@ -103,7 +121,7 @@
 								<Profile {resumeData} githubData={data.githubData} />
 								<!-- Fade overlay -->
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -128,7 +146,7 @@
 							<div class="relative">
 								<ResumeComp bind:resumeData />
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -151,9 +169,13 @@
 							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
 						>
 							<div class="relative">
-								<PlatformsOverview githubUser={data.githubData.user} bind:devtoArticles />
+								<PlatformsOverview
+									githubUser={data.githubData.user}
+									{devtoArticles}
+									isLoading={isLoadingDevToData}
+								/>
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -178,7 +200,7 @@
 							<div class="relative">
 								<TopRepos topRepos={data.githubData.topRepos} />
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -203,7 +225,7 @@
 							<div class="relative">
 								<JoiArticles articles={data.articles} />
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>
@@ -226,9 +248,9 @@
 							class="max-h-[calc(100vh-10rem)] overflow-y-auto"
 						>
 							<div class="relative">
-								<DevtoArticles bind:devtoArticles />
+								<DevtoArticles {devtoArticles} isLoading={isLoadingDevToData} />
 								<div
-									class="pointer-events-none absolute right-0 bottom-0 left-0 h-20 bg-linear-to-t from-white dark:from-gray-900"
+									class="bg-linear-to-t pointer-events-none absolute bottom-0 left-0 right-0 h-20 from-white dark:from-gray-900"
 								></div>
 							</div>
 						</div>

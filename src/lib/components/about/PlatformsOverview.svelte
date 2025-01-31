@@ -17,9 +17,14 @@
 	interface OverviewSectionProps extends HTMLAttributes<HTMLElement> {
 		githubUser: BasicUserData;
 		devtoArticles: ProcessedDevToArticles | null;
+		isLoading: boolean;
 	}
 
-	let { githubUser, devtoArticles = $bindable() }: OverviewSectionProps = $props();
+	let {
+		githubUser,
+		devtoArticles = $bindable(),
+		isLoading = $bindable()
+	}: OverviewSectionProps = $props();
 
 	const githubStats = [
 		{
@@ -49,38 +54,38 @@
 		totalComments = $state(0);
 
 	$effect(() => {
-		totalArticles = devtoArticles
-			? Object.values(devtoArticles.series).flat().length + devtoArticles.standalone.length
-			: 0;
+		if (!isLoading && devtoArticles) {
+			totalArticles =
+				Object.values(devtoArticles.series).flat().length + devtoArticles.standalone.length;
+			totalReactions = calculateTotalReactions(devtoArticles);
+			totalComments = calculateTotalComments(devtoArticles);
 
-		totalReactions = devtoArticles ? calculateTotalReactions(devtoArticles) : 0;
-		totalComments = devtoArticles ? calculateTotalComments(devtoArticles) : 0;
-
-		onMount(async () => {
-			const devtoFollowers = await fetchFollowers();
-			devToStats = [
-				{
-					label: 'Articles',
-					value: formatRange(totalArticles),
-					iconName: 'articles'
-				},
-				{
-					label: 'Followers',
-					value: formatRange(devtoFollowers.count),
-					iconName: 'followers'
-				},
-				{
-					label: 'Total Reactions',
-					value: formatRange(totalReactions),
-					iconName: 'reactions'
-				},
-				{
-					label: 'Comments',
-					value: formatRange(totalComments),
-					iconName: 'comments'
-				}
-			];
-		});
+			onMount(async () => {
+				const devtoFollowers = await fetchFollowers();
+				devToStats = [
+					{
+						label: 'Articles',
+						value: formatRange(totalArticles),
+						iconName: 'articles'
+					},
+					{
+						label: 'Followers',
+						value: formatRange(devtoFollowers.count),
+						iconName: 'followers'
+					},
+					{
+						label: 'Total Reactions',
+						value: formatRange(totalReactions),
+						iconName: 'reactions'
+					},
+					{
+						label: 'Comments',
+						value: formatRange(totalComments),
+						iconName: 'comments'
+					}
+				];
+			});
+		}
 	});
 </script>
 

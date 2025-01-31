@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { ProcessedDevToArticles } from '$lib/types/dev.to.types';
-	import { fetchAndProcessDevToArticles } from '$lib/utils/helpers/dev.to.helpers';
-	import { onMount } from 'svelte';
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import Article from '$lib/components/about/mini/Article.svelte';
 	import LoadingArticles from '$lib/components/about/mini/LoadingArticles.svelte';
@@ -13,28 +11,17 @@
 
 	interface ArticlesSectionProps extends HTMLAttributes<HTMLElement> {
 		devtoArticles: ProcessedDevToArticles | null;
+		isLoading: boolean;
 	}
 
-	let { devtoArticles = $bindable() }: ArticlesSectionProps = $props();
+	let { devtoArticles = $bindable(), isLoading = $bindable() }: ArticlesSectionProps = $props();
 
-	let isLoading = $state(true),
-		error = $state<string | null>(null),
+	let error = $state<string | null>(null),
 		activeSeries: string | null = $state(null);
 
 	function toggleSeries(seriesName: string) {
 		activeSeries = activeSeries === seriesName ? null : seriesName;
 	}
-
-	onMount(async () => {
-		try {
-			devtoArticles = await fetchAndProcessDevToArticles();
-		} catch (e) {
-			error = 'Failed to load blog posts';
-			console.error(e);
-		} finally {
-			isLoading = false;
-		}
-	});
 </script>
 
 <div class="mb-8 flex items-center gap-3">
@@ -94,10 +81,10 @@
 							</div>
 							<!-- Gradient fades -->
 							<div
-								class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
+								class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
 							></div>
 							<div
-								class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
+								class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
 							></div>
 						</div>
 					{/if}
@@ -115,16 +102,16 @@
 					{#each devtoArticles.standalone as article}
 						<Article
 							{article}
-							class="group w-[350px] flex-none transform snap-start rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
+							class="bg-linear-to-br group w-[350px] flex-none transform snap-start rounded-xl from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
 						/>
 					{/each}
 				</div>
 				<!-- Gradient fades -->
 				<div
-					class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
+					class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
 				></div>
 				<div
-					class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
+					class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
 				></div>
 			</div>
 		</div>

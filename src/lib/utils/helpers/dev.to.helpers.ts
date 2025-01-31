@@ -57,9 +57,13 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 		return data as DevToArticle[];
 	});
 
-	// Sort articles (without `canonical_url`) by published date
 	articles = articles
-		.filter((article) => !article.canonical_url || !article.canonical_url.includes(WEBSITE_URL))
+		.filter((article) => {
+			// Only include articles that:
+			// - don't have a canonical_url, OR
+			// - have a canonical_url that includes dev.to
+			return !article.canonical_url || article.canonical_url.includes('dev.to');
+		})
 		.sort(
 			(a, b) =>
 				new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
