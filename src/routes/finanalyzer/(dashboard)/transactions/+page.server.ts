@@ -14,8 +14,8 @@ export const load: PageServerLoad = async ({ fetch, locals, url }) => {
 	const data = await response.json();
 
 	return {
-		transactions: data.data,
-		metadata: data.metadata
+		transactions: data.transactions,
+		metadata: { ...data.metadata, expanded: true }
 	};
 };
 
