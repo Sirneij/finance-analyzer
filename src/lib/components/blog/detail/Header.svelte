@@ -65,7 +65,7 @@
 			<form method="POST" use:enhance={handleDelete} class="flex gap-2">
 				<a
 					href="/blogs/{article.slug}/{article._id}/edit"
-					class=" rounded-full p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+					class=" rounded-sm p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
 					aria-label="Edit article"
 				>
 					<Edit class="h-5 w-5" />
@@ -74,7 +74,7 @@
 				<button
 					bind:this={triggerButton}
 					type="submit"
-					class="rounded-full p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
+					class="rounded-sm p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
 					aria-label="Delete article"
 					formaction="/blogs/{article.slug}/{article._id}?/deleteArticle"
 				>
@@ -110,7 +110,7 @@
 		<span>{readingTime}</span>
 		<div class="flex gap-2">
 			<button
-				class="inline-flex items-center gap-1 rounded-full px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+				class="inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
 				onclick={async () => {
 					copySuccess = await copyUrl();
 					if (copySuccess) {
@@ -128,7 +128,7 @@
 				{/if}
 			</button>
 			<button
-				class="inline-flex items-center gap-1 rounded-full px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+				class="inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
 				onclick={async () => {
 					const success = await shareContent({
 						title: article.title,
