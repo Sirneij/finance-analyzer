@@ -1,11 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../finance-analyzer"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../finance-analyzer"
+    },
+    {
+      "path": "../Articles"
+    }
+  ],
+  "settings": {}
 }
