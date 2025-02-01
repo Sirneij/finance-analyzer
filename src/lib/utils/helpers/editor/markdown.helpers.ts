@@ -117,3 +117,55 @@ export const showInfo: Action<
 		}
 	};
 };
+
+type CharacterPairs = {
+	[key: string]: string;
+};
+
+const PAIRS: CharacterPairs = {
+	'[': ']',
+	'(': ')',
+	'{': '}',
+	'"': '"',
+	"'": "'",
+	'`': '`',
+	'*': '*',
+	_: '_'
+};
+
+export function handleAutoPair(e: KeyboardEvent, textarea: HTMLTextAreaElement) {
+	const char = e.key;
+	const pair = PAIRS[char];
+
+	if (!pair) return;
+
+	e.preventDefault();
+
+	const { selectionStart, selectionEnd, value } = textarea;
+	const selectedText = value.slice(selectionStart, selectionEnd);
+
+	// If text is selected, wrap it
+	if (selectionStart !== selectionEnd) {
+		const newText = char + selectedText + pair;
+		textarea.value = value.slice(0, selectionStart) + newText + value.slice(selectionEnd);
+		textarea.selectionStart = selectionStart;
+		textarea.selectionEnd = selectionEnd + 2;
+		return;
+	}
+
+	// Auto-pair characters
+	textarea.value = value.slice(0, selectionStart) + char + pair + value.slice(selectionStart);
+	textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
+}
+
+export function editorAutoComplete(node: HTMLTextAreaElement) {
+	const handleKeydown = (e: KeyboardEvent) => handleAutoPair(e, node);
+
+	node.addEventListener('keydown', handleKeydown);
+
+	return {
+		destroy() {
+			node.removeEventListener('keydown', handleKeydown);
+		}
+	};
+}

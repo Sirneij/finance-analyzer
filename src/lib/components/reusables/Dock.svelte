@@ -7,7 +7,7 @@
 	import WriteStar from '$lib/components/icons/WriteStar.svelte';
 	import ShieldStar from '$lib/components/icons/ShieldStar.svelte';
 	import type { Snippet } from 'svelte';
-	import Articles from '../icons/Articles.svelte';
+	import Articles from '$lib/components/icons/Articles.svelte';
 
 	let {
 		title = 'Filters',
@@ -19,7 +19,7 @@
 	let isExpanded = $state(false);
 </script>
 
-<div class="fixed top-1/2 left-0 z-50 -translate-y-1/2">
+<div class="fixed left-0 top-1/2 z-50 -translate-y-1/2">
 	{#if !isExpanded}
 		<button
 			onclick={() => (isExpanded = true)}
@@ -27,7 +27,7 @@
 			title="Open {title}"
 			in:scale={{ duration: 200, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="absolute top-1/2 left-0 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg backdrop-blur-xs transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
+			class="backdrop-blur-xs absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-r-lg bg-white/90 shadow-lg transition-[transform,background,shadow] duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-xl dark:bg-gray-800/90 dark:hover:bg-gray-700"
 		>
 			<Collapse
 				class="h-5 w-5 text-gray-900 transition-transform duration-300 
@@ -39,8 +39,7 @@
 		<div
 			in:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl backdrop-blur-xs
-                transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/90"
+			class="backdrop-blur-xs max-w-64 rounded-r-lg bg-white/90 shadow-xl transition-all duration-300 hover:shadow-2xl lg:bg-transparent dark:bg-gray-900 lg:dark:bg-transparent"
 		>
 			<div class="max-h-[80vh] overflow-y-auto p-4">
 				<div class="mb-4 flex items-center justify-between">

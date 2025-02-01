@@ -5,7 +5,6 @@ import type {
 	ProcessedDevToArticles,
 	SeriesDevToArticle
 } from '$lib/types/dev.to.types';
-import { WEBSITE_URL } from '$lib/utils/contants';
 
 const API_TIMEOUT = 10000; // 10 seconds
 const RETRY_ATTEMPTS = 3;

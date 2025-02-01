@@ -1,6 +1,10 @@
 <script lang="ts">
 	import MarkdownEditorToolbar from '$lib/components/blog/mini/MarkdownEditorToolbar.svelte';
-	import { showInfo, useKeyCombinations } from '$lib/utils/helpers/editor/markdown.helpers';
+	import {
+		editorAutoComplete,
+		showInfo,
+		useKeyCombinations
+	} from '$lib/utils/helpers/editor/markdown.helpers';
 	import TitleInput from '$lib/components/blog/mini/TitleInput.svelte';
 	import { highlightCode, marked } from '$lib/utils/helpers/docs.helpers';
 	import Settings from '$lib/components/icons/Settings.svelte';
@@ -177,7 +181,8 @@
 					bind:value={textAreaContent}
 					use:showInfo={{ container: container, infoId: 'editor-info' }}
 					use:useKeyCombinations
-					class="h-full w-full resize-none bg-transparent font-mono text-gray-800 outline-hidden dark:text-gray-200"
+					use:editorAutoComplete
+					class="outline-hidden h-full w-full resize-none bg-transparent font-mono text-gray-800 dark:text-gray-200"
 					placeholder="Write your markdown content here..."
 				></textarea>
 			{/if}
