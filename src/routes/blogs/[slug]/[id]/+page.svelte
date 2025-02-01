@@ -11,6 +11,7 @@
 	import Series from '$lib/components/blog/detail/Series.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import BackToTop from '$lib/components/icons/BackToTop.svelte';
+	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
 
 	const { data } = $props();
 
@@ -62,6 +63,8 @@
 			showTocMobile = !showTocMobile;
 		}
 	}
+
+	const crumbs = [{ text: 'Blogs', href: '/blogs' }, { text: data.article.title }];
 </script>
 
 <svelte:window
@@ -99,6 +102,7 @@
 
 	<!-- Main Content -->
 	<main class="mx-auto min-w-0 max-w-4xl p-4" transition:fade>
+		<Breadcrumbs {crumbs} />
 		<!-- Skip to content link -->
 		<a href="#content" class="sr-only focus:not-sr-only"> Skip to content </a>
 		<!-- Cover Image -->

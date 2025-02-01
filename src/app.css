@@ -238,8 +238,14 @@ layer(base);
 	@apply flex items-center rounded-sm px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
 }
 
+/* Update article-content class to scope hover only to links */
 .article-content {
-	@apply dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-pre:rounded-none prose-pre:bg-gray-900 dark:prose-a:text-blue-400;
+	@apply dark:prose-invert prose-headings:font-bold prose-a:text-indigo-600 prose-a:no-underline prose-pre:rounded-none prose-pre:bg-gray-900 dark:prose-a:text-indigo-400;
+}
+
+/* Add specific hover only for links */
+.article-content a:hover {
+	@apply underline;
 }
 
 .detail {

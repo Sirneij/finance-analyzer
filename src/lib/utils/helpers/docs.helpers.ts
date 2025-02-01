@@ -138,10 +138,11 @@ renderer.code = function ({ text, lang }: Code) {
 		// Generalized formula
 	};
 
-	const formatLNosIndex = (index: number) => {
-		const start = 0.8125; // 13px / 16px
-		if (index < 0) return `${start}rem`;
-		return `${(start + index * 1.53125).toFixed(4)}rem`; // 24.5px / 16px = 1.53125
+	const formatLNosIndex = (index: number): string => {
+		const baseRem = 0.803125; // 12.85px / 16
+		const stepRem = 1.509375; // 24.15px / 16
+		const clampedIndex = index < 0 ? 0 : index;
+		return `${(baseRem + stepRem * clampedIndex).toFixed(6)}rem`;
 	};
 
 	const formatLNosText = (ls: string[]) => {

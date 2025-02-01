@@ -18,6 +18,10 @@
 
 	onMount(() => {
 		mounted = true;
+
+		return () => {
+			mounted = false;
+		};
 	});
 
 	const getFlyParams = () => {

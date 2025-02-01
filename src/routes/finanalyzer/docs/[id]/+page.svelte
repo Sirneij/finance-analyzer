@@ -11,6 +11,7 @@
 	import hljs from 'highlight.js';
 	import Search from '$lib/components/docs/Search.svelte';
 	import Description from '$lib/components/docs/Description.svelte';
+	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	let isSidebarOpen = $state(false),
@@ -53,6 +54,11 @@
 			isSidebarOpen = false;
 		}
 	};
+
+	const crumbs = [
+		{ text: 'Documentation', href: '/finanalyzer/docs' },
+		{ text: data.currentDoc.path }
+	];
 </script>
 
 <svelte:window on:resize={checkMobile} bind:innerWidth />
@@ -60,13 +66,13 @@
 <div class="relative min-h-screen bg-white dark:bg-gray-900">
 	<Search docs={data.docs} />
 	<ThemeSwitcher
-		class="xs:left-[16.5rem] xs:right-auto fixed top-4 right-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-xs hover:shadow-md dark:bg-gray-800"
+		class="xs:left-[16.5rem] xs:right-auto shadow-xs fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 hover:shadow-md dark:bg-gray-800"
 	/>
 
 	<!-- Mobile Menu Button -->
 	{#if isMobile}
 		<button
-			class="fixed top-4 left-4 z-50 rounded-lg bg-white p-2 shadow-xs dark:bg-gray-800"
+			class="shadow-xs fixed left-4 top-4 z-50 rounded-lg bg-white p-2 dark:bg-gray-800"
 			onclick={() => (isSidebarOpen = !isSidebarOpen)}
 			aria-label="Toggle menu"
 		>
@@ -97,6 +103,7 @@
 			in:fly={{ x: 20, duration: 600 }}
 		>
 			<AnimatedContainer class="mx-auto max-w-7xl">
+				<Breadcrumbs {crumbs} />
 				<div
 					class="grid gap-8 {data.currentDoc.examples.length ? 'lg:grid-cols-2' : 'lg:grid-cols-1'}"
 				>
@@ -119,7 +126,7 @@
 	<!-- Mobile Overlay -->
 	{#if isMobile && isSidebarOpen}
 		<button
-			class="fixed inset-0 z-30 bg-gray-900/50 backdrop-blur-xs"
+			class="backdrop-blur-xs fixed inset-0 z-30 bg-gray-900/50"
 			onclick={() => (isSidebarOpen = false)}
 			aria-label="Close menu"
 		></button>

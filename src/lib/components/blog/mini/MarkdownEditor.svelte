@@ -135,7 +135,8 @@
 					content: '',
 					foreImage: '',
 					title: '',
-					selectedSeries: ''
+					selectedSeries: '',
+					tags: []
 				});
 				await update();
 			}
