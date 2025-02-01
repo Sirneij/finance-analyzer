@@ -130,6 +130,13 @@
 		return async ({ result, update }) => {
 			isCreating = false;
 			if (result.type === 'success' || result.type === 'redirect') {
+				// Clear editor state from localStorage after successful submission
+				setEditorState({
+					content: '',
+					foreImage: '',
+					title: '',
+					selectedSeries: ''
+				});
 				await update();
 			}
 			await applyAction(result);

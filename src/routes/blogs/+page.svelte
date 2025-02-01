@@ -5,13 +5,14 @@
 		formatArticleDate
 	} from '$lib/utils/helpers/editor/blogs.helpers.js';
 	import { fade, fly } from 'svelte/transition';
-	import Clock from '$lib/components/icons/Clock.svelte';
+
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions.js';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import Warning from '$lib/components/icons/editor/Warning.svelte';
 	import Searching from '$lib/components/blog/list/Searching.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import CalendarUpdate from '$lib/components/icons/CalendarUpdate.svelte';
+	import Glasses from '$lib/components/icons/Glasses.svelte';
 
 	const { data } = $props();
 
@@ -31,29 +32,11 @@
 	};
 </script>
 
-<svelte:head>
-	<title>Articles | Blog</title>
-	<meta name="description" content="Browse all articles and blog posts" />
-	<meta
-		name="keywords"
-		content="Technology, Programming, Web Development, Software Engineering, Blog"
-	/>
-	<meta name="author" content="John Owolabi Idogun" />
-	<script type="application/ld+json">
-		{
-			"@context": "https://schema.org",
-			"@type": "Blog",
-			"name": "Articles",
-			"url": "https://johnowolabiidogun.dev/blogs"
-		}
-	</script>
-</svelte:head>
-
 <svelte:window on:keydown={handleKeydown} />
 
-<AnimatedContainer class="container mx-auto min-h-screen px-4 py-16">
+<AnimatedContainer class="container mx-auto min-h-screen min-w-0 max-w-[75rem] p-4">
 	<div class="mb-10 space-y-8">
-		<h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+		<h1 class="text-center text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
 			Latest Articles
 		</h1>
 
@@ -93,7 +76,7 @@
 	</div>
 
 	<div
-		class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+		class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
 		role="feed"
 		aria-busy={isSearching}
 	>
@@ -101,24 +84,19 @@
 			<article
 				in:fly|local={{ y: 20, duration: SLIDE_DURATION, delay: i * 50 }}
 				out:fade|local
-				class="shadow-xs group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+				class="shadow-xs group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
 			>
 				<div class="space-y-4">
 					<h2 class="group/title line-clamp-2 text-xl font-semibold">
 						<a
 							href="/blogs/{article.slug}/{article._id}"
-							class="focus:outline-hidden inline-block rounded-sm
-                                 text-gray-900 decoration-blue-500 decoration-2
-                                 underline-offset-4 transition-all duration-200
-                                 ease-in-out hover:text-blue-500
-                                 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5
-                                 dark:text-gray-100"
+							class="focus:outline-hidden inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5 dark:text-gray-100"
 						>
 							{article.title}
 						</a>
 					</h2>
 					{#if article.tags?.length}
-						<div class="flex flex-wrap gap-2">
+						<div class="flex flex-wrap gap-1">
 							{#each article.tags as tag}
 								<span class="tag {tag.name}">
 									{tag.name}
@@ -127,9 +105,9 @@
 						</div>
 					{/if}
 
-					<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+					<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
 						<span class="flex items-center gap-1.5">
-							<Clock class="h-4 w-4" />
+							<Glasses class="h-4 w-4" />
 							<span>{estimateReadingTime(article.content)}</span>
 						</span>
 						<span class="flex items-center gap-1.5">
