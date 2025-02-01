@@ -1,6 +1,10 @@
 <script lang="ts">
 	import type { IArticlePopulated } from '$lib/types/articles.types';
-	import { capitalize, truncateSeriesArticles } from '$lib/utils/helpers/editor/blogs.helpers';
+	import {
+		capitalize,
+		truncateSeriesArticles,
+		truncateTitle
+	} from '$lib/utils/helpers/editor/blogs.helpers';
 	import { onMount } from 'svelte';
 
 	let { article }: { article: IArticlePopulated } = $props();
@@ -13,7 +17,10 @@
 			if (article.series) {
 				const res = await fetch(`/blogs/api/series/${article.series._id}`);
 				const data = await res.json();
-				seriesArticles = data.articles;
+				// Sort the series articles by their createdAt date
+				seriesArticles = data.articles.sort((a: IArticlePopulated, b: IArticlePopulated) => {
+					return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+				});
 			}
 		});
 	});
@@ -38,7 +45,9 @@
 						>
 							...
 						</span>
-						<span class="ml-2 text-gray-600 dark:text-gray-400">{sArticle.title} </span>
+						<span class="ml-2 text-gray-600 dark:text-gray-400">
+							{truncateTitle(sArticle.title)}
+						</span>
 					</button>
 				{:else}
 					<a

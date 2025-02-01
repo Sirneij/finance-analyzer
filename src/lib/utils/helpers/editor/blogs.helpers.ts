@@ -90,6 +90,16 @@ export const truncateSeriesArticles = <T extends { _id: string; title: string }>
 	return seriesArticles;
 };
 
+export function truncateTitle(title: string): string {
+	if (title.length <= 95) return title;
+
+	const splitPoint = Math.floor((95 - 3) / 2);
+	const start = title.substring(0, splitPoint);
+	const end = title.substring(title.length - splitPoint);
+
+	return `${start}...${end}`;
+}
+
 export const tocObserver = (setActiveId: (id: string) => void) => {
 	const observer = new IntersectionObserver(
 		(entries) => {
