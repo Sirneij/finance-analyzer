@@ -61,7 +61,6 @@
 			', software, coding, development, engineering'}
 	/>
 	<link rel="canonical" href="{WEBSITE_URL}/blogs/{article.slug}/{article._id}" />
-	<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 	<meta name="last-updated" content={article.updatedAt} />
 
 	<!-- Open Graph Meta -->
@@ -72,18 +71,13 @@
 		property="og:description"
 		content={getFormattedDescription(article.content, article.tags)}
 	/>
-	<meta property="og:site_name" content="John Owolabi Idogun" />
-	<meta property="og:locale" content="en_US" />
+
 	<meta property="og:image" content={article.foreImage} />
 	<meta property="og:image:alt" content={article.title} />
 	<meta property="article:modified_time" content={article.updatedAt} />
-	<meta property="article:author" content="John Owolabi Idogun" />
 	<meta property="article:tag" content={article.tags.map((tag) => tag.name).join(', ')} />
 
 	<!-- Twitter Meta -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@sirneij" />
-	<meta name="twitter:creator" content="@sirneij" />
 	<meta name="twitter:title" content={article.title} />
 	<meta
 		name="twitter:description"
