@@ -8,3 +8,4 @@ test.txt
 */test.pdf
 coverage
 virtualenv
+certs/

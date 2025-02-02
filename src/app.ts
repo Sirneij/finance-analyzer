@@ -1,7 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
 import session from "express-session";
-import { createServer, Server as HttpServer } from "http";
 import { WebSocketServer } from "ws";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
@@ -24,10 +23,43 @@ import resumeRoutes from "$routes/resume.routes.js";
 import articleRoutes from "$routes/article.routes.js";
 import tagsRoutes from "$routes/tags.routes.js";
 import seriesRoutes from "$routes/series.routes.js";
+import fs from "fs";
+import spdy, { ServerOptions } from "spdy";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const CERT_DIR = path.join(__dirname, "..", "certs");
 
 const app: Application = express();
-const server: HttpServer = createServer(app);
-const wss = new WebSocketServer({ server, path: "/ws" });
+
+// Your SSL certificates - required for HTTP/2
+const options: ServerOptions = {
+  key: fs.readFileSync(path.join(CERT_DIR, "server.key")),
+  cert: fs.readFileSync(path.join(CERT_DIR, "server.crt")),
+  spdy: {
+    protocols: ["h2", "http/1.1"] as const,
+    plain: false,
+  },
+};
+
+// Create HTTP/2 server instead of HTTP/1.1
+const server = spdy.createServer(options, app);
+const wss = new WebSocketServer({
+  server,
+  path: "/ws",
+  perMessageDeflate: {
+    zlibDeflateOptions: {
+      chunkSize: 1024,
+      memLevel: 7,
+      level: 3,
+    },
+    zlibInflateOptions: {
+      chunkSize: 10 * 1024,
+    },
+  },
+});
 
 // 1. Trust proxy setting
 app.set("trust proxy", 1);

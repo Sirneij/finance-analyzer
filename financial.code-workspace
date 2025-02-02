@@ -10,5 +10,7 @@
       "path": "../Articles"
     }
   ],
-  "settings": {}
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "finance-analyzer"
+  }
 }
