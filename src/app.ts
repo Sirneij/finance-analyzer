@@ -19,47 +19,15 @@ import transactionRoutes from "$routes/transaction.routes.js";
 import { ApiDocumentationGenerator } from "$services/docs.services.js";
 import endpointRouters from "$routes/docs.routes.js";
 import { TransactionWebSocketHandler } from "$websockets/transaction.websocket.js";
+import { createServer, Server as HttpServer } from "http";
 import resumeRoutes from "$routes/resume.routes.js";
 import articleRoutes from "$routes/article.routes.js";
 import tagsRoutes from "$routes/tags.routes.js";
 import seriesRoutes from "$routes/series.routes.js";
-import fs from "fs";
 import spdy, { ServerOptions } from "spdy";
-import { fileURLToPath } from "url";
-import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const CERT_DIR = path.join(__dirname, "..", "certs");
+import { getCertificates } from "$utils/certs.utils.js";
 
 const app: Application = express();
-
-// Your SSL certificates - required for HTTP/2
-const options: ServerOptions = {
-  key: fs.readFileSync(path.join(CERT_DIR, "server.key")),
-  cert: fs.readFileSync(path.join(CERT_DIR, "server.crt")),
-  spdy: {
-    protocols: ["h2", "http/1.1"] as const,
-    plain: false,
-  },
-};
-
-// Create HTTP/2 server instead of HTTP/1.1
-const server = spdy.createServer(options, app);
-const wss = new WebSocketServer({
-  server,
-  path: "/ws",
-  perMessageDeflate: {
-    zlibDeflateOptions: {
-      chunkSize: 1024,
-      memLevel: 7,
-      level: 3,
-    },
-    zlibInflateOptions: {
-      chunkSize: 10 * 1024,
-    },
-  },
-});
 
 // 1. Trust proxy setting
 app.set("trust proxy", 1);
@@ -201,11 +169,6 @@ app.use("/api/v1/tags", tagsRoutes);
 // Series routes
 app.use("/api/v1/series", seriesRoutes);
 
-// Handle WebSocket connections
-wss.on("connection", (ws) => {
-  TransactionWebSocketHandler(ws);
-});
-
 // Health check
 app.get("/api/v1/health", (req, res) => {
   baseConfig.logger.info("Health check endpoint called");
@@ -223,6 +186,46 @@ app.get("/api/docs", (req, res) => {
 
 const startServer = async () => {
   try {
+    // // 1. Load SSL certificates
+    // baseConfig.logger.info("Loading SSL certificates...");
+    // const certificates = await getCertificates();
+
+    // if (!certificates) {
+    //   throw new Error("Failed to load SSL certificates");
+    // }
+
+    // 2. Configure SSL options
+    // const options: ServerOptions = {
+    //   key: certificates.key,
+    //   cert: certificates.cert,
+    //   spdy: {
+    //     protocols: ["h2", "http/1.1"] as const,
+    //     plain: false,
+    //   },
+    // };
+
+    // 3. Create HTTPS server
+    // const server = spdy.createServer(options, app);
+
+    // 4. Setup WebSocket server
+    // const wss = new WebSocketServer({
+    //   server,
+    //   path: "/ws",
+    //   perMessageDeflate: {
+    //     zlibDeflateOptions: { chunkSize: 1024, memLevel: 7, level: 3 },
+    //     zlibInflateOptions: { chunkSize: 10 * 1024 },
+    //   },
+    // });
+
+    const server: HttpServer = createServer(app);
+    const wss = new WebSocketServer({ server, path: "/ws" });
+
+    // 5. Setup WebSocket handlers
+    wss.on("connection", (ws) => {
+      TransactionWebSocketHandler(ws);
+    });
+
+    // 6. Connect to MongoDB
     baseConfig.logger.info("Connecting to MongoDB cluster...");
     const db = await connectToCluster();
 
@@ -230,8 +233,7 @@ const startServer = async () => {
       throw new Error("MongoDB connection not ready");
     }
 
-    baseConfig.logger.info("Connected to MongoDB cluster");
-
+    // 7. Start server
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {
       baseConfig.logger.info(`Server listening on port ${PORT}`);
@@ -241,5 +243,4 @@ const startServer = async () => {
     process.exit(1);
   }
 };
-
 startServer();
