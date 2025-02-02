@@ -6,6 +6,15 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 import type { ServerOptions } from 'vite';
 import fs from 'fs';
 
+// Only load SSL certificates in development
+const isDev = process.env.NODE_ENV === 'development';
+const httpsConfig = isDev
+	? {
+			key: fs.readFileSync('./certs/server.key'),
+			cert: fs.readFileSync('./certs/server.crt')
+		}
+	: false;
+
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
@@ -17,28 +26,11 @@ export default defineConfig({
 		})
 	],
 	server: {
-		port: 8000,
+		port: process.env.PORT ? parseInt(process.env.PORT) : 8000,
 		strictPort: false,
-		https: {
-			// You can specify certificate paths if you have them
-			key: fs.readFileSync('./certs/server.key'),
-			cert: fs.readFileSync('./certs/server.crt')
-		} as ServerOptions['https']
+		https: httpsConfig as ServerOptions['https']
 	},
-
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
-	// build: {
-	// 	// chunkSizeWarningLimit: 1000,
-	// 	rollupOptions: {
-	// 		output: {
-	// 			manualChunks(id) {
-	// 				if (id.includes('node_modules')) {
-	// 					return 'vendor';
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 });
