@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap')
-layer(base);
-
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
@@ -256,5 +253,19 @@ layer(base);
 		@apply disabled:cursor-not-allowed disabled:opacity-50;
 		@apply text-rose-600 hover:bg-gray-100;
 		@apply dark:text-rose-400 dark:hover:bg-gray-700;
+	}
+}
+
+.cursor {
+	animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+	from,
+	to {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
 	}
 }

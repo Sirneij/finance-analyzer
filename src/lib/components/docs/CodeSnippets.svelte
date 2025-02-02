@@ -3,6 +3,7 @@
 	import { LANGUAGES_MAP } from '$lib/utils/contants';
 	import Copy from '$lib/components/icons/Copy.svelte';
 	import Check from '../icons/Check.svelte';
+	import { onDestroy } from 'svelte';
 
 	let {
 		examples,
@@ -10,7 +11,8 @@
 	}: { examples: CodeExample[]; currentExample: CodeExample } = $props();
 
 	let activeLanguage = $state(examples[0]?.language || 'nodejs'),
-		copied = $state(false);
+		copied = $state(false),
+		timeout: ReturnType<typeof setTimeout>;
 
 	async function copyCode(code: string) {
 		try {
@@ -18,7 +20,7 @@
 			copied = true;
 
 			// Reset copied state after animation
-			setTimeout(() => {
+			timeout = setTimeout(() => {
 				copied = false;
 			}, 2000);
 		} catch (err) {
@@ -39,6 +41,10 @@
 	function getCodeLines(code: string): string[] {
 		return code.split('\n');
 	}
+
+	onDestroy(() => {
+		clearTimeout(timeout);
+	});
 </script>
 
 <div class="rounded-lg border border-gray-200 dark:border-gray-700">
@@ -65,7 +71,7 @@
 		<div class="group relative">
 			<button
 				onclick={() => copyCode(currentExample.code)}
-				class="absolute top-2 right-2 flex items-center gap-1 rounded-sm bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all group-hover:opacity-100 hover:bg-gray-800/50"
+				class="absolute right-2 top-2 flex items-center gap-1 rounded-sm bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all hover:bg-gray-800/50 group-hover:opacity-100"
 				aria-label={copied ? 'Copied!' : 'Copy code'}
 			>
 				{#if copied}
@@ -80,7 +86,7 @@
 			<div class="flex">
 				<!-- Line Numbers -->
 				<div
-					class="hidden flex-col items-end border-r border-gray-200 bg-gray-50/50 px-4 py-4 font-mono text-gray-400 select-none sm:flex dark:border-gray-700 dark:bg-gray-800/50"
+					class="hidden select-none flex-col items-end border-r border-gray-200 bg-gray-50/50 px-4 py-4 font-mono text-gray-400 sm:flex dark:border-gray-700 dark:bg-gray-800/50"
 				>
 					{#each getCodeLines(currentExample.code) as line, i}
 						<span class="hidden">{line}</span>

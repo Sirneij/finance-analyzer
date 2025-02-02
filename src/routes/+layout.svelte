@@ -1,17 +1,32 @@
 <script lang="ts">
+	import '$lib/assets/css/dist/tags.min.css';
+	import '../app.css';
+
 	import { browser } from '$app/environment';
 	import Notifications from '$lib/components/reusables/Notifications.svelte';
 	import { clearNotifications } from '$lib/states/notification.svelte';
-	import '$lib/assets/css/dist/tags.min.css';
-	import '../app.css';
+	import { navigating, page } from '$app/state';
+	import PageLoader from '$lib/components/reusables/PageLoader.svelte';
+	import PageTransition from '$lib/components/reusables/PageTransition.svelte';
+	import { onMount } from 'svelte';
 	let { children } = $props();
 
-	let isDark = browser ? localStorage.getItem('theme') === 'dark' : false;
+	let isDark = $state(false);
+
+	// Avoid FOUC by moving theme check to onMount
+	onMount(() => {
+		isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		const storedTheme = localStorage.getItem('theme');
+		if (storedTheme) isDark = storedTheme === 'dark';
+	});
 </script>
 
 <svelte:window on:beforeunload={clearNotifications} />
 
 <svelte:head>
+	<link rel="preload" href="/themes/night-owl.min.css" as="style" />
+	<link rel="preload" href="/themes/github.min.css" as="style" />
+
 	<link
 		rel="stylesheet"
 		href="/themes/night-owl.min.css"
@@ -26,11 +41,18 @@
 	/>
 </svelte:head>
 
+{#if navigating.to}
+	<PageLoader />
+{/if}
+
+<PageTransition key={page.url.href} duration={600}>
+	{@render children()}
+</PageTransition>
+
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">
 	Skip to main content
 </a>
 
-{@render children()}
 {#if browser}
 	<Notifications />
 {/if}

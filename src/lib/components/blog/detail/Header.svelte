@@ -18,13 +18,15 @@
 		shareContent
 	} from '$lib/utils/helpers/editor/blogs.helpers';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { onDestroy } from 'svelte';
 
 	let { article }: { article: IArticlePopulated } = $props();
 
 	let copySuccess = $state(false),
 		triggerButton = $state<HTMLButtonElement>(),
 		isSubmitted = $state(false),
-		isOpen = $state(false);
+		isOpen = $state(false),
+		timeout: ReturnType<typeof setTimeout>;
 	// Calculate reading time
 	const readingTime = $derived.by(() => estimateReadingTime(article.content));
 
@@ -53,6 +55,11 @@
 			await applyAction(result);
 		};
 	};
+
+	// Cleanup
+	onDestroy(() => {
+		clearTimeout(timeout);
+	});
 </script>
 
 <header class="mt-8 space-y-4">
@@ -114,7 +121,7 @@
 				onclick={async () => {
 					copySuccess = await copyUrl();
 					if (copySuccess) {
-						setTimeout(() => (copySuccess = false), 2000);
+						timeout = setTimeout(() => (copySuccess = false), 2000);
 					}
 				}}
 				aria-label="Copy article link"
@@ -141,7 +148,7 @@
 							'warning'
 						);
 						copySuccess = true;
-						setTimeout(() => (copySuccess = false), 2000);
+						timeout = setTimeout(() => (copySuccess = false), 2000);
 					}
 				}}
 			>

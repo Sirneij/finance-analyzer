@@ -8,6 +8,14 @@
 		<meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="msvalidate.01" content="5413314A97979577FC96423368AD9955" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
 		<link
 			rel="icon"
 			type="image/png"
@@ -29,7 +37,6 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
 		%sveltekit.head%
 		<script>
 			// Get user's explicit preference
@@ -65,7 +72,10 @@
 			gtag('config', 'G-H0MZ3PE3G8');
 		</script>
 	</head>
-	<body data-sveltekit-preload-data="hover">
+	<body
+		data-sveltekit-preload-data="hover"
+		class="bg-white text-black dark:bg-gray-900 dark:text-white"
+	>
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

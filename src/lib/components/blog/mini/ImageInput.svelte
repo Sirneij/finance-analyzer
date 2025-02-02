@@ -20,7 +20,8 @@
 		fileInput = $state<HTMLInputElement>(),
 		seriesImages = $state<{ url: string; title: string }[]>([]),
 		isSeriesImagesOpen = $state(false),
-		showSeriesNote = $state(true);
+		showSeriesNote = $state(true),
+		selectedImageUrl = $state('');
 
 	function handleFileChange(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -43,9 +44,8 @@
 		if (selectedSeries) {
 			fetchSeriesImages(selectedSeries);
 		}
+		selectedImageUrl = foreImage;
 	});
-
-	const selectedImageUrl = $derived(foreImage);
 
 	async function fetchSeriesImages(seriesId: string) {
 		try {

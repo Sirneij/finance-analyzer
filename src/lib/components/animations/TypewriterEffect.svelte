@@ -1,10 +1,16 @@
 <script lang="ts">
-	let { words = [], loop = false, delay = 100 } = $props();
+	type TypewriterEffectProps = {
+		words: string[];
+		loop?: boolean;
+		delay?: number;
+	};
+	let { words, loop = false, delay = 100 }: TypewriterEffectProps = $props();
 
 	let currentWord = $state(''),
 		wordIndex = 0,
 		charIndex = 0,
-		isDeleting = false;
+		isDeleting = false,
+		timeout: ReturnType<typeof setTimeout>;
 
 	const type = () => {
 		const word = words[wordIndex];
@@ -19,35 +25,24 @@
 
 		if (!isDeleting && charIndex === word.length) {
 			isDeleting = true;
-			setTimeout(type, delay * 2);
+			timeout = setTimeout(type, delay * 2);
 		} else if (isDeleting && charIndex === 0) {
 			isDeleting = false;
 			wordIndex = loop ? (wordIndex + 1) % words.length : wordIndex + 1;
-			setTimeout(type, delay / 2);
+			timeout = setTimeout(type, delay / 2);
 		} else {
-			setTimeout(type, delay);
+			timeout = setTimeout(type, delay);
 		}
 	};
 
 	$effect(() => {
-		if (words.length) type();
+		if (words.length) {
+			type();
+		}
+		return () => {
+			if (timeout) clearTimeout(timeout);
+		};
 	});
 </script>
 
 <span class="typewriter">{currentWord}<span class="cursor">|</span></span>
-
-<style>
-	.cursor {
-		animation: blink 1s step-end infinite;
-	}
-
-	@keyframes blink {
-		from,
-		to {
-			opacity: 1;
-		}
-		50% {
-			opacity: 0;
-		}
-	}
-</style>

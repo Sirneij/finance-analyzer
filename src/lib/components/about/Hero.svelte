@@ -34,7 +34,7 @@
 		<a
 			href="#contact"
 			onclick={handleEmailClick}
-			class="inline-flex items-center gap-2 rounded-lg bg-linear-to-r from-indigo-600 to-teal-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:outline-hidden dark:from-indigo-400 dark:to-teal-400 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+			class="bg-linear-to-r focus:outline-hidden inline-flex items-center gap-2 rounded-lg from-indigo-600 to-teal-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:from-indigo-400 dark:to-teal-400 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 		>
 			<Email class="h-5 w-5" />
 			Contact Me
@@ -46,7 +46,7 @@
 			>
 				<span class="relative z-10">Upload Resume</span>
 				<div
-					class="absolute inset-0 z-0 bg-linear-to-r from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100"
+					class="bg-linear-to-r absolute inset-0 z-0 from-blue-600 to-blue-500 opacity-0 transition-opacity group-hover:opacity-100"
 				></div>
 				<div class="absolute inset-0 z-0 animate-pulse bg-blue-400/20"></div>
 			</button>

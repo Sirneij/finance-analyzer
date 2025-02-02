@@ -17,19 +17,19 @@
 	let { devtoArticles = $bindable(), isLoading = $bindable() }: ArticlesSectionProps = $props();
 
 	let error = $state<string | null>(null),
-		activeSeries: string | null = $state(null);
-
+		activeSeries: string | null = $state(null),
+		properDevtoArticles = $state<ProcessedDevToArticles | null>(null);
 	function toggleSeries(seriesName: string) {
 		activeSeries = activeSeries === seriesName ? null : seriesName;
 	}
 
-	// Only show articles whose canoonical_url contains 'dev.to'
-	// This is to filter out articles that are not from DEV.to
+	$effect(() => {
+		if (devtoArticles) {
+			// Only show articles whose canoonical_url contains 'dev.to'
+			// This is to filter out articles that are not from DEV.to
 
-	// Filter out articles that are not from DEV.to
-	const properDevtoArticles = $derived.by(
-		() =>
-			devtoArticles && {
+			// Filter out articles that are not from DEV.to
+			properDevtoArticles = {
 				series: Object.fromEntries(
 					Object.entries(devtoArticles.series).map(([seriesName, articles]) => [
 						seriesName,
@@ -39,8 +39,9 @@
 				standalone: devtoArticles.standalone.filter((article) =>
 					article.canonical_url.includes('dev.to')
 				)
-			}
-	);
+			};
+		}
+	});
 </script>
 
 <div class="mb-8 flex items-center gap-3">
