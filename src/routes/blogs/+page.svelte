@@ -87,7 +87,10 @@
 				class="shadow-xs group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
 			>
 				<div class="space-y-4">
-					<h2 class="group/title line-clamp-2 text-xl font-semibold">
+					<h2
+						class="group/title line-clamp-2 text-xl font-semibold"
+						style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;"
+					>
 						<a
 							href="/blogs/{article.slug}/{article._id}"
 							class="focus:outline-hidden inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5 dark:text-gray-100"
@@ -105,7 +108,7 @@
 						</div>
 					{/if}
 
-					<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+					<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
 						<span class="flex items-center gap-1.5">
 							<Glasses class="h-4 w-4" />
 							<span>{estimateReadingTime(article.content)}</span>

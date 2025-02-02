@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Chart from 'chart.js/auto';
+	import { Chart } from 'chart.js';
 	import { skillLevelChartConfig } from '$lib/utils/helpers/charts.helpers';
 	import { SKILLS } from '$lib/utils/contants';
 

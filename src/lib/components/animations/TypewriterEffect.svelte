@@ -1,12 +1,10 @@
 <script lang="ts">
-	export let words: string[] = [];
-	export let loop: boolean = false;
-	export let delay: number = 100;
+	let { words = [], loop = false, delay = 100 } = $props();
 
-	let currentWord = '';
-	let wordIndex = 0;
-	let charIndex = 0;
-	let isDeleting = false;
+	let currentWord = $state(''),
+		wordIndex = 0,
+		charIndex = 0,
+		isDeleting = false;
 
 	const type = () => {
 		const word = words[wordIndex];
@@ -31,9 +29,9 @@
 		}
 	};
 
-	$: {
+	$effect(() => {
 		if (words.length) type();
-	}
+	});
 </script>
 
 <span class="typewriter">{currentWord}<span class="cursor">|</span></span>

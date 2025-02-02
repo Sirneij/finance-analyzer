@@ -23,13 +23,7 @@ layer(base);
 	::file-selector-button {
 		border-color: var(--color-gray-200, currentColor);
 	}
-}
 
-@utility animate-pulse {
-	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@layer utilities {
 	html {
 		scroll-behavior: smooth;
 	}
@@ -37,25 +31,8 @@ layer(base);
 	body {
 		overflow-y: scroll;
 	}
-}
 
-@layer base {
-	input,
-	input[type='text'],
-	input[type='email'],
-	input[type='password'],
-	input[type='number'],
-	input[type='search'],
-	input[type='tel'],
-	input[type='url'],
-	input[type='date'],
-	input[type='datetime-local'],
-	input[type='month'],
-	input[type='week'],
-	input[type='time'],
-	input[type='color'],
-	input[type='file'],
-	input[type='range'],
+	input[type],
 	textarea,
 	select {
 		@apply appearance-none border-none ring-0 outline-hidden;
@@ -72,6 +49,10 @@ layer(base);
 	button {
 		@apply cursor-pointer;
 	}
+}
+
+@utility animate-pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @layer utilities {
@@ -240,7 +221,7 @@ layer(base);
 
 /* Update article-content class to scope hover only to links */
 .article-content {
-	@apply dark:prose-invert prose-headings:font-bold prose-a:text-indigo-600 prose-a:no-underline prose-pre:rounded-none prose-pre:bg-gray-900 dark:prose-a:text-indigo-400;
+	@apply dark:prose-invert prose-headings:font-bold prose-a:text-indigo-600 prose-a:no-underline dark:prose-a:text-indigo-400 prose-pre:rounded-none prose-pre:bg-gray-900;
 }
 
 /* Add specific hover only for links */

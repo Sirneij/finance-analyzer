@@ -183,7 +183,7 @@ const TIME_UNITS = {
 	DAY: { singular: 'day', plural: 'days' }
 } as const;
 
-export function formatArticleDate(date: string) {
+export function formatArticleDate(date: string, includeAgo = false): string {
 	const articleDate = new Date(date);
 	const now = new Date();
 	const diffInSeconds = Math.floor((now.getTime() - articleDate.getTime()) / 1000);
@@ -194,26 +194,27 @@ export function formatArticleDate(date: string) {
 
 	let ago = '';
 
-	// Calculate "ago" text for recent dates
-	if (diffInSeconds < 60) {
-		ago = `${diffInSeconds} ${diffInSeconds === 1 ? TIME_UNITS.SECOND.singular : TIME_UNITS.SECOND.plural} ago`;
-	} else if (diffInSeconds < 3600) {
-		const mins = Math.floor(diffInSeconds / 60);
-		ago = `${mins} ${mins === 1 ? TIME_UNITS.MINUTE.singular : TIME_UNITS.MINUTE.plural} ago`;
-	} else if (diffInSeconds < 86400) {
-		const hours = Math.floor(diffInSeconds / 3600);
-		ago = `${hours} ${hours === 1 ? TIME_UNITS.HOUR.singular : TIME_UNITS.HOUR.plural} ago`;
-	} else if (diffInSeconds < 604800) {
-		const days = Math.floor(diffInSeconds / 86400);
-		ago = `${days} ${days === 1 ? TIME_UNITS.DAY.singular : TIME_UNITS.DAY.plural} ago`;
+	// Calculate "ago" text for recent dates if includeAgo is true
+	if (includeAgo) {
+		if (diffInSeconds < 60) {
+			ago = `${diffInSeconds} ${diffInSeconds === 1 ? TIME_UNITS.SECOND.singular : TIME_UNITS.SECOND.plural} ago`;
+		} else if (diffInSeconds < 3600) {
+			const mins = Math.floor(diffInSeconds / 60);
+			ago = `${mins} ${mins === 1 ? TIME_UNITS.MINUTE.singular : TIME_UNITS.MINUTE.plural} ago`;
+		} else if (diffInSeconds < 86400) {
+			const hours = Math.floor(diffInSeconds / 3600);
+			ago = `${hours} ${hours === 1 ? TIME_UNITS.HOUR.singular : TIME_UNITS.HOUR.plural} ago`;
+		} else if (diffInSeconds < 604800) {
+			const days = Math.floor(diffInSeconds / 86400);
+			ago = `${days} ${days === 1 ? TIME_UNITS.DAY.singular : TIME_UNITS.DAY.plural} ago`;
+		}
 	}
 
 	// Format final date string
-	if (ago) {
-		return `${month} ${day} (${ago})`;
-	}
-
-	return isCurrentYear ? `${month} ${day}` : `${month} ${day}, ${articleDate.getFullYear()}`;
+	const baseDate = isCurrentYear
+		? `${month} ${day}`
+		: `${month} ${day}, ${articleDate.getFullYear()}`;
+	return ago ? `${baseDate} (${ago})` : baseDate;
 }
 
 export const isBot = (userAgent: string): boolean => {

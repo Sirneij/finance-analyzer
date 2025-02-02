@@ -22,6 +22,25 @@
 	function toggleSeries(seriesName: string) {
 		activeSeries = activeSeries === seriesName ? null : seriesName;
 	}
+
+	// Only show articles whose canoonical_url contains 'dev.to'
+	// This is to filter out articles that are not from DEV.to
+
+	// Filter out articles that are not from DEV.to
+	const properDevtoArticles = $derived.by(
+		() =>
+			devtoArticles && {
+				series: Object.fromEntries(
+					Object.entries(devtoArticles.series).map(([seriesName, articles]) => [
+						seriesName,
+						articles.filter((article) => article.canonical_url.includes('dev.to'))
+					])
+				),
+				standalone: devtoArticles.standalone.filter((article) =>
+					article.canonical_url.includes('dev.to')
+				)
+			}
+	);
 </script>
 
 <div class="mb-8 flex items-center gap-3">
@@ -35,11 +54,11 @@
 	<div class="rounded-lg bg-red-100 p-4 text-red-700 dark:bg-red-900/50 dark:text-red-200">
 		{error}
 	</div>
-{:else if devtoArticles}
+{:else if properDevtoArticles}
 	<!-- Series Posts -->
-	{#if Object.entries(devtoArticles.series).length > 0}
+	{#if Object.entries(properDevtoArticles.series).length > 0}
 		<div class="space-y-2">
-			{#each Object.entries(devtoArticles.series) as [seriesName, articles] (seriesName)}
+			{#each Object.entries(properDevtoArticles.series) as [seriesName, articles] (seriesName)}
 				<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
 					<!-- Series Header -->
 					<button
@@ -94,12 +113,12 @@
 	{/if}
 
 	<!-- Standalone Posts -->
-	{#if devtoArticles.standalone.length > 0}
+	{#if properDevtoArticles.standalone.length > 0}
 		<div class="mt-12">
 			<h3 class="mb-6 text-2xl font-semibold">Standalone Articles</h3>
 			<div class="relative w-full">
 				<div class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4">
-					{#each devtoArticles.standalone as article}
+					{#each properDevtoArticles.standalone as article}
 						<Article
 							{article}
 							class="bg-linear-to-br group w-[350px] flex-none transform snap-start rounded-xl from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"

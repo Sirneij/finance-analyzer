@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { FinancialSummary } from '$lib/types/transaction.types';
 	import { monthlySummariesChartConfig } from '$lib/utils/helpers/charts.helpers';
-	import Chart from 'chart.js/auto';
+	import { Chart } from 'chart.js';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import Empty from '$lib/components/reusables/Empty.svelte';
@@ -85,14 +85,14 @@
 </script>
 
 <div
-	class="group relative rounded-xl bg-white p-6 shadow-xs dark:bg-gray-800"
+	class="shadow-xs group relative rounded-xl bg-white p-6 dark:bg-gray-800"
 	class:fixed={isFullscreen}
 	class:inset-0={isFullscreen}
 	class:z-50={isFullscreen}
 >
 	<!-- Fullscreen button -->
 	<button
-		class="absolute top-2 right-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
+		class="absolute right-2 top-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
 		onclick={toggleFullscreen}
 	>
 		{#if isFullscreen}
@@ -136,7 +136,7 @@
 {#if isFullscreen}
 	<button
 		type="button"
-		class="fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-xs"
+		class="backdrop-blur-xs fixed inset-0 z-40 bg-gray-900/50"
 		onclick={toggleFullscreen}
 		onkeydown={(e) => e.key === 'Escape' && toggleFullscreen()}
 		aria-label="Close fullscreen view"

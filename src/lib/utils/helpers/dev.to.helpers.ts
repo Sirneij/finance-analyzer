@@ -56,17 +56,9 @@ export async function fetchAndProcessDevToArticles(): Promise<ProcessedDevToArti
 		return data as DevToArticle[];
 	});
 
-	articles = articles
-		.filter((article) => {
-			// Only include articles that:
-			// - don't have a canonical_url, OR
-			// - have a canonical_url that includes dev.to
-			return !article.canonical_url || article.canonical_url.includes('dev.to');
-		})
-		.sort(
-			(a, b) =>
-				new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
-		);
+	articles = articles.sort(
+		(a, b) => new Date(b.published_timestamp).getTime() - new Date(a.published_timestamp).getTime()
+	);
 
 	const seriesMap = new Map<string, SeriesDevToArticle[]>();
 	const standalone: DevToArticle[] = [];
