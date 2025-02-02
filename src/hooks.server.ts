@@ -52,8 +52,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 	// Consider adding these modern headers too:
 	response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-	response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
-	response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
 
 	return response;
 };
