@@ -19,27 +19,29 @@
 				<!-- Floating Avatar -->
 				<div class="perspective-1000">
 					<div
-						class="group relative h-56 w-56 transform-gpu transition-all duration-500 hover:rotate-y-180"
+						class="hover:rotate-y-180 group relative h-56 w-56 transform-gpu transition-all duration-500"
 					>
 						<div class="absolute inset-0">
 							<!-- Front -->
 							<div class="relative h-full w-full rounded-2xl backdrop-blur-xl">
 								<div
-									class="animate-float absolute inset-0 rounded-2xl bg-linear-to-tr from-indigo-600/20 to-teal-600/20 p-1"
+									class="animate-float bg-linear-to-tr absolute inset-0 rounded-2xl from-indigo-600/20 to-teal-600/20 p-1"
 								>
 									<div class="h-full w-full rounded-2xl bg-white/90 p-1 dark:bg-gray-900/90">
 										<img
 											src={githubData.user.avatar_url}
-											alt="Profile"
-											class="h-full w-full rounded-2xl object-cover"
 											loading="lazy"
+											width="208"
+											height="208"
+											class="h-full w-full rounded-2xl object-cover"
+											alt="Profile of {githubData.user.name}"
 										/>
 									</div>
 								</div>
 							</div>
 							<!-- Back -->
 							<div
-								class="absolute inset-0 rotate-y-180 rounded-2xl bg-linear-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								class="rotate-y-180 bg-linear-to-br absolute inset-0 rounded-2xl from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							>
 								<div class="flex h-full flex-col justify-center text-center">
 									<h3 class="text-xl font-bold">{githubData.user.name}</h3>
@@ -68,7 +70,7 @@
 					{#each [{ name: 'GitHub', url: `https://github.com/${githubData.user.login}` }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/john-owolabi-idogun/' }] as link}
 						<a
 							href={link.url}
-							class="group relative rounded-xl bg-linear-to-tr from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
+							class="bg-linear-to-tr group relative rounded-xl from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
 						>
 							<div class="rounded-xl bg-white px-6 py-2 transition-colors dark:bg-gray-900">
 								<span
@@ -115,7 +117,7 @@
 									/>
 								</div>
 								<span
-									class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white
+									class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white
 						 opacity-0 transition-opacity group-hover:opacity-100"
 								>
 									{tool.name}

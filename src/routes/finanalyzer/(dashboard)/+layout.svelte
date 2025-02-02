@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
-	import Notifications from '$lib/components/reusables/Notifications.svelte';
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 
 	let isMobile = $state(false),
@@ -21,8 +20,7 @@
 
 <svelte:window on:resize={checkWidth} bind:innerWidth />
 
-<div class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-900">
-	<Notifications />
+<div class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-900" id="main-content">
 	<!-- Sidebar -->
 	<Sidebar bind:isSidebarOpen {toggleSidebar} />
 
@@ -47,7 +45,7 @@
 	<!-- Mobile Overlay -->
 	{#if isMobile && isSidebarOpen}
 		<button
-			class="fixed inset-0 z-20 bg-gray-900/50 backdrop-blur-xs"
+			class="backdrop-blur-xs fixed inset-0 z-20 bg-gray-900/50"
 			onclick={() => (isSidebarOpen = false)}
 			aria-label="Close Sidebar"
 		></button>

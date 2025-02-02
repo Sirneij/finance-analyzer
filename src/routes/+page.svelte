@@ -87,13 +87,16 @@
 
 <div
 	class="h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
+	id="main-content"
 >
 	<!-- Logo -->
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
 				size={40}
-				class="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
+				width={40}
+				height={40}
+				class="text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
 			/>
 		</a>
 	</div>
@@ -263,8 +266,8 @@
 </div>
 
 <Dock title="Navigation">
-	<nav>
-		<ul class="flex flex-col space-y-4">
+	<nav aria-label="Main navigation">
+		<ul class="flex flex-col space-y-4" role="list">
 			{#each sections as section}
 				{@const Icon = SectionIcons[section.label as keyof typeof SectionIcons]}
 				<li>
@@ -275,6 +278,7 @@
 							: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
 						onclick={() => scrollToSection(section.id)}
 						aria-current={activeSection === section.id ? 'page' : undefined}
+						aria-label={`Navigate to ${section.label} section`}
 					>
 						<Icon class="h-6 w-6" />
 						<span class="text-xs">{section.label}</span>

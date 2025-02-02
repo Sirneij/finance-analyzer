@@ -76,10 +76,11 @@
 </script>
 
 <div
-	class="relative min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+	class="bg-linear-to-br relative min-h-screen from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
+	id="main-content"
 >
 	<ThemeSwitcher
-		class="fixed top-4 right-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
+		class="fixed right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
 	/>
 
 	<AnimatedContainer class="flex min-h-screen items-center justify-center p-4">
@@ -129,7 +130,7 @@
 				<!-- Back Button -->
 				<a
 					href="/"
-					class="mt-8 inline-flex items-center rounded-lg bg-linear-to-r from-indigo-600 to-purple-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:from-indigo-400 dark:to-purple-400"
+					class="bg-linear-to-r mt-8 inline-flex items-center rounded-lg from-indigo-600 to-purple-600 px-6 py-3 text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:from-indigo-400 dark:to-purple-400"
 				>
 					<svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path

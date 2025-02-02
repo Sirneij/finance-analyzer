@@ -88,7 +88,7 @@
 	<meta name="twitter:image" content={`${WEBSITE_URL}/JI.png`} />
 </svelte:head>
 
-<div class="relative min-h-screen bg-white dark:bg-gray-900">
+<div class="relative min-h-screen bg-white dark:bg-gray-900" id="main-content">
 	<!-- Logo -->
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">

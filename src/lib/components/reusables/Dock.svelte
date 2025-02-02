@@ -16,7 +16,20 @@
 		title?: string;
 		children?: Snippet;
 	} = $props();
+
 	let isExpanded = $state(false);
+
+	const adminNav = [
+		{ title: 'Write', href: '/blogs/create' },
+		{ title: 'Manage', href: '/blogs/admin' },
+		{ title: 'Articles', href: '/blogs/admin/articles' }
+	];
+
+	const adminIcons = {
+		Write: WriteStar,
+		Manage: ShieldStar,
+		Articles: Articles
+	};
 </script>
 
 <div class="fixed left-0 top-1/2 z-50 -translate-y-1/2">
@@ -60,44 +73,25 @@
 
 				<div class="space-y-4">
 					{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
-						<ul class="flex flex-col space-y-4">
-							<li>
-								<a
-									href="/blogs/create"
-									class="flex flex-col items-center space-y-1
-									{page.url.pathname === '/blogs/create'
-										? 'text-indigo-500'
-										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
-								>
-									<WriteStar class="h-6 w-6" />
-									<span class="text-xs">Write</span>
-								</a>
-							</li>
-							<li>
-								<a
-									href="/blogs/admin"
-									class="flex flex-col items-center space-y-1
-									{page.url.pathname === '/blogs/admin'
-										? 'text-indigo-500'
-										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
-								>
-									<ShieldStar class="h-6 w-6" />
-									<span class="text-xs">Manage</span>
-								</a>
-							</li>
-							<li>
-								<a
-									href="/blogs/admin/articles"
-									class="flex flex-col items-center space-y-1
-									{page.url.pathname === '/blogs/tags'
-										? 'text-indigo-500'
-										: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
-								>
-									<Articles class="h-6 w-6" />
-									<span class="text-xs"> Articles</span>
-								</a>
-							</li>
-						</ul>
+						<nav aria-label="Main navigation">
+							<ul class="flex flex-col space-y-4" role="list">
+								{#each adminNav as { title, href }, i}
+									{@const Icon = adminIcons[title as keyof typeof adminIcons]}
+									<li id="{title}-{i}" role="listitem">
+										<a
+											{href}
+											class="flex flex-col items-center space-y-1 {page.url.pathname === href
+												? 'text-indigo-500'
+												: 'text-gray-500 hover:text-indigo-500 dark:text-gray-400 dark:hover:text-indigo-400'}"
+											role="button"
+										>
+											<Icon class="h-6 w-6" />
+											<span class="text-xs">{title}</span>
+										</a>
+									</li>
+								{/each}
+							</ul>
+						</nav>
 					{/if}
 					{#if children}
 						<hr class="border-gray-200 dark:border-gray-700" />
