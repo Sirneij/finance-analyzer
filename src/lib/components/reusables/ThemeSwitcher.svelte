@@ -15,6 +15,15 @@
 		isDark = !isDark;
 		localStorage.setItem('theme', isDark ? 'dark' : 'light');
 		document.documentElement.classList.toggle('dark', isDark);
+
+		// Update stylesheet media queries
+		const darkSheet = document.querySelector('link[href*="night-owl"]');
+		const lightSheet = document.querySelector('link[href*="github"]');
+		if (darkSheet instanceof HTMLLinkElement && lightSheet instanceof HTMLLinkElement) {
+			darkSheet.media = isDark ? 'all' : 'not all';
+			lightSheet.media = isDark ? 'not all' : 'all';
+		}
+
 		// Ensure theme change after DOM update
 		requestAnimationFrame(() => {
 			changeCodeBlockTheme(isDark ? 'night-owl' : 'github');
