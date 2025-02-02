@@ -13,6 +13,7 @@
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import CalendarUpdate from '$lib/components/icons/CalendarUpdate.svelte';
 	import Glasses from '$lib/components/icons/Glasses.svelte';
+	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
 
 	const { data } = $props();
 
@@ -30,11 +31,14 @@
 			searchInput?.focus();
 		}
 	};
+
+	const crumbs = [{ text: 'Blogs', href: '/blogs' }];
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 <AnimatedContainer class="container mx-auto min-h-screen min-w-0 max-w-[75rem] p-4">
+	<Breadcrumbs {crumbs} />
 	<div class="mb-10 space-y-8">
 		<h1 class="text-center text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
 			Latest Articles
