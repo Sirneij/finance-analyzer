@@ -9,6 +9,11 @@
 
 <svelte:window on:beforeunload={clearNotifications} />
 
+<svelte:head>
+	<link rel="stylesheet" type="text/css" href="/themes/night-owl.min.css" />
+	<link rel="stylesheet" type="text/css" href="/themes/github.min.css" />
+</svelte:head>
+
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4">
 	Skip to main content
 </a>
