@@ -16,15 +16,15 @@
 		localStorage.setItem('theme', isDark ? 'dark' : 'light');
 		document.documentElement.classList.toggle('dark', isDark);
 
-		// Update stylesheet media queries
-		const darkSheet = document.querySelector('link[href*="night-owl"]');
-		const lightSheet = document.querySelector('link[href*="github"]');
-		if (darkSheet instanceof HTMLLinkElement && lightSheet instanceof HTMLLinkElement) {
-			darkSheet.media = isDark ? 'all' : 'not all';
-			lightSheet.media = isDark ? 'not all' : 'all';
-		}
+		// Toggle stylesheets using media queries
+		const sheets = document.querySelectorAll('link[data-theme]');
+		sheets.forEach((sheet) => {
+			if (sheet instanceof HTMLLinkElement) {
+				const isCorrectTheme = (sheet.dataset.theme === 'dark') === isDark;
+				sheet.media = isCorrectTheme ? 'all' : 'not all';
+			}
+		});
 
-		// Ensure theme change after DOM update
 		requestAnimationFrame(() => {
 			changeCodeBlockTheme(isDark ? 'night-owl' : 'github');
 		});
