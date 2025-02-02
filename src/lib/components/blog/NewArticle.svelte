@@ -2,12 +2,14 @@
 	import Info from '$lib/components/blog/mini/Info.svelte';
 	import MarkdownEditor from '$lib/components/blog/mini/MarkdownEditor.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
+	import type { ITag } from '$lib/types/articles.types';
 
 	let container = $state<HTMLDivElement>(),
 		title = $state(''),
 		foreImage = $state(''),
 		selectedSeries = $state(''),
 		textAreaContent = $state(''),
+		selectedTags = $state<ITag[]>([]),
 		textArea = $state<HTMLTextAreaElement>();
 </script>
 
@@ -21,6 +23,7 @@
 				bind:textAreaContent
 				bind:foreImage
 				bind:selectedSeries
+				bind:selectedTags
 				formActionURL="/blogs/create?/create"
 			/>
 		</div>

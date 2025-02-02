@@ -18,6 +18,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Loader from '$lib/components/reusables/Loader.svelte';
+	import type { ITag } from '$lib/types/articles.types';
 
 	type EditorProps = {
 		container: HTMLDivElement;
@@ -25,6 +26,7 @@
 		title: string;
 		foreImage: string;
 		selectedSeries: string;
+		selectedTags: ITag[];
 		textAreaContent: string;
 		formActionURL: string;
 	};
@@ -36,6 +38,7 @@
 		foreImage = $bindable(),
 		selectedSeries = $bindable(),
 		textAreaContent = $bindable(),
+		selectedTags = $bindable(),
 		formActionURL
 	}: EditorProps = $props();
 
@@ -83,6 +86,7 @@
 		foreImage = foreImage || state.foreImage;
 		title = title || state.title;
 		selectedSeries = selectedSeries || state.selectedSeries;
+		selectedTags = selectedTags || state.tags;
 	});
 
 	$effect(() => {
@@ -161,7 +165,7 @@
 >
 	<!-- Tag Input -->
 	<div class="px-4">
-		<TagInput bind:container tagsFromServer={page.data.tags} />
+		<TagInput bind:container tagsFromServer={page.data.tags} bind:selectedTags />
 	</div>
 
 	<!-- Title Input -->

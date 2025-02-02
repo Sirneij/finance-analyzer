@@ -31,6 +31,7 @@
 						bind:textAreaContent={data.article.content}
 						bind:foreImage={data.article.foreImage as string}
 						bind:selectedSeries
+						bind:selectedTags={data.article.tags}
 						formActionURL={`/blogs/${data.article.slug}/${data.article._id}/edit`}
 					/>
 				</div>
