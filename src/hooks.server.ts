@@ -41,6 +41,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	event.locals.user = user;
 
-	// load page as normal
-	return await resolve(event);
+	// Get the response from the route
+	const response = await resolve(event);
+
+	// Security headers
+	response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+	response.headers.set('X-Content-Type-Options', 'nosniff');
+	response.headers.set('X-Frame-Options', 'DENY');
+	response.headers.set('X-XSS-Protection', '1; mode=block');
+	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+	// Consider adding these modern headers too:
+	response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+	response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+	response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
+
+	return response;
 };

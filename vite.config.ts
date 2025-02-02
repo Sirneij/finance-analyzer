@@ -2,10 +2,14 @@ import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import basicSsl from '@vitejs/plugin-basic-ssl';
+import type { ServerOptions } from 'vite';
+import fs from 'fs';
 
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
+		basicSsl(),
 		sveltekit(),
 		visualizer({
 			emitFile: true,
@@ -14,7 +18,12 @@ export default defineConfig({
 	],
 	server: {
 		port: 8000,
-		strictPort: false
+		strictPort: false,
+		https: {
+			// You can specify certificate paths if you have them
+			key: fs.readFileSync('./certs/server.key'),
+			cert: fs.readFileSync('./certs/server.crt')
+		} as ServerOptions['https']
 	},
 
 	test: {
