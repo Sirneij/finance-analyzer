@@ -52,7 +52,6 @@
 		--diff-deletion-fg: #b31d28;
 		--diff-addition-bg: #e6ffec;
 		--diff-addition-fg: #22863a;
-		--diff-unchanged-fg: #24292e;
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -61,7 +60,6 @@
 			--diff-deletion-fg: #ff8b8b;
 			--diff-addition-bg: #2a3e2e;
 			--diff-addition-fg: #9ccc9c;
-			--diff-unchanged-fg: #d6deeb;
 		}
 	}
 }
@@ -277,10 +275,6 @@
 	.hljs-diff .hljs-addition {
 		background-color: var(--diff-addition-bg);
 		color: var(--diff-addition-fg);
-	}
-
-	.hljs-diff .hljs-unchanged {
-		color: var(--diff-unchanged-fg);
 	}
 }
 
