@@ -24,6 +24,16 @@
 <svelte:window on:beforeunload={clearNotifications} />
 
 <svelte:head>
+	<!-- Only include absolutely essential site-wide meta tags -->
+	<meta name="author" content="John Owolabi Idogun" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@sirneij" />
+	<meta name="twitter:creator" content="@sirneij" />
+	<meta property="og:site_name" content="John Owolabi Idogun" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="article:author" content="John Owolabi Idogun" />
+	<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
 	<link rel="preload" href="/themes/night-owl.min.css" as="style" />
 	<link rel="preload" href="/themes/github.min.css" as="style" />
 

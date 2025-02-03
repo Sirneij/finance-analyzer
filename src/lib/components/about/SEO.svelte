@@ -86,7 +86,7 @@
 	<meta property="og:image" content={data.githubData.user.avatar_url} />
 	<meta property="og:image:alt" content="Profile picture of {data.githubData.user.name}" />
 	<meta property="og:url" content={WEBSITE_URL} />
-	<meta property="og:site_name" content={description} />
+	<meta property="og:site_name" content="John Owolabi Idogun" />
 
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image" />
