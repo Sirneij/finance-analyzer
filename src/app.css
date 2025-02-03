@@ -269,3 +269,17 @@
 		opacity: 0;
 	}
 }
+
+.hljs-diff .hljs-deletion {
+	background-color: #fdd;
+	color: #a14442;
+}
+
+.hljs-diff .hljs-addition {
+	background-color: #dfd;
+	color: #2a4a2a;
+}
+
+.hljs-diff .hljs-unchanged {
+	color: #333;
+}

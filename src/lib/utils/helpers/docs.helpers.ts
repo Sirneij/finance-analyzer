@@ -118,25 +118,15 @@ renderer.code = function ({ text, lang }: Code) {
 		.replace(/'/g, '&#039;');
 
 	const filenameHTML = filename
-		? `<div class="px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-		<span class="font-mono text-sm text-gray-600 dark:text-gray-400">${filename}</span>
-		</div>`
+		? `<div class="flex items-center bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+			<div class="flex items-center space-x-2 p-4">
+				<div class="h-3 w-3 rounded-full bg-red-500"></div>
+				<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+				<div class="h-3 w-3 rounded-full bg-green-500"></div>
+			</div>
+			<span class="font-mono text-sm text-gray-600 dark:text-gray-400 ml-2">${filename}</span>
+		  </div>`
 		: '';
-
-	const formatLNosIndexI = (index: number) => {
-		const start = 13;
-		if (index < 1) return start;
-		else if (index === 1) return start + 25;
-		else if (index === 2) return start + 50;
-		else if (index === 3) return start + 73;
-		else if (index === 4) return start + 98;
-		else if (index === 5) return start + 123;
-		else if (index === 6) return start + 145;
-		else if (index === 7) return start + 169;
-		else if (index === 8) return start + 194;
-		else if (index === 9) return start + 219;
-		// Generalized formula
-	};
 
 	const formatLNosIndex = (index: number): string => {
 		const baseRem = 0.803125; // 12.85px / 16
@@ -235,6 +225,40 @@ marked.setOptions({
 
 export { marked };
 
+// Register custom diff language
+hljs.registerLanguage('diff', function (hljs) {
+	return {
+		name: 'Diff',
+		aliases: ['patch'],
+		contains: [
+			{
+				className: 'meta',
+				relevance: 10,
+				variants: [
+					{ begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/ },
+					{ begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/ },
+					{ begin: /^\-\-\- +\d+,\d+ +\-\-\-\-$/ }
+				]
+			},
+			{
+				className: 'deletion',
+				begin: '^-',
+				end: '$'
+			},
+			{
+				className: 'addition',
+				begin: '^\\+',
+				end: '$'
+			},
+			{
+				className: 'unchanged',
+				begin: '^\\s',
+				end: '$'
+			}
+		]
+	};
+});
+
 export function highlightCode(descriptionContainer: HTMLDivElement) {
 	requestAnimationFrame(() => {
 		const codeBlocks = descriptionContainer?.querySelectorAll('pre code');
@@ -246,7 +270,14 @@ export function highlightCode(descriptionContainer: HTMLDivElement) {
 						delete codeBlock.dataset.highlighted;
 					}
 
-					hljs.highlightElement(codeBlock);
+					// Check if content looks like a diff
+					const isDiff = codeBlock.textContent?.match(/^[+-\s]/m);
+					if (isDiff) {
+						codeBlock.classList.add('hljs-diff');
+						hljs.highlightElement(codeBlock);
+					} else {
+						hljs.highlightElement(codeBlock);
+					}
 				} catch (error) {
 					console.error('Error applying syntax highlighting:', error);
 				}
