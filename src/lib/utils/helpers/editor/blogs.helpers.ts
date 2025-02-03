@@ -271,3 +271,40 @@ export async function fetchSeriesArticles(seriesId: string): Promise<IArticlePop
 	const data = await res.json();
 	return data.articles;
 }
+
+export function addScreenReaderLabels(rootElement: HTMLElement) {
+	// Find all form elements that typically need labels
+	const formElements = rootElement.querySelectorAll('input, select, textarea');
+
+	formElements.forEach((element) => {
+		// Check if element already has an associated label
+		const id = element.getAttribute('id');
+		const hasLabel = id
+			? rootElement.querySelector(`label[for="${id}"]`)
+			: element.closest('label');
+
+		if (!hasLabel) {
+			// Create label text from placeholder, name, or type
+			const labelText =
+				element.parentElement?.textContent ||
+				element.getAttribute('placeholder') ||
+				element.getAttribute('name') ||
+				element.getAttribute('type') ||
+				'Form field';
+
+			// Create new label element
+			const label = document.createElement('label');
+			label.setAttribute('for', id || crypto.randomUUID());
+			label.classList.add('sr-only');
+			label.textContent = labelText;
+
+			// If element didn't have an ID, add the generated one
+			if (!id) {
+				element.setAttribute('id', label.getAttribute('for')!);
+			}
+
+			// Insert label before the element
+			element.insertAdjacentElement('beforebegin', label);
+		}
+	});
+}
