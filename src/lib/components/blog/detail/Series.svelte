@@ -70,7 +70,7 @@
 								? 'font-medium text-indigo-600 dark:text-indigo-400'
 								: 'text-gray-600 dark:text-gray-400'}"
 						>
-							{sArticle.title}
+							{truncateTitle(sArticle.title)}
 						</span>
 					</a>
 				{/if}
