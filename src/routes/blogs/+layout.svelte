@@ -6,18 +6,6 @@
 	let { children } = $props();
 </script>
 
-<svelte:head>
-	<!-- Only include absolutely essential site-wide meta tags -->
-	<meta name="author" content="John Owolabi Idogun" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@sirneij" />
-	<meta name="twitter:creator" content="@sirneij" />
-	<meta property="og:site_name" content="John Owolabi Idogun" />
-	<meta property="og:locale" content="en_US" />
-	<meta property="article:author" content="John Owolabi Idogun" />
-	<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-</svelte:head>
-
 <div class="relative min-h-screen bg-white dark:bg-gray-900" id="main-content">
 	<!-- Logo -->
 	<div class="fixed left-4 top-4 z-50">

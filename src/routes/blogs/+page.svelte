@@ -81,7 +81,7 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <svelte:head>
-	<title>Technical Articles & Software Engineering Blog | John Owolabi Idogun</title>
+	<title>John Owolabi Idogun | Technical Articles & Software Engineering Blog</title>
 	<meta
 		name="description"
 		content="Explore in-depth articles about software engineering, web development, JavaScript, TypeScript, Python, and tech tutorials. Written by John Owolabi Idogun."
