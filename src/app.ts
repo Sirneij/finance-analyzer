@@ -186,37 +186,6 @@ app.get("/api/docs", (req, res) => {
 
 const startServer = async () => {
   try {
-    // // 1. Load SSL certificates
-    // baseConfig.logger.info("Loading SSL certificates...");
-    // const certificates = await getCertificates();
-
-    // if (!certificates) {
-    //   throw new Error("Failed to load SSL certificates");
-    // }
-
-    // 2. Configure SSL options
-    // const options: ServerOptions = {
-    //   key: certificates.key,
-    //   cert: certificates.cert,
-    //   spdy: {
-    //     protocols: ["h2", "http/1.1"] as const,
-    //     plain: false,
-    //   },
-    // };
-
-    // 3. Create HTTPS server
-    // const server = spdy.createServer(options, app);
-
-    // 4. Setup WebSocket server
-    // const wss = new WebSocketServer({
-    //   server,
-    //   path: "/ws",
-    //   perMessageDeflate: {
-    //     zlibDeflateOptions: { chunkSize: 1024, memLevel: 7, level: 3 },
-    //     zlibInflateOptions: { chunkSize: 10 * 1024 },
-    //   },
-    // });
-
     const server: HttpServer = createServer(app);
     const wss = new WebSocketServer({ server, path: "/ws" });
 

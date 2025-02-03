@@ -9,11 +9,16 @@ const RETRY_INTERVAL = 5000;
 
 export async function connectToCluster(retryCount = 0) {
   try {
-    await mongoose.connect(baseConfig.db.uri, {
+    const options = {
       dbName: baseConfig.db.dbName,
       serverSelectionTimeoutMS: 15000,
       socketTimeoutMS: 45000,
-    });
+      maxPoolSize: 50,
+      minPoolSize: 10,
+      retryWrites: true,
+      retryReads: true,
+    };
+    await mongoose.connect(baseConfig.db.uri, options);
 
     mongoose.connection.on("error", (err) => {
       baseConfig.logger.error("❌ MongoDB connection error:", err);
@@ -21,6 +26,17 @@ export async function connectToCluster(retryCount = 0) {
 
     mongoose.connection.once("open", () => {
       baseConfig.logger.info("✅ MongoDB connection successful");
+    });
+    // Handle graceful shutdown
+    process.on("SIGINT", async () => {
+      try {
+        await mongoose.connection.close();
+        baseConfig.logger.info("MongoDB connection closed");
+        process.exit(0);
+      } catch (err) {
+        baseConfig.logger.error("Error closing MongoDB connection:", err);
+        process.exit(1);
+      }
     });
 
     return mongoose.connection;
