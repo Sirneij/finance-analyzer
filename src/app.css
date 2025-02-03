@@ -4,24 +4,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Light theme (Github-like) colors */
-:root {
-	--diff-deletion-bg: #ffeef0;
-	--diff-deletion-fg: #b31d28;
-	--diff-addition-bg: #e6ffec;
-	--diff-addition-fg: #22863a;
-	--diff-unchanged-fg: #24292e;
-}
-
-/* Dark theme (Night Owl-like) colors */
-[data-theme='dark'] {
-	--diff-deletion-bg: #443d3d;
-	--diff-deletion-fg: #ff8b8b;
-	--diff-addition-bg: #2a3e2e;
-	--diff-addition-fg: #9ccc9c;
-	--diff-unchanged-fg: #d6deeb;
-}
-
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -64,13 +46,30 @@
 	button {
 		@apply cursor-pointer;
 	}
-}
 
-@utility animate-pulse {
-	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	:root {
+		--diff-deletion-bg: #ffeef0;
+		--diff-deletion-fg: #b31d28;
+		--diff-addition-bg: #e6ffec;
+		--diff-addition-fg: #22863a;
+		--diff-unchanged-fg: #24292e;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--diff-deletion-bg: #443d3d;
+			--diff-deletion-fg: #ff8b8b;
+			--diff-addition-bg: #2a3e2e;
+			--diff-addition-fg: #9ccc9c;
+			--diff-unchanged-fg: #d6deeb;
+		}
+	}
 }
 
 @layer utilities {
+	.animate-pulse {
+		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
 	.logo-container svg {
 		transition: all 0.3s;
 	}
@@ -126,135 +125,162 @@
 	.group:hover .timeline-node {
 		@apply scale-125 shadow-lg;
 	}
-}
-
-@keyframes pulse {
-	0%,
-	100% {
-		opacity: 0;
-	}
-	50% {
-		opacity: 1;
-	}
-}
-
-/* Base admonition styles */
-.admonition {
-	@apply relative my-6 overflow-hidden rounded-xl border border-gray-200/10 bg-white/50 backdrop-blur-xs transition-all duration-200 hover:border-gray-200/20 hover:shadow-lg dark:border-gray-700/10 dark:bg-gray-900/50 dark:hover:border-gray-700/20;
-}
-
-.admonition .title {
-	@apply m-0 block bg-[length:20px] bg-[center_left_20px] bg-no-repeat px-12 py-3 font-semibold tracking-wide break-all;
-}
-
-.admonition .title::before {
-	@apply absolute left-4 text-xl opacity-90;
-}
-
-.admonition.note .title::before {
-	content: '\00270D';
-}
-
-.admonition.tip .title::before {
-	content: '\01F4A1';
-}
-
-.admonition.warning .title::before {
-	content: '\0026A0';
-}
-
-.admonition.github .title::before {
-	content: '\002388';
-}
-
-/* Variants */
-.admonition.note {
-	@apply border-l-8 border-blue-500/80 bg-blue-50/30 dark:bg-blue-950/30;
-}
-
-.admonition.note .title {
-	@apply border-b border-blue-200/30 bg-blue-100/30 text-blue-800 dark:border-blue-700/30 dark:bg-blue-900/30 dark:text-blue-200;
-}
-
-.admonition.tip {
-	@apply border-l-8 border-emerald-500/80 bg-emerald-50/30 dark:bg-emerald-950/30;
-}
-
-.admonition.tip .title {
-	@apply border-b border-emerald-200/30 bg-emerald-100/30 text-emerald-800 dark:border-emerald-700/30 dark:bg-emerald-900/30 dark:text-emerald-200;
-}
-
-.admonition.warning {
-	@apply border-l-8 border-orange-500/80 bg-orange-50/30 dark:bg-orange-950/30;
-}
-
-.admonition.warning .title {
-	@apply border-b border-orange-200/30 bg-orange-100/30 text-orange-800 dark:border-orange-700/30 dark:bg-orange-900/30 dark:text-orange-200;
-}
-
-/* Github variant */
-.admonition.github {
-	@apply border-l-8 border-gray-300 bg-gray-100/90 dark:border-gray-600 dark:bg-gray-800/90;
-}
-
-.admonition.github .repo-details {
-	@apply flex items-center gap-6 p-4 hover:bg-gray-200/50 dark:hover:bg-gray-700/50;
-}
-
-.admonition.github .repo-details img {
-	@apply h-24 w-24 rounded-full bg-gray-100 ring-2 ring-gray-300/50 dark:bg-gray-700 dark:ring-gray-600/50;
-}
-
-.admonition.github .repo-stats {
-	@apply text-sm text-gray-600 dark:text-gray-400;
-}
-
-.admonition.github .languages {
-	@apply flex gap-2 p-4 text-sm;
-}
-
-.admonition.github .languages .lang {
-	@apply rounded-full bg-gray-200 px-2 py-0.5 dark:bg-gray-700;
-}
-
-.repo-stats .stat {
-	@apply inline-flex items-center gap-1;
-}
-
-.repo-stats svg {
-	@apply text-gray-600 dark:text-gray-400;
-}
-
-/* Content area */
-.admonition > :not(.title) {
-	@apply px-6 py-4 text-gray-700 dark:text-gray-300;
-}
-
-.tag {
-	@apply flex items-center rounded-sm px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
-}
-
-/* Update article-content class to scope hover only to links */
-.article-content {
-	@apply dark:prose-invert prose-headings:font-bold prose-a:text-indigo-600 prose-a:no-underline dark:prose-a:text-indigo-400 prose-pre:rounded-none prose-pre:bg-gray-900;
-}
-
-/* Add specific hover only for links */
-.article-content a:hover {
-	@apply underline;
-}
-
-.detail {
-	nav::-webkit-scrollbar {
-		width: 4px;
+	@keyframes pulse {
+		0%,
+		100% {
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
 	}
 
-	nav::-webkit-scrollbar-track {
-		@apply rounded-sm bg-transparent;
+	/* Base admonition styles */
+	.admonition {
+		@apply relative my-6 overflow-hidden rounded-xl border border-t-0 border-r-0 border-b-0 border-gray-200/10 bg-white/50 backdrop-blur-xs transition-all duration-200 hover:border-gray-200/20 hover:shadow-lg dark:border-gray-700/10 dark:bg-gray-900/50 dark:hover:border-gray-700/20;
 	}
 
-	nav::-webkit-scrollbar-thumb {
-		@apply rounded-sm bg-gray-300 dark:bg-gray-700;
+	.admonition .title {
+		@apply relative m-0 flex items-center bg-[length:20px] bg-[center_left_20px] bg-no-repeat px-10 py-3 font-semibold tracking-wide break-all;
+	}
+
+	.admonition .title::before {
+		@apply absolute top-1/2 left-4 -translate-y-1/2 text-xl opacity-90;
+	}
+
+	.admonition.note .title::before {
+		content: '\00270D';
+	}
+
+	.admonition.tip .title::before {
+		content: '\01F4A1';
+	}
+
+	.admonition.warning .title::before {
+		content: '\0026A0';
+	}
+
+	.admonition.github .title::before {
+		content: '\002388';
+	}
+
+	/* Variants */
+	.admonition.note {
+		@apply border-l-8 border-blue-500/80 bg-blue-50/30 dark:bg-blue-950/30;
+	}
+
+	.admonition.note .title {
+		@apply border-b border-blue-200/30 bg-blue-100/30 text-blue-800 dark:border-blue-700/30 dark:bg-blue-900/30 dark:text-blue-200;
+	}
+
+	.admonition.tip {
+		@apply border-l-8 border-emerald-500/80 bg-emerald-50/30 dark:bg-emerald-950/30;
+	}
+
+	.admonition.tip .title {
+		@apply border-b border-emerald-200/30 bg-emerald-100/30 text-emerald-800 dark:border-emerald-700/30 dark:bg-emerald-900/30 dark:text-emerald-200;
+	}
+
+	.admonition.warning {
+		@apply border-l-8 border-orange-500/80 bg-orange-50/30 dark:bg-orange-950/30;
+	}
+
+	.admonition.warning .title {
+		@apply border-b border-orange-200/30 bg-orange-100/30 text-orange-800 dark:border-orange-700/30 dark:bg-orange-900/30 dark:text-orange-200;
+	}
+
+	/* Github variant */
+	.admonition.github {
+		@apply border-l-8 border-gray-300 bg-gray-100/90 dark:border-gray-600 dark:bg-gray-800/90;
+	}
+
+	.admonition.github .repo-details {
+		@apply flex items-center gap-6 p-4 hover:bg-gray-200/50 dark:hover:bg-gray-700/50;
+	}
+
+	.admonition.github .repo-details img {
+		@apply h-24 w-24 rounded-full bg-gray-100 ring-2 ring-gray-300/50 dark:bg-gray-700 dark:ring-gray-600/50;
+	}
+
+	.admonition.github .repo-stats {
+		@apply text-sm text-gray-600 dark:text-gray-400;
+	}
+
+	.admonition.github .languages {
+		@apply flex gap-2 p-4 text-sm;
+	}
+
+	.admonition.github .languages .lang {
+		@apply rounded-full bg-gray-200 px-2 py-0.5 dark:bg-gray-700;
+	}
+
+	.repo-stats .stat {
+		@apply inline-flex items-center gap-1;
+	}
+
+	.repo-stats svg {
+		@apply text-gray-600 dark:text-gray-400;
+	}
+
+	/* Content area */
+	.admonition > :not(.title) {
+		@apply px-6 py-0 text-gray-700 dark:text-gray-300;
+	}
+
+	.tag {
+		@apply flex items-center rounded-sm px-2 py-0.5 text-sm before:mr-0.5 before:content-['#'];
+	}
+
+	.article-content {
+		@apply dark:prose-invert prose-headings:font-bold prose-a:text-indigo-600 prose-a:no-underline dark:prose-a:text-indigo-400 prose-pre:rounded-none prose-pre:bg-gray-900;
+	}
+
+	/* Add specific hover only for links */
+	.article-content a:hover {
+		@apply underline;
+	}
+
+	.detail {
+		nav::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		nav::-webkit-scrollbar-track {
+			@apply rounded-sm bg-transparent;
+		}
+
+		nav::-webkit-scrollbar-thumb {
+			@apply rounded-sm bg-gray-300 dark:bg-gray-700;
+		}
+	}
+
+	.cursor {
+		animation: blink 1s step-end infinite;
+	}
+
+	@keyframes blink {
+		from,
+		to {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+	}
+
+	/* Diff styling */
+	.hljs-diff .hljs-deletion {
+		background-color: var(--diff-deletion-bg);
+		color: var(--diff-deletion-fg);
+	}
+
+	.hljs-diff .hljs-addition {
+		background-color: var(--diff-addition-bg);
+		color: var(--diff-addition-fg);
+	}
+
+	.hljs-diff .hljs-unchanged {
+		color: var(--diff-unchanged-fg);
 	}
 }
 
@@ -272,33 +298,4 @@
 		@apply text-rose-600 hover:bg-gray-100;
 		@apply dark:text-rose-400 dark:hover:bg-gray-700;
 	}
-}
-
-.cursor {
-	animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-	from,
-	to {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0;
-	}
-}
-
-/* Diff styling */
-.hljs-diff .hljs-deletion {
-	background-color: var(--diff-deletion-bg);
-	color: var(--diff-deletion-fg);
-}
-
-.hljs-diff .hljs-addition {
-	background-color: var(--diff-addition-bg);
-	color: var(--diff-addition-fg);
-}
-
-.hljs-diff .hljs-unchanged {
-	color: var(--diff-unchanged-fg);
 }

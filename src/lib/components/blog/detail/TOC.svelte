@@ -42,7 +42,13 @@
     {showTocMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}"
 	aria-label="Table of Contents"
 >
-	<h2 class="mb-6 text-lg font-semibold text-gray-900 lg:mb-2 dark:text-white">On this page</h2>
+	<h2
+		class="mb-6 text-lg font-semibold text-gray-900 lg:mb-2 dark:text-white"
+		title="On this page"
+		aria-label="On this page"
+	>
+		On this page
+	</h2>
 
 	<ul class="space-y-0.5">
 		{#each tableOfContents as { text, id, level }}
@@ -62,6 +68,8 @@
 							block: 'start'
 						});
 					}}
+					title={text}
+					aria-label={text}
 				>
 					<span class="line-clamp-1">
 						{text}

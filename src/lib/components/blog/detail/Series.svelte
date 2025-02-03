@@ -10,8 +10,8 @@
 	let { article }: { article: IArticlePopulated } = $props();
 
 	let seriesArticles = $state([] as IArticlePopulated[]),
-		showAllSeries = $state(false);
-
+		showAllSeries = $state(false),
+		innerWidth = $state(0);
 	$effect(() => {
 		onMount(async () => {
 			if (article.series) {
@@ -27,6 +27,8 @@
 
 	const seriesDisplay = $derived.by(() => truncateSeriesArticles(seriesArticles, showAllSeries));
 </script>
+
+<svelte:window bind:innerWidth />
 
 {#if article.series && seriesArticles.length > 1}
 	<div class="mt-8 rounded-lg border border-gray-200 p-4 dark:border-gray-800">
@@ -45,8 +47,12 @@
 						>
 							...
 						</span>
-						<span class="ml-2 text-gray-600 dark:text-gray-400">
-							{truncateTitle(sArticle.title)}
+						<span
+							class="ml-2 text-gray-600 dark:text-gray-400"
+							title={sArticle.title}
+							aria-label={sArticle.title}
+						>
+							{truncateTitle(sArticle.title, innerWidth)}
 						</span>
 					</button>
 				{:else}
@@ -69,8 +75,10 @@
 							class="ml-2 {sArticle._id === article._id
 								? 'font-medium text-indigo-600 dark:text-indigo-400'
 								: 'text-gray-600 dark:text-gray-400'}"
+							title={sArticle.title}
+							aria-label={sArticle.title}
 						>
-							{truncateTitle(sArticle.title)}
+							{truncateTitle(sArticle.title, innerWidth)}
 						</span>
 					</a>
 				{/if}

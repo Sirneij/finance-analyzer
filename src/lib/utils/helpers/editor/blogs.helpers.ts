@@ -90,10 +90,25 @@ export const truncateSeriesArticles = <T extends { _id: string; title: string }>
 	return seriesArticles;
 };
 
-export function truncateTitle(title: string): string {
-	if (title.length <= 95) return title;
+export function truncateTitle(title: string, width?: number, maxLength?: number): string {
+	// Use passed width or fallback to default
+	const vw = width ?? 1024;
 
-	const splitPoint = Math.floor((95 - 3) / 2);
+	const titleMaxLength =
+		maxLength ??
+		(vw >= 1440
+			? 120 // Large desktop
+			: vw >= 1024
+				? 95 // Desktop
+				: vw >= 768
+					? 70 // Tablet
+					: 50); // Mobile
+
+	if (title.length <= titleMaxLength) {
+		return title;
+	}
+
+	const splitPoint = Math.floor((titleMaxLength - 3) / 2);
 	const start = title.substring(0, splitPoint);
 	const end = title.substring(title.length - splitPoint);
 

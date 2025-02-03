@@ -100,6 +100,23 @@ interface Code {
 	escaped?: boolean;
 }
 
+interface Token {
+	type: string;
+	raw: string;
+	text: string;
+	tokens?: Token[];
+}
+
+interface ListItem {
+	type: 'list_item';
+	raw: string;
+	task: boolean;
+	checked?: boolean;
+	loose: boolean;
+	text: string;
+	tokens: Token[];
+}
+
 const renderer = new marked.Renderer();
 
 renderer.code = function ({ text, lang }: Code) {
@@ -151,7 +168,7 @@ renderer.code = function ({ text, lang }: Code) {
 			: '';
 
 	return `
-	  <div class="relative group rounded-lg overflow-hidden">
+	  <div class="relative group rounded-lg overflow-hidden" role="region" aria-label="Code block ${filename ? `for ${filename}` : ''} in ${validLanguage}">
       ${filenameHTML}
 
       <div class="relative">
@@ -174,38 +191,40 @@ renderer.code = function ({ text, lang }: Code) {
 			})()"
 			class="opacity-0 group-hover:opacity-100 rounded-md bg-gray-100/80 dark:bg-gray-700/80 p-2 text-gray-600 dark:text-gray-300 transition-all hover:bg-gray-200 dark:hover:bg-gray-600 backdrop-blur-sm flex items-center gap-1"
 			title="Copy code"
+			aria-label="Copy code"
+            tabindex="0"
 		  >
-			<svg class="copy-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg class="copy-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
 			</svg>
-			<svg class="check-icon h-4 w-4" style="display: none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg class="check-icon h-4 w-4" style="display: none" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
 			</svg>
 		  </button>
 		  
 		  <!-- Language Badge -->
-		  <span class="rounded-md bg-gray-100/80 dark:bg-gray-700/80 px-2 py-1 text-xs font-mono text-gray-600 dark:text-gray-300 transition-colors backdrop-blur-sm">
+		  <span class="rounded-md bg-gray-100/80 dark:bg-gray-700/80 px-2 py-1 text-xs font-mono text-gray-600 dark:text-gray-300 transition-colors backdrop-blur-sm" role="note" aria-label="Programming language: ${validLanguage}">
 			${validLanguage}
 		  </span>
 		</div>
   
 		<!-- Code Block -->
-		<div class="grid grid-cols-[auto_1fr]">
+		<div class="grid grid-cols-[auto_1fr]" role="presentation">
 			<!-- Line Numbers -->
-			<div class="hidden sm:block p-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none">
+			<div class="hidden sm:block p-3.5 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-400 select-none text-right" aria-hidden="true">
 				${lines.map((_, i) => `<div class="leading-6">${i + 1}</div>`).join('')}
 			</div>
 			
 			<!-- Code Content -->
-			<pre>
-				<code class="language-${validLanguage} leading-6">${escapedText}</code>
+			<pre role="presentation">
+				<code class="language-${validLanguage} leading-6" tabindex="0">${escapedText}</code>
 			</pre>
 		</div>
 	  </div>
 	`;
 };
 
-renderer.heading = ({ text, depth }: { text: string; depth: number }) => {
+renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
 	if (depth === 2 || depth === 3) {
 		const id = text
 			.toLowerCase()
@@ -213,10 +232,29 @@ renderer.heading = ({ text, depth }: { text: string; depth: number }) => {
 			.replace(/[^a-z0-9]+/g, '-')
 			.replace(/(^-|-$)/g, '');
 
-		return `<h${depth} id="${id}">${text}</h${depth}>`;
+		return `<h${depth} id="${id}" tabindex="0" role="heading" aria-level="${depth}" aria-label=${text}>${text}</h${depth}>`;
 	}
-	return `<h${depth}>${text}</h${depth}>`;
+	return `<h${depth} role="heading" aria-level="${depth}"  aria-label=${text}>${text}</h${depth}>`;
 };
+
+// renderer.listitem = function (item: ListItem) {
+// 	if (item.task) {
+// 		const isChecked = item.checked;
+
+// 		return `<li class="task-list-item">
+// 		<input
+// 		  type="checkbox"
+// 		  class="task-list-item-checkbox"
+// 		  ${isChecked ? 'checked' : ''}
+// 		  disabled
+// 		/>
+// 		<span>${item.text}</span>
+// 	  </li>`;
+// 	}
+
+// 	// Handle regular list items
+// 	return `<li>${item.text}</li>`;
+// };
 
 marked.setOptions({
 	renderer,

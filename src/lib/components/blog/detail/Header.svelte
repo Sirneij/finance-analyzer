@@ -64,7 +64,11 @@
 
 <header class="mt-8 space-y-4">
 	<div class="flex items-start justify-between">
-		<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+		<h1
+			class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
+			title={article.title}
+			aria-label={article.title}
+		>
 			{article.title}
 		</h1>
 
@@ -93,20 +97,23 @@
 
 	<div class="flex flex-wrap items-center gap-4">
 		<!-- Tags -->
-		<div class="flex flex-wrap gap-2">
+		<div class="flex flex-wrap gap-2" aria-label="Tags">
 			{#each article.tags as tag}
-				<span class="tag {tag.name}">
+				<span class="tag {tag.name}" aria-label={tag.name}>
 					{tag.name}
 				</span>
 			{/each}
 		</div>
 
 		<!-- Dates -->
-		<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+		<div
+			class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
+			aria-label="Dates"
+		>
 			{#if article.updatedAt}
-				<div class="flex items-center gap-1">
+				<div class="flex items-center gap-1" aria-label="Updated date">
 					<Clock class="h-4 w-4" />
-					<time>
+					<time datetime={article.updatedAt} title={article.updatedAt}>
 						Updated {formatDate(article.updatedAt)}
 					</time>
 				</div>
@@ -114,7 +121,7 @@
 		</div>
 	</div>
 	<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-		<span>{readingTime}</span>
+		<span title="Reading time" aria-label="Reading time">{readingTime}</span>
 		<div class="flex gap-2">
 			<button
 				class="inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -151,6 +158,7 @@
 						timeout = setTimeout(() => (copySuccess = false), 2000);
 					}
 				}}
+				aria-label="Share article"
 			>
 				<Share class="h-4 w-4" />
 				{#if browser && !navigator.share && copySuccess}
@@ -172,6 +180,7 @@
 		type="button"
 		onclick={confirmDelete}
 		class="rounded-sm bg-rose-600 px-4 py-1 text-sm font-medium text-white transition-all hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-600"
+		aria-label="Confirm delete"
 	>
 		Confirm
 	</button>
@@ -182,6 +191,7 @@
 			isOpen = false;
 		}}
 		class="rounded-sm bg-gray-100 px-4 py-1 text-sm font-medium text-gray-700 transition-all hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+		aria-label="Cancel delete"
 	>
 		Cancel
 	</button>
