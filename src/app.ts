@@ -24,6 +24,7 @@ import resumeRoutes from "$routes/resume.routes.js";
 import articleRoutes from "$routes/article.routes.js";
 import tagsRoutes from "$routes/tags.routes.js";
 import seriesRoutes from "$routes/series.routes.js";
+import compression from "compression";
 import spdy, { ServerOptions } from "spdy";
 import { getCertificates } from "$utils/certs.utils.js";
 
@@ -83,6 +84,9 @@ app.use(passport.session());
 
 // 6. Application middleware
 app.use(requestLogger);
+
+// 7. Compression middleware
+app.use(compression());
 
 passport.serializeUser<User>((user, done) => {
   done(null, user);

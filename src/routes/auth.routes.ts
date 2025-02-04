@@ -2,7 +2,6 @@ import { Router } from "express";
 import passport from "passport";
 import { AuthController } from "$controllers/auth.controller.js";
 import { isAuthenticated } from "$middlewares/auth.middleware.js";
-import { baseConfig } from "$config/base.config.js";
 
 const authRouters = Router();
 const authController = new AuthController();
