@@ -166,6 +166,7 @@
 				in:fly|local={{ y: 20, duration: SLIDE_DURATION, delay: i * 50 }}
 				out:fade|local
 				class="shadow-xs group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+				aria-label="Article"
 			>
 				<div class="space-y-4">
 					<h2
@@ -175,28 +176,32 @@
 						<a
 							href="/blogs/{article.slug}/{article._id}"
 							class="focus:outline-hidden inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5 dark:text-gray-100"
+							aria-label={article.title}
 						>
 							{article.title}
 						</a>
 					</h2>
 					{#if article.tags?.length}
-						<div class="flex flex-wrap gap-1">
+						<div class="flex flex-wrap gap-1" aria-label="Tags">
 							{#each article.tags as tag}
-								<span class="tag {tag.name}">
+								<a href="/blogs?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
 									{tag.name}
-								</span>
+								</a>
 							{/each}
 						</div>
 					{/if}
 
-					<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-						<span class="flex items-center gap-1.5">
+					<div
+						class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400"
+						aria-label="Dates"
+					>
+						<span class="flex items-center gap-1.5" aria-label="Reading time">
 							<Glasses class="h-4 w-4" />
 							<span>{estimateReadingTime(article.content)}</span>
 						</span>
-						<span class="flex items-center gap-1.5">
+						<span class="flex items-center gap-1.5" aria-label="Updated date">
 							<CalendarUpdate class="h-4 w-4" />
-							<time datetime={article.updatedAt}>
+							<time datetime={article.updatedAt} title={article.updatedAt}>
 								{formatArticleDate(article.updatedAt)}
 							</time>
 						</span>

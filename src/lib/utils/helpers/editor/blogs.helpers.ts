@@ -254,7 +254,7 @@ export const formatSearchResponse = (params: URLSearchParams): string => {
 	const q = params.get('q');
 	if (q) parts.push(`search text: ${q}`);
 
-	const tags = params.getAll('tags[]');
+	const tags = params.getAll('tags');
 	if (tags.length) parts.push(`tags: [${tags.join(', ')}]`);
 
 	const sortBy = params.get('sortBy');

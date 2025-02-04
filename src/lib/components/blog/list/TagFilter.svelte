@@ -49,7 +49,7 @@
 		/>
 
 		{#each selectedTags as tag}
-			<input type="hidden" name="tags[]" value={tag} />
+			<input type="hidden" name="tags" value={tag} />
 		{/each}
 	</div>
 

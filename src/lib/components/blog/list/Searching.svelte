@@ -64,7 +64,7 @@
 			if (params.has('q') && searchQuery) searchQuery = params.get('q') ?? '';
 			if (params.has('sortBy')) sortBy = params.get('sortBy');
 			if (params.has('period')) dateRange = params.get('period');
-			if (params.has('tags[]')) selectedTags = params.getAll('tags[]');
+			if (params.has('tags')) selectedTags = params.getAll('tags');
 
 			isInitialLoad = false;
 			// Allow form submission after initial state is set

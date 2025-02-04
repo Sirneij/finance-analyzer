@@ -7,10 +7,16 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const tagsPage = Number(url.searchParams.get('tagsPage')) || 1;
 
-	const [articleData, tagData] = await Promise.all([
-		fetch(`${BASE_API_URI}/v1/articles/search${url.search}`).then((res) => res.json()),
-		fetch(`${BASE_API_URI}/v1/tags?page=${tagsPage}`).then((res) => res.json())
-	]);
+	const articlePromise =
+		url.search && url.search !== '?' && !url.search.startsWith('?tagsPage=')
+			? fetch(`${BASE_API_URI}/v1/articles/search${url.search}`).then((res) => res.json())
+			: fetch(`${BASE_API_URI}/v1/articles`).then((res) => res.json());
+
+	const tagPromise = tagsPage
+		? fetch(`${BASE_API_URI}/v1/tags?page=${tagsPage}`).then((res) => res.json())
+		: Promise.resolve(null);
+
+	const [articleData, tagData] = await Promise.all([articlePromise, tagPromise]);
 
 	return {
 		articles: articleData.articles as IArticlePopulated[],

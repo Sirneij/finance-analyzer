@@ -99,9 +99,9 @@
 		<!-- Tags -->
 		<div class="flex flex-wrap gap-2" aria-label="Tags">
 			{#each article.tags as tag}
-				<span class="tag {tag.name}" aria-label={tag.name}>
+				<a href="/blogs?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
 					{tag.name}
-				</span>
+				</a>
 			{/each}
 		</div>
 
