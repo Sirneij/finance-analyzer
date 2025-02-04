@@ -26,6 +26,7 @@
 <svelte:head>
 	<!-- Only include absolutely essential site-wide meta tags -->
 	<meta name="author" content="John Owolabi Idogun" />
+	<meta name="application-name" content="John Owolabi Idogun" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@sirneij" />
 	<meta name="twitter:creator" content="@sirneij" />
