@@ -11,6 +11,7 @@
 	import Paginations from '$lib/components/reusables/Paginations.svelte';
 	import type { IArticlePopulated } from '$lib/types/articles.types';
 	import { addNotification } from '$lib/states/notification.svelte';
+	import Dock from '$lib/components/reusables/Dock.svelte';
 
 	let { data } = $props();
 
@@ -203,3 +204,5 @@
 	</AnimatedSection>
 	<Paginations metadata={data.metadata} />
 </AnimatedContainer>
+
+<Dock title="Navigation" />
