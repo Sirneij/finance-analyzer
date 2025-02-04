@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/app.ts",
     "build": "tsc && tsc-alias",
-    "start": "node dist/src/app.js",
+    "start": "node dist/app.js",
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage --silent=false"
   },
