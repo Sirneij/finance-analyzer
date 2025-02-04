@@ -1,7 +1,7 @@
 import { AuthController } from "$controllers/auth.controller.js";
 import mongoose from "mongoose";
 import { createMockLogger } from "../mocks/logger.mock.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { Providers } from "$types/misc.types.js";
 import { baseConfig } from "$config/base.config.js";
 

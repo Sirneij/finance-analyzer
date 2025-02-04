@@ -1,7 +1,7 @@
 import { TransactionController } from "$controllers/transaction.controller.js";
 import { TransactionService } from "$services/transaction.service.js";
 import { FinancialSummary, SpendingReport } from "$types/transaction.types.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Readable } from "stream";
 

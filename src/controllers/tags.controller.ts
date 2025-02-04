@@ -1,6 +1,6 @@
 import { TagsService } from "$services/tags.service.js";
 import { ITag } from "$types/article.types.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { Types } from "mongoose";
 
 export class TagsController {

@@ -3,7 +3,7 @@ import {
   handleAuthError,
 } from "$middlewares/auth.middleware.js";
 import { ProviderMismatchError } from "$types/error.types.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 // auth.middleware.test.js
 describe("Sample Test auth.middleware.test.js", () => {

@@ -4,7 +4,7 @@
   "description": "An API for analyzing financial behavior using AI",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
+    "dev": "bun --watch src/app.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/src/app.js",
     "test": "jest --config jest.config.js",

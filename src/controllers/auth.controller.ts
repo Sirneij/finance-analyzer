@@ -1,5 +1,5 @@
 import { baseConfig } from "$config/base.config.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 export class AuthController {
   async handleLoginSuccess(req: Request, res: Response) {

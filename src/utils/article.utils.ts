@@ -111,11 +111,17 @@ export const processSeriesTitle = async (
 };
 
 export function parseQueryParams(query: any): SearchQuery {
-  const parsedTags = query.tags
-    ? Array.isArray(query.tags)
-      ? query.tags
-      : [query.tags]
-    : undefined;
+  let parsedTags;
+
+  if (query.tags) {
+    parsedTags = Array.isArray(query.tags) ? query.tags : [query.tags];
+  } else if (query["tags[]"]) {
+    parsedTags = Array.isArray(query["tags[]"])
+      ? query["tags[]"]
+      : [query["tags[]"]];
+  } else {
+    parsedTags = undefined;
+  }
 
   const series =
     query.series && Types.ObjectId.isValid(query.series)

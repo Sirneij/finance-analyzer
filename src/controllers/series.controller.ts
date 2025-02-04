@@ -1,6 +1,6 @@
 import { baseConfig } from "$config/base.config.js";
 import { SeriesService } from "$services/series.service.js";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 export class SeriesController {
   async handleGetSingleSeries(req: Request, res: Response): Promise<void> {

@@ -3,7 +3,7 @@ import { IEndpoint } from "$models/docs.model.js";
 import { EndpointService } from "$services/docs.services.js";
 import { HttpMethod } from "$types/docs.types.js";
 import mongoose from "mongoose";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 // docs.controller.test.js
 describe("Sample Test docs.controller.test.js", () => {

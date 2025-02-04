@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "allowImportingTsExtensions": false,
     "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["node"],
     "paths": {
       "$config/*": ["src/config/*"],
       "$controllers/*": ["src/controllers/*"],
