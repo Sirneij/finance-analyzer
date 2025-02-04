@@ -237,25 +237,6 @@ renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
 	return `<h${depth} role="heading" aria-level="${depth}"  aria-label=${text}>${text}</h${depth}>`;
 };
 
-// renderer.listitem = function (item: ListItem) {
-// 	if (item.task) {
-// 		const isChecked = item.checked;
-
-// 		return `<li class="task-list-item">
-// 		<input
-// 		  type="checkbox"
-// 		  class="task-list-item-checkbox"
-// 		  ${isChecked ? 'checked' : ''}
-// 		  disabled
-// 		/>
-// 		<span>${item.text}</span>
-// 	  </li>`;
-// 	}
-
-// 	// Handle regular list items
-// 	return `<li>${item.text}</li>`;
-// };
-
 marked.setOptions({
 	renderer,
 	gfm: true

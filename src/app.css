@@ -278,11 +278,20 @@
 	.hljs-diff .hljs-deletion {
 		background-color: var(--diff-deletion-bg);
 		color: var(--diff-deletion-fg);
+		display: inline-block;
+		width: 100%;
+		margin-left: -1rem;
+		margin-right: -1rem;
+		padding: 0 1rem;
 	}
 
 	.hljs-diff .hljs-addition {
 		background-color: var(--diff-addition-bg);
 		color: var(--diff-addition-fg);
+		display: inline-block;
+		width: 100%;
+		margin-left: -1rem;
+		padding: 0 1rem;
 	}
 }
 
