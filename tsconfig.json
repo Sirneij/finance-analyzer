@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "baseUrl": ".",
     "allowJs": true,
     "resolveJsonModule": true,
@@ -28,6 +28,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*", "test/**/*.ts", "jest.setup.js"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "test/**/*",
+    "jest.setup.js"
+  ]
 }
