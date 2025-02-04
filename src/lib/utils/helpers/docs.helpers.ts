@@ -232,9 +232,21 @@ renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
 			.replace(/[^a-z0-9]+/g, '-')
 			.replace(/(^-|-$)/g, '');
 
-		return `<h${depth} id="${id}" tabindex="0" role="heading" aria-level="${depth}" aria-label=${text}>${text}</h${depth}>`;
+		return `
+		<div class="relative pb-1 mb-1" role="presentation">
+		  <h${depth}
+			id="${id}"
+			tabindex="0"
+			role="heading"
+			aria-level="${depth}"
+			aria-label="${text}"
+			class="relative z-10 mb-1"
+		  >${text}</h${depth}>
+		  <div class="absolute bottom-0 left-0 right-0 h-px bg-slate-200 dark:bg-slate-700"></div>
+		</div>
+	  `;
 	}
-	return `<h${depth} role="heading" aria-level="${depth}"  aria-label=${text}>${text}</h${depth}>`;
+	return `<h${depth} role="heading" aria-level="${depth}" aria-label="${text}">${text}</h${depth}>`;
 };
 
 marked.setOptions({

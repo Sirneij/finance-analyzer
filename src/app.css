@@ -27,6 +27,7 @@
 
 	body {
 		overflow-y: scroll;
+		font-family: 'Fira Sans', sans-serif;
 	}
 
 	input[type],
@@ -118,6 +119,14 @@
 	pre code {
 		flex: 1; /* Make the code element take the full space */
 		display: block; /* Ensure it behaves like a block-level element */
+	}
+	code,
+	pre {
+		font-family: 'Fira Code', monospace;
+		font-variant-ligatures: normal; /* Enable ligatures */
+		font-feature-settings:
+			'liga' 1,
+			'calt' 1; /* Ensure ligatures are enabled */
 	}
 
 	.group:hover .timeline-node {
@@ -241,7 +250,7 @@
 	.article-content ul li p {
 		@apply flex place-items-center;
 
-		&input {
+		input {
 			@apply mr-1;
 		}
 	}
