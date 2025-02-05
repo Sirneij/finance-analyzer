@@ -9,7 +9,7 @@ interface Transaction {
   category: "income" | "expense";
 }
 
-async function extractTransactionsFromPDF(
+export async function extractTransactionsFromPDF(
   filePath: string
 ): Promise<[Transaction[], string]> {
   const pdfBuffer = fs.readFileSync(filePath);
