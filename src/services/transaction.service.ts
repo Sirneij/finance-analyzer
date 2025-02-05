@@ -43,17 +43,22 @@ export class TransactionService {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;
 
-      const [transactions, total] = await Promise.all([
-        shouldFetchAll
-          ? Transaction.find({ userId }).sort({ date: -1 }).lean().exec()
-          : Transaction.find({ userId })
-              .sort({ date: -1 })
-              .skip(skip)
-              .limit(limit)
-              .lean()
-              .exec(),
-        Transaction.countDocuments({ userId }),
+      const [result] = await Transaction.aggregate([
+        { $match: { userId } },
+        {
+          $facet: {
+            transactions: [
+              { $sort: { date: -1 } },
+              { $skip: skip },
+              ...(!shouldFetchAll ? [{ $limit: limit }] : []),
+            ],
+            total: [{ $count: "count" }],
+          },
+        },
       ]);
+
+      const transactions = result.transactions;
+      const total = result.total[0]?.count || 0;
 
       return {
         transactions,
