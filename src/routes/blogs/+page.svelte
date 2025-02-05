@@ -11,11 +11,11 @@
 	import Warning from '$lib/components/icons/editor/Warning.svelte';
 	import Searching from '$lib/components/blog/list/Searching.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
-	import CalendarUpdate from '$lib/components/icons/CalendarUpdate.svelte';
 	import Glasses from '$lib/components/icons/Glasses.svelte';
 	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
 	import { WEBSITE_URL } from '$lib/utils/contants.js';
 	import { onMount } from 'svelte';
+	import PencilSquare from '$lib/components/icons/PencilSquare.svelte';
 
 	const { data } = $props();
 
@@ -199,8 +199,8 @@
 							<Glasses class="h-4 w-4" />
 							<span>{estimateReadingTime(article.content)}</span>
 						</span>
-						<span class="flex items-center gap-1.5" aria-label="Updated date">
-							<CalendarUpdate class="h-4 w-4" />
+						<span class="flex items-center gap-1.5" aria-label="Updated date" title="Updated date">
+							<PencilSquare class="h-4 w-4" />
 							<time datetime={article.updatedAt} title={article.updatedAt}>
 								{formatArticleDate(article.updatedAt)}
 							</time>

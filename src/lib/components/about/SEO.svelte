@@ -20,7 +20,7 @@
 			sameAs: [
 				`https://github.com/sirneij`,
 				'https://www.linkedin.com/in/john-owolabi-idogun/',
-				'https://twitter.com/Sirneij'
+				'https://x.com/Sirneij'
 			],
 			alumniOf: {
 				'@type': 'University',

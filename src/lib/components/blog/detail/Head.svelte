@@ -61,6 +61,8 @@
 			', software, coding, development, engineering'}
 	/>
 	<link rel="canonical" href="{WEBSITE_URL}/blogs/{article.slug}/{article._id}" />
+	<meta name="copyright" content="John Owolabi Idogun" />
+	<meta name="created" content={article.createdAt} />
 	<meta name="last-updated" content={article.updatedAt} />
 
 	<!-- Open Graph Meta -->

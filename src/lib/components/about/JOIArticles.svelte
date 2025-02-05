@@ -3,8 +3,9 @@
 	import { estimateReadingTime, formatArticleDate } from '$lib/utils/helpers/editor/blogs.helpers';
 	import { marked } from 'marked';
 	import Caret from '$lib/components/icons/Caret.svelte';
-	import Calendar from '../icons/Calendar.svelte';
 	import Clock from '$lib/components/icons/Clock.svelte';
+	import PenNib from '$lib/components/icons/PenNib.svelte';
+	import PencilSquare from '$lib/components/icons/PencilSquare.svelte';
 
 	let { articles }: { articles: IArticlePopulated[] } = $props();
 </script>
@@ -64,7 +65,9 @@
 					</div>
 				{/if}
 				<div class="mt-6 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-					<span>{formatArticleDate(articles[0].updatedAt)}</span>
+					<span>Written: {formatArticleDate(articles[0].createdAt)}</span>
+					<span class="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
+					<span>Edited: {formatArticleDate(articles[0].updatedAt)}</span>
 					<span class="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600"></span>
 					<span>{estimateReadingTime(articles[0].content)}</span>
 				</div>
@@ -104,8 +107,14 @@
 					</div>
 					<div class="flex items-center justify-between" aria-label="Dates">
 						<div class="flex items-center space-x-3" aria-label="Reading time">
-							<div class="flex items-center space-x-1" aria-label="Updated date">
-								<Calendar class="h-4 w-4 text-gray-500 dark:text-gray-400" />
+							<div class="flex items-center space-x-1" aria-label="Written date">
+								<PenNib class="h-4 w-4 text-gray-500 dark:text-gray-400" />
+								<span class="text-sm font-medium text-gray-600 dark:text-gray-400">
+									{formatArticleDate(article.createdAt)}
+								</span>
+							</div>
+							<div class="flex items-center space-x-1" aria-label="Edited date">
+								<PencilSquare class="h-4 w-4 text-gray-500 dark:text-gray-400" />
 								<span class="text-sm font-medium text-gray-600 dark:text-gray-400">
 									{formatArticleDate(article.updatedAt)}
 								</span>

@@ -3,10 +3,11 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import Check from '$lib/components/icons/Check.svelte';
-	import Clock from '$lib/components/icons/Clock.svelte';
 	import Copy from '$lib/components/icons/Copy.svelte';
 	import Delete from '$lib/components/icons/Delete.svelte';
 	import Edit from '$lib/components/icons/Edit.svelte';
+	import PencilSquare from '$lib/components/icons/PencilSquare.svelte';
+	import PenNib from '$lib/components/icons/PenNib.svelte';
 	import Share from '$lib/components/icons/Share.svelte';
 	import ModelessDialog from '$lib/components/reusables/ModelessDialog.svelte';
 	import { addNotification } from '$lib/states/notification.svelte';
@@ -15,6 +16,7 @@
 	import {
 		copyUrl,
 		estimateReadingTime,
+		formatArticleDate,
 		shareContent
 	} from '$lib/utils/helpers/editor/blogs.helpers';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -110,11 +112,17 @@
 			class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400"
 			aria-label="Dates"
 		>
+			<div class="flex items-center gap-1" aria-label="Created date">
+				<PenNib class="h-4 w-4" />
+				<time datetime={article.createdAt} title={article.createdAt}>
+					Created {formatArticleDate(article.createdAt, true)}
+				</time>
+			</div>
 			{#if article.updatedAt}
 				<div class="flex items-center gap-1" aria-label="Updated date">
-					<Clock class="h-4 w-4" />
+					<PencilSquare class="h-4 w-4" />
 					<time datetime={article.updatedAt} title={article.updatedAt}>
-						Updated {formatDate(article.updatedAt)}
+						Updated {formatArticleDate(article.updatedAt)}
 					</time>
 				</div>
 			{/if}

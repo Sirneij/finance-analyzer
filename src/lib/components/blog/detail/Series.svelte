@@ -57,7 +57,7 @@
 					</button>
 				{:else}
 					<a
-						href="/blogs/{article.slug}/{sArticle._id}"
+						href="/blogs/{sArticle.slug}/{sArticle._id}"
 						class="block rounded-md p-2 hover:bg-gray-50 dark:hover:bg-gray-800 {sArticle._id ===
 						article._id
 							? 'bg-indigo-50 dark:bg-indigo-900/20'

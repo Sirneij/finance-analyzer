@@ -74,9 +74,10 @@ export const estimateReadingTime = (content: string) => {
 interface IEllipsisArticle {
 	_id: 'ellipsis';
 	title: string;
+	slug: string;
 }
 
-export const truncateSeriesArticles = <T extends { _id: string; title: string }>(
+export const truncateSeriesArticles = <T extends { _id: string; title: string; slug: string }>(
 	seriesArticles: T[],
 	showAllSeries: boolean
 ): (T | IEllipsisArticle)[] => {
@@ -84,7 +85,11 @@ export const truncateSeriesArticles = <T extends { _id: string; title: string }>
 		const start = seriesArticles.slice(0, 2);
 		const end = seriesArticles.slice(-2);
 		const hidden = seriesArticles.length - 4;
-		const ellipsis: IEllipsisArticle = { _id: 'ellipsis', title: `${hidden} more parts` };
+		const ellipsis: IEllipsisArticle = {
+			_id: 'ellipsis',
+			title: `${hidden} more parts`,
+			slug: ''
+		};
 		return [...start, ellipsis, ...end];
 	}
 	return seriesArticles;
