@@ -34,7 +34,7 @@
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "test/**/*",
+    "tests/**/*",
     "jest.setup.js"
   ]
 }
