@@ -12,7 +12,6 @@
 	import ModelessDialog from '$lib/components/reusables/ModelessDialog.svelte';
 	import { addNotification } from '$lib/states/notification.svelte';
 	import type { IArticlePopulated } from '$lib/types/articles.types';
-	import { formatDate } from '$lib/utils/helpers/date.helpers';
 	import {
 		copyUrl,
 		estimateReadingTime,

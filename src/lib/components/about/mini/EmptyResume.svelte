@@ -1,5 +1,5 @@
 <div class="mb-24 space-y-24 rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800/50">
-	<div class="space-y-20">
+	<div class="space-y-8">
 		<!-- Experience Section Skeleton -->
 		<section>
 			<div class="mb-8 flex items-center justify-between">
