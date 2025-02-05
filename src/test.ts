@@ -21,7 +21,7 @@ async function extractTransactionsFromPDF(
     body: formData,
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as { text: string };
   const extractedText = data.text;
 
   const transactions: Transaction[] = [];

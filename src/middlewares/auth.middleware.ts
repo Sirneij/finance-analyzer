@@ -1,5 +1,10 @@
 import { AuthErrorType, ProviderMismatchError } from "$types/error.types.js";
-import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
+import type {
+  Request,
+  Response,
+  NextFunction,
+  ErrorRequestHandler,
+} from "express";
 import { sendAuthError } from "$utils/error.utils.js";
 
 export const isAuthenticated = (
@@ -23,11 +28,9 @@ export const isJohnOwolabiIdogun = (
   if (req.isAuthenticated() && req.user?.isJohnOwolabiIdogun) {
     return next();
   }
-  res
-    .status(403)
-    .json({
-      message: "Forbidden. You are not authorized to perform this action.",
-    });
+  res.status(403).json({
+    message: "Forbidden. You are not authorized to perform this action.",
+  });
 };
 
 export const handleAuthError: ErrorRequestHandler = (

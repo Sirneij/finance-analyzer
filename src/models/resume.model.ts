@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { Resume, SkillCategories } from "$types/resume.types.js";
+import type { Resume, SkillCategories } from "$types/resume.types.js";
 
 // Document interface
-interface IResume extends Resume, Document {}
+export interface IResume extends Resume, Document {}
 
 // Skill Categories enum values
 const skillCategories: SkillCategories[] = [

@@ -1,5 +1,5 @@
 import mongoose, { Document } from "mongoose";
-import { Resume } from "$types/resume.types.js";
+import type { Resume } from "$types/resume.types.js";
 
 export interface ITransaction extends Document {
   _id: string;

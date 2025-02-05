@@ -1,5 +1,5 @@
 import { ResumeService } from "$services/resume.service.js";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import busboy from "busboy";
 import { baseConfig } from "$config/base.config.js";
 

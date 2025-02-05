@@ -1,5 +1,5 @@
 import { ArticleSeriesModel } from "$models/article.model.js";
-import {
+import type {
   CreateArticleSeriesInput,
   IArticleSeries,
 } from "$types/article.types.js";

@@ -1,5 +1,5 @@
 import { TagsService } from "$services/tags.service.js";
-import { ITag } from "$types/article.types.js";
+import type { ITag } from "$types/article.types.js";
 import type { Request, Response } from "express";
 import { Types } from "mongoose";
 

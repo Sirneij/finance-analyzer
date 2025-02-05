@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IFileParser, SupportedFileTypes } from "$types/files.types.js";
+import type { IFileParser, SupportedFileTypes } from "$types/files.types.js";
 import { CSVParser } from "$utils/parsers/csv.parsers.js";
 import { PDFParser } from "$utils/parsers/pdf.parsers.js";
 

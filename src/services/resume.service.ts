@@ -1,6 +1,6 @@
 import { baseConfig } from "$config/base.config.js";
-import { ResumeModel } from "$models/resume.model.js";
-import { Resume } from "$types/resume.types.js";
+import { ResumeModel, type IResume } from "$models/resume.model.js";
+import type { Resume } from "$types/resume.types.js";
 
 export class ResumeService {
   static async getResume(id: string): Promise<Resume | null> {
@@ -23,7 +23,7 @@ export class ResumeService {
       }
     );
 
-    const data = await response.json();
+    const data = (await response.json()) as Partial<IResume>;
 
     await ResumeModel.createOrUpdate(data);
 

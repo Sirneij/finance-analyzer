@@ -1,5 +1,5 @@
 import { baseConfig } from "$config/base.config.js";
-import { ITransaction } from "$types/transaction.types.js";
+import type { ITransaction } from "$types/transaction.types.js";
 import { BaseParser } from "$utils/file.utils.js";
 
 export class PDFParser extends BaseParser {
@@ -22,7 +22,7 @@ export class PDFParser extends BaseParser {
       }
     );
 
-    const data = await response.json();
+    const data = (await response.json()) as { text: string };
 
     baseConfig.logger.info(`Parsed data: ${JSON.stringify(data)}`);
 

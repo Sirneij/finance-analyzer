@@ -1,7 +1,7 @@
 import { baseConfig } from "$config/base.config.js";
 import { ArticleService } from "$services/article.service.js";
 import { cloudinaryService } from "$services/db.service.js";
-import { SearchQuery, UpdateArticleInput } from "$types/article.types.js";
+import type { SearchQuery, UpdateArticleInput } from "$types/article.types.js";
 import {
   deleteFilesFromCloudinary,
   generateSlug,
@@ -10,8 +10,8 @@ import {
   processTags,
 } from "$utils/article.utils.js";
 import busboy from "busboy";
-import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
-import { Request, Response, NextFunction } from "express";
+import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
+import type { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 
 export class ArticleController {

@@ -1,5 +1,5 @@
 import { ArticleModel } from "$models/article.model.js";
-import {
+import type {
   BulkArticleUpdate,
   CreateArticleInput,
   IArticlePopulated,

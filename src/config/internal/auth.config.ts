@@ -1,4 +1,4 @@
-import { AuthConfig } from "$types/auth.types.js";
+import type { AuthConfig } from "$types/auth.types.ts";
 import { config } from "dotenv";
 
 config();

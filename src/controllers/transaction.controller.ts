@@ -1,19 +1,10 @@
 import { baseConfig } from "$config/base.config.js";
 import { TransactionService } from "$services/transaction.service.js";
-import { RouteDoc } from "$utils/docs.utils.js";
 import busboy from "busboy";
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
 
 export class TransactionController {
-  @RouteDoc({
-    description: "Upload a file containing transactions",
-    responses: {
-      "200": { description: "Success" },
-      "400": { description: "Failed to upload file" },
-      "401": { description: "User ID not found" },
-    },
-  })
   async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;

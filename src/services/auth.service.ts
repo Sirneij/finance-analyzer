@@ -1,5 +1,5 @@
 import { User } from "$models/user.model.js";
-import { AuthUser, UserProfile } from "$types/auth.types.js";
+import type { AuthUser, UserProfile } from "$types/auth.types.js";
 import { ProviderMismatchError } from "$types/error.types.js";
 
 export class AuthService {

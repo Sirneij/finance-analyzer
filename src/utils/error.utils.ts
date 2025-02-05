@@ -1,6 +1,6 @@
 import { baseConfig } from "$config/base.config.js";
 import { AuthError } from "$types/error.types.js";
-import { Response } from "express";
+import type { Response } from "express";
 import { WebSocket } from "ws";
 
 export const sendAuthError = (res: Response, error: AuthError) => {

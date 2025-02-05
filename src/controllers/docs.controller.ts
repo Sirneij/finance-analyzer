@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { EndpointService } from "$services/docs.services.js";
 
 export class EndpointController {

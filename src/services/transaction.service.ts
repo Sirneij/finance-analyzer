@@ -1,6 +1,6 @@
 import { baseConfig } from "$config/base.config.js";
 import { Transaction } from "$models/transaction.model.js";
-import {
+import type {
   FileUploadResult,
   ITransaction,
   SpendingReport,
@@ -86,7 +86,7 @@ export class TransactionService {
         throw new Error("Failed to summarize transactions");
       }
 
-      return response.json();
+      return response.json() as Promise<FinancialSummary>;
     } catch (error) {
       throw new Error("Failed to fetch income/expenses/savings");
     }
@@ -109,7 +109,7 @@ export class TransactionService {
         throw new Error("Failed to analyze transactions");
       }
 
-      return response.json();
+      return response.json() as Promise<SpendingReport>;
     } catch (error) {
       throw new Error("Failed to analyze transactions");
     }

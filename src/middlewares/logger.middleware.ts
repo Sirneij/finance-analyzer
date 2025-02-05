@@ -1,5 +1,5 @@
 import { baseConfig } from "$config/base.config.js";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 export const requestLogger = (
   req: Request,

@@ -1,4 +1,4 @@
-import { IArticle, IArticleSeries, ITag } from "$types/article.types.js";
+import type { IArticle, IArticleSeries, ITag } from "$types/article.types.js";
 import mongoose, { Schema } from "mongoose";
 
 // Schemas

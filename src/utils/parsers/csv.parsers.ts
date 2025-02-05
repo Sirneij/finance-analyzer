@@ -1,6 +1,6 @@
 import { parse } from "csv-parse";
 import { BaseParser } from "$utils/file.utils.js";
-import { ITransaction } from "$types/transaction.types.js";
+import type { ITransaction } from "$types/transaction.types.js";
 import { baseConfig } from "$config/base.config.js";
 
 export class CSVParser extends BaseParser {

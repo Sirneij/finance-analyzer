@@ -1,5 +1,5 @@
 import { TagModel } from "$models/article.model.js";
-import { CreateTagInput, ITag } from "$types/article.types.js";
+import type { CreateTagInput, ITag } from "$types/article.types.js";
 
 export class TagsService {
   static async getTagById(id: string): Promise<ITag | null> {

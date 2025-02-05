@@ -1,7 +1,7 @@
 import { cloudinaryService } from "$services/db.service.js";
 import { SeriesService } from "$services/series.service.js";
 import { TagsService } from "$services/tags.service.js";
-import { SearchQuery } from "$types/article.types.js";
+import type { SearchQuery } from "$types/article.types.js";
 import { createHash } from "crypto";
 import { Types } from "mongoose";
 

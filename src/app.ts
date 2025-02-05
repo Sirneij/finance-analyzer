@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { type Application } from "express";
 import cors from "cors";
 import session from "express-session";
 import { WebSocketServer } from "ws";
@@ -10,7 +10,7 @@ import { baseConfig } from "$config/base.config.js";
 import { AuthService } from "$services/auth.service.js";
 import authRoutes from "$routes/auth.routes.js";
 import { Providers } from "$types/misc.types.js";
-import { GitHubProfile } from "$types/auth.types.js";
+import type { GitHubProfile } from "$types/auth.types.js";
 import type { User } from "$types/passports.d.js";
 import { handleAuthError } from "$middlewares/auth.middleware.js";
 import { ProviderMismatchError } from "$types/error.types.js";

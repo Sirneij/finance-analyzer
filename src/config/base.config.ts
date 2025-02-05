@@ -1,4 +1,4 @@
-import { BaseConfig } from "$types/misc.types.js";
+import type { BaseConfig } from "$types/misc.types.js";
 import { authConfig } from "$config/internal/auth.config.js";
 import { dbConfig } from "$config/internal/db.config.js";
 import { logger } from "$config/internal/logger.config.js";
