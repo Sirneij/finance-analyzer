@@ -60,6 +60,8 @@ export class TransactionService {
       const transactions = result.transactions;
       const total = result.total[0]?.count || 0;
 
+      baseConfig.logger.info(`Fetched ${transactions.length} transactions`);
+
       return {
         transactions,
         total,
