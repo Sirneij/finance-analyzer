@@ -43,8 +43,17 @@ export class TransactionService {
       const shouldFetchAll = limit === -1;
       const skip = shouldFetchAll ? 0 : (page - 1) * limit;
 
+      // Add debug logging
+      baseConfig.logger.info(
+        `Searching for transactions with userId: ${userId}`
+      );
+
       const [result] = await Transaction.aggregate([
-        { $match: { userId } },
+        {
+          $match: {
+            userId: new mongoose.Types.ObjectId(userId),
+          },
+        },
         {
           $facet: {
             transactions: [
@@ -56,6 +65,9 @@ export class TransactionService {
           },
         },
       ]);
+
+      // Add more debug logging
+      baseConfig.logger.info(`Raw result: ${JSON.stringify(result)}`);
 
       const transactions = result.transactions;
       const total = result.total[0]?.count || 0;
