@@ -66,13 +66,8 @@ export class TransactionService {
         },
       ]);
 
-      // Add more debug logging
-      baseConfig.logger.info(`Raw result: ${JSON.stringify(result)}`);
-
       const transactions = result.transactions;
       const total = result.total[0]?.count || 0;
-
-      baseConfig.logger.info(`Fetched ${transactions.length} transactions`);
 
       return {
         transactions,
