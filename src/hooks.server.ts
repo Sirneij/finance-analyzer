@@ -1,3 +1,4 @@
+import { PUBLIC_PATHS, sessionCache } from '$lib/server/sessionCache.server';
 import { BASE_API_URI } from '$lib/utils/contants';
 import type { Handle } from '@sveltejs/kit';
 
@@ -13,35 +14,54 @@ export const handleFetch = async ({ request, fetch }) => {
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
-	if (event.locals.user) {
-		// if there is already a user  in session load page as normal
+	// Skip auth check for public paths
+	if (PUBLIC_PATHS.some((path) => event.url.pathname.startsWith(path))) {
 		return await resolve(event);
 	}
 
-	// get cookies from browser
+	//   User is already logged in
+	if (event.locals.user) {
+		return await resolve(event);
+	}
+
+	// Check if session cookie is present
 	const session = event.cookies.get('connect.sid');
 
 	if (!session) {
-		// if there is no session load page as normal
-		console.warn('No session found');
+		// No session cookie, proceed without user
+		console.warn('No session cookie found');
+		event.locals.user = undefined;
 		return await resolve(event);
 	}
 
-	// find the user based on the session
-	const res = await event.fetch(`${BASE_API_URI}/v1/auth/session`);
-
-	if (!res.ok) {
-		// if there an error load page as normal
-		console.error(`Error fetching user: ${res.statusText}`);
+	// Check cache first
+	const cachedData = sessionCache.get(session);
+	if (cachedData) {
+		event.locals.user = cachedData.user;
 		return await resolve(event);
 	}
 
-	// if `user` exists set `events.local`
-	const { user } = await res.json();
+	// Only fetch if not in cache
+	try {
+		const res = await event.fetch(`${BASE_API_URI}/v1/auth/session`);
 
-	event.locals.user = user;
+		if (!res.ok) {
+			return await resolve(event);
+		}
 
-	// Get the response from the route
+		const { user } = await res.json();
+
+		// Cache the result
+		sessionCache.set(session, {
+			user,
+			timestamp: Date.now()
+		});
+
+		event.locals.user = user;
+	} catch (error) {
+		console.error('Session fetch error:', error);
+	}
+
 	const response = await resolve(event);
 
 	// Security headers
