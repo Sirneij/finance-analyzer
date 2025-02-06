@@ -89,7 +89,7 @@
 	<meta property="og:site_name" content="John Owolabi Idogun" />
 
 	<!-- Twitter -->
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:site" content="@Sirneij" />
 	<meta name="twitter:creator" content="@Sirneij" />
 	<meta name="twitter:title" content={title} />
