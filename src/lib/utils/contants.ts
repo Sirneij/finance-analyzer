@@ -6,8 +6,6 @@ export const BASE_API_URI = import.meta.env.DEV
 	? import.meta.env.VITE_BASE_API_URI_DEV
 	: import.meta.env.VITE_BASE_API_URI_PROD;
 
-console.log(BASE_API_URI);
-
 export const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL;
 export const DEVTO_API_KEY = import.meta.env.VITE_DEVTO_API_KEY;
