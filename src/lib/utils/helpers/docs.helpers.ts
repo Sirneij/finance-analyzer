@@ -94,6 +94,32 @@ export function changeCodeBlockTheme(themeName: string) {
 	});
 }
 
+function parseLineNumbers(rangeStr: string): number[] {
+	// Remove square brackets if present
+	const cleanStr = rangeStr.replace(/^\[|\]$/g, '');
+	const segments = cleanStr.split(',').map((s) => s.trim());
+
+	const numbers: number[] = [];
+
+	for (const segment of segments) {
+		if (segment.includes('-')) {
+			const [start, end] = segment.split('-').map((n) => parseInt(n.trim()));
+			if (!isNaN(start) && !isNaN(end)) {
+				for (let i = start; i <= end; i++) {
+					numbers.push(i);
+				}
+			}
+		} else {
+			const num = parseInt(segment);
+			if (!isNaN(num)) {
+				numbers.push(num);
+			}
+		}
+	}
+
+	return [...new Set(numbers)].sort((a, b) => a - b);
+}
+
 interface Code {
 	text: string;
 	lang?: string;
@@ -123,7 +149,7 @@ renderer.code = function ({ text, lang }: Code) {
 	const headerMatch = lang?.match(/^(\w+)\s*:(?:([^[\s]+))?(?:\s*\[([^\]]+)\])?:$/);
 	const validLanguage = headerMatch ? headerMatch[1] : lang || 'text';
 	const filename = headerMatch?.[2]?.trim();
-	const lNos = headerMatch?.[3]?.split(',').map((n) => parseInt(n.trim())) || [];
+	const lNos = headerMatch?.[3] ? parseLineNumbers(headerMatch[3]) : [];
 	const lines = text.split('\n');
 
 	// Escape HTML characters
