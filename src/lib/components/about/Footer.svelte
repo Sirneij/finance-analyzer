@@ -16,7 +16,7 @@
 				<span>&copy; {currentYear}</span>
 				<span>John Owolabi Idogun. All rights reserved.</span>
 			</small>
-			<p class="flex items-center text-center">
+			<p class="flex items-center text-center text-sm">
 				Built with
 				<Hearts class="mx-1 h-4 w-4 text-red-500 dark:text-red-400" />
 				from scratch with Svelte 5, NodeJS, Python and TailwindCSS.
