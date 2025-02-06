@@ -6,8 +6,13 @@
 		truncateTitle
 	} from '$lib/utils/helpers/editor/blogs.helpers';
 	import { onMount } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
-	let { article }: { article: IArticlePopulated } = $props();
+	interface SeriesProps extends HTMLAttributes<HTMLElement> {
+		article: IArticlePopulated;
+	}
+
+	let { article, ...props }: SeriesProps = $props();
 
 	let seriesArticles = $state([] as IArticlePopulated[]),
 		showAllSeries = $state(false),
@@ -31,7 +36,7 @@
 <svelte:window bind:innerWidth />
 
 {#if article.series && seriesArticles.length > 1}
-	<div class="mt-8 rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+	<div class="mt-8 rounded-lg border border-gray-200 p-4 dark:border-gray-800" {...props}>
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-white">
 			{capitalize(article.series.title)} Series
 		</h2>

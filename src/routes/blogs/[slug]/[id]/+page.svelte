@@ -149,7 +149,7 @@
 		<Header article={data.article} />
 
 		<!-- Series List -->
-		<Series article={data.article} />
+		<Series article={data.article} id="series-top" />
 
 		<!-- Content -->
 		<div
@@ -161,6 +161,9 @@
 		>
 			{@html marked.parse(data.article.content)}
 		</div>
+
+		<!-- Series List -->
+		<Series article={data.article} id="series-bottom" />
 	</main>
 </article>
 {#if (data.user && data.user.isJohnOwolabiIdogun) || windowWidth >= MOBILE_BREAKPOINT}
