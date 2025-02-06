@@ -182,7 +182,7 @@ renderer.code = function ({ text, lang }: Code) {
 		return ls
 			.map((_, i) =>
 				lNos.includes(i)
-					? `<div class="absolute w-full h-6 bg-yellow-100/40 dark:bg-yellow-500/10" style="top: ${formatLNosIndex(i - 1)}"></div>`
+					? `<div class="absolute w-full border-l-4 border-l-yellow-100/40 dark:border-l-yellow-100/10 h-6 bg-yellow-100/40 dark:bg-yellow-500/10" style="top: ${formatLNosIndex(i - 1)}"></div>`
 					: ''
 			)
 			.join('');
