@@ -205,11 +205,6 @@ const startServer = async () => {
       throw new Error("MongoDB connection not ready");
     }
 
-    // Log github callback url
-    baseConfig.logger.info(
-      `Github callback URL: ${baseConfig.auth.github.callbackURL}`
-    );
-
     // 7. Start server
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, () => {
