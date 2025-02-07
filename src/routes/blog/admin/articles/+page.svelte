@@ -12,6 +12,8 @@
 	import type { IArticlePopulated } from '$lib/types/articles.types';
 	import { addNotification } from '$lib/states/notification.svelte';
 	import Dock from '$lib/components/reusables/Dock.svelte';
+	import PenNib from '$lib/components/icons/PenNib.svelte';
+	import PencilSquare from '$lib/components/icons/PencilSquare.svelte';
 
 	let { data } = $props();
 
@@ -127,8 +129,14 @@
 							<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">Views</th>
 							<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
 								<div class="flex items-center space-x-2">
-									<span>Date</span>
-									<Calendar class="h-4 w-4" />
+									<span>Created Date</span>
+									<PenNib class="h-4 w-4" />
+								</div>
+							</th>
+							<th class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
+								<div class="flex items-center space-x-2">
+									<span>Updated Date</span>
+									<PencilSquare class="h-4 w-4" />
 								</div>
 							</th>
 							<th></th>
@@ -166,6 +174,9 @@
 								</td>
 								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
 									{article.views}
+								</td>
+								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
+									{formatArticleDate(article.createdAt, true)}
 								</td>
 								<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
 									{formatArticleDate(article.updatedAt)}

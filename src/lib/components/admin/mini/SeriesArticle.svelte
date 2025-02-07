@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { formatArticleDate } from '$lib/utils/helpers/editor/blog.helpers';
+
 	let { article, index } = $props();
 </script>
 
@@ -24,13 +26,14 @@
 		</a>
 	</div>
 
+	<!-- Created Date -->
+	<div class="col-span-2 text-sm text-gray-500 dark:text-gray-400">
+		{formatArticleDate(article.createdAt, true)}
+	</div>
+
 	<!-- Updated Date -->
 	<div class="col-span-2 text-sm text-gray-500 dark:text-gray-400">
-		{new Date(article.updatedAt).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric'
-		})}
+		{formatArticleDate(article.updatedAt)}
 	</div>
 
 	<!-- Status Badge -->
