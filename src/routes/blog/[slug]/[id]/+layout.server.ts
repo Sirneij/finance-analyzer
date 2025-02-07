@@ -1,6 +1,6 @@
 import type { IArticlePopulated } from '$lib/types/articles.types';
 import { BASE_API_URI } from '$lib/utils/contants';
-import { isBot } from '$lib/utils/helpers/editor/blogs.helpers';
+import { isBot } from '$lib/utils/helpers/editor/blog.helpers';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ params, fetch, cookies, request }) => {

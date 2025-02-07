@@ -272,7 +272,7 @@ export const formatSearchResponse = (params: URLSearchParams): string => {
 };
 
 export async function fetchSeriesArticles(seriesId: string): Promise<IArticlePopulated[]> {
-	const res = await fetch(`/blogs/api/series/${seriesId}`);
+	const res = await fetch(`/blog/api/series/${seriesId}`);
 	const data = await res.json();
 	return data.articles;
 }

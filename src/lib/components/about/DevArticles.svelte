@@ -60,55 +60,57 @@
 	{#if Object.entries(properDevtoArticles.series).length > 0}
 		<div class="space-y-2">
 			{#each Object.entries(properDevtoArticles.series) as [seriesName, articles] (seriesName)}
-				<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
-					<!-- Series Header -->
-					<button
-						type="button"
-						onclick={() => toggleSeries(seriesName)}
-						class="flex w-full items-center justify-between rounded-lg p-2 pl-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50"
-					>
-						<h3 class="text-xl font-semibold">{seriesName}</h3>
-						<Caret
-							trend="down"
-							class="h-6 w-6 transform transition-transform duration-300"
-							style={activeSeries === seriesName ? '' : 'transform: rotate(-90deg)'}
-						/>
-					</button>
-
-					<!-- Series Articles -->
-					{#if activeSeries === seriesName}
-						<div
-							transition:slide={{ duration: SLIDE_DURATION, easing: cubicOut }}
-							class="relative mt-4 w-full"
+				{#if articles.length > 0}
+					<div class="rounded-xl bg-gray-100 dark:bg-gray-800/50">
+						<!-- Series Header -->
+						<button
+							type="button"
+							onclick={() => toggleSeries(seriesName)}
+							class="flex w-full items-center justify-between rounded-lg p-2 pl-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50"
 						>
+							<h3 class="text-xl font-semibold">{seriesName}</h3>
+							<Caret
+								trend="down"
+								class="h-6 w-6 transform transition-transform duration-300"
+								style={activeSeries === seriesName ? '' : 'transform: rotate(-90deg)'}
+							/>
+						</button>
+
+						<!-- Series Articles -->
+						{#if activeSeries === seriesName}
 							<div
-								class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4"
+								transition:slide={{ duration: SLIDE_DURATION, easing: cubicOut }}
+								class="relative mt-4 w-full"
 							>
-								{#each articles as article, index}
-									<div
-										in:slide={{
-											delay: index * 100,
-											duration: SLIDE_DURATION,
-											easing: cubicOut
-										}}
-									>
-										<Article
-											{article}
-											class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
-										/>
-									</div>
-								{/each}
+								<div
+									class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 pl-4"
+								>
+									{#each articles as article, index}
+										<div
+											in:slide={{
+												delay: index * 100,
+												duration: SLIDE_DURATION,
+												easing: cubicOut
+											}}
+										>
+											<Article
+												{article}
+												class="w-[300px] flex-none transform snap-start rounded-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105"
+											/>
+										</div>
+									{/each}
+								</div>
+								<!-- Gradient fades -->
+								<div
+									class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
+								></div>
+								<div
+									class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
+								></div>
 							</div>
-							<!-- Gradient fades -->
-							<div
-								class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
-							></div>
-							<div
-								class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
-							></div>
-						</div>
-					{/if}
-				</div>
+						{/if}
+					</div>
+				{/if}
 			{/each}
 		</div>
 	{/if}

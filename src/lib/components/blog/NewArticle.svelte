@@ -24,7 +24,7 @@
 				bind:foreImage
 				bind:selectedSeries
 				bind:selectedTags
-				formActionURL="/blogs/create?/create"
+				formActionURL="/blog/create?/create"
 			/>
 		</div>
 	</AnimatedSection>

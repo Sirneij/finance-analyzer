@@ -8,7 +8,7 @@
 		addScreenReaderLabels,
 		throttle,
 		tocObserver
-	} from '$lib/utils/helpers/editor/blogs.helpers';
+	} from '$lib/utils/helpers/editor/blog.helpers';
 	import Head from '$lib/components/blog/detail/Head.svelte';
 	import TOC from '$lib/components/blog/detail/TOC.svelte';
 	import Header from '$lib/components/blog/detail/Header.svelte';
@@ -68,7 +68,7 @@
 		}
 	}
 
-	const crumbs = [{ text: 'Blogs', href: '/blogs' }, { text: data.article.title }];
+	const crumbs = [{ text: 'Blog', href: '/blog' }, { text: data.article.title }];
 
 	$effect(() => {
 		if (contentContainer) {

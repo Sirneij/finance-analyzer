@@ -20,9 +20,9 @@
 	let isExpanded = $state(false);
 
 	const adminNav = [
-		{ title: 'Write', href: '/blogs/create' },
-		{ title: 'Manage', href: '/blogs/admin' },
-		{ title: 'Articles', href: '/blogs/admin/articles' }
+		{ title: 'Write', href: '/blog/create' },
+		{ title: 'Manage', href: '/blog/admin' },
+		{ title: 'Articles', href: '/blog/admin/articles' }
 	];
 
 	const adminIcons = {

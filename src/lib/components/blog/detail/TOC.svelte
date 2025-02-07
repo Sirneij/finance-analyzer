@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { IArticlePopulated } from '$lib/types/articles.types';
 	import { getModifierKey } from '$lib/utils/commons';
-	import { generateTOC } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { generateTOC } from '$lib/utils/helpers/editor/blog.helpers';
 
 	let {
 		activeId,

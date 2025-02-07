@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { showInfo } from '$lib/utils/helpers/editor/markdown.helpers';
-	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blog.helpers';
 	import { onMount } from 'svelte';
 	import Close from '$lib/components/icons/Close.svelte';
 	import { fade, slide } from 'svelte/transition';

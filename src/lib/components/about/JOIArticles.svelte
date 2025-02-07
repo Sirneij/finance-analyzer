@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { IArticlePopulated } from '$lib/types/articles.types';
-	import { estimateReadingTime, formatArticleDate } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { estimateReadingTime, formatArticleDate } from '$lib/utils/helpers/editor/blog.helpers';
 	import { marked } from 'marked';
 	import Caret from '$lib/components/icons/Caret.svelte';
 	import Clock from '$lib/components/icons/Clock.svelte';
@@ -22,7 +22,7 @@
 		</h2>
 
 		<a
-			href="/blogs"
+			href="/blog"
 			class="group inline-flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700
            transition-all hover:border-indigo-500 hover:text-indigo-600 sm:gap-2 sm:px-4 sm:py-2 sm:text-sm dark:border-gray-700 dark:text-gray-300 dark:hover:border-indigo-500 dark:hover:text-indigo-400"
 			title="View All Articles"
@@ -45,7 +45,7 @@
 				aria-label="Background"
 			></div>
 			<a
-				href="/blogs/{articles[0].slug}/{articles[0]._id}"
+				href="/blog/{articles[0].slug}/{articles[0]._id}"
 				class="relative flex flex-col rounded-2xl bg-white p-6 transition-all duration-300 hover:scale-[1.01] dark:bg-gray-800"
 				aria-label="Featured Article"
 			>
@@ -83,7 +83,7 @@
 		>
 			{#each articles.slice(1) as article}
 				<a
-					href="/blogs/{article.slug}/{article._id}"
+					href="/blog/{article.slug}/{article._id}"
 					class="focus:outline-hidden -ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 					style="scroll-snap-align: start;"
 					aria-label="Article"

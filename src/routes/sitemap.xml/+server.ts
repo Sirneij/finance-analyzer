@@ -41,8 +41,8 @@ export async function GET() {
 
 		const staticPages: SitemapEntry[] = [
 			{ url: '/', priority: '1.0', changefreq: 'daily', lang: 'en', lastmod },
-			{ url: '/finanalyzer/docs', priority: '0.8', changefreq: 'weekly', lang: 'en', lastmod },
-			{ url: '/blogs', priority: '1.0', changefreq: 'daily', lang: 'en', lastmod }
+			{ url: '/blog', priority: '1.0', changefreq: 'daily', lang: 'en', lastmod },
+			{ url: '/finanalyzer/docs', priority: '0.8', changefreq: 'weekly', lang: 'en', lastmod }
 		];
 
 		let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -80,11 +80,11 @@ export async function GET() {
 
 			xml += `
     <url>
-        <loc>${DOMAIN}/blogs/${article.slug}/${article._id}</loc>
+        <loc>${DOMAIN}/blog/${article.slug}/${article._id}</loc>
         <lastmod>${formattedLastmod}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>${articlePriority}</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blogs/${article.slug}/${article._id}"/>`;
+        <xhtml:link rel="alternate" hreflang="en" href="${DOMAIN}/blog/${article.slug}/${article._id}"/>`;
 
 			if (article.foreImage) {
 				xml += `

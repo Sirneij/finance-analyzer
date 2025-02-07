@@ -10,7 +10,7 @@
 	import Settings from '$lib/components/icons/Settings.svelte';
 	import ModelessDialog from '$lib/components/reusables/ModelessDialog.svelte';
 	import { onMount } from 'svelte';
-	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { getEditorState, setEditorState } from '$lib/utils/helpers/editor/blog.helpers';
 	import ImageInput from '$lib/components/blog/mini/ImageInput.svelte';
 	import TagInput from './TagInput.svelte';
 	import { page } from '$app/state';
@@ -260,7 +260,7 @@
 	<form
 		class="space-y-4"
 		method="POST"
-		action="/blogs/create?/savePostOptions"
+		action="/blog/create?/savePostOptions"
 		use:enhance={handlePostOptionsFormSubmit}
 	>
 		<div>

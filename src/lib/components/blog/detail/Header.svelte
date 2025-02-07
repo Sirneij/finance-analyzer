@@ -17,7 +17,7 @@
 		estimateReadingTime,
 		formatArticleDate,
 		shareContent
-	} from '$lib/utils/helpers/editor/blogs.helpers';
+	} from '$lib/utils/helpers/editor/blog.helpers';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { onDestroy } from 'svelte';
 
@@ -76,7 +76,7 @@
 		{#if page.data.user && page.data.user.isJohnOwolabiIdogun}
 			<form method="POST" use:enhance={handleDelete} class="flex gap-2">
 				<a
-					href="/blogs/{article.slug}/{article._id}/edit"
+					href="/blog/{article.slug}/{article._id}/edit"
 					class=" rounded-sm p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
 					aria-label="Edit article"
 				>
@@ -88,7 +88,7 @@
 					type="submit"
 					class="rounded-sm p-2 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-900/20"
 					aria-label="Delete article"
-					formaction="/blogs/{article.slug}/{article._id}?/deleteArticle"
+					formaction="/blog/{article.slug}/{article._id}?/deleteArticle"
 				>
 					<Delete class="h-5 w-5" />
 				</button>
@@ -100,7 +100,7 @@
 		<!-- Tags -->
 		<div class="flex flex-wrap gap-2" aria-label="Tags">
 			{#each article.tags as tag}
-				<a href="/blogs?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
+				<a href="/blog?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
 					{tag.name}
 				</a>
 			{/each}

@@ -7,12 +7,14 @@ Crawl-delay: 1
 
 # Allow public sections
 Allow: /
+Allow: /blog/
 Allow: /blogs/
 Allow: /finanalyzer/docs/
 Allow: /sitemap.xml
 
 # Restrict private sections
 Disallow: /finanalyzer/
+Disallow: /blog/admin
 Disallow: /blogs/admin
 Disallow: /api/
 Disallow: /drafts/

@@ -7,7 +7,7 @@
 	import { onDestroy } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { formatSearchResponse } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { formatSearchResponse } from '$lib/utils/helpers/editor/blog.helpers';
 
 	let {
 		searchInput = $bindable(),
@@ -111,7 +111,7 @@
 
 <form
 	class="relative mx-auto flex max-w-2xl gap-2"
-	action="/blogs"
+	action="/blog"
 	bind:this={searchForm}
 	onsubmit={handleSubmit}
 >

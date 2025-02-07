@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { truncateTitle } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { truncateTitle } from '$lib/utils/helpers/editor/blog.helpers';
+	import Home from '../icons/Home.svelte';
 
 	type Crumb = {
 		text: string;
@@ -18,8 +19,10 @@
 			<a
 				href="/"
 				class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+				title="Home"
+				aria-label="Home"
 			>
-				Home
+				<Home class="h-5 w-6" />
 			</a>
 		</li>
 

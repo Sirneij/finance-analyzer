@@ -5,7 +5,7 @@
 	import Note from '$lib/components/icons/editor/Note.svelte';
 	import Loader from '$lib/components/reusables/Loader.svelte';
 	import Tooltip from '$lib/components/reusables/Tooltip.svelte';
-	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blog.helpers';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { fade, slide } from 'svelte/transition';
 
@@ -184,7 +184,7 @@
 						<button
 							type="submit"
 							class="btn-danger px-6 py-2 text-base"
-							formaction="/blogs?/deleteUpload"
+							formaction="/blog?/deleteUpload"
 							disabled={isUploading}
 						>
 							Remove
@@ -224,7 +224,7 @@
 			bind:this={submitButton}
 			type="submit"
 			class="hidden"
-			formaction="/blogs?/upload"
+			formaction="/blog?/upload"
 			aria-hidden="true"
 		>
 			Upload

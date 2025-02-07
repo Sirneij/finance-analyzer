@@ -5,7 +5,7 @@
 	import Empty from '$lib/components/reusables/Empty.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { fade } from 'svelte/transition';
-	import { formatArticleDate } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { formatArticleDate } from '$lib/utils/helpers/editor/blog.helpers';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import Paginations from '$lib/components/reusables/Paginations.svelte';
@@ -158,7 +158,7 @@
 								</td>
 								<td class="px-6 py-4">
 									<a
-										href="/blogs/{article.slug}/{article._id}"
+										href="/blog/{article.slug}/{article._id}"
 										class="font-medium text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
 									>
 										{article.title}

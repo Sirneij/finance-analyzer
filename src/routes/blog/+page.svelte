@@ -3,7 +3,7 @@
 	import {
 		estimateReadingTime,
 		formatArticleDate
-	} from '$lib/utils/helpers/editor/blogs.helpers.js';
+	} from '$lib/utils/helpers/editor/blog.helpers.js';
 	import { fade, fly } from 'svelte/transition';
 
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions.js';
@@ -34,14 +34,14 @@
 		}
 	};
 
-	const crumbs = [{ text: 'Blogs', href: '/blogs' }];
+	const crumbs = [{ text: 'Blog', href: '/blog' }];
 
 	function getJsonLd() {
 		return {
 			'@context': 'https://schema.org',
 			'@type': 'Blog',
 			name: "John Owolabi Idogun's Tech Blog",
-			url: `${WEBSITE_URL}/blogs`,
+			url: `${WEBSITE_URL}/blog`,
 			description:
 				'In-depth articles about software engineering, web development, and tech tutorials',
 			author: {
@@ -90,7 +90,7 @@
 		name="keywords"
 		content="Software Engineering, Web Development, JavaScript, TypeScript, Python, React, Svelte, NodeJS, Backend Development, Frontend Development, Tech Tutorials, Programming Tips"
 	/>
-	<link rel="canonical" href="{WEBSITE_URL}/blogs" />
+	<link rel="canonical" href="{WEBSITE_URL}/blog" />
 
 	<!-- OpenGraph Meta -->
 	<meta property="og:type" content="website" />
@@ -102,7 +102,7 @@
 		property="og:description"
 		content="Explore in-depth articles about software engineering, web development, JavaScript, TypeScript, Python, and tech tutorials."
 	/>
-	<meta property="og:url" content="{WEBSITE_URL}/blogs" />
+	<meta property="og:url" content="{WEBSITE_URL}/blog" />
 	<meta property="og:image" content={`${WEBSITE_URL}/JI.png`} />
 
 	<!-- Twitter Meta -->
@@ -174,7 +174,7 @@
 						style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;"
 					>
 						<a
-							href="/blogs/{article.slug}/{article._id}"
+							href="/blog/{article.slug}/{article._id}"
 							class="focus:outline-hidden inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5 dark:text-gray-100"
 							aria-label={article.title}
 						>
@@ -184,7 +184,7 @@
 					{#if article.tags?.length}
 						<div class="flex flex-wrap gap-1" aria-label="Tags">
 							{#each article.tags as tag}
-								<a href="/blogs?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
+								<a href="/blog?tags={tag.name}" class="tag {tag.name}" aria-label={tag.name}>
 									{tag.name}
 								</a>
 							{/each}

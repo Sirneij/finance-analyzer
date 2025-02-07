@@ -17,7 +17,7 @@
 	<!-- Title -->
 	<div class="col-span-5">
 		<a
-			href="/blogs/{article.slug}/{article._id}"
+			href="/blog/{article.slug}/{article._id}"
 			class="font-medium text-gray-900 transition-colors hover:text-indigo-600 dark:text-gray-100 dark:hover:text-indigo-400"
 		>
 			{article.title}

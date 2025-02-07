@@ -4,7 +4,7 @@
 		capitalize,
 		truncateSeriesArticles,
 		truncateTitle
-	} from '$lib/utils/helpers/editor/blogs.helpers';
+	} from '$lib/utils/helpers/editor/blog.helpers';
 	import { onMount } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
@@ -20,7 +20,7 @@
 	$effect(() => {
 		onMount(async () => {
 			if (article.series) {
-				const res = await fetch(`/blogs/api/series/${article.series._id}`);
+				const res = await fetch(`/blog/api/series/${article.series._id}`);
 				const data = await res.json();
 				// Sort the series articles by their createdAt date
 				seriesArticles = data.articles.sort((a: IArticlePopulated, b: IArticlePopulated) => {
@@ -62,7 +62,7 @@
 					</button>
 				{:else}
 					<a
-						href="/blogs/{sArticle.slug}/{sArticle._id}"
+						href="/blog/{sArticle.slug}/{sArticle._id}"
 						class="block rounded-md p-2 hover:bg-gray-50 dark:hover:bg-gray-800 {sArticle._id ===
 						article._id
 							? 'bg-indigo-50 dark:bg-indigo-900/20'

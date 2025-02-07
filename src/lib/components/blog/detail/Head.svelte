@@ -25,7 +25,7 @@
 			dateModified: article.updatedAt,
 			mainEntityOfPage: {
 				'@type': 'WebPage',
-				'@id': `${WEBSITE_URL}/blogs/${article.slug}/${article._id}`
+				'@id': `${WEBSITE_URL}/blog/${article.slug}/${article._id}`
 			},
 			image: article.foreImage,
 			keywords: article.tags.map((tag) => tag.name).join(', '),
@@ -60,14 +60,14 @@
 		content={article.tags.map((tag) => tag.name).join(', ') +
 			', software, coding, development, engineering'}
 	/>
-	<link rel="canonical" href="{WEBSITE_URL}/blogs/{article.slug}/{article._id}" />
+	<link rel="canonical" href="{WEBSITE_URL}/blog/{article.slug}/{article._id}" />
 	<meta name="copyright" content="John Owolabi Idogun" />
 	<meta name="created" content={article.createdAt} />
 	<meta name="last-updated" content={article.updatedAt} />
 
 	<!-- Open Graph Meta -->
 	<meta property="og:type" content="article" />
-	<meta property="og:url" content="{WEBSITE_URL}/blogs/{article.slug}/{article._id}" />
+	<meta property="og:url" content="{WEBSITE_URL}/blog/{article.slug}/{article._id}" />
 	<meta property="og:title" content={article.title} />
 	<meta
 		property="og:description"

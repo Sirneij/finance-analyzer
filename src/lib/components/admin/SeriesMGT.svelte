@@ -7,7 +7,7 @@
 	import Loader from '$lib/components/reusables/Loader.svelte';
 	import SeriesArticle from '$lib/components/admin/mini/SeriesArticle.svelte';
 	import SeriesArticleHeader from './mini/SeriesArticleHeader.svelte';
-	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blogs.helpers';
+	import { fetchSeriesArticles } from '$lib/utils/helpers/editor/blog.helpers';
 	import type { IArticlePopulated } from '$lib/types/articles.types';
 
 	let expandedSeries = $state<string | null>(null),
@@ -50,7 +50,7 @@
 		<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Series</h2>
 	</div>
 
-	<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
+	<div class="shadow-xs rounded-lg bg-white p-6 dark:bg-gray-800">
 		{#if page.data.series?.length}
 			<div class="space-y-4">
 				{#each page.data.series as series}
