@@ -45,7 +45,7 @@
 	div {
 		position: absolute;
 		inset: 0;
-		transform-origin: center;
-		will-change: transform, opacity;
+		/* transform-origin: center;
+		will-change: transform, opacity; */
 	}
 </style>

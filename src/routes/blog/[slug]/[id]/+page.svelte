@@ -16,6 +16,7 @@
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import BackToTop from '$lib/components/icons/BackToTop.svelte';
 	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
+	import ArticleImage from '$lib/components/blog/detail/ArticleImage.svelte';
 
 	const { data } = $props();
 
@@ -116,17 +117,7 @@
 		<!-- Skip to content link -->
 		<a href="#content" class="sr-only focus:not-sr-only"> Skip to content </a>
 		<!-- Cover Image -->
-		<div class="relative h-[60vh] w-full overflow-hidden rounded-lg">
-			<img
-				src={data.article.foreImage}
-				alt={data.article.title}
-				class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-				loading="lazy"
-				width="1200"
-				height="630"
-				itemprop="image"
-			/>
-		</div>
+		<ArticleImage article={data.article} />
 
 		<!-- Enhanced reading progress -->
 		{#if browser}

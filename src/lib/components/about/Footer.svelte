@@ -12,15 +12,22 @@
 		<div
 			class="flex flex-col items-center justify-center space-y-3 text-sm text-gray-600 dark:text-gray-400"
 		>
-			<small class="flex items-center justify-center space-x-1">
+			<p class="flex items-center justify-center space-x-1">
 				<span>&copy; {currentYear}</span>
 				<span>John Owolabi Idogun. All rights reserved.</span>
-			</small>
-			<p class="flex items-center text-center text-sm">
-				Built with
-				<Hearts class="mx-1 h-4 w-4 text-red-500 dark:text-red-400" />
-				from scratch with Svelte 5, NodeJS, Python and TailwindCSS.
 			</p>
+			<small class="flex flex-wrap items-center justify-center gap-1 text-center">
+				<span>Built with</span>
+				<Hearts class="h-3 w-3 text-red-500 md:h-4 md:w-4 dark:text-red-400" />
+				<span>from scratch with</span>
+				<span class="flex flex-wrap items-center justify-center gap-1">
+					<span>Svelte 5,</span>
+					<span>NodeJS,</span>
+					<span>Python</span>
+					<span>and</span>
+					<span>TailwindCSS.</span>
+				</span>
+			</small>
 		</div>
 	</div>
 </footer>
