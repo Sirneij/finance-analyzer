@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '$lib/assets/css/code.css';
+	import { loadingManager } from '$lib/states/loading.svelte';
 
 	import { onMount } from 'svelte';
 
@@ -65,21 +66,35 @@
 	$effect(() => {
 		displayCode = highlightSyntax(displayCode);
 	});
+
+	$effect(() => {
+		if (loadingManager.state.status === 'NAVIGATING') {
+			const timer = setTimeout(() => {
+				if (loadingManager.state.status === 'NAVIGATING') {
+					loadingManager.setLoading(true, 'Loading, please wait...');
+				}
+			}, 100);
+
+			return () => clearTimeout(timer);
+		}
+	});
 </script>
 
-<div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-sm dark:bg-gray-900/90"
->
-	<div class="w-[600px] rounded-lg bg-white shadow-xl dark:bg-gray-800">
-		<div class="flex items-center space-x-2 border-b border-gray-200 p-4 dark:border-gray-700">
-			<div class="h-3 w-3 rounded-full bg-red-500"></div>
-			<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-			<div class="h-3 w-3 rounded-full bg-green-500"></div>
-		</div>
-		<pre class="p-4 font-mono text-sm">
+{#if loadingManager.visible}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-sm dark:bg-gray-900/90"
+	>
+		<div class="w-[600px] rounded-lg bg-white shadow-xl dark:bg-gray-800">
+			<div class="flex items-center space-x-2 border-b border-gray-200 p-4 dark:border-gray-700">
+				<div class="h-3 w-3 rounded-full bg-red-500"></div>
+				<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+				<div class="h-3 w-3 rounded-full bg-green-500"></div>
+			</div>
+			<pre class="p-4 font-mono text-sm">
             <code class="hljs language-javascript"
-				>{@html displayCode}<span class="cursor">|</span></code
-			>
+					>{@html displayCode}<span class="cursor">|</span></code
+				>
         </pre>
+		</div>
 	</div>
-</div>
+{/if}

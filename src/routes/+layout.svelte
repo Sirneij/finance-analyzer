@@ -9,6 +9,7 @@
 	import PageLoader from '$lib/components/reusables/PageLoader.svelte';
 	import PageTransition from '$lib/components/reusables/PageTransition.svelte';
 	import { onMount } from 'svelte';
+	import { loadingManager } from '$lib/states/loading.svelte';
 	let { children } = $props();
 
 	let isDark = $state(false);
@@ -18,6 +19,11 @@
 		isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		const storedTheme = localStorage.getItem('theme');
 		if (storedTheme) isDark = storedTheme === 'dark';
+	});
+
+	$effect(() => {
+		loadingManager.setNavigating(navigating.to !== null);
+		loadingManager.setLoading(navigating.to !== null);
 	});
 </script>
 
@@ -52,11 +58,9 @@
 	/>
 </svelte:head>
 
-{#if navigating.to}
-	<PageLoader />
-{/if}
+<PageLoader />
 
-<PageTransition key={page.url.href} duration={600}>
+<PageTransition key={page.url.href}>
 	{@render children()}
 </PageTransition>
 
