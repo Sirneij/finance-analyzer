@@ -30,14 +30,6 @@
 		{#if !imageError}
 			<img
 				src={article.foreImage}
-				srcset="{article.foreImage}?w=640 640w,
-				{article.foreImage}?w=800 800w,
-				{article.foreImage}?w=1000 1000w,
-				{article.foreImage}?w=1200 1200w,
-				{article.foreImage}?w=1600 1600w"
-				sizes="(max-width: 640px) 100vw,
-			   (max-width: 800px) 95vw,
-			   1000px"
 				alt={article.title}
 				class="relative w-full transition-transform duration-300 hover:scale-110"
 				class:opacity-0={!imageLoaded}
@@ -46,7 +38,7 @@
 				width={1000}
 				height={420}
 				itemprop="image"
-				style="aspect-ratio: 2.381"
+				style="aspect-ratio: auto 1000 / 420;"
 				onerror={handleImageError}
 				onload={handleImageLoad}
 				decoding="async"
