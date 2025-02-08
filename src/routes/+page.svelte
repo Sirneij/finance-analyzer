@@ -90,17 +90,13 @@
 	id="main-content"
 >
 	<!-- Logo -->
-	<div class="fixed left-4 top-4 z-50">
+	<div class="fixed -top-4 z-50 flex w-full items-center justify-between px-4">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
 				size={100}
 				class="text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
 			/>
 		</a>
-	</div>
-
-	<!-- Theme Switcher -->
-	<div class="fixed right-4 top-4 z-50">
 		<ThemeSwitcher />
 	</div>
 	<div class="relative">
