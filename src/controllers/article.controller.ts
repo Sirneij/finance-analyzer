@@ -155,7 +155,7 @@ export class ArticleController {
       }
 
       if (isNaN(limit)) {
-        limit = 10;
+        limit = 12;
       }
 
       const result = await ArticleService.getPublishedArticles(page, limit);
@@ -364,7 +364,7 @@ export class ArticleController {
       }
 
       if (isNaN(limit)) {
-        limit = 10;
+        limit = 12;
       }
       const result = await ArticleService.getAllArticles(page, limit);
       res.json({

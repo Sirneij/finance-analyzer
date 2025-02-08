@@ -42,7 +42,7 @@ export class ArticleService {
 
   static async getPublishedArticles(
     page: number = 1,
-    limit: number = 10
+    limit: number = 12
   ): Promise<{
     articles: IArticlePopulated[];
     total: number;
@@ -172,7 +172,7 @@ export class ArticleService {
 
   static async getAllArticles(
     page: number = 1,
-    limit: number = 10
+    limit: number = 12
   ): Promise<{
     articles: IArticlePopulated[];
     total: number;
@@ -245,7 +245,7 @@ export class ArticleService {
         sortBy = "recent",
         period,
         page = 1,
-        limit = 10,
+        limit = 12,
       } = params;
 
       // Build date filter
