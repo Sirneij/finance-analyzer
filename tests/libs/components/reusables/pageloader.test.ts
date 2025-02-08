@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 import { loadingManager } from '$lib/states/loading.svelte';
 import PageLoader from '$lib/components/reusables/PageLoader.svelte';
 

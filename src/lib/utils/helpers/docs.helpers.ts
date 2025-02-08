@@ -1,5 +1,5 @@
 import type { Endpoint, HttpMethod } from '$lib/types/docs.types';
-import { marked } from 'marked';
+import { marked, type Tokens } from 'marked';
 import hljs from 'highlight.js';
 
 export function groupEndpointsByCategory(endpoints: Endpoint[]): Record<string, Endpoint[]> {
@@ -273,6 +273,18 @@ renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
 	  `;
 	}
 	return `<h${depth} role="heading" aria-level="${depth}" aria-label="${text}">${text}</h${depth}>`;
+};
+
+renderer.link = function ({ href, title, tokens, text }: Tokens.Link) {
+	try {
+		const isExternal = href && new URL(href).host !== window.location.host;
+		const attrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+
+		return `<a href="${href}"${attrs}${title ? ` title="${title}"` : ''}>${text}</a>`;
+	} catch {
+		// If URL parsing fails (e.g., for relative URLs), treat as internal link
+		return `<a href="${href}"${title ? ` title="${title}"` : ''}>${text}</a>`;
+	}
 };
 
 marked.setOptions({
