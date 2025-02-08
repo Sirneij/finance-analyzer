@@ -93,9 +93,7 @@
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
-				size={40}
-				width={40}
-				height={40}
+				size={100}
 				class="text-gray-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
 			/>
 		</a>

@@ -11,7 +11,7 @@
 	<div class="fixed left-4 top-4 z-50">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
-				size={40}
+				size={100}
 				class="text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
 			/>
 		</a>
