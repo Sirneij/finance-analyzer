@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { truncateTitle } from '$lib/utils/helpers/editor/blog.helpers';
-	import Home from '../icons/Home.svelte';
+	import Home from '$lib/components/icons/Home.svelte';
 
 	type Crumb = {
 		text: string;
@@ -13,16 +13,16 @@
 
 <svelte:window bind:innerWidth />
 
-<nav class="relative z-10 mb-6 mt-10" aria-label="Breadcrumb">
+<nav class="relative z-10 mb-6" aria-label="Breadcrumb">
 	<ol class="flex items-center space-x-2 text-xs sm:text-sm md:text-base">
-		<li>
+		<li class="flex items-center">
 			<a
 				href="/"
-				class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+				class="flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
 				title="Home"
 				aria-label="Home"
 			>
-				<Home class="h-5 w-6" />
+				<Home class="h-5 w-5" />
 			</a>
 		</li>
 
