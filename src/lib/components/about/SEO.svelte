@@ -69,15 +69,8 @@
 			.name}, technical writer, web development"
 	/>
 	<meta name="robots" content="index, follow" />
-	<!-- Favicons -->
-	<link rel="icon" type="image/png" href="/ji/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/ji/favicon.svg" />
-	<link rel="shortcut icon" href="/ji/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/ji/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content={WEBSITE_URL} />
-	<link rel="manifest" href="/ji/site.webmanifest" />
 	<link rel="canonical" href={WEBSITE_URL} />
-	<link rel="icon" href="/ji/favicon.ico" type="image/x-icon" />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="profile" />
