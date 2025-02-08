@@ -17,6 +17,7 @@
 	import BackToTop from '$lib/components/icons/BackToTop.svelte';
 	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
 	import ArticleImage from '$lib/components/blog/detail/ArticleImage.svelte';
+	import { page } from '$app/state';
 
 	const { data } = $props();
 
@@ -69,7 +70,10 @@
 		}
 	}
 
-	const crumbs = [{ text: 'Blog', href: '/blog' }, { text: data.article.title }];
+	const crumbs = [
+		{ text: 'Blog', href: '/blog' },
+		{ text: data.article.title, href: page.url.href }
+	];
 
 	$effect(() => {
 		if (contentContainer) {

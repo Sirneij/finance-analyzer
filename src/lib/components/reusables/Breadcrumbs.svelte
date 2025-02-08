@@ -4,7 +4,7 @@
 
 	type Crumb = {
 		text: string;
-		href?: string;
+		href: string;
 	};
 
 	let { crumbs }: { crumbs: Crumb[] } = $props();
@@ -13,7 +13,7 @@
 
 <svelte:window bind:innerWidth />
 
-<nav class="mb-6" aria-label="Breadcrumb">
+<nav class="relative z-10 mb-6 mt-10" aria-label="Breadcrumb">
 	<ol class="flex items-center space-x-2 text-xs sm:text-sm md:text-base">
 		<li>
 			<a

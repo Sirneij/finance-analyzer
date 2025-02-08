@@ -8,7 +8,7 @@
 
 <div class="relative min-h-screen bg-white dark:bg-gray-900" id="main-content">
 	<!-- Logo -->
-	<div class="fixed -top-4 z-50 flex w-full items-center justify-between px-4">
+	<div class="z-5 fixed -top-4 flex w-full items-center justify-between px-4">
 		<a href="/" class="cursor-pointer" aria-label="Home">
 			<JI
 				size={100}
