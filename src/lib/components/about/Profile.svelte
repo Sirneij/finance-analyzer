@@ -44,7 +44,7 @@
 								class="rotate-y-180 bg-linear-to-br absolute inset-0 rounded-2xl from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							>
 								<div class="flex h-full flex-col justify-center text-center">
-									<h3 class="text-xl font-bold">{githubData.user.name}</h3>
+									<h2 class="text-xl font-bold">{githubData.user.name}</h2>
 									<p class="mt-2 text-sm opacity-90">{githubData.user.bio}</p>
 								</div>
 							</div>
