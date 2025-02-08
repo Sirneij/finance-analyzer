@@ -1,83 +1,5 @@
 <script lang="ts">
-	import '$lib/assets/css/code.css';
 	import { loadingManager } from '$lib/states/loading.svelte';
-
-	import { onMount } from 'svelte';
-
-	let displayCode = $state(''),
-		currentLine = $state(0),
-		timeout: ReturnType<typeof setTimeout>;
-
-	const codeSnippet = [
-		'/** Portfolio, Tech Blog, Financial analysis, and more */',
-		'async function loadContent() {',
-		'  const portfolio = await fetchPortfolio();',
-		'  const articles = await fetchLatestPosts();',
-		'  const financials = await fetchFinancials();',
-		'  const documentation = await loadDocs();',
-		'  return { articles, documentation };',
-		'}'
-	];
-
-	function typeCode() {
-		let charIndex = 0;
-		const currentText = codeSnippet[currentLine];
-
-		function type() {
-			if (charIndex < currentText.length) {
-				displayCode += currentText[charIndex];
-				charIndex++;
-				timeout = setTimeout(type, 50);
-			} else {
-				displayCode += '\n';
-				currentLine++;
-				if (currentLine < codeSnippet.length) {
-					timeout = setTimeout(typeCode, 500);
-				}
-			}
-		}
-		type();
-	}
-
-	onMount(() => {
-		typeCode;
-
-		return () => {
-			if (timeout) clearTimeout(timeout);
-		};
-	});
-
-	function highlightSyntax(code: string): string {
-		return (
-			code
-				// Comments
-				.replace(/(\/\*\*.*?\*\/)/g, '<span class="comment">$1</span>')
-				// Keywords
-				.replace(/\b(async|function|await|return|const)\b/g, '<span class="keyword">$1</span>')
-				// Function calls
-				.replace(/\b(fetch\w+)\b/g, '<span class="function">$1</span>')
-				// Strings
-				.replace(/(['"])(.*?)\1/g, '<span class="string">$1$2$1</span>')
-				// Braces and parentheses
-				.replace(/([{}()])/g, '<span class="punctuation">$1</span>')
-		);
-	}
-
-	$effect(() => {
-		displayCode = highlightSyntax(displayCode);
-	});
-
-	$effect(() => {
-		if (loadingManager.state.status === 'NAVIGATING') {
-			const timer = setTimeout(() => {
-				if (loadingManager.state.status === 'NAVIGATING') {
-					loadingManager.setLoading(true, 'Loading, please wait...');
-				}
-			}, 100);
-
-			return () => clearTimeout(timer);
-		}
-	});
 </script>
 
 {#if loadingManager.visible}
@@ -90,11 +12,48 @@
 				<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
 				<div class="h-3 w-3 rounded-full bg-green-500"></div>
 			</div>
-			<pre class="p-4 font-mono text-sm">
-            <code class="hljs language-javascript"
-					>{@html displayCode}<span class="cursor">|</span></code
-				>
-        </pre>
+			<div class="code-container p-4 font-mono text-sm">
+				<div class="line comment">{`/** Personal blogging Tool */`}</div>
+				<div class="line">
+					<span class="keyword">async function</span>
+					<span class="function">fetchData</span>
+					<span class="punctuation">()</span>
+					<span class="punctuation">{`{`}</span>
+				</div>
+				<div class="line indent">
+					<span class="keyword">const</span>
+					<span class="string">profile</span>
+					<span class="punctuation">=</span>
+					<span class="keyword">await</span>
+					<span class="function">getProfileData</span>
+					<span class="punctuation">();</span>
+				</div>
+				<div class="line indent">
+					<span class="keyword">const</span>
+					<span class="string">articles</span>
+					<span class="punctuation">=</span>
+					<span class="keyword">await</span>
+					<span class="function">getArticleData</span>
+					<span class="punctuation">();</span>
+				</div>
+				<div class="line indent">
+					<span class="keyword">const</span>
+					<span class="string">data</span>
+					<span class="punctuation">=</span>
+					<span class="keyword">await</span>
+					<span class="function">combine</span>
+					<span class="punctuation">(</span>profile, articles<span class="punctuation">);</span>
+				</div>
+				<div class="line indent">
+					<span class="keyword">return</span>
+					<span class="string">data</span>
+					<span class="punctuation">;</span>
+				</div>
+				<div class="line">
+					<span class="punctuation">{`}`}</span>
+				</div>
+				<span class="cursor">|</span>
+			</div>
 		</div>
 	</div>
 {/if}

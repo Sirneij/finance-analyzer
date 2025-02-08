@@ -5,7 +5,7 @@
 
 	let { data } = $props();
 
-	const title = `${data.githubData.user.name || 'Developer Portfolio'} - ${data.githubData.user.bio}`;
+	const title = `${data.githubData.user.name || 'Developer Portfolio'} | ${data.githubData.user.bio.slice(0, 40)}...`;
 	const description = `${data.githubData.user.name} - ${data.githubData.user.bio || 'Software Engineer and Cybersecurity Enthusiast'}`;
 
 	function getJsonLd(data: PageData) {

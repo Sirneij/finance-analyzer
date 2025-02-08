@@ -24,6 +24,8 @@
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.0.4",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/svelte": "^5.2.6",
 		"@types/chart.js": "^2.9.41",
 		"@types/node": "^22.13.1",
 		"eslint": "^9.20.0",
