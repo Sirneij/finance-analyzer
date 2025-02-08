@@ -67,10 +67,13 @@
 
 				<!-- Social Links -->
 				<div class="mt-8 flex space-x-4">
-					{#each [{ name: 'GitHub', url: `https://github.com/${githubData.user.login}` }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/john-owolabi-idogun/' }] as link}
+					{#each [{ name: 'GitHub', url: `https://github.com/sirneij` }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/john-owolabi-idogun/' }] as link}
 						<a
 							href={link.url}
 							class="bg-linear-to-tr group relative rounded-xl from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Link to {link.name}"
 						>
 							<div class="rounded-xl bg-white px-6 py-2 transition-colors dark:bg-gray-900">
 								<span
