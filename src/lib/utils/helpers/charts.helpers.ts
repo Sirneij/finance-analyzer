@@ -1,58 +1,197 @@
-import { type ChartConfiguration, type ChartOptions } from 'chart.js';
-import {
-	Chart,
-	LineController,
-	LineElement,
-	BarController,
-	BarElement,
-	RadarController,
-	RadialLinearScale,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	Tooltip,
-	Legend
-} from 'chart.js';
-
-// Register only required components
-Chart.register(
-	LineController,
-	LineElement,
-	BarController,
-	BarElement,
-	RadarController,
-	RadialLinearScale,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	Tooltip,
-	Legend
-);
+import type { ApexOptions } from 'apexcharts';
 
 // Base configuration for all charts
-const baseOptions: ChartOptions = {
-	responsive: true,
-	maintainAspectRatio: false,
-	animation: {
-		duration: 1000, // Reduced from 2000
-		easing: 'easeInOutQuart'
-	},
-	plugins: {
-		legend: {
-			display: false
+const baseOptions: ApexOptions = {
+	chart: {
+		type: 'line',
+		height: 300,
+		toolbar: {
+			show: true,
+			tools: {
+				download: true,
+				selection: true,
+				zoom: true,
+				zoomin: true,
+				zoomout: true,
+				pan: true,
+				reset: true
+			},
+			autoSelected: 'zoom'
 		},
-		tooltip: {
-			backgroundColor: 'rgba(0,0,0,0.8)',
-			padding: 12,
-			titleFont: { size: 12 }
+		fontFamily: 'inherit',
+		background: 'transparent'
+	},
+	stroke: {
+		width: 2,
+		curve: 'smooth'
+	},
+	grid: {
+		borderColor: 'rgba(156, 163, 175, 0.1)',
+		strokeDashArray: 4,
+		yaxis: { lines: { show: true } },
+		xaxis: { lines: { show: false } }
+	},
+	dataLabels: { enabled: false },
+	tooltip: {
+		theme: 'dark',
+		y: {
+			formatter: (value: number) => `$${value.toLocaleString()}`
 		}
+	},
+	legend: {
+		show: false
 	}
 };
 
 // Reusable currency formatter
 const formatCurrency = (value: number): string => `$${value.toLocaleString()}`;
 
-// Memoized color generator
+// Financial chart configuration
+export const financialChartConfig: ApexOptions = {
+	...baseOptions,
+	chart: {
+		...baseOptions.chart,
+		type: 'area'
+	},
+	colors: ['#22c55e', '#ef4444', '#3b82f6'],
+	fill: {
+		type: 'gradient',
+		gradient: {
+			shadeIntensity: 1,
+			inverseColors: false,
+			opacityFrom: 0.5,
+			opacityTo: 0,
+			stops: [0, 90, 100]
+		}
+	},
+	yaxis: {
+		labels: {
+			formatter: (value) => formatCurrency(value),
+			style: {
+				colors: 'rgba(156, 163, 175, 0.9)'
+			}
+		}
+	}
+};
+
+// Spending categories chart configuration
+export const spendingCategoriesChartConfig: ApexOptions = {
+	...baseOptions,
+	chart: {
+		...baseOptions.chart,
+		type: 'pie'
+	},
+	plotOptions: {
+		pie: {
+			donut: {
+				size: '65%'
+			}
+		}
+	},
+	legend: {
+		show: true,
+		position: 'right',
+		fontSize: '14px',
+		labels: {
+			colors: 'rgba(156, 163, 175, 0.9)'
+		}
+	},
+	dataLabels: {
+		enabled: true,
+		formatter: function (val, opts) {
+			return opts.w.config.series[opts.seriesIndex] + '%';
+		}
+	},
+	responsive: [
+		{
+			breakpoint: 480,
+			options: {
+				chart: {
+					width: '100%'
+				},
+				legend: {
+					position: 'bottom'
+				}
+			}
+		}
+	]
+};
+
+// Monthly summaries chart configuration
+export const monthlySummariesChartConfig: ApexOptions = {
+	...baseOptions,
+	chart: {
+		...baseOptions.chart,
+		type: 'area'
+	},
+	colors: ['#22c55e', '#ef4444', '#3b82f6'],
+	fill: {
+		type: 'gradient',
+		gradient: {
+			shadeIntensity: 1,
+			inverseColors: false,
+			opacityFrom: 0.5,
+			opacityTo: 0,
+			stops: [0, 90, 100]
+		}
+	}
+};
+
+// Skill level chart configuration (Radar)
+export const skillLevelChartConfig: ApexOptions = {
+	chart: {
+		type: 'radar',
+		height: '100%',
+		toolbar: { show: false },
+		background: 'transparent'
+	},
+	stroke: {
+		width: 2,
+		curve: 'smooth'
+	},
+	fill: {
+		opacity: 0.5
+	},
+	markers: {
+		size: 4
+	},
+	yaxis: {
+		show: false,
+		min: 0,
+		max: 100
+	},
+	plotOptions: {
+		radar: {
+			polygons: {
+				strokeColors: 'rgba(156, 163, 175, 0.1)',
+				connectorColors: 'rgba(156, 163, 175, 0.1)'
+			}
+		}
+	},
+	colors: ['rgba(99, 102, 241, 1)'],
+	dataLabels: {
+		enabled: false
+	},
+	tooltip: {
+		enabled: true,
+		y: {
+			formatter: (value) => `${value}%`
+		}
+	}
+};
+
+// Helper function to update chart theme based on dark mode
+export function updateChartTheme(isDark: boolean): Partial<ApexOptions> {
+	return {
+		theme: {
+			mode: isDark ? 'dark' : 'light'
+		},
+		grid: {
+			borderColor: isDark ? 'rgba(156, 163, 175, 0.1)' : 'rgba(156, 163, 175, 0.2)'
+		}
+	};
+}
+
 const colorCache = new Map<number, { backgroundColors: string[]; borderColors: string[] }>();
 export const generateChartColors = (count: number) => {
 	if (colorCache.has(count)) {
@@ -69,96 +208,4 @@ export const generateChartColors = (count: number) => {
 
 	colorCache.set(count, colors);
 	return colors;
-};
-
-// Financial and Monthly charts config
-const financialOptions: ChartOptions = {
-	...baseOptions,
-	scales: {
-		y: {
-			beginAtZero: true,
-			ticks: {
-				callback: (_: any, value: number) => formatCurrency(value)
-			}
-		},
-		x: {
-			grid: { display: false }
-		}
-	},
-	plugins: {
-		...baseOptions.plugins,
-		tooltip: {
-			callbacks: {
-				label: (context) => {
-					const label = context.dataset.label;
-					return `${label ? `${label}: ` : ''}${formatCurrency(context.parsed.y)}`;
-				}
-			}
-		}
-	}
-};
-
-// Radar chart specific options
-const radarOptions: ChartOptions = {
-	...baseOptions,
-	scales: {
-		r: {
-			grid: { color: '#374151' },
-			angleLines: { color: '#374151' },
-			pointLabels: {
-				color: '#6B7280',
-				font: { size: 12 }
-			},
-			min: 0,
-			max: 100,
-			ticks: { stepSize: 20 }
-		}
-	},
-	plugins: {
-		...baseOptions.plugins,
-		legend: {
-			display: true,
-			position: 'top',
-			align: 'center',
-			labels: {
-				padding: 12,
-				boxWidth: 12,
-				font: { size: 12 }
-			}
-		},
-		tooltip: {
-			callbacks: {
-				label: (context) => {
-					const value = context.parsed.r;
-					const skillName = context.dataset.label || '';
-					return `${skillName}: ${value.toFixed(0)}%`;
-				}
-			}
-		}
-	}
-};
-
-// Export configurations
-export const financialChartConfig: ChartConfiguration = {
-	type: 'line',
-	data: { labels: [], datasets: [] },
-	options: financialOptions
-};
-
-export const spendingCategoriesChartConfig: ChartConfiguration = {
-	type: 'bar',
-	data: { labels: [], datasets: [] },
-	options: financialOptions
-};
-
-export const monthlySummariesChartConfig: ChartConfiguration = {
-	type: 'line',
-	data: { labels: [], datasets: [] },
-	options: financialOptions
-};
-
-export const skillLevelChartConfig: ChartConfiguration = {
-	type: 'radar',
-	data: { labels: [], datasets: [] },
-	options: radarOptions
 };

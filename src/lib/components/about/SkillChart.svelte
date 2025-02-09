@@ -1,47 +1,69 @@
 <script lang="ts">
-	import { Chart } from 'chart.js';
-	import { skillLevelChartConfig } from '$lib/utils/helpers/charts.helpers';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
+	import { skillLevelChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import { SKILLS } from '$lib/utils/contants';
 
-	let radarChart: Chart | null = null,
-		radarCanvas = $state<HTMLCanvasElement>(),
-		chartInitialized = false;
+	let chartElement = $state<HTMLDivElement>(),
+		chart: ApexCharts | null = null;
 
-	$effect(() => {
-		if (!radarCanvas || chartInitialized) return;
+	async function initChart() {
+		if (!browser || !chartElement) return;
 
-		const skillsCtx = radarCanvas.getContext('2d');
-		if (!skillsCtx) return;
+		const { default: ApexCharts } = await import('apexcharts');
 
-		if (radarChart) {
-			radarChart.destroy();
-		}
-
-		skillLevelChartConfig.data = {
-			labels: SKILLS.map((s) => s.name),
-			datasets: [
+		const options = {
+			...skillLevelChartConfig,
+			series: [
 				{
-					label: 'Skills',
-					data: SKILLS.map((s) => s.level),
-					backgroundColor: 'rgba(99, 102, 241, 0.2)',
-					borderColor: 'rgba(99, 102, 241, 1)',
-					borderWidth: 2
+					name: 'Skills',
+					data: SKILLS.map((s) => s.level)
 				}
-			]
-		};
-
-		radarChart = new Chart(skillsCtx, skillLevelChartConfig);
-		chartInitialized = true;
-
-		return () => {
-			if (radarChart) {
-				radarChart.destroy();
-				chartInitialized = false;
+			],
+			xaxis: {
+				categories: SKILLS.map((s) => s.name),
+				labels: {
+					style: {
+						colors: 'rgba(156, 163, 175, 0.9)'
+					}
+				}
 			}
 		};
+
+		// Cleanup previous instance
+		if (chart) {
+			chart.destroy();
+		}
+
+		chart = new ApexCharts(chartElement, options);
+		chart.render();
+
+		// Handle dark mode changes
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			chart?.updateOptions(updateChartTheme(isDark));
+		});
+
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
+
+		return () => {
+			observer.disconnect();
+			if (chart) {
+				chart.destroy();
+			}
+		};
+	}
+
+	$effect(() => {
+		if (browser && chartElement) {
+			initChart();
+		}
 	});
 </script>
 
 <div class="relative aspect-square h-full w-full">
-	<canvas bind:this={radarCanvas}></canvas>
+	<div bind:this={chartElement}></div>
 </div>

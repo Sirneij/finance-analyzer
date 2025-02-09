@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { Chart } from 'chart.js';
+	import ApexCharts from 'apexcharts';
 	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
 	import type { CategoriesData } from '$lib/types/transaction.types';
 	import {
 		generateChartColors,
-		spendingCategoriesChartConfig
+		spendingCategoriesChartConfig,
+		updateChartTheme
 	} from '$lib/utils/helpers/charts.helpers';
 	import Empty from '$lib/components/reusables/Empty.svelte';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 
 	let {
 		categories,
@@ -17,53 +20,98 @@
 		steps
 	}: { categories: CategoriesData; loading: boolean; steps: ProgressSteps[] } = $props();
 
-	let spendingCategoriesCanvas = $state<HTMLCanvasElement>(),
-		chartInitialized = false,
-		spendingCategoriesChart: Chart | null = null,
+	let chartElement = $state<HTMLDivElement>(),
+		chart: ApexCharts | null = null,
+		timeout: ReturnType<typeof setTimeout>,
 		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-	}
-
-	$effect(() => {
-		if (!spendingCategoriesCanvas || chartInitialized) return;
-
-		const spendingCategoriesCtx = spendingCategoriesCanvas.getContext('2d');
-		if (!spendingCategoriesCtx) return;
-
-		// Cleanup previous instance
-		if (spendingCategoriesChart) {
-			spendingCategoriesChart.destroy();
+		if (chart) {
+			timeout = setTimeout(() => {
+				chart?.updateOptions({
+					chart: {
+						height: isFullscreen ? 'calc(100vh - 8rem)' : 300
+					}
+				});
+			}, 0);
 		}
+	}
+	async function initChart() {
+		if (!chartElement || !categories?.categories) return;
 
 		const categoryCount = Object.keys(categories.categories).length;
-		const { backgroundColors, borderColors } = generateChartColors(categoryCount);
+		const { backgroundColors } = generateChartColors(categoryCount);
 
-		spendingCategoriesChartConfig.data = {
+		const options = {
+			...spendingCategoriesChartConfig,
+			series: Object.values(categories.categories),
 			labels: Object.keys(categories.categories).map(
 				(cat) => cat.charAt(0).toUpperCase() + cat.slice(1)
 			),
-			datasets: [
+			colors: backgroundColors,
+			chart: {
+				...spendingCategoriesChartConfig.chart,
+				type: 'pie'
+			},
+			plotOptions: {
+				pie: {
+					donut: {
+						size: '65%'
+					}
+				}
+			},
+			responsive: [
 				{
-					data: Object.values(categories.categories),
-					backgroundColor: backgroundColors,
-					borderColor: borderColors,
-					borderWidth: 1
+					breakpoint: 480,
+					options: {
+						chart: {
+							width: '100%'
+						},
+						legend: {
+							position: 'bottom'
+						}
+					}
 				}
 			]
 		};
 
-		spendingCategoriesChart = new Chart(spendingCategoriesCtx, spendingCategoriesChartConfig);
-		chartInitialized = true;
+		// Cleanup previous instance
+		if (chart) {
+			chart.destroy();
+		}
+
+		chart = new ApexCharts(chartElement, options);
+		chart.render();
+
+		// Handle dark mode changes
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			chart?.updateOptions(updateChartTheme(isDark));
+		});
+
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
 
 		// Cleanup on component destruction
 		return () => {
-			if (spendingCategoriesChart) {
-				spendingCategoriesChart.destroy();
-				chartInitialized = false;
+			observer.disconnect();
+			if (chart) {
+				chart.destroy();
 			}
 		};
+	}
+
+	$effect(() => {
+		if (browser && chartElement) {
+			initChart();
+		}
+	});
+
+	onDestroy(() => {
+		if (timeout) clearTimeout(timeout);
 	});
 </script>
 
@@ -78,7 +126,6 @@
 	<button
 		class="absolute right-2 top-2 rounded-lg bg-gray-100 p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-gray-700"
 		onclick={toggleFullscreen}
-		onkeydown={(e) => e.key === 'Escape' && toggleFullscreen()}
 		aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
 	>
 		{#if isFullscreen}
@@ -94,10 +141,11 @@
 		{:else if !categories || !Object.keys(categories.categories).length}
 			<Empty title="No data found" description="No spending categories found in your account." />
 		{:else}
-			<canvas bind:this={spendingCategoriesCanvas}></canvas>
+			<div bind:this={chartElement}></div>
 		{/if}
 	</div>
 </div>
+
 {#if isFullscreen}
 	<button
 		type="button"

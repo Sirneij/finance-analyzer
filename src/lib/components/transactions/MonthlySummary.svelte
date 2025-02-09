@@ -1,7 +1,7 @@
 <script lang="ts">
+	import ApexCharts from 'apexcharts';
 	import type { FinancialSummary } from '$lib/types/transaction.types';
-	import { monthlySummariesChartConfig } from '$lib/utils/helpers/charts.helpers';
-	import { Chart } from 'chart.js';
+	import { monthlySummariesChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import Empty from '$lib/components/reusables/Empty.svelte';
@@ -9,6 +9,8 @@
 	import { transformMonthlyChartData } from '$lib/utils/helpers/transactions.helpers';
 	import { COLORS } from '$lib/utils/contants';
 	import type { ProgressSteps } from '$lib/types/notification.types';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 
 	let {
 		financialSummaries,
@@ -16,71 +18,90 @@
 		steps
 	}: { financialSummaries: FinancialSummary; loading: boolean; steps: ProgressSteps[] } = $props();
 
-	let monthlySummariesCanvas = $state<HTMLCanvasElement>(),
-		chartInitialized = false,
-		monthlySummariesChart: Chart | null = null,
+	let chartElement = $state<HTMLDivElement>(),
+		chart: ApexCharts | null = null,
+		timeout: ReturnType<typeof setTimeout>,
 		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-	}
-	$effect(() => {
-		if (!monthlySummariesCanvas || chartInitialized) return;
-
-		const nonthlySummariesCtx = monthlySummariesCanvas.getContext('2d');
-		if (!nonthlySummariesCtx) return;
-
-		// Cleanup previous instance
-		if (monthlySummariesChart) {
-			monthlySummariesChart.destroy();
+		if (chart) {
+			timeout = setTimeout(() => {
+				chart?.updateOptions({
+					chart: {
+						height: isFullscreen ? 'calc(100vh - 120px)' : 300
+					}
+				});
+			}, 0);
 		}
+	}
 
-		const monthlySummariesChartData = transformMonthlyChartData(
-			financialSummaries?.monthly_summary || {}
-		);
-		monthlySummariesChartConfig.data = {
-			labels: monthlySummariesChartData.labels,
-			datasets: [
+	async function initChart() {
+		if (!chartElement || !financialSummaries?.monthly_summary) return;
+
+		const monthlyData = transformMonthlyChartData(financialSummaries.monthly_summary);
+
+		const options = {
+			...monthlySummariesChartConfig,
+			series: [
 				{
-					label: 'Income',
-					data: monthlySummariesChartData.incomeData,
-					borderColor: COLORS.income.chart,
-					backgroundColor: 'rgba(34, 197, 94, 0.2)',
-					tension: 0.4,
-					fill: true, // Show the area under the line
-					borderWidth: 2
+					name: 'Income',
+					data: monthlyData.incomeData
 				},
 				{
-					label: 'Expenses',
-					data: monthlySummariesChartData.expensesData,
-					borderColor: COLORS.expense.chart, // Red for expenses
-					backgroundColor: 'rgba(239, 68, 68, 0.2)',
-					tension: 0.4,
-					fill: true,
-					borderWidth: 2
+					name: 'Expenses',
+					data: monthlyData.expensesData
 				},
 				{
-					label: 'Savings',
-					data: monthlySummariesChartData.savingsData,
-					borderColor: COLORS.savings.chart, // Blue for savings
-					backgroundColor: 'rgba(59, 130, 246, 0.2)',
-					tension: 0.4,
-					fill: true,
-					borderWidth: 2
+					name: 'Savings',
+					data: monthlyData.savingsData
 				}
-			]
+			],
+			xaxis: {
+				categories: monthlyData.labels,
+				labels: {
+					style: {
+						colors: 'rgba(156, 163, 175, 0.9)'
+					}
+				}
+			}
 		};
 
-		monthlySummariesChart = new Chart(nonthlySummariesCtx, monthlySummariesChartConfig);
-		chartInitialized = true;
+		// Cleanup previous instance
+		if (chart) {
+			chart.destroy();
+		}
+		chart = new ApexCharts(chartElement, options);
+		chart.render();
+
+		// Handle dark mode changes
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			chart?.updateOptions(updateChartTheme(isDark));
+		});
+
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
 
 		// Cleanup on component destruction
 		return () => {
-			if (monthlySummariesChart) {
-				monthlySummariesChart.destroy();
-				chartInitialized = false;
+			observer.disconnect();
+			if (chart) {
+				chart.destroy();
 			}
 		};
+	}
+
+	$effect(() => {
+		if (browser && chartElement) {
+			initChart();
+		}
+	});
+
+	onDestroy(() => {
+		if (timeout) clearTimeout(timeout);
 	});
 </script>
 
@@ -128,7 +149,7 @@
 				description="Financial data will be available once you have made a few transactions."
 			/>
 		{:else}
-			<canvas bind:this={monthlySummariesCanvas}></canvas>
+			<div bind:this={chartElement}></div>
 		{/if}
 	</div>
 </div>

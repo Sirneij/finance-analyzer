@@ -11,22 +11,38 @@
 	}
 
 	const checkWidth = () => {
+		const wasMobile = isMobile;
 		isMobile = innerWidth < 768;
-		if (isMobile) isSidebarOpen = false;
+
+		// Handle transition between mobile and desktop
+		if (wasMobile !== isMobile) {
+			if (isMobile) {
+				isSidebarOpen = false;
+			} else {
+				isSidebarOpen = true;
+			}
+		}
 	};
 
 	let { children } = $props();
+
+	$effect(() => {
+		checkWidth();
+	});
 </script>
 
 <svelte:window on:resize={checkWidth} bind:innerWidth />
 
 <div class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-900" id="main-content">
 	<!-- Sidebar -->
-	<Sidebar bind:isSidebarOpen {toggleSidebar} />
+	<Sidebar bind:isSidebarOpen bind:isMobile {toggleSidebar} />
 
 	<!-- Main content -->
 	<div
-		class="{`relative h-full transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'} ${isMobile && isSidebarOpen ? 'translate-x-64' : 'translate-x-0'}`}}"
+		class="relative h-full transform transition-all duration-300 md:translate-x-0"
+		class:md:ml-64={isSidebarOpen}
+		class:md:ml-20={!isSidebarOpen}
+		class:overflow-hidden={isMobile && isSidebarOpen}
 	>
 		<header
 			class="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-gray-700 dark:bg-gray-800"

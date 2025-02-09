@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Chart } from 'chart.js';
-	import { financialChartConfig } from '$lib/utils/helpers/charts.helpers';
+	import ApexCharts from 'apexcharts';
+	import { financialChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
 	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
@@ -9,6 +9,8 @@
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import { COLORS } from '$lib/utils/contants';
 	import type { ProgressSteps } from '$lib/types/notification.types';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 
 	let {
 		spending_analysis,
@@ -16,83 +18,98 @@
 		steps
 	}: { spending_analysis: SpendingAnalysis; loading: boolean; steps: ProgressSteps[] } = $props();
 
-	let financialTrendsCanvas = $state<HTMLCanvasElement>(),
-		chartInitialized = false,
-		financialTrendChart: Chart | null = null,
-		isFullscreen = $state(false),
-		chartContainer = $state<HTMLDivElement>();
+	let chartElement = $state<HTMLDivElement>(),
+		chart: ApexCharts | null = null,
+		timeout: ReturnType<typeof setTimeout>,
+		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-	}
-	$effect(() => {
-		if (!financialTrendsCanvas || chartInitialized) return;
-
-		const financialTrendCtx = financialTrendsCanvas.getContext('2d');
-		if (!financialTrendCtx) return;
-
-		// Cleanup previous instance
-		if (financialTrendChart) {
-			financialTrendChart.destroy();
+		if (chart) {
+			timeout = setTimeout(() => {
+				chart?.updateOptions({
+					chart: {
+						height: isFullscreen ? 'calc(100vh - 120px)' : 300
+					}
+				});
+			}, 0);
 		}
+	}
+
+	async function initChart() {
+		if (!chartElement || !spending_analysis) return;
 
 		const financialChartData = transformChartData(
 			spending_analysis.daily_summary,
 			spending_analysis.cumulative_balance
 		);
-		financialChartConfig.data = {
-			labels: financialChartData.labels,
-			datasets: [
-				{
-					label: 'Income',
-					data: financialChartData.income,
-					borderColor: COLORS.income.chart,
-					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					},
-					fill: true,
-					borderWidth: 2
-				},
-				{
-					label: 'Expenses',
-					data: financialChartData.expenses,
-					borderColor: COLORS.expense.chart,
-					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					},
-					fill: true,
-					borderWidth: 2
-				},
-				{
-					label: 'Balance',
-					data: financialChartData.balances,
-					borderColor: COLORS.balance.chart,
-					borderDash: [5, 5],
-					tension: 0.4,
-					animation: {
-						delay: 500,
-						duration: 2000
-					},
-					fill: true,
-					borderWidth: 2
-				}
-			]
-		};
 
-		financialTrendChart = new Chart(financialTrendCtx, financialChartConfig);
-		chartInitialized = true;
+		const options = {
+			...financialChartConfig,
+			series: [
+				{
+					name: 'Income',
+					data: financialChartData.income
+				},
+				{
+					name: 'Expenses',
+					data: financialChartData.expenses
+				},
+				{
+					name: 'Balance',
+					data: financialChartData.balances
+				}
+			],
+			xaxis: {
+				categories: financialChartData.labels,
+				labels: {
+					style: {
+						colors: 'rgba(156, 163, 175, 0.9)'
+					}
+				}
+			},
+			stroke: {
+				width: [2, 2, 2],
+				curve: 'smooth',
+				dashArray: [0, 0, 5]
+			}
+		};
+		// Cleanup previous instance
+		if (chart) {
+			chart.destroy();
+		}
+
+		chart = new ApexCharts(chartElement, options);
+		chart.render();
+
+		// Handle dark mode changes
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			chart?.updateOptions(updateChartTheme(isDark));
+		});
+
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['class']
+		});
 
 		// Cleanup on component destruction
 		return () => {
-			if (financialTrendChart) {
-				financialTrendChart.destroy();
-				chartInitialized = false;
+			observer.disconnect();
+			if (chart) {
+				chart.destroy();
 			}
 		};
+	}
+
+	$effect(() => {
+		if (browser && chartElement) {
+			initChart();
+		}
+	});
+
+	onDestroy(() => {
+		if (timeout) clearTimeout(timeout);
 	});
 </script>
 
@@ -101,7 +118,6 @@
 	class:fixed={isFullscreen}
 	class:inset-0={isFullscreen}
 	class:z-50={isFullscreen}
-	bind:this={chartContainer}
 >
 	<!-- Fullscreen button -->
 	<button
@@ -141,7 +157,7 @@
 				description="Financial data will be available once you have made a few transactions."
 			/>
 		{:else}
-			<canvas bind:this={financialTrendsCanvas}></canvas>
+			<div bind:this={chartElement}></div>
 		{/if}
 	</div>
 </div>
