@@ -51,7 +51,9 @@
 					animation: {
 						delay: 500,
 						duration: 2000
-					}
+					},
+					fill: true,
+					borderWidth: 2
 				},
 				{
 					label: 'Expenses',
@@ -61,7 +63,9 @@
 					animation: {
 						delay: 500,
 						duration: 2000
-					}
+					},
+					fill: true,
+					borderWidth: 2
 				},
 				{
 					label: 'Balance',
@@ -72,7 +76,9 @@
 					animation: {
 						delay: 500,
 						duration: 2000
-					}
+					},
+					fill: true,
+					borderWidth: 2
 				}
 			]
 		};
