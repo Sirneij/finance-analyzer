@@ -4,7 +4,7 @@ import type { ApexOptions } from 'apexcharts';
 const baseOptions: ApexOptions = {
 	chart: {
 		type: 'line',
-		height: 300,
+		height: '100%',
 		toolbar: {
 			show: true,
 			tools: {

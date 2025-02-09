@@ -22,11 +22,6 @@
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-		// chart?.updateOptions({
-		// 	chart: {
-		// 		height: isFullscreen ? 'calc(100vh - 120px)' : 300
-		// 	}
-		// });
 	}
 
 	async function initChart() {
