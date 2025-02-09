@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		tagsMetadata: tagData.metadata,
 		series: seriesData.series as IArticleSeries[],
 		seriesMetadata: seriesData.metadata,
-		stats: statsRes.stats
+		stats: statsRes.stats || {}
 	};
 };
 
@@ -114,5 +114,43 @@ export const actions: Actions = {
 		const response = await res.json();
 
 		return { ...response };
+	},
+	deleteSeries: async ({ request }) => {
+		const formData = await request.formData();
+		const ids = (formData.get('ids') as string).split(',');
+
+		if (ids.length < 1) {
+			const errors: Array<CustomError> = [];
+			errors.push({ error: 'No series selected', id: Math.floor(Math.random() * 100) });
+			return fail(400, { errors: errors });
+		}
+
+		// Prevent empty string from being sent from any of the ids
+		if (ids.includes('')) {
+			const errors: Array<CustomError> = [];
+			errors.push({ error: 'Invalid series id', id: Math.floor(Math.random() * 100) });
+			return fail(400, { errors: errors });
+		}
+
+		try {
+			const res = await fetch(`${BASE_API_URI}/v1/series/batch/delete`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ ids })
+			});
+
+			if (!res.ok) {
+				const response = await res.json();
+				const errors: Array<CustomError> = [];
+				errors.push({ error: response.message, id: Math.floor(Math.random() * 100) });
+				return fail(400, { errors: errors });
+			}
+
+			const response = await res.json();
+
+			return { ...response };
+		} catch (error) {
+			return fail(500, { message: 'Failed to delete series' });
+		}
 	}
 };

@@ -148,6 +148,8 @@
 			class="shadow-xs focus:outline-hidden flex h-[46px] items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-700 transition-all hover:bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-500/50"
 			onclick={() => (isFilterOpen = !isFilterOpen)}
 			aria-expanded={isFilterOpen}
+			aria-haspopup="true"
+			title="Filter articles"
 		>
 			<Adjust class="h-5 w-5" />
 			<span class="hidden sm:inline">Filter</span>
@@ -208,6 +210,20 @@
 						<option value="week">Past Week</option>
 						<option value="month">Past Month</option>
 						<option value="year">Past Year</option>
+					</select>
+				</div>
+
+				<!-- Series -->
+				<div class="mb-4">
+					<h3 class="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">Series</h3>
+					<select
+						name="series"
+						class="shadow-xs focus:outline-hidden w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+					>
+						<option value="">All Series</option>
+						<option value="series-1">Series 1</option>
+						<option value="series-2">Series 2</option>
+						<option value="series-3">Series 3</option>
 					</select>
 				</div>
 

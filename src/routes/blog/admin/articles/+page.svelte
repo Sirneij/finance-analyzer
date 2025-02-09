@@ -14,6 +14,7 @@
 	import Dock from '$lib/components/reusables/Dock.svelte';
 	import PenNib from '$lib/components/icons/PenNib.svelte';
 	import PencilSquare from '$lib/components/icons/PencilSquare.svelte';
+	import Checkbox from '$lib/components/forms/Checkbox.svelte';
 
 	let { data } = $props();
 
@@ -112,9 +113,9 @@
 					<thead class="sticky top-0 bg-gray-50 text-center text-xs uppercase dark:bg-gray-700">
 						<tr>
 							<th class="px-6 py-4 text-left">
-								<input
-									type="checkbox"
-									class="h-5 w-5 rounded-sm border-gray-100 bg-gray-200 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
+								<Checkbox
+									showLabel={false}
+									label="Select All"
 									onchange={toggleAll}
 									checked={selectedArticles.size === data.articles.length &&
 										data.articles.length > 0}
@@ -150,9 +151,9 @@
 								onmouseleave={() => (hoveredArticle = null)}
 							>
 								<td class="px-6 py-4">
-									<input
-										type="checkbox"
-										class="h-5 w-5 rounded-sm border-gray-300 bg-gray-100 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
+									<Checkbox
+										showLabel={false}
+										label="Select {article._id}"
 										checked={selectedArticles.has(article._id)}
 										onchange={() => toggleSelection(article._id)}
 									/>

@@ -49,18 +49,18 @@
 	}
 
 	:root {
-		--diff-deletion-bg: #ffeef0;
-		--diff-deletion-fg: #b31d28;
-		--diff-addition-bg: #e6ffec;
-		--diff-addition-fg: #22863a;
+		--diff-deletion-bg: #fbfbfb;
+		--diff-deletion-fg: #ef535090;
+		--diff-addition-bg: #fbfbfb;
+		--diff-addition-fg: #4876d6;
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--diff-deletion-bg: #443d3d;
-			--diff-deletion-fg: #ff8b8b;
-			--diff-addition-bg: #2a3e2e;
-			--diff-addition-fg: #9ccc9c;
+			--diff-deletion-bg: #011627;
+			--diff-deletion-fg: #ef535090;
+			--diff-addition-bg: #011627;
+			--diff-addition-fg: #c5e478;
 		}
 	}
 }
