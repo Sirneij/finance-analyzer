@@ -10,7 +10,6 @@
 	import Minimize from '$lib/components/icons/Minimize.svelte';
 	import Expand from '$lib/components/icons/Expand.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';
-	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
 	let {
@@ -21,20 +20,15 @@
 
 	let chartElement = $state<HTMLDivElement>(),
 		chart: ApexCharts | null = null,
-		timeout: ReturnType<typeof setTimeout>,
 		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-		if (chart) {
-			timeout = setTimeout(() => {
-				chart?.updateOptions({
-					chart: {
-						height: isFullscreen ? 'calc(100vh - 8rem)' : 300
-					}
-				});
-			}, 0);
-		}
+		// chart?.updateOptions({
+		// 	chart: {
+		// 		height: isFullscreen ? 'calc(100vh - 120px)' : 300
+		// 	}
+		// });
 	}
 	async function initChart() {
 		if (!browser || !chartElement) return;
@@ -113,10 +107,6 @@
 		if (browser && chartElement) {
 			initChart();
 		}
-	});
-
-	onDestroy(() => {
-		if (timeout) clearTimeout(timeout);
 	});
 </script>
 

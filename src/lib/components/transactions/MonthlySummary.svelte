@@ -8,7 +8,6 @@
 	import { transformMonthlyChartData } from '$lib/utils/helpers/transactions.helpers';
 	import { COLORS } from '$lib/utils/contants';
 	import type { ProgressSteps } from '$lib/types/notification.types';
-	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
 	let {
@@ -19,20 +18,15 @@
 
 	let chartElement = $state<HTMLDivElement>(),
 		chart: ApexCharts | null = null,
-		timeout: ReturnType<typeof setTimeout>,
 		isFullscreen = $state(false);
 
 	function toggleFullscreen() {
 		isFullscreen = !isFullscreen;
-		if (chart) {
-			timeout = setTimeout(() => {
-				chart?.updateOptions({
-					chart: {
-						height: isFullscreen ? 'calc(100vh - 120px)' : 300
-					}
-				});
-			}, 0);
-		}
+		// chart?.updateOptions({
+		// 	chart: {
+		// 		height: isFullscreen ? 'calc(100vh - 120px)' : 300
+		// 	}
+		// });
 	}
 
 	async function initChart() {
@@ -103,10 +97,6 @@
 		if (browser && chartElement && financialSummaries?.monthly_summary) {
 			initChart();
 		}
-	});
-
-	onDestroy(() => {
-		if (timeout) clearTimeout(timeout);
 	});
 </script>
 
