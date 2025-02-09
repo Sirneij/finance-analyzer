@@ -54,6 +54,7 @@
 					class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 md:hidden dark:text-gray-400 dark:hover:bg-gray-700"
 					onclick={toggleSidebar}
 					aria-label="Toggle Menu"
+					title="Toggle Menu"
 				>
 					<Collapse class="h-6 w-6" collapse={false} />
 				</button>
