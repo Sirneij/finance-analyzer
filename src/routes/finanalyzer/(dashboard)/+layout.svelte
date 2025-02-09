@@ -40,8 +40,8 @@
 	<!-- Main content -->
 	<div
 		class="relative h-full transform transition-all duration-300 md:translate-x-0"
-		class:md:ml-64={isSidebarOpen}
-		class:md:ml-20={!isSidebarOpen}
+		class:margin-left-64={isSidebarOpen}
+		class:margin-left-20={!isSidebarOpen}
 		class:overflow-hidden={isMobile && isSidebarOpen}
 	>
 		<header

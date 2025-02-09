@@ -35,7 +35,7 @@ const baseOptions: ApexOptions = {
 	tooltip: {
 		theme: 'dark',
 		y: {
-			formatter: (value: number) => `$${value.toLocaleString()}`
+			formatter: (value: number) => formatCurrency(value)
 		}
 	},
 	legend: {
@@ -44,7 +44,16 @@ const baseOptions: ApexOptions = {
 };
 
 // Reusable currency formatter
-const formatCurrency = (value: number): string => `$${value.toLocaleString()}`;
+const formatCurrency = (value: number): string => {
+	// Use the user's locale
+	const locale = navigator?.language || 'en-US';
+	return new Intl.NumberFormat(locale, {
+		style: 'currency',
+		currency: 'USD',
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
+	}).format(value);
+};
 
 // Financial chart configuration
 export const financialChartConfig: ApexOptions = {
@@ -98,8 +107,8 @@ export const spendingCategoriesChartConfig: ApexOptions = {
 	},
 	dataLabels: {
 		enabled: true,
-		formatter: function (val, opts) {
-			return opts.w.config.series[opts.seriesIndex] + '%';
+		formatter: function (val: number, opts) {
+			return val.toFixed(2) + '%';
 		}
 	},
 	responsive: [
@@ -133,6 +142,14 @@ export const monthlySummariesChartConfig: ApexOptions = {
 			opacityFrom: 0.5,
 			opacityTo: 0,
 			stops: [0, 90, 100]
+		}
+	},
+	yaxis: {
+		labels: {
+			formatter: (value) => formatCurrency(value),
+			style: {
+				colors: 'rgba(156, 163, 175, 0.9)'
+			}
 		}
 	}
 };

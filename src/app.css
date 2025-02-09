@@ -319,6 +319,14 @@
 		@apply dark:text-rose-400 dark:hover:bg-gray-700;
 	}
 
+	.margin-left-64 {
+		@apply md:ml-64;
+	}
+
+	.margin-left-20 {
+		@apply md:ml-20;
+	}
+
 	.code-container {
 		@apply relative overflow-hidden;
 
