@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ApexCharts from 'apexcharts';
 	import { financialChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import { transformChartData } from '$lib/utils/helpers/transactions.helpers';
 	import type { SpendingAnalysis } from '$lib/types/transaction.types';
@@ -39,71 +38,77 @@
 	async function initChart() {
 		if (!browser || !chartElement) return;
 
-		const financialChartData = transformChartData(
-			spending_analysis.daily_summary,
-			spending_analysis.cumulative_balance
-		);
+		try {
+			// Dynamically import ApexCharts
+			const { default: ApexCharts } = await import('apexcharts');
+			const financialChartData = transformChartData(
+				spending_analysis.daily_summary,
+				spending_analysis.cumulative_balance
+			);
 
-		const options = {
-			...financialChartConfig,
-			series: [
-				{
-					name: 'Income',
-					data: financialChartData.income
-				},
-				{
-					name: 'Expenses',
-					data: financialChartData.expenses
-				},
-				{
-					name: 'Balance',
-					data: financialChartData.balances
-				}
-			],
-			xaxis: {
-				categories: financialChartData.labels,
-				labels: {
-					style: {
-						colors: 'rgba(156, 163, 175, 0.9)'
+			const options = {
+				...financialChartConfig,
+				series: [
+					{
+						name: 'Income',
+						data: financialChartData.income
+					},
+					{
+						name: 'Expenses',
+						data: financialChartData.expenses
+					},
+					{
+						name: 'Balance',
+						data: financialChartData.balances
 					}
+				],
+				xaxis: {
+					categories: financialChartData.labels,
+					labels: {
+						style: {
+							colors: 'rgba(156, 163, 175, 0.9)'
+						}
+					}
+				},
+				stroke: {
+					width: [2, 2, 2],
+					curve: 'smooth',
+					dashArray: [0, 0, 5]
 				}
-			},
-			stroke: {
-				width: [2, 2, 2],
-				curve: 'smooth',
-				dashArray: [0, 0, 5]
-			}
-		};
-		// Cleanup previous instance
-		if (chart) {
-			chart.destroy();
-		}
-
-		chart = new ApexCharts(chartElement, options);
-		chart.render();
-
-		// Handle dark mode changes
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('dark');
-			chart?.updateOptions(updateChartTheme(isDark));
-		});
-
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['class']
-		});
-
-		// Cleanup on component destruction
-		return () => {
-			observer.disconnect();
+			};
+			// Cleanup previous instance
 			if (chart) {
 				chart.destroy();
 			}
-		};
+
+			chart = new ApexCharts(chartElement, options);
+			chart.render();
+
+			// Handle dark mode changes
+			const observer = new MutationObserver(() => {
+				const isDark = document.documentElement.classList.contains('dark');
+				chart?.updateOptions(updateChartTheme(isDark));
+			});
+
+			observer.observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+
+			// Cleanup on component destruction
+			return () => {
+				observer.disconnect();
+				if (chart) {
+					chart.destroy();
+				}
+			};
+		} catch (error) {
+			console.error('Error initializing chart:', error);
+		}
 	}
 
 	$effect(() => {
-		if (browser && chartElement) {
+		if (browser && chartElement && spending_analysis) {
 			initChart();
 		}
 	});

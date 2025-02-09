@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 	import { skillLevelChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import { SKILLS } from '$lib/utils/contants';
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ApexCharts from 'apexcharts';
 	import type { FinancialSummary } from '$lib/types/transaction.types';
 	import { monthlySummariesChartConfig, updateChartTheme } from '$lib/utils/helpers/charts.helpers';
 	import Minimize from '$lib/components/icons/Minimize.svelte';
@@ -38,64 +37,70 @@
 
 	async function initChart() {
 		if (!browser || !chartElement) return;
+		try {
+			// Dynamically import ApexCharts
+			const { default: ApexCharts } = await import('apexcharts');
 
-		const monthlyData = transformMonthlyChartData(financialSummaries.monthly_summary);
+			const monthlyData = transformMonthlyChartData(financialSummaries.monthly_summary);
 
-		const options = {
-			...monthlySummariesChartConfig,
-			series: [
-				{
-					name: 'Income',
-					data: monthlyData.incomeData
-				},
-				{
-					name: 'Expenses',
-					data: monthlyData.expensesData
-				},
-				{
-					name: 'Savings',
-					data: monthlyData.savingsData
-				}
-			],
-			xaxis: {
-				categories: monthlyData.labels,
-				labels: {
-					style: {
-						colors: 'rgba(156, 163, 175, 0.9)'
+			const options = {
+				...monthlySummariesChartConfig,
+				series: [
+					{
+						name: 'Income',
+						data: monthlyData.incomeData
+					},
+					{
+						name: 'Expenses',
+						data: monthlyData.expensesData
+					},
+					{
+						name: 'Savings',
+						data: monthlyData.savingsData
+					}
+				],
+				xaxis: {
+					categories: monthlyData.labels,
+					labels: {
+						style: {
+							colors: 'rgba(156, 163, 175, 0.9)'
+						}
 					}
 				}
-			}
-		};
+			};
 
-		// Cleanup previous instance
-		if (chart) {
-			chart.destroy();
-		}
-		chart = new ApexCharts(chartElement, options);
-		chart.render();
-
-		// Handle dark mode changes
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('dark');
-			chart?.updateOptions(updateChartTheme(isDark));
-		});
-
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['class']
-		});
-
-		// Cleanup on component destruction
-		return () => {
-			observer.disconnect();
+			// Cleanup previous instance
 			if (chart) {
 				chart.destroy();
 			}
-		};
+			chart = new ApexCharts(chartElement, options);
+			chart.render();
+
+			// Handle dark mode changes
+			const observer = new MutationObserver(() => {
+				const isDark = document.documentElement.classList.contains('dark');
+				chart?.updateOptions(updateChartTheme(isDark));
+			});
+
+			observer.observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+
+			// Cleanup on component destruction
+			return () => {
+				observer.disconnect();
+				if (chart) {
+					chart.destroy();
+				}
+			};
+		} catch (error) {
+			console.error('Error initializing chart:', error);
+		}
 	}
 
 	$effect(() => {
-		if (browser && chartElement) {
+		if (browser && chartElement && financialSummaries?.monthly_summary) {
 			initChart();
 		}
 	});

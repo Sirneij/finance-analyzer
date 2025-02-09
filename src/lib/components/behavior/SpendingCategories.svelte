@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ApexCharts from 'apexcharts';
 	import LoadingChart from '$lib/components/reusables/LoadingChart.svelte';
 	import type { CategoriesData } from '$lib/types/transaction.types';
 	import {
@@ -40,68 +39,74 @@
 	async function initChart() {
 		if (!browser || !chartElement) return;
 
-		const categoryCount = Object.keys(categories.categories).length;
-		const { backgroundColors } = generateChartColors(categoryCount);
+		try {
+			// Dynamically import ApexCharts
+			const { default: ApexCharts } = await import('apexcharts');
+			const categoryCount = Object.keys(categories.categories).length;
+			const { backgroundColors } = generateChartColors(categoryCount);
 
-		const options = {
-			...spendingCategoriesChartConfig,
-			series: Object.values(categories.categories),
-			labels: Object.keys(categories.categories).map(
-				(cat) => cat.charAt(0).toUpperCase() + cat.slice(1)
-			),
-			colors: backgroundColors,
-			chart: {
-				...spendingCategoriesChartConfig.chart,
-				type: 'pie'
-			},
-			plotOptions: {
-				pie: {
-					donut: {
-						size: '65%'
-					}
-				}
-			},
-			responsive: [
-				{
-					breakpoint: 480,
-					options: {
-						chart: {
-							width: '100%'
-						},
-						legend: {
-							position: 'bottom'
+			const options = {
+				...spendingCategoriesChartConfig,
+				series: Object.values(categories.categories),
+				labels: Object.keys(categories.categories).map(
+					(cat) => cat.charAt(0).toUpperCase() + cat.slice(1)
+				),
+				colors: backgroundColors,
+				chart: {
+					...spendingCategoriesChartConfig.chart,
+					type: 'pie'
+				},
+				plotOptions: {
+					pie: {
+						donut: {
+							size: '65%'
 						}
 					}
-				}
-			]
-		};
+				},
+				responsive: [
+					{
+						breakpoint: 480,
+						options: {
+							chart: {
+								width: '100%'
+							},
+							legend: {
+								position: 'bottom'
+							}
+						}
+					}
+				]
+			};
 
-		// Cleanup previous instance
-		if (chart) {
-			chart.destroy();
-		}
-
-		chart = new ApexCharts(chartElement, options);
-		chart.render();
-
-		// Handle dark mode changes
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('dark');
-			chart?.updateOptions(updateChartTheme(isDark));
-		});
-
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['class']
-		});
-
-		// Cleanup on component destruction
-		return () => {
-			observer.disconnect();
+			// Cleanup previous instance
 			if (chart) {
 				chart.destroy();
 			}
-		};
+
+			chart = new ApexCharts(chartElement, options);
+			chart.render();
+
+			// Handle dark mode changes
+			const observer = new MutationObserver(() => {
+				const isDark = document.documentElement.classList.contains('dark');
+				chart?.updateOptions(updateChartTheme(isDark));
+			});
+
+			observer.observe(document.documentElement, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+
+			// Cleanup on component destruction
+			return () => {
+				observer.disconnect();
+				if (chart) {
+					chart.destroy();
+				}
+			};
+		} catch (error) {
+			console.error('Error initializing chart:', error);
+		}
 	}
 
 	$effect(() => {
