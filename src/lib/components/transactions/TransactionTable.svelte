@@ -11,6 +11,7 @@
 	import { fade } from 'svelte/transition';
 	import Delete from '$lib/components/icons/Delete.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import Checkbox from '../forms/Checkbox.svelte';
 
 	let { transactions = $bindable() }: { transactions: Transaction[] } = $props();
 
@@ -44,7 +45,7 @@
 </script>
 
 <!-- Header Card with Delete Action -->
-<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
 	<div class="flex items-center justify-between">
 		<div>
 			<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Transaction History</h2>
@@ -78,15 +79,15 @@
 </div>
 
 <!-- Table Container -->
-<div class="rounded-lg bg-white shadow-xs dark:bg-gray-800">
+<div class="shadow-xs rounded-lg bg-white dark:bg-gray-800">
 	<div class="w-full overflow-x-auto">
 		<table class="w-full text-left text-sm">
 			<thead class="sticky top-0 bg-gray-50 text-center text-xs uppercase dark:bg-gray-700">
 				<tr>
 					<th class="px-6 py-4">
-						<input
-							type="checkbox"
-							class="h-5 w-5 rounded-sm border-gray-100 bg-gray-200 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
+						<Checkbox
+							showLabel={false}
+							label="Select All"
 							onchange={toggleAll}
 							checked={selectedTransactions.size === transactions.length && transactions.length > 0}
 						/>
@@ -121,14 +122,14 @@
 						onmouseleave={() => (hoveredTransaction = null)}
 					>
 						<td class="px-6 py-4">
-							<input
-								type="checkbox"
-								class="h-5 w-5 rounded-sm border-gray-300 bg-gray-100 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-indigo-600"
+							<Checkbox
+								showLabel={false}
+								label="Select transaction {transaction._id}"
 								checked={selectedTransactions.has(transaction._id)}
 								onchange={() => toggleSelection(transaction._id)}
 							/>
 						</td>
-						<td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
+						<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
 							<div class="flex items-center space-x-2">
 								<div
 									class={`h-2 w-2 rounded-full ${
@@ -158,7 +159,7 @@
 								</span>
 							</div>
 						</td>
-						<td class="px-6 py-4 whitespace-nowrap">
+						<td class="whitespace-nowrap px-6 py-4">
 							<span
 								class={`font-medium ${
 									transaction.type === 'income'
@@ -171,7 +172,7 @@
 								)}
 							</span>
 						</td>
-						<td class="px-6 py-4 whitespace-nowrap">
+						<td class="whitespace-nowrap px-6 py-4">
 							<span class="font-medium text-gray-900 dark:text-white">
 								{formatMoney(transaction.balance)}
 							</span>
@@ -185,7 +186,7 @@
 								>
 									<input type="hidden" name="transactions" value={transaction._id} />
 									<button
-										class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+										class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
 										type="submit"
 										aria-label="Delete transaction"
 									>
