@@ -8,6 +8,12 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<svelte:head>
+	<title>Transactions | {data.user?.name}</title>
+	<meta name="description" content="Track and analyze your financial movements" />
+	<meta name="keywords" content="transactions, financial movements, financial analysis" />
+</svelte:head>
+
 <AnimatedContainer class="w-full space-y-4">
 	<AnimatedSection y={30} identifier={data.metadata.page}>
 		<TransactionTable bind:transactions={data.transactions} />

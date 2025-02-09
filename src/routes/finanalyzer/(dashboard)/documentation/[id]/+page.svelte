@@ -47,6 +47,12 @@
 	};
 </script>
 
+<svelte:head>
+	<title>API Docs | {data.user?.name}</title>
+	<meta name="description" content="Update API documentation" />
+	<meta name="keywords" content="api docs, documentation, endpoints" />
+</svelte:head>
+
 <AnimatedContainer class="mx-auto max-w-4xl space-y-6 p-6">
 	<div class="rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
 		<AnimatedSection y={30}>
@@ -61,7 +67,7 @@
 
 			<FormError {form} />
 
-			<div class="relative mt-2 mb-4">
+			<div class="relative mb-4 mt-2">
 				<div class="absolute inset-0 flex items-center">
 					<div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
 				</div>
@@ -97,7 +103,7 @@
 				{:else}
 					<button
 						type="submit"
-						class="bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden dark:hover:bg-indigo-400"
+						class="focus:outline-hidden bg-indigo-500 px-4 py-3 text-white transition-colors hover:bg-indigo-600 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:bg-indigo-400"
 					>
 						Update Documentation
 					</button>

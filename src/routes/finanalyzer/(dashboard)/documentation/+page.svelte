@@ -24,9 +24,15 @@
 	};
 </script>
 
+<svelte:head>
+	<title>API Docs | {data.user?.name}</title>
+	<meta name="description" content="Browse all available API docs" />
+	<meta name="keywords" content="api docs, documentation, endpoints" />
+</svelte:head>
+
 <AnimatedContainer class="container mx-auto">
 	<AnimatedSection
-		class="mb-4 flex items-center justify-between rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800"
+		class="shadow-xs mb-4 flex items-center justify-between rounded-lg bg-white p-6 dark:bg-gray-800"
 		y={30}
 	>
 		<div>
@@ -36,7 +42,7 @@
 		<div class="flex items-center space-x-4">
 			<a
 				href="/finanalyzer/documentation/create"
-				class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-xs transition-all hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 focus:outline-hidden dark:bg-indigo-500 dark:hover:bg-indigo-400"
+				class="shadow-xs focus:outline-hidden inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-400"
 			>
 				<Add class="h-5 w-5" />
 				Create Doc
@@ -56,13 +62,13 @@
 				animate:flip={{ duration: 300 }}
 				in:fade|local={{ duration: 300 }}
 				out:slide|local={{ duration: 300 }}
-				class="group relative block w-full rounded-lg border border-gray-200 bg-white p-6 shadow-xs transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+				class="shadow-xs group relative block w-full rounded-lg border border-gray-200 bg-white p-6 transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 			>
 				<form method="POST" action="?/deleteEndpoint" use:enhance={handleDelete}>
 					<input type="hidden" name="id" value={endpoint._id} />
 					<button
 						type="submit"
-						class="absolute top-0 right-0 hidden rounded-full p-1.5 text-red-500 opacity-0 transition-opacity group-hover:inline-flex group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
+						class="absolute right-0 top-0 hidden rounded-full p-1.5 text-red-500 opacity-0 transition-opacity hover:bg-red-50 hover:text-red-600 group-hover:inline-flex group-hover:opacity-100 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
 						aria-label="Delete endpoint"
 					>
 						<Delete class="h-5 w-5" />

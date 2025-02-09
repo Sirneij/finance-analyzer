@@ -17,6 +17,8 @@
 	import Endpoints from '$lib/components/docs/documentation/Endpoints.svelte';
 	import { SLIDE_DURATION } from '$lib/utils/helpers/misc.transitions';
 	import Breadcrumbs from '$lib/components/reusables/Breadcrumbs.svelte';
+	import { WEBSITE_URL } from '$lib/utils/contants';
+	import { onMount } from 'svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -46,7 +48,70 @@
 		.values();
 
 	const crumbs = [{ text: 'Documentation', href: '/finanalyzer/docs' }];
+
+	function getJsonLd() {
+		return {
+			'@context': 'https://schema.org',
+			'@type': 'WebPage',
+			name: 'API Documentation | Finanalyzer',
+			description:
+				'Explore our API endpoints, learn how to integrate, and build amazing applications',
+			url: `${WEBSITE_URL}/finanalyzer/docs`,
+			publisher: {
+				'@type': 'Organization',
+				name: 'Finanalyzer',
+				url: `${WEBSITE_URL}`,
+				logo: `${WEBSITE_URL}/logo.svg`
+			},
+			author: {
+				'@type': 'Person',
+				name: 'John Owolabi Idogun',
+				url: `${WEBSITE_URL}`,
+				sameAs: ['https://twitter.com/sirneij']
+			}
+		};
+	}
+
+	onMount(() => {
+		const script = document.createElement('script');
+		script.type = 'application/ld+json';
+		script.textContent = JSON.stringify(getJsonLd());
+		document.head.appendChild(script);
+
+		return () => {
+			document.head.removeChild(script);
+		};
+	});
 </script>
+
+<svelte:head>
+	<title>API Documentation | Finanalyzer</title>
+	<meta
+		name="description"
+		content="Explore our API endpoints, learn how to integrate, and build amazing applications"
+	/>
+	<meta name="keywords" content="api docs, documentation, endpoints" />
+	<meta name="robots" content="index, follow" />
+	<meta name="author" content="John Owolabi Idogun" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@sirneij" />
+	<meta name="twitter:creator" content="@sirneij" />
+	<meta property="og:url" content="{WEBSITE_URL}/finanalyzer/docs" />
+	<meta property="og:title" content="API Documentation | Finanalyzer" />
+	<meta
+		property="og:description"
+		content="Explore our API endpoints, learn how to integrate, and build amazing applications"
+	/>
+	<meta property="og:image" content="{WEBSITE_URL}/logo.svg" />
+	<meta property="og:image:alt" content="Finanalyzer Logo" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Finanalyzer" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:locale:alternate" content="en_GB" />
+
+	<link rel="canonical" href="{WEBSITE_URL}/finanalyzer/docs" />
+	<link rel="alternate" hreflang="en" href="{WEBSITE_URL}/finanalyzer/docs" />
+</svelte:head>
 
 <div
 	class="bg-linear-to-br relative min-h-screen from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"

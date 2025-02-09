@@ -5,7 +5,7 @@
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 	import { fly } from 'svelte/transition';
 	import type { CodeExample } from '$lib/types/docs.types';
-	import { LANGUAGES_MAP } from '$lib/utils/contants';
+	import { LANGUAGES_MAP, WEBSITE_URL } from '$lib/utils/contants';
 	import AnimatedContainer from '$lib/components/animations/AnimatedContainer.svelte';
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import hljs from 'highlight.js';
@@ -57,9 +57,31 @@
 
 	const crumbs = [
 		{ text: 'Documentation', href: '/finanalyzer/docs' },
-		{ text: data.currentDoc.path }
+		{ text: data.currentDoc.path, href: `/finanalyzer/docs/${data.currentDoc._id}` }
 	];
 </script>
+
+<svelte:head>
+	<title>{data.currentDoc.path} | API Docs</title>
+	<meta name="description" content="API documentation for Finanalyzer" />
+	<meta name="keywords" content="api docs, documentation, endpoints" />
+	<meta name="robots" content="index, follow" />
+	<meta name="author" content="John Owolabi Idogun" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@sirneij" />
+	<meta name="twitter:creator" content="@sirneij" />
+	<meta property="og:url" content={`${WEBSITE_URL}/finanalyzer/docs/${data.currentDoc._id}`} />
+	<meta property="og:title" content={`${data.currentDoc.path} | API Docs`} />
+	<meta property="og:description" content="API documentation for Finanalyzer" />
+	<meta property="og:image" content={`${WEBSITE_URL}/logo.svg`} />
+	<meta property="og:image:alt" content="Finanalyzer Logo" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Finanalyzer" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:locale:alternate" content="en_GB" />
+
+	<link rel="canonical" href={`${WEBSITE_URL}/finanalyzer/docs/${data.currentDoc._id}`} />
+</svelte:head>
 
 <svelte:window on:resize={checkMobile} bind:innerWidth />
 

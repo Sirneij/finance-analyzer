@@ -1,0 +1,5 @@
+<svg class="h-8 w-auto" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path d="M10 30L20 10L30 30" stroke="#4F46E5" stroke-width="3" />
+	<path d="M35 10H45V30H35" stroke="#4F46E5" stroke-width="3" />
+	<text x="55" y="25" class="text-sm font-bold" fill="#374151">AI</text>
+</svg>

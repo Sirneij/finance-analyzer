@@ -59,6 +59,12 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Financial Behavior | {page.data.user?.name}</title>
+	<meta name="description" content="Analyze and understand your spending patterns" />
+	<meta name="keywords" content="financial behavior, spending patterns, financial analysis" />
+</svelte:head>
+
 <AnimatedContainer class="space-y-6 p-6">
 	<!-- Hero Section -->
 	<AnimatedSection
