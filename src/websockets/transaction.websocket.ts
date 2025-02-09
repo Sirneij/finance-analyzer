@@ -5,6 +5,15 @@ import mongoose from "mongoose";
 import { sendError } from "$utils/error.utils.js";
 
 export function TransactionWebSocketHandler(ws: WebSocket): void {
+  const pingInterval = setInterval(() => {
+    if (ws.readyState === ws.OPEN) {
+      ws.ping();
+    }
+  }, 30000); // Send ping every 30 seconds
+
+  ws.on("pong", () => {
+    // Connection is alive
+  });
   ws.on("message", async (message: string) => {
     try {
       const actions = JSON.parse(message);
@@ -55,6 +64,7 @@ export function TransactionWebSocketHandler(ws: WebSocket): void {
   });
 
   ws.on("close", () => {
+    clearInterval(pingInterval);
     baseConfig.logger.info("Frontend WebSocket connection closed");
   });
 
