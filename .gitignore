@@ -10,3 +10,4 @@ coverage
 virtualenv
 certs/
 financial.code-workspace
+.devcontainer/
