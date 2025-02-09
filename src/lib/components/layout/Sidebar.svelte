@@ -28,6 +28,7 @@
 	class:w-20={!isSidebarOpen}
 	class:-translate-x-full={isMobile && !isSidebarOpen}
 	class:translate-x-0={!isMobile || isSidebarOpen}
+	{...props}
 >
 	<div class="flex h-16 items-center justify-between px-4">
 		<a class="flex items-center" href="/finanalyzer">

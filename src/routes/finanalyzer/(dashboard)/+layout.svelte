@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Collapse from '$lib/components/icons/Collapse.svelte';
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
 	import ThemeSwitcher from '$lib/components/reusables/ThemeSwitcher.svelte';
 
@@ -47,10 +48,20 @@
 		<header
 			class="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-gray-700 dark:bg-gray-800"
 		>
-			<h1 class="text-2xl font-semibold text-gray-800 dark:text-white">Dashboard</h1>
+			<div class="flex items-center gap-4">
+				<!-- Mobile menu button -->
+				<button
+					class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 md:hidden dark:text-gray-400 dark:hover:bg-gray-700"
+					onclick={toggleSidebar}
+					aria-label="Toggle Menu"
+				>
+					<Collapse class="h-6 w-6" collapse={false} />
+				</button>
+				<h1 class="text-2xl font-semibold text-gray-800 dark:text-white">Dashboard</h1>
+			</div>
 			<ThemeSwitcher
 				class="rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
-			></ThemeSwitcher>
+			/>
 		</header>
 
 		<main class="h-[calc(100vh-4rem)] overflow-y-auto p-6">
