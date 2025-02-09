@@ -76,4 +76,52 @@ export class SeriesController {
       });
     }
   }
+
+  async handleUpdateManySeries(req: Request, res: Response): Promise<void> {
+    try {
+      const data = req.body;
+      baseConfig.logger.info(`Updating series: ${JSON.stringify(data)}`);
+      // Validate the request body. It should be an array of objects
+      if (!data || !Array.isArray(data)) {
+        res
+          .status(400)
+          .json({ success: false, message: "Invalid request body" });
+        return;
+      }
+
+      const series = await SeriesService.updateManySeries(data);
+
+      res.json({ success: true, series });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : "Failed to update series",
+      });
+    }
+  }
+
+  async handleDeleteManySeries(req: Request, res: Response): Promise<void> {
+    try {
+      const { ids } = req.body;
+      baseConfig.logger.info(`Deleting series: ${JSON.stringify(ids)}`);
+      // Validate the request body. It should be an array of objects
+      if (!ids || !Array.isArray(ids)) {
+        res
+          .status(400)
+          .json({ success: false, message: "Invalid request body" });
+        return;
+      }
+
+      const series = await SeriesService.deleteManySeries(ids);
+
+      res.json({ success: true, series });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : "Failed to delete series",
+      });
+    }
+  }
 }

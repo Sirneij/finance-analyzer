@@ -70,6 +70,10 @@ export interface UpdateTagInput {
 export interface CreateArticleSeriesInput {
   title: string;
 }
+export interface UpdateArticleSeriesInput {
+  title?: string;
+  _id: mongoose.Types.ObjectId;
+}
 
 export interface SearchQuery {
   q?: string;

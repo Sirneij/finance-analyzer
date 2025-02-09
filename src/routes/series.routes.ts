@@ -6,11 +6,21 @@ const seriesRoutes = Router();
 const seriesController = new SeriesController();
 
 seriesRoutes.get("/", seriesController.handleGetSeries);
-seriesRoutes.get("/:id", seriesController.handleGetSingleSeries);
 seriesRoutes.post(
   "/",
   isJohnOwolabiIdogun,
   seriesController.handleCreateSeries
 );
+seriesRoutes.patch(
+  "/",
+  isJohnOwolabiIdogun,
+  seriesController.handleUpdateManySeries
+);
+seriesRoutes.post(
+  "/batch/delete",
+  isJohnOwolabiIdogun,
+  seriesController.handleDeleteManySeries
+);
+seriesRoutes.get("/:id", seriesController.handleGetSingleSeries);
 
 export default seriesRoutes;

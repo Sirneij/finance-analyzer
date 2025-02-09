@@ -2,8 +2,9 @@ import { ArticleSeriesModel } from "$models/article.model.js";
 import type {
   CreateArticleSeriesInput,
   IArticleSeries,
+  UpdateArticleSeriesInput,
 } from "$types/article.types.js";
-import { Error } from "mongoose";
+import { Error, Types } from "mongoose";
 
 export class SeriesService {
   static async getSeriesById(id: string): Promise<IArticleSeries | null> {
@@ -93,6 +94,39 @@ export class SeriesService {
         return existingSeries;
       }
       // Re-throw other errors
+      throw error;
+    }
+  }
+
+  static async updateManySeries(data: UpdateArticleSeriesInput[]) {
+    try {
+      const bulkOps = data.map((update) => ({
+        updateOne: {
+          filter: { _id: new Types.ObjectId(update._id) },
+          update: { $set: update },
+        },
+      }));
+
+      const result = await ArticleSeriesModel.bulkWrite(bulkOps, {
+        ordered: false,
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Error in updateManySeries:", error);
+      throw error;
+    }
+  }
+
+  static async deleteManySeries(ids: string[]) {
+    try {
+      const result = await ArticleSeriesModel.deleteMany({
+        _id: { $in: ids.map((id) => new Types.ObjectId(id)) },
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Error in deleteManySeries:", error);
       throw error;
     }
   }
