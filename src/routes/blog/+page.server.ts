@@ -16,13 +16,18 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		? fetch(`${BASE_API_URI}/v1/tags?page=${tagsPage}`).then((res) => res.json())
 		: Promise.resolve(null);
 
-	const [articleData, tagData] = await Promise.all([articlePromise, tagPromise]);
+	const [articleData, tagData, seriesData] = await Promise.all([
+		articlePromise,
+		tagPromise,
+		fetch(`${BASE_API_URI}/v1/series?page=1&limit=-1`).then((res) => res.json())
+	]);
 
 	return {
 		articles: articleData.articles as IArticlePopulated[],
 		articleMetadata: { ...articleData.metadata, expanded: true },
 		tags: tagData.tags,
-		tagsMetadata: { ...tagData.metadata, expanded: false }
+		tagsMetadata: { ...tagData.metadata, expanded: false },
+		series: seriesData.series
 	};
 };
 

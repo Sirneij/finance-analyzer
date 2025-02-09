@@ -18,7 +18,9 @@
 		selectedTags = $bindable(),
 		tags = $bindable(),
 		isSearching = $bindable(),
-		tagsMetadata
+		tagsMetadata,
+		series = $bindable(),
+		selectedSeries = $bindable()
 	} = $props();
 
 	let searchForm = $state<HTMLFormElement>(),
@@ -60,11 +62,12 @@
 	$effect(() => {
 		if (isInitialLoad) {
 			const params = page.url.searchParams;
-			searchResponse = formatSearchResponse(params);
+			searchResponse = formatSearchResponse(params, series);
 			if (params.has('q') && searchQuery) searchQuery = params.get('q') ?? '';
 			if (params.has('sortBy')) sortBy = params.get('sortBy');
 			if (params.has('period')) dateRange = params.get('period');
 			if (params.has('tags')) selectedTags = params.getAll('tags');
+			if (params.has('series')) selectedSeries = params.get('series');
 
 			isInitialLoad = false;
 			// Allow form submission after initial state is set
@@ -159,7 +162,8 @@
 				>
 					{(sortBy !== 'recent' ? 1 : 0) +
 						(dateRange !== 'all' ? 1 : 0) +
-						(selectedTags.length > 0 ? 1 : 0)}
+						(selectedTags.length > 0 ? 1 : 0) +
+						(selectedSeries ? 1 : 0)}
 				</span>
 			{/if}
 		</button>
@@ -218,12 +222,13 @@
 					<h3 class="mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">Series</h3>
 					<select
 						name="series"
+						bind:value={selectedSeries}
 						class="shadow-xs focus:outline-hidden w-full rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 					>
 						<option value="">All Series</option>
-						<option value="series-1">Series 1</option>
-						<option value="series-2">Series 2</option>
-						<option value="series-3">Series 3</option>
+						{#each series as { _id, title }}
+							<option value={_id}>{title}</option>
+						{/each}
 					</select>
 				</div>
 

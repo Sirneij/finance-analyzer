@@ -25,6 +25,7 @@
 		isFilterOpen = $state(false),
 		selectedTags = $state<string[]>([]),
 		sortBy = $state('recent'), // 'recent' | 'popular',
+		selectedSeries = $state(''), // 'all' | 'seriesId'
 		dateRange = $state('all'); // 'all' | 'week' | 'month' | 'year'
 
 	const handleKeydown = (e: KeyboardEvent) => {
@@ -131,6 +132,8 @@
 			bind:selectedTags
 			tags={data.tags}
 			tagsMetadata={data.tagsMetadata}
+			series={data.series}
+			bind:selectedSeries
 		/>
 
 		{#if !isSearching && data.articles.length === 0}

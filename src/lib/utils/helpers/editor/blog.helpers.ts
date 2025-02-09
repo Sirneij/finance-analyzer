@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import type { IArticlePopulated } from '$lib/types/articles.types';
+import type { IArticlePopulated, IArticleSeries } from '$lib/types/articles.types';
 import { WEBSITE_URL } from '$lib/utils/contants';
 
 export const EDITOR_STORAGE_KEY = `${WEBSITE_URL}_editor_state`;
@@ -253,7 +253,10 @@ export const isBot = (userAgent: string): boolean => {
 	return botPatterns.some((pattern) => userAgent.toLowerCase().includes(pattern.toLowerCase()));
 };
 
-export const formatSearchResponse = (params: URLSearchParams): string => {
+export const formatSearchResponse = (
+	params: URLSearchParams,
+	seriesFromServer?: IArticleSeries[]
+): string => {
 	const parts: string[] = [];
 
 	const q = params.get('q');
@@ -267,6 +270,12 @@ export const formatSearchResponse = (params: URLSearchParams): string => {
 
 	const period = params.get('period');
 	if (period && period !== 'all') parts.push(`period: ${period}`);
+
+	const series = params.get('series');
+	if (series) {
+		const seriesTitle = seriesFromServer?.find((s) => s._id === series)?.title;
+		if (seriesTitle) parts.push(`series: ${seriesTitle}`);
+	}
 
 	return parts.join(', ');
 };
