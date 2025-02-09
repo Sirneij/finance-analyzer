@@ -38,7 +38,7 @@
 		}
 	}
 	async function initChart() {
-		if (!chartElement || !categories?.categories) return;
+		if (!browser || !chartElement) return;
 
 		const categoryCount = Object.keys(categories.categories).length;
 		const { backgroundColors } = generateChartColors(categoryCount);

@@ -37,7 +37,7 @@
 	}
 
 	async function initChart() {
-		if (!chartElement || !financialSummaries?.monthly_summary) return;
+		if (!browser || !chartElement) return;
 
 		const monthlyData = transformMonthlyChartData(financialSummaries.monthly_summary);
 

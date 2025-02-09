@@ -37,7 +37,7 @@
 	}
 
 	async function initChart() {
-		if (!chartElement || !spending_analysis) return;
+		if (!browser || !chartElement) return;
 
 		const financialChartData = transformChartData(
 			spending_analysis.daily_summary,
