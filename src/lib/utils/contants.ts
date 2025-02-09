@@ -144,7 +144,9 @@ export const SKILLS = [
 	{ name: 'Frontend', level: 90 },
 	{ name: 'Backend', level: 95 },
 	{ name: 'Database Design', level: 90 },
-	{ name: 'System Architecture', level: 85 }
+	{ name: 'System Architecture', level: 85 },
+	{ name: 'Technical Writing', level: 90 },
+	{ name: 'DevOps', level: 80 }
 ];
 
 const modKey = getModifierKey();

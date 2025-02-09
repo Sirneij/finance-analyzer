@@ -170,7 +170,10 @@ export const skillLevelChartConfig: ApexOptions = {
 		opacity: 0.5
 	},
 	markers: {
-		size: 4
+		size: 5,
+		hover: {
+			size: 10
+		}
 	},
 	yaxis: {
 		show: false,
@@ -191,6 +194,7 @@ export const skillLevelChartConfig: ApexOptions = {
 	},
 	tooltip: {
 		enabled: true,
+		theme: 'dark',
 		y: {
 			formatter: (value) => `${value}%`
 		}
@@ -200,6 +204,7 @@ export const skillLevelChartConfig: ApexOptions = {
 // Helper function to update chart theme based on dark mode
 export function updateChartTheme(isDark: boolean): Partial<ApexOptions> {
 	return {
+		tooltip: { theme: isDark ? 'dark' : 'light' },
 		theme: {
 			mode: isDark ? 'dark' : 'light'
 		},
