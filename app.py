@@ -59,9 +59,7 @@ async def parse_resume(request: Request) -> Response:
         base_settings.logger.info('Successfully processed request')
         return web.json_response(resume_data)
     except Exception as e:
-        base_settings.logger.error(
-            f'Request processing failed: {str(e)}', exc_info=True
-        )
+        base_settings.logger.error(f'Request processing failed: {str(e)}', exc_info=True)
         return web.json_response({'error': str(e)}, status=500)
 
 
@@ -83,9 +81,7 @@ async def extract_text(request: Request) -> Response:
         base_settings.logger.info('Successfully processed request')
         return web.json_response({'text': text})
     except Exception as e:
-        base_settings.logger.error(
-            f'Request processing failed: {str(e)}', exc_info=True
-        )
+        base_settings.logger.error(f'Request processing failed: {str(e)}', exc_info=True)
         return web.json_response({'error': str(e)}, status=500)
 
 
@@ -95,10 +91,11 @@ async def analyze(request: web.Request) -> web.Response:
         base_settings.logger.info('Received analysis request')
         if not isinstance(data, list):
             base_settings.logger.warning(
-                'Invalid input - expected list of transactions'
+                'Invalid input - expected list of transactions',
             )
             return web.json_response(
-                {'error': 'Invalid input - expected list of transactions'}, status=400
+                {'error': 'Invalid input - expected list of transactions'},
+                status=400,
             )
 
         result = await analyze_transactions(data)
@@ -106,7 +103,10 @@ async def analyze(request: web.Request) -> web.Response:
         return web.json_response(result)
     except Exception as e:
         base_settings.logger.error(f'Analysis error: {str(e)}', exc_info=True)
-        return web.json_response({'error': 'Analysis failed: ' + str(e)}, status=500)
+        return web.json_response(
+            {'error': 'Analysis failed: ' + str(e)},
+            status=500,
+        )
 
 
 async def summarize(request: web.Request) -> web.Response:
@@ -115,27 +115,33 @@ async def summarize(request: web.Request) -> web.Response:
         base_settings.logger.info('Received summarization request')
         if not isinstance(data, list):
             base_settings.logger.warning(
-                'Invalid input - expected list of transactions'
+                'Invalid input - expected list of transactions',
             )
             return web.json_response(
-                {'error': 'Invalid input - expected list of transactions'}, status=400
+                {'error': 'Invalid input - expected list of transactions'},
+                status=400,
             )
 
         result = await summarize_transactions(data)
 
         return web.json_response(result)
     except Exception as e:
-        base_settings.logger.error(f'Summarization error: {str(e)}', exc_info=True)
+        base_settings.logger.error(
+            f'Summarization error: {str(e)}',
+            exc_info=True,
+        )
         return web.json_response(
-            {'error': 'Summarization failed: ' + str(e)}, status=500
+            {'error': 'Summarization failed: ' + str(e)},
+            status=500,
         )
 
 
 async def websocket_handler(request: Request) -> WebSocketResponse:
     """WebSocket handler for real-time communication."""
     ws = web.WebSocketResponse(
-        # heartbeat=30,  # Send heartbeat every 30 seconds
-        # autoping=True,  # Automatically respond to pings
+        heartbeat=30,  # Send heartbeat every 30 seconds
+        autoping=True,  # Automatically respond to pings
+        timeout=300,  # 5 minute timeout
     )
     await ws.prepare(request)
 
@@ -153,31 +159,49 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
                     data = msg.json()
                     if data.get('action') == 'analyze':
                         result = await analyze_transactions(
-                            data.get('transactions'), ws_manager
+                            data.get('transactions'),
+                            ws_manager,
                         )
                         await ws_manager.send_progress(
-                            'Analysis complete', 1.0, 'Analysis'
+                            'Analysis complete',
+                            1.0,
+                            'Analysis',
                         )
                         await ws_manager.send_result(
-                            result, 'Analysis', 'analysis_complete'
+                            result,
+                            'Analysis',
+                            'analysis_complete',
                         )
                     elif data.get('action') == 'summary':
                         result = await summarize_transactions(
-                            data.get('transactions'), ws_manager
+                            data.get('transactions'),
+                            ws_manager,
                         )
                         await ws_manager.send_progress(
-                            'Summary complete', 1.0, 'Summarize'
+                            'Summary complete',
+                            1.0,
+                            'Summarize',
                         )
                         await ws_manager.send_result(
-                            result, 'Summarize', 'summary_complete'
+                            result,
+                            'Summarize',
+                            'summary_complete',
                         )
                     else:
                         await ws_manager.send_result(
-                            {'message': 'Unknown action'}, 'Error', 'error'
+                            {'message': 'Unknown action'},
+                            'Error',
+                            'error',
                         )
                 except Exception as e:
-                    base_settings.logger.error(f'Message processing error: {str(e)}')
-                    await ws_manager.send_result({'error': str(e)}, 'Error', 'error')
+                    base_settings.logger.error(
+                        f'Message processing error: {str(e)}',
+                    )
+                    await ws_manager.send_result(
+                        {'error': str(e)},
+                        'Error',
+                        'error',
+                    )
             elif msg.type == WSMsgType.ERROR:
                 base_settings.logger.error(f'WebSocket error: {ws.exception()}')
     finally:

@@ -27,9 +27,7 @@ async def main():
     #     json.dump(text_2, f)
     # Use the resume in ~/Downloads/resume/Software/John_Idogun_Software_Engineer.pdf
     text_3 = await extract_text_with_pymupdf(
-        os.path.expanduser(
-            '~/Downloads/resume/Software/John_Idogun_Software_Engineer.pdf'
-        )
+        os.path.expanduser('~/Downloads/resume/Software/John_Idogun_Software_Engineer.pdf')
     )
 
     resume_json = await parse_resume_text(text_3)
