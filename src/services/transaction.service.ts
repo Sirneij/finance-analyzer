@@ -178,7 +178,8 @@ export class TransactionService {
           message: `Connection to utility server closed for ${action}. Code: ${JSON.stringify(
             e
           )}`,
-          type: action,
+          progress: "1",
+          taskType: action === "analyze" ? "Analysis" : "Summary",
         })
       );
     });
