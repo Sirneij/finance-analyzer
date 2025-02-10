@@ -28,69 +28,43 @@ def get_device() -> tuple[torch.device, str]:
         return torch.device('cpu'), 'CPU'
 
 
-async def analyze_transactions(
-    transactions: list[dict], ws_manager: WebSocketManager = None
-) -> dict:
+async def analyze_transactions(transactions: list[dict], ws_manager: WebSocketManager = None) -> dict:
     """Analyze transactions and return insights with progress updates."""
     try:
-        # Step 1: Validate and preprocess transactions
+        # Validation (10%)
         if ws_manager:
-            await ws_manager.send_progress(
-                'Validating transactions...', 0.1, 'Analysis'
-            )
+            await ws_manager.send_progress('Validating transactions...', 0.1, 'Analysis')
 
         if not transactions:
             if ws_manager:
-                await ws_manager.send_progress(
-                    'No transactions provided', 1.0, 'Summarize'
-                )
+                await ws_manager.send_progress('No transactions provided', 1.0, 'Summarize')
             return {'error': 'No transactions provided'}
 
         tx_objects = [
-            Transaction(
-                _id=t['_id'],
-                balance=float(t['balance']),
-                type=t['type'],
-                date=datetime.fromisoformat(t['date']),
-                description=t['description'],
-                amount=float(t['amount']),
-                userId=t['userId'],
-                createdAt=datetime.fromisoformat(t['createdAt']),
-                updatedAt=datetime.fromisoformat(t['updatedAt']),
-            )
-            for t in transactions
-            if validate_transaction(t)
+            Transaction(**{k: v for k, v in t.items() if k != '__v'}) for t in transactions if validate_transaction(t)
         ]
 
         if not tx_objects:
             if ws_manager:
-                await ws_manager.send_progress(
-                    'No valid transactions provided', 1.0, 'Analysis'
-                )
+                await ws_manager.send_progress('No valid transactions provided', 1.0, 'Analysis')
             return {'error': 'No valid transactions provided'}
 
-        # Step 2: Classification
-        if ws_manager:
-            await ws_manager.send_progress(
-                'Classifying transactions...', 0.2, 'Analysis'
-            )
-        categories = await classify_transactions(tx_objects)
+        # Classification (20% - 60%)
+        categories = await classify_transactions(tx_objects, ws_manager)
 
-        # Step 3: Anomaly Detection
+        # Anomaly Detection (60% - 75%)
         if ws_manager:
-            await ws_manager.send_progress('Detecting anomalies...', 0.4, 'Analysis')
+            await ws_manager.send_progress('Detecting anomalies...', 0.75, 'Analysis')
         anomalies = await detect_anomalies(tx_objects)
 
-        # Step 4: Spending Analysis
+        # Spending Analysis (75% - 90%)
         if ws_manager:
-            await ws_manager.send_progress('Analyzing spending...', 0.6, 'Analysis')
+            await ws_manager.send_progress('Analyzing spending...', 0.9, 'Analysis')
         spending_analysis = await analyze_spending(tx_objects)
 
-        # Step 5: Trend Prediction
+        # Trend Prediction (90% - 100%)
         if ws_manager:
-            await ws_manager.send_progress(
-                'Predicting spending trends...', 0.8, 'Analysis'
-            )
+            await ws_manager.send_progress('Predicting trends...', 0.95, 'Analysis')
         spending_trends = await predict_trends(tx_objects)
 
         # Compile the results
@@ -101,13 +75,15 @@ async def analyze_transactions(
             'spending_trends': spending_trends,
         }
 
-        settings.logger.info('Transaction analysis completed successfully')
+        if ws_manager:
+            await ws_manager.send_progress('Analysis complete', 1.0, 'Analysis')
+
         return result
 
     except Exception as e:
         settings.logger.error(f'Error analyzing transactions: {str(e)}', exc_info=True)
         if ws_manager:
-            await ws_manager.send_progress('Analysis failed', 1.0)
+            await ws_manager.send_progress('Analysis failed', 1.0, 'Analysis')
         return {'error': f'Analysis failed: {str(e)}'}
 
 
@@ -130,47 +106,71 @@ def validate_transaction(t: dict) -> bool:
         return False
 
 
-async def classify_transactions(transactions: list[Transaction]) -> dict:
-    """
-    Classify transactions using FinBERT.
-    """
-    # Get device (GPU if available, otherwise CPU)
+async def classify_transactions(transactions: list[Transaction], ws_manager: WebSocketManager = None) -> dict:
+    """Classify transactions using FinBERT with batched processing."""
     device, device_name = get_device()
     settings.logger.info(f'Using device for classification: {device_name}')
+
     # Load FinBERT classification pipeline
     classifier = pipeline(
         'zero-shot-classification',
         model='yiyanghkust/finbert-tone',
-        device=0 if device.type in ['cuda', 'mps'] else -1,  # Use GPU if available
+        device=0 if device.type in ['cuda', 'mps'] else -1,
     )
 
-    # Define financial categories
     labels = os.getenv(
-        'LABELS', 'groceries,housing,transportation,entertainment,utilities,other'
+        'LABELS',
+        'groceries,housing,transportation,entertainment,utilities,other',
     ).split(',')
-
-    # Prepare transaction descriptions for classification
-    descriptions = [tx.description.lower() for tx in transactions]
-
-    # Batch classify descriptions (Improves performance)
-    results = await asyncio.to_thread(
-        classifier, descriptions, labels, truncation=True, max_length=128
-    )
-
-    # Initialize categories and percentages
     categories = {label: 0 for label in labels}
 
-    # Aggregate classification results
-    for tx, result in zip(transactions, results):
-        category = result['labels'][0]
-        categories[category] += abs(tx.amount)
+    # Batch processing
+    BATCH_SIZE = 32
+    total_batches = len(transactions) // BATCH_SIZE + (1 if len(transactions) % BATCH_SIZE else 0)
 
-    total_spent = sum(categories.values())
+    for batch_idx in range(total_batches):
+        start_idx = batch_idx * BATCH_SIZE
+        end_idx = min((batch_idx + 1) * BATCH_SIZE, len(transactions))
+        batch = transactions[start_idx:end_idx]
+
+        # Update progress
+        if ws_manager:
+            progress = 0.2 + (0.4 * (batch_idx / total_batches))  # Progress from 20% to 60%
+            await ws_manager.send_progress(
+                f'Classifying transactions (batch {batch_idx + 1}/{total_batches})...',
+                progress,
+                'Analysis',
+            )
+
+        # Process batch
+        descriptions = [tx.description.lower() for tx in batch]
+        try:
+            results = await asyncio.to_thread(
+                classifier,
+                descriptions,
+                labels,
+                truncation=True,
+                max_length=128,
+            )
+
+            # Aggregate results
+            for tx, result in zip(batch, results):
+                category = result['labels'][0]
+                categories[category] += abs(tx.amount)
+
+            # Free up memory
+            del results
+            if device.type == 'cuda':
+                torch.cuda.empty_cache()
+
+        except Exception as e:
+            settings.logger.error(f'Error processing batch {batch_idx}: {str(e)}')
+            continue
 
     # Calculate percentages
+    total_spent = sum(categories.values())
     percentages = {
-        category: (amount / total_spent) * 100 if total_spent > 0 else 0
-        for category, amount in categories.items()
+        category: (amount / total_spent) * 100 if total_spent > 0 else 0 for category, amount in categories.items()
     }
 
     return {'categories': categories, 'percentages': percentages}
@@ -196,15 +196,9 @@ async def detect_anomalies(transactions: list[Transaction]) -> list[dict]:
 
             # Generate a dynamic reason
             if tx.amount > 0:
-                reason = (
-                    f'Unusually high income of {tx.amount} detected '
-                    f'(Z-score: {z_score:.2f}).'
-                )
+                reason = f'Unusually high income of {tx.amount} detected ' f'(Z-score: {z_score:.2f}).'
             elif tx.amount < 0 and abs(tx.amount) > abs(mean) + 2 * std:
-                reason = (
-                    f'Unusually large expense of {tx.amount} detected '
-                    f'(Z-score: {z_score:.2f}).'
-                )
+                reason = f'Unusually large expense of {tx.amount} detected ' f'(Z-score: {z_score:.2f}).'
             elif tx.amount < 0 and 'luxury' in tx.description.lower():
                 reason = 'Uncommon luxury expense detected.'
             elif tx.amount < 0 and 'groceries' in tx.description.lower():
@@ -215,7 +209,7 @@ async def detect_anomalies(transactions: list[Transaction]) -> list[dict]:
             # Append the anomaly details
             anomaly_details.append(
                 {
-                    'date': tx.date.isoformat(),
+                    'date': tx.date,
                     'description': tx.description,
                     'amount': tx.amount,
                     'reason': reason,
@@ -250,17 +244,12 @@ async def analyze_spending(transactions: list[Transaction]) -> dict:
     daily_summary = {str(date): float(amount) for date, amount in daily_summary.items()}
 
     # Prepare cumulative balance as JSON-serializable format
-    cumulative_balance = {
-        row['date'].strftime('%Y-%m-%d'): row['cumulative_balance']
-        for _, row in df.iterrows()
-    }
+    cumulative_balance = {row['date'].strftime('%Y-%m-%d'): row['cumulative_balance'] for _, row in df.iterrows()}
 
     return {
         'total_spent': abs(total_spent),
         'total_income': total_income,
-        'savings_rate': (
-            ((total_income + total_spent) / total_income) * 100 if total_income else 0
-        ),
+        'savings_rate': (((total_income + total_spent) / total_income) * 100 if total_income else 0),
         'daily_summary': daily_summary,
         'cumulative_balance': cumulative_balance,
     }
@@ -271,8 +260,15 @@ async def predict_trends(transactions: list[Transaction]) -> dict:
     if len(transactions) < 2:
         return {'trend': 'Not enough data'}
 
+    # Convert dates to datetime objects first
+    for tx in transactions:
+        if isinstance(tx.date, str):
+            tx.date = datetime.fromisoformat(tx.date.replace('Z', '+00:00'))
+
     # Convert dates to numeric for regression
-    dates = [(tx.date - transactions[0].date).days for tx in transactions]
+    start_date = transactions[0].date
+    dates = [(tx.date - start_date).days for tx in transactions]
+
     amounts = [tx.amount for tx in transactions]
 
     # Linear regression for trends
@@ -292,8 +288,5 @@ async def predict_trends(transactions: list[Transaction]) -> dict:
     return {
         'trend': trend,
         'trend_slope': slope,
-        'estimated_monthly_spend': abs(
-            sum(tx.amount for tx in transactions if tx.amount < 0)
-        )
-        / (months or 1),
+        'estimated_monthly_spend': abs(sum(tx.amount for tx in transactions if tx.amount < 0)) / (months or 1),
     }

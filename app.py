@@ -139,10 +139,14 @@ async def summarize(request: web.Request) -> web.Response:
 async def websocket_handler(request: Request) -> WebSocketResponse:
     """WebSocket handler for real-time communication."""
     ws = web.WebSocketResponse(
-        heartbeat=30,  # Send heartbeat every 30 seconds
-        autoping=True,  # Automatically respond to pings
-        timeout=300,  # 5 minute timeout
-        autoclose=False,  # Keep connection open
+        timeout=60.0,  # Increase close timeout to 60 seconds
+        receive_timeout=300.0,  # Set receive timeout to 5 minutes
+        heartbeat=30.0,  # Send ping every 30 seconds
+        autoping=True,  # Auto-respond to pings
+        autoclose=False,  # Don't auto-close on client CLOSE
+        compress=True,  # Enable compression
+        max_msg_size=8388608,  # 8MB max message size
+        writer_limit=131072,  # 128KB write buffer
     )
     await ws.prepare(request)
 
@@ -205,11 +209,15 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
                     )
             elif msg.type == WSMsgType.ERROR:
                 base_settings.logger.error(f'WebSocket error: {ws.exception()}')
+    except Exception as e:
+        base_settings.logger.error(f'WebSocket handler error: {str(e)}')
     finally:
         async with ws_lock:
             ws_connections.remove(ws)
-        await ws.close()
+        if not ws.closed:
+            await ws.close()
         base_settings.logger.info('WebSocket connection closed')
+
     return ws
 
 

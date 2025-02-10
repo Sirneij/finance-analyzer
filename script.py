@@ -3,6 +3,7 @@ import json
 import os
 
 import fitz
+
 from utils.resume_parser import parse_resume_text
 
 

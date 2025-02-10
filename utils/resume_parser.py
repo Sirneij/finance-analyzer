@@ -69,10 +69,7 @@ async def parse_skills(section_lines: list[str]) -> dict[str, list[str]]:
         if match:
             category = match.group(1).strip()
             skills_raw = match.group(2).strip()
-            skill_list = [
-                skill.strip()
-                for skill in split_on_commas_outside_parentheses(skills_raw)
-            ]
+            skill_list = [skill.strip() for skill in split_on_commas_outside_parentheses(skills_raw)]
             # For each skill, remove trailing periods
             skill_list = [skill.rstrip('.') for skill in skill_list]
 
@@ -80,17 +77,13 @@ async def parse_skills(section_lines: list[str]) -> dict[str, list[str]]:
     return skills_dict
 
 
-async def parse_single_experience(
-    exp_lines: list[str], start_idx: int
-) -> tuple[dict[str, str], int]:
+async def parse_single_experience(exp_lines: list[str], start_idx: int) -> tuple[dict[str, str], int]:
     """Parse a single experience entry."""
     company_name = exp_lines[start_idx].replace('• ', '').strip()
     location = exp_lines[start_idx + 1] if start_idx + 1 < len(exp_lines) else ''
     role = exp_lines[start_idx + 2] if start_idx + 2 < len(exp_lines) else ''
     period = exp_lines[start_idx + 3] if start_idx + 3 < len(exp_lines) else ''
-    company_description = (
-        exp_lines[start_idx + 4] if start_idx + 4 < len(exp_lines) else ''
-    )
+    company_description = exp_lines[start_idx + 4] if start_idx + 4 < len(exp_lines) else ''
 
     achievements = []
     tech_stack = []
@@ -102,11 +95,7 @@ async def parse_single_experience(
         if exp_lines[j].startswith('◦Technologies:'):
             tech_str = exp_lines[j].split('Technologies:', 1)[1].strip()
             j += 1
-            while (
-                j < len(exp_lines)
-                and not exp_lines[j].startswith('◦')
-                and not exp_lines[j].startswith('• ')
-            ):
+            while j < len(exp_lines) and not exp_lines[j].startswith('◦') and not exp_lines[j].startswith('• '):
                 tech_str += ' ' + exp_lines[j].strip()
                 j += 1
             items = split_on_commas_outside_parentheses(tech_str)
@@ -115,11 +104,7 @@ async def parse_single_experience(
         elif exp_lines[j].startswith('◦'):
             achievement = exp_lines[j].lstrip('◦').strip()
             j += 1
-            while (
-                j < len(exp_lines)
-                and not exp_lines[j].startswith('◦')
-                and not exp_lines[j].startswith('• ')
-            ):
+            while j < len(exp_lines) and not exp_lines[j].startswith('◦') and not exp_lines[j].startswith('• '):
                 achievement += ' ' + exp_lines[j].strip()
                 j += 1
             achievements.append(achievement)
@@ -152,17 +137,13 @@ async def parse_experiences(section_lines: list[str]) -> list[dict[str, str]]:
     return experiences
 
 
-async def parse_single_education(
-    edu_lines: list[str], start_idx: int
-) -> tuple[dict[str, str], int]:
+async def parse_single_education(edu_lines: list[str], start_idx: int) -> tuple[dict[str, str], int]:
     """Parse a single education entry."""
     school_name = edu_lines[start_idx].replace('• ', '').strip()
     location = edu_lines[start_idx + 1] if start_idx + 1 < len(edu_lines) else ''
     degree_line = edu_lines[start_idx + 2] if start_idx + 2 < len(edu_lines) else ''
     period_line = edu_lines[start_idx + 3] if start_idx + 3 < len(edu_lines) else ''
-    school_description = (
-        edu_lines[start_idx + 4] if start_idx + 4 < len(edu_lines) else ''
-    )
+    school_description = edu_lines[start_idx + 4] if start_idx + 4 < len(edu_lines) else ''
 
     achievements = []
     j = start_idx + 5
@@ -172,11 +153,7 @@ async def parse_single_education(
         if edu_lines[j].startswith('◦'):
             achievement = edu_lines[j].lstrip('◦').strip()
             j += 1
-            while (
-                j < len(edu_lines)
-                and not edu_lines[j].startswith('◦')
-                and not edu_lines[j].startswith('• ')
-            ):
+            while j < len(edu_lines) and not edu_lines[j].startswith('◦') and not edu_lines[j].startswith('• '):
                 achievement += ' ' + edu_lines[j].strip()
                 j += 1
             achievements.append(achievement)

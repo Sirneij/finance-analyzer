@@ -1,0 +1,10 @@
+aiohttp==3.11
+pandas==2.2
+pdf2image==1.17
+PyMuPDF==1.25
+pytesseract==0.3
+transformers==4.48
+python-dotenv==1.0
+scikit-learn==1.6
+torch==2.6
+torchvision==0.21
