@@ -51,8 +51,9 @@ interface Categories {
 }
 
 interface CategoriesData {
-  categories: Categories;
-  percentages: Categories;
+  expenses: Categories;
+  expense_percentages: Categories;
+  income: number;
 }
 
 interface Anomaly {
