@@ -171,11 +171,13 @@ export class TransactionService {
       frontendWs.send(JSON.stringify(data));
     });
 
-    ws.on("close", () => {
+    ws.on("close", (e) => {
       frontendWs.send(
         JSON.stringify({
           action: "progress",
-          message: `Connection to utility server closed for ${action}.`,
+          message: `Connection to utility server closed for ${action}. Code: ${JSON.stringify(
+            e
+          )}`,
           type: action,
         })
       );
