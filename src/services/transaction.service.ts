@@ -159,43 +159,64 @@ export class TransactionService {
     const wsUrl = baseConfig.utilityServiceUrl.replace(/^http/, "ws");
     const ws = new WebSocket(`${wsUrl}/ws`);
 
-    // Keep-alive ping interval (every 30 seconds)
     let pingInterval: NodeJS.Timeout;
+    let reconnectAttempts = 0;
+    const MAX_RECONNECT_ATTEMPTS = 5;
+
+    const setupPing = () => {
+      clearInterval(pingInterval);
+      pingInterval = setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.ping();
+          baseConfig.logger.debug("Ping sent to utility server");
+        }
+      }, 25000); // Ping every 25 seconds (server timeout is 30s)
+    };
 
     ws.on("open", () => {
       baseConfig.logger.info(
         `Connected to utility server for '${action}' at ${wsUrl}`
       );
-
-      // Set up keep-alive pings
-      pingInterval = setInterval(() => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.ping();
-        }
-      }, 30000);
-
+      setupPing();
       ws.send(JSON.stringify({ action, transactions }));
     });
 
     ws.on("message", (message: string) => {
       const data = JSON.parse(message);
-
-      // If the server signals completion, close the connection
-      if (data.progress === 1 || data.status === "complete") {
-        ws.close();
-        return;
-      }
-
+      // Remove automatic closure on completion
       frontendWs.send(JSON.stringify(data));
     });
 
-    ws.on("close", (code, reason) => {
+    ws.on("pong", () => {
+      baseConfig.logger.debug("Received pong from utility server");
+    });
+
+    ws.on("close", async (code, reason) => {
       clearInterval(pingInterval);
+
+      if (code === 1006 && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+        reconnectAttempts++;
+        baseConfig.logger.info(
+          `Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`
+        );
+
+        // Wait before reconnecting
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1000 * reconnectAttempts)
+        );
+        TransactionService.connectToUtilityServer(
+          action,
+          transactions,
+          frontendWs
+        );
+        return;
+      }
+
       frontendWs.send(
         JSON.stringify({
           action: "progress",
           message: `Connection to utility server closed for ${action}. Code: ${code}`,
-          progress: 1,
+          progress: reconnectAttempts >= MAX_RECONNECT_ATTEMPTS ? 1 : 0.5,
           taskType: action === "analyze" ? "Analysis" : "Summary",
         })
       );
@@ -218,6 +239,6 @@ export class TransactionService {
       }
     });
 
-    return ws; // Return the WebSocket instance for external control
+    return ws;
   }
 }
