@@ -142,6 +142,7 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
         heartbeat=30,  # Send heartbeat every 30 seconds
         autoping=True,  # Automatically respond to pings
         timeout=300,  # 5 minute timeout
+        autoclose=False,  # Keep connection open
     )
     await ws.prepare(request)
 
