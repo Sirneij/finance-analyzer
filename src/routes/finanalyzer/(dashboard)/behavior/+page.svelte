@@ -65,7 +65,7 @@
 	<meta name="keywords" content="financial behavior, spending patterns, financial analysis" />
 </svelte:head>
 
-<AnimatedContainer class="space-y-6 p-6">
+<AnimatedContainer class="space-y-6">
 	<!-- Hero Section -->
 	<AnimatedSection
 		y={20}
