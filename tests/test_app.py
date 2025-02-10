@@ -4,12 +4,12 @@ import unittest
 import aiohttp
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 
-from app import create_app
+from app import init_app
 
 
 class TestPDFExtractor(AioHTTPTestCase):
     async def get_application(self):
-        return await create_app()
+        return init_app()
 
     def setUp(self):
         super().setUp()
@@ -22,9 +22,7 @@ class TestPDFExtractor(AioHTTPTestCase):
     async def test_extract_text_success(self):
         with open(self.sample_pdf, 'rb') as f:
             data = aiohttp.FormData()
-            data.add_field(
-                'file', f, filename='sample.pdf', content_type='application/pdf'
-            )
+            data.add_field('file', f, filename='sample.pdf', content_type='application/pdf')
 
             resp = await self.client.post('/extract-text', data=data)
 
@@ -35,9 +33,12 @@ class TestPDFExtractor(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_missing_file(self):
+        # Create empty form data with proper headers
         data = aiohttp.FormData()
         resp = await self.client.post(
-            '/extract-text', data=data, headers={'Content-Type': 'multipart/form-data'}
+            '/extract-text',
+            data=data,
+            headers={'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'},
         )
 
         self.assertEqual(resp.status, 400)

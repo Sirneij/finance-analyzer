@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 
 from models.base import Transaction
-from utils.analyzer import validate_transaction
+from utils.base import validate_and_convert_transactions
 from utils.settings import base_settings as settings
 from utils.websocket import WebSocketManager
 
@@ -20,21 +20,7 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
                 await ws_manager.send_progress('No transactions provided', 1.0, 'Summarize')
             return {'error': 'No transactions provided'}
 
-        tx_objects = [
-            Transaction(
-                _id=t['_id'],
-                balance=float(t['balance']),
-                type=t['type'],
-                date=datetime.fromisoformat(t['date']),
-                description=t['description'],
-                amount=float(t['amount']),
-                userId=t['userId'],
-                createdAt=datetime.fromisoformat(t['createdAt']),
-                updatedAt=datetime.fromisoformat(t['updatedAt']),
-            )
-            for t in transactions
-            if validate_transaction(t)
-        ]
+        tx_objects = await validate_and_convert_transactions(transactions)
 
         if not tx_objects:
             settings.logger.warning('No valid transactions provided')
@@ -64,10 +50,13 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
         if ws_manager:
             await ws_manager.send_progress('Identifying largest transactions...', 0.5, 'Summarize')
 
-        start_date = min(tx.date for tx in tx_objects)
-        end_date = max(tx.date for tx in tx_objects)
-        largest_expense = min(tx.amount for tx in tx_objects if tx.amount < 0)
-        largest_income = max(tx.amount for tx in tx_objects if tx.amount > 0)
+        start_date = min(tx.date for tx in tx_objects) if len(tx_objects) > 1 else tx_objects[0].date
+        end_date = max(tx.date for tx in tx_objects) if len(tx_objects) > 1 else tx_objects[0].date
+
+        expense_values = [tx.amount for tx in tx_objects if tx.amount < 0]
+        income_values = [tx.amount for tx in tx_objects if tx.amount > 0]
+        largest_expense = min(expense_values, default=0)
+        largest_income = max(income_values, default=0)
 
         # Step 4: Generate monthly summaries
         if ws_manager:

@@ -1,8 +1,9 @@
 import asyncio
 import os
+import weakref
 from asyncio import Lock
 
-from aiohttp import WSMsgType, web
+from aiohttp import WSCloseCode, WSMsgType, web
 from aiohttp.web import Request, Response, WebSocketResponse
 
 from utils.analyzer import analyze_transactions
@@ -13,14 +14,12 @@ from utils.summarize import summarize_transactions
 from utils.websocket import WebSocketManager
 
 # Replace global ws_connections with typed version
-ws_connections: set[WebSocketResponse] = set()
-ws_lock = Lock()
+WEBSOCKETS = web.AppKey("websockets", weakref.WeakSet)
 
 
 async def start_background_tasks(app):
     """Initialize application background tasks."""
-    app['ws_connections'] = ws_connections
-    app['ws_lock'] = ws_lock
+    app[WEBSOCKETS] = weakref.WeakSet()
 
 
 async def cleanup_background_tasks(app):
@@ -30,11 +29,8 @@ async def cleanup_background_tasks(app):
 
 async def cleanup_ws(app):
     """Cleanup WebSocket connections on shutdown."""
-    async with ws_lock:
-        connections = set(ws_connections)  # Create a copy to iterate safely
-        for ws in connections:
-            await ws.close(code=WSMsgType.CLOSE, message='Server shutdown')
-        ws_connections.clear()
+    for ws in set(app[WEBSOCKETS]):
+        await ws.close(code=WSCloseCode.GOING_AWAY, message='Server shutdown')
 
 
 async def parse_resume(request: Request) -> Response:
@@ -67,10 +63,20 @@ async def parse_resume(request: Request) -> Response:
 async def extract_text(request: Request) -> Response:
     try:
         base_settings.logger.info('Received text extraction request')
-        reader = await request.multipart()
-        field = await reader.next()
 
-        if field.name != 'file':
+        # Check if content type is correct
+        if not request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+            base_settings.logger.warning('Invalid content type')
+            return web.json_response({'error': 'Invalid content type'}, status=400)
+
+        try:
+            reader = await request.multipart()
+            field = await reader.next()
+        except ValueError as e:
+            base_settings.logger.warning('No file uploaded or invalid multipart form data')
+            return web.json_response({'error': 'No file uploaded'}, status=400)
+
+        if not field or field.name != 'file':
             base_settings.logger.warning('No file field in request')
             return web.json_response({'error': 'No file uploaded'}, status=400)
 
@@ -139,18 +145,11 @@ async def summarize(request: web.Request) -> web.Response:
 
 async def websocket_handler(request: Request) -> WebSocketResponse:
     """WebSocket handler for real-time communication."""
-    ws = web.WebSocketResponse(
-        # timeout=600.0,  # 5 minute timeout
-        # receive_timeout=360.0,  # 6 minute receive timeout
-        # heartbeat=30.0,  # 30 second heartbeat
-        # autoping=False,  # Disable auto-ping
-        # autoclose=False,  # Don't auto-close
-        # compress=True,  # Enable compression
-    )
+    ws = web.WebSocketResponse()
     await ws.prepare(request)
 
-    async with ws_lock:
-        ws_connections.add(ws)
+    # Add ws to the WeakSet
+    request.app[WEBSOCKETS].add(ws)
     ws_manager = WebSocketManager(ws)
     await ws_manager.prepare()
 
@@ -158,14 +157,13 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
         try:
             while True:
                 await ws.ping()
-                await asyncio.sleep(25)  # Send ping every 25 seconds
+                await asyncio.sleep(25)
         except ConnectionResetError:
-            print("Client disconnected")
+            base_settings.logger.info("Client disconnected")
         finally:
             await ws.close()
 
     asyncio.create_task(ping_server(ws))
-
     base_settings.logger.info('WebSocket connection established')
 
     try:
@@ -231,8 +229,7 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
     except Exception as e:
         base_settings.logger.error(f'WebSocket handler error: {str(e)}')
     finally:
-        async with ws_lock:
-            ws_connections.remove(ws)
+        request.app[WEBSOCKETS].discard(ws)
         if not ws.closed:
             await ws.close()
         base_settings.logger.info('WebSocket connection closed')
@@ -242,6 +239,8 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
 
 def init_app() -> web.Application:
     app = web.Application()
+
+    # Add routes
     app.router.add_post('/parse-resume', parse_resume)
     app.router.add_post('/extract-text', extract_text)
     app.router.add_post('/analyze', analyze)
@@ -250,7 +249,7 @@ def init_app() -> web.Application:
 
     # Add startup/cleanup handlers
     app.on_startup.append(start_background_tasks)
-    app.on_cleanup.append(cleanup_background_tasks)
+    app.on_shutdown.append(cleanup_ws)
 
     return app
 
