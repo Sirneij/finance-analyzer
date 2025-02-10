@@ -276,8 +276,7 @@ async def predict_trends(transactions: list[Transaction]) -> dict:
     trend = 'increasing' if coeffs[0] > 0 else 'decreasing'
 
     # Include confidence interval (optional)
-    slope, intercept = coeffs
-    trend_line = [slope * x + intercept for x in dates]
+    slope, _ = coeffs
 
     # Estimated monthly spend
     df = pd.DataFrame([t.__dict__ for t in transactions])
