@@ -190,7 +190,11 @@ app.get("/api/docs", (req, res) => {
 const startServer = async () => {
   try {
     const server: HttpServer = createServer(app);
-    const wss = new WebSocketServer({ server, path: "/ws" });
+    const wss = new WebSocketServer({
+      server,
+      path: "/ws",
+      clientTracking: true,
+    });
 
     // 5. Setup WebSocket handlers
     wss.on("connection", (ws) => {

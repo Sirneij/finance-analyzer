@@ -159,86 +159,52 @@ export class TransactionService {
     const wsUrl = baseConfig.utilityServiceUrl.replace(/^http/, "ws");
     const ws = new WebSocket(`${wsUrl}/ws`);
 
-    let pingInterval: NodeJS.Timeout;
-    let reconnectAttempts = 0;
-    const MAX_RECONNECT_ATTEMPTS = 5;
-
-    const setupPing = () => {
-      clearInterval(pingInterval);
-      pingInterval = setInterval(() => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.ping();
-          baseConfig.logger.debug("Ping sent to utility server");
-        }
-      }, 25000); // Ping every 25 seconds (server timeout is 30s)
-    };
-
     ws.on("open", () => {
       baseConfig.logger.info(
         `Connected to utility server for '${action}' at ${wsUrl}`
       );
-      setupPing();
       ws.send(JSON.stringify({ action, transactions }));
+    });
+
+    ws.on("ping", () => {
+      baseConfig.logger.info(
+        `Ping received from utility server for '${action}' at ${wsUrl}`
+      );
+      // Respond with pong
+      ws.pong();
+    });
+
+    ws.on("pong", () => {
+      baseConfig.logger.info(
+        `Sent pong to utility server for '${action}' at ${wsUrl}`
+      );
+      ws.ping();
     });
 
     ws.on("message", (message: string) => {
       const data = JSON.parse(message);
-      // Remove automatic closure on completion
       frontendWs.send(JSON.stringify(data));
     });
 
-    ws.on("pong", () => {
-      baseConfig.logger.debug("Received pong from utility server");
-    });
-
-    ws.on("close", async (code, reason) => {
-      clearInterval(pingInterval);
-
-      if (code === 1006 && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
-        reconnectAttempts++;
-        baseConfig.logger.info(
-          `Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`
-        );
-
-        // Wait before reconnecting
-        await new Promise((resolve) =>
-          setTimeout(resolve, 1000 * reconnectAttempts)
-        );
-        TransactionService.connectToUtilityServer(
-          action,
-          transactions,
-          frontendWs
-        );
-        return;
-      }
-
+    ws.on("close", (e) => {
       frontendWs.send(
         JSON.stringify({
           action: "progress",
-          message: `Connection to utility server closed for ${action}. Code: ${code}`,
-          progress: reconnectAttempts >= MAX_RECONNECT_ATTEMPTS ? 1 : 0.5,
+          message: `Connection to utility server closed for ${action}. Code: ${JSON.stringify(
+            e
+          )}`,
+          progress: 1,
           taskType: action === "analyze" ? "Analysis" : "Summary",
         })
       );
     });
 
     ws.on("error", (err) => {
-      clearInterval(pingInterval);
       sendError(
         frontendWs,
         `Utility server WebSocket error: ${err.message}`,
         action
       );
     });
-
-    // Handle frontend WebSocket closure
-    frontendWs.on("close", () => {
-      clearInterval(pingInterval);
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.close();
-      }
-    });
-
-    return ws;
   }
 }
