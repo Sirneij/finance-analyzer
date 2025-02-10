@@ -21,8 +21,9 @@ export interface Categories {
 }
 
 export interface CategoriesData {
-	categories: Categories;
-	percentages: Categories;
+	expenses: Categories;
+	expense_percentages: Categories;
+	income: number;
 }
 
 export interface Anomaly {

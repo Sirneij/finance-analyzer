@@ -25,7 +25,7 @@
 	</div>
 
 	<!-- Progress steps overlay -->
-	<div class="absolute inset-0 z-10 flex items-center justify-center">
+	<div class="absolute inset-0 z-10 flex items-center justify-center overflow-x-hidden px-4">
 		<div class="w-full max-w-2xl px-4">
 			<div class="flex w-full items-center justify-between">
 				{#each steps as step, i}
@@ -48,28 +48,25 @@
 
 						<!-- Progress percentage -->
 						<div
-							class={`absolute w-24 text-center text-xs ${i % 2 === 0 ? '-top-6' : '-bottom-6'}`}
+							class={`absolute w-20 text-center text-xs ${i % 2 === 0 ? '-top-6' : '-bottom-6'} transform-gpu`}
 						>
 							<span
-								class={`transition-colors duration-300 ${
-									i <= currentStep
-										? 'font-medium text-indigo-600 dark:text-indigo-400'
-										: 'text-gray-400 dark:text-gray-500'
-								}`}
+								class={`truncate transition-colors duration-300 
+							${i <= currentStep ? 'font-medium text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'}`}
 							>
 								{step.progress * 100}%
 							</span>
 						</div>
 
+						<!-- Step message - adjusted positioning and width -->
 						<div
-							class={`absolute w-24 text-center text-xs ${i % 2 === 0 ? '-bottom-10' : '-top-10'}`}
+							class={`absolute w-20 text-center text-xs 
+                            ${i % 2 === 0 ? '-bottom-10' : '-top-10'}
+                            transform-gpu`}
 						>
 							<span
-								class={`transition-colors duration-300 ${
-									i <= currentStep
-										? 'font-medium text-indigo-600 dark:text-indigo-400'
-										: 'text-gray-400 dark:text-gray-500'
-								}`}
+								class={`block truncate transition-colors duration-300 
+                                ${i <= currentStep ? 'font-medium text-indigo-600 dark:text-indigo-400' : 'text-gray-400 dark:text-gray-500'}`}
 							>
 								{step.message}
 							</span>
@@ -77,11 +74,10 @@
 					</div>
 
 					{#if i < steps.length - 1}
-						<div class="relative mx-2 h-px flex-1">
+						<div class="relative mx-1 h-px flex-1 flex-shrink">
 							<div
-								class={`absolute inset-0 transition-all duration-300 ${
-									i < currentStep ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-700'
-								}`}
+								class={`absolute inset-0 transition-all duration-300 
+                                ${i < currentStep ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-700'}`}
 							></div>
 						</div>
 					{/if}

@@ -9,10 +9,6 @@ export class WebSocketService {
 	private url: string;
 	private userId: string;
 	private neededData: NEEDEDDATA[] = [];
-	private reconnectAttempts = 0;
-	private maxReconnectAttempts = 5;
-	private reconnectDelay = 3000;
-	private reconnectTimeoutId?: NodeJS.Timeout;
 
 	constructor(url: string, userId: string, neededData: NEEDEDDATA[]) {
 		this.url = url;
@@ -33,8 +29,6 @@ export class WebSocketService {
 
 	private onOpen = (event: Event) => {
 		console.log('WebSocket connection opened:', event);
-		// Reset reconnection attempts on successful connection
-		this.reconnectAttempts = 0;
 
 		const messages = this.neededData.map((data) => ({
 			action: data,
@@ -54,11 +48,6 @@ export class WebSocketService {
 	};
 
 	public close() {
-		// Clear any pending reconnection attempts
-		if (this.reconnectTimeoutId) {
-			clearTimeout(this.reconnectTimeoutId);
-		}
-
 		this.userId = '';
 		this.neededData = [];
 
@@ -73,21 +62,6 @@ export class WebSocketService {
 
 	private handleClose = (event: CloseEvent) => {
 		console.log('WebSocket connection closed:', event);
-
-		// Don't reconnect if closure was intended
-		if (event.code === 1000) {
-			this.reconnectAttempts = 0;
-			return;
-		}
-
-		// Attempt to reconnect if we haven't exceeded max attempts
-		if (this.reconnectAttempts < this.maxReconnectAttempts) {
-			this.reconnectAttempts++;
-			console.log(`Reconnecting attempt ${this.reconnectAttempts}...`);
-
-			this.reconnectTimeoutId = setTimeout(() => {
-				this.connect();
-			}, this.reconnectDelay);
-		}
+		this.close();
 	};
 }
