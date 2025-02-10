@@ -1,3 +1,4 @@
+import asyncio
 import os
 from asyncio import Lock
 
@@ -139,14 +140,12 @@ async def summarize(request: web.Request) -> web.Response:
 async def websocket_handler(request: Request) -> WebSocketResponse:
     """WebSocket handler for real-time communication."""
     ws = web.WebSocketResponse(
-        timeout=60.0,  # Increase close timeout to 60 seconds
-        receive_timeout=300.0,  # Set receive timeout to 5 minutes
-        heartbeat=30.0,  # Send ping every 30 seconds
-        autoping=True,  # Auto-respond to pings
-        autoclose=False,  # Don't auto-close on client CLOSE
-        compress=True,  # Enable compression
-        max_msg_size=8388608,  # 8MB max message size
-        writer_limit=131072,  # 128KB write buffer
+        # timeout=600.0,  # 5 minute timeout
+        # receive_timeout=360.0,  # 6 minute receive timeout
+        # heartbeat=30.0,  # 30 second heartbeat
+        # autoping=False,  # Disable auto-ping
+        # autoclose=False,  # Don't auto-close
+        # compress=True,  # Enable compression
     )
     await ws.prepare(request)
 
@@ -155,11 +154,28 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
     ws_manager = WebSocketManager(ws)
     await ws_manager.prepare()
 
+    async def ping_server(ws):
+        try:
+            while True:
+                await ws.ping()
+                await asyncio.sleep(25)  # Send ping every 25 seconds
+        except ConnectionResetError:
+            print("Client disconnected")
+        finally:
+            await ws.close()
+
+    asyncio.create_task(ping_server(ws))
+
     base_settings.logger.info('WebSocket connection established')
 
     try:
         async for msg in ws:
-            if msg.type == WSMsgType.TEXT:
+            if msg.type == WSMsgType.PING:
+                base_settings.logger.info('Intercepted PING from client')
+                await ws.pong(msg.data)
+            elif msg.type == WSMsgType.PONG:
+                base_settings.logger.info('Intercepted PONG from client')
+            elif msg.type == WSMsgType.TEXT:
                 try:
                     data = msg.json()
                     if data.get('action') == 'analyze':
@@ -207,8 +223,11 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
                         'Error',
                         'error',
                     )
-            elif msg.type == WSMsgType.ERROR:
-                base_settings.logger.error(f'WebSocket error: {ws.exception()}')
+            elif msg.type in (WSMsgType.CLOSE, WSMsgType.ERROR):
+                base_settings.logger.info(
+                    'WebSocket is closing or encountered an error',
+                )
+                break
     except Exception as e:
         base_settings.logger.error(f'WebSocket handler error: {str(e)}')
     finally:
