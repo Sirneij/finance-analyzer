@@ -34,7 +34,8 @@
 	onMount(() => {
 		if (browser) {
 			webSocketService = new WebSocketService(`${BASE_WS_URI}`, page.data.user?._id || '', [
-				NEEDEDDATA.ANALYSIS
+				NEEDEDDATA.ANALYSIS,
+				NEEDEDDATA.SUMMARY
 			]);
 
 			webSocketService.socket.onmessage = (event: MessageEvent) => {
@@ -125,7 +126,7 @@
 			/>
 			<SpendingCategories
 				categories={transAnalysis.categories}
-				loading={loadingSummary}
+				loading={loadingAnalysis}
 				steps={loadingAnalysisProgress}
 			/>
 		</div>
