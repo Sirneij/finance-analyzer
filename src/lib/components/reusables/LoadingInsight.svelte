@@ -71,7 +71,7 @@
 										: 'text-gray-400 dark:text-gray-500'
 								}`}
 							>
-								{step.progress * 100}%
+								{(step.progress * 100).toFixed(2)}%
 							</span>
 						</div>
 
