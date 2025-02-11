@@ -150,9 +150,14 @@
 
 	<!-- Insights Section -->
 	<AnimatedSection y={50} delay={600}>
-		<div class="relative grid gap-6 sm:grid-cols-2">
-			{#if loadingAnalysis}
-				<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
+		<div class="grid gap-6 sm:grid-cols-2">
+			{#if loadingSummary}
+				<div class="relative">
+					<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
+				</div>
+				<div class="relative">
+					<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
+				</div>
 			{:else if !financialSummary.spending_trends}
 				<div class="col-span-2 flex min-h-[200px] items-center justify-center">
 					<Empty
