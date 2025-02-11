@@ -4,7 +4,7 @@ import tempfile
 import pytesseract
 from pdf2image import convert_from_path
 
-from .settings import base_settings as settings
+from utils.settings import base_settings as settings
 
 
 async def extract_text_from_pdf(pdf_file: bytes) -> str:

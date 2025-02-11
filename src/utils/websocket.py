@@ -1,5 +1,3 @@
-import asyncio
-
 from aiohttp import web
 
 from utils.settings import base_settings

@@ -8,3 +8,4 @@ python-dotenv==1.0
 scikit-learn==1.6
 torch==2.6
 torchvision==0.21
+coverage==7.6

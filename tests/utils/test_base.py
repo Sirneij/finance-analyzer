@@ -2,9 +2,9 @@ import unittest
 from datetime import datetime
 from unittest.mock import patch
 
-from models.base import Transaction
+from src.models.base import Transaction
+from src.utils.base import get_device, validate_and_convert_transactions
 from tests.utils import BaseUtilsTestClass
-from utils.base import get_device, validate_and_convert_transactions
 
 
 class TestValidateAndConvertTransactions(BaseUtilsTestClass):

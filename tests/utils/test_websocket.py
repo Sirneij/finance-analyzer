@@ -1,5 +1,5 @@
+from src.utils.websocket import WebSocketManager
 from tests.utils import BaseUtilsTestClass
-from utils.websocket import WebSocketManager
 
 
 # A simple fake WebSocketResponse to simulate aiohttp behavior.

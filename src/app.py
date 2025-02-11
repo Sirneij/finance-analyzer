@@ -1,7 +1,6 @@
 import asyncio
 import os
 import weakref
-from asyncio import Lock
 
 from aiohttp import WSCloseCode, WSMsgType, web
 from aiohttp.web import Request, Response, WebSocketResponse

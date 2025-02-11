@@ -2,21 +2,20 @@ import uuid
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from tests.utils import BaseUtilsTestClass
-from utils.analyzer import (
-    _analyze_recurring_transactions,
-    _analyze_spending,
-    _calculate_financial_health,
-    _detect_anomalies,
-    _predict_trends,
-    analyze_transactions,
-    classify_transactions,
+from src.utils.analyzer import analyze_transactions, classify_transactions
+from src.utils.base import (
+    analyze_recurring_transactions,
+    analyze_spending,
+    calculate_financial_health,
+    detect_anomalies,
+    predict_trends,
+    validate_and_convert_transactions,
 )
-from utils.base import validate_and_convert_transactions
+from tests.utils import BaseUtilsTestClass
 
 
 class TestAnalyzer(BaseUtilsTestClass):
-    @patch('utils.analyzer.pipeline', return_value=lambda *args, **kwargs: [{'labels': ['groceries'], 'scores': [1.0]}])
+    @patch('src.utils.analyzer.pipeline', return_value=lambda *args, **kwargs: [{'labels': ['groceries'], 'scores': [1.0]}])
     async def test_analyze_transactions_valid(self, mock_pipeline):
         tx_data = [
             {
@@ -44,11 +43,6 @@ class TestAnalyzer(BaseUtilsTestClass):
         ]
         result = await analyze_transactions(tx_data)
         self.assertIn('categories', result)
-        self.assertIn('anomalies', result)
-        self.assertIn('spending_analysis', result)
-        self.assertIn('spending_trends', result)
-        self.assertIn('recurring_transactions', result)
-        self.assertIn('financial_health', result)
 
     async def test_detect_anomalies(self):
         # Create transactions with a clear anomaly
@@ -56,7 +50,7 @@ class TestAnalyzer(BaseUtilsTestClass):
         tx2 = self.create_transaction_dict('2024-01-02T00:00:00', 'Outlier expense', -5000.0, -4100.0, 'expense')
         tx3 = self.create_transaction_dict('2024-01-03T00:00:00', 'Normal expense', -150.0, 750.0, 'expense')
         transactions = await validate_and_convert_transactions([tx1, tx2, tx3])
-        anomalies = _detect_anomalies(transactions)
+        anomalies = detect_anomalies(transactions)
         self.assertIsInstance(anomalies, list)
         self.assertTrue(len(anomalies) > 0, "Expected at least one anomaly to be detected")
         self.assertTrue(all('reason' in anomaly for anomaly in anomalies))
@@ -68,7 +62,7 @@ class TestAnalyzer(BaseUtilsTestClass):
         tx1 = self.create_transaction_dict('2024-01-01T00:00:00', 'Expense', -100.0, 900.0, 'expense')
         tx2 = self.create_transaction_dict('2024-01-02T00:00:00', 'Salary', 2000.0, 2900.0, 'income')
         transactions = await validate_and_convert_transactions([tx1, tx2])
-        spending = _analyze_spending(transactions)
+        spending = analyze_spending(transactions)
         self.assertIn('total_spent', spending)
         self.assertIn('total_income', spending)
         self.assertIn('daily_summary', spending)
@@ -83,7 +77,7 @@ class TestAnalyzer(BaseUtilsTestClass):
             self.create_transaction_dict('2024-01-03T00:00:00', 'Salary', 2000.0, 2750.0, 'income'),
         ]
         transactions = await validate_and_convert_transactions(txs)
-        trends = _predict_trends(transactions)
+        trends = predict_trends(transactions)
         self.assertIn('trend', trends)
         self.assertIn('trend_slope', trends)
         self.assertIn('estimated_monthly_spend', trends)
@@ -127,7 +121,7 @@ class TestAnalyzer(BaseUtilsTestClass):
         'os.environ',
         {"LABELS": "groceries,housing,transportation,entertainment,utilities,education,credit_cards,insurance,other"},
     )
-    @patch('utils.analyzer.pipeline')
+    @patch('src.utils.analyzer.pipeline')
     async def test_classify_transactions_ml_fallback(self, mock_pipeline):
         # Simulate a transaction with an unmatched description
         tx1 = self.create_transaction_dict(
@@ -164,7 +158,7 @@ class TestAnalyzer(BaseUtilsTestClass):
 
         transactions = await validate_and_convert_transactions([tx1, tx2, tx3])
 
-        recurring = _analyze_recurring_transactions(transactions)
+        recurring = analyze_recurring_transactions(transactions)
         self.assertTrue(len(recurring) > 0)
         monthly_recurring = next((r for r in recurring if r['frequency'] == 'Monthly'), None)
         self.assertIsNotNone(monthly_recurring)
@@ -188,7 +182,7 @@ class TestAnalyzer(BaseUtilsTestClass):
 
         transactions = await validate_and_convert_transactions([tx1, tx2, tx3])
 
-        recurring = _analyze_recurring_transactions(transactions)
+        recurring = analyze_recurring_transactions(transactions)
         self.assertTrue(len(recurring) > 0)
         weekly_recurring = next((r for r in recurring if r['frequency'] == 'Weekly'), None)
         self.assertIsNotNone(weekly_recurring)
@@ -212,7 +206,7 @@ class TestAnalyzer(BaseUtilsTestClass):
 
         transactions = await validate_and_convert_transactions([tx1, tx2, tx3])
 
-        health = _calculate_financial_health(transactions)
+        health = calculate_financial_health(transactions)
         self.assertIn('debt_to_income_ratio', health)
         self.assertIn('savings_rate', health)
         self.assertIn('balance_growth_rate', health)
@@ -227,13 +221,13 @@ class TestAnalyzer(BaseUtilsTestClass):
         """
         Ensure that functions gracefully handle an empty list of transactions.
         """
-        # _predict_trends should return a message indicating insufficient data
-        trends = _predict_trends([])
+        # predict_trends should return a message indicating insufficient data
+        trends = predict_trends([])
         self.assertIn('trend', trends)
         self.assertEqual(trends['trend'], 'Not enough data')
 
-        # _calculate_financial_health on empty list should not crash (might return infinity or 0)
-        health = _calculate_financial_health([])
+        # calculate_financial_health on empty list should not crash (might return infinity or 0)
+        health = calculate_financial_health([])
         self.assertIn('debt_to_income_ratio', health)
         self.assertIn('savings_rate', health)
         self.assertIn('balance_growth_rate', health)

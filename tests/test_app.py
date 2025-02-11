@@ -4,7 +4,7 @@ import unittest
 import aiohttp
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 
-from app import init_app
+from src.app import init_app
 
 
 class TestPDFExtractor(AioHTTPTestCase):

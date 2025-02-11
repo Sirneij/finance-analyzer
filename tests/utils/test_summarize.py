@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 
-from tests.utils import BaseUtilsTestClass
-from utils.summarize import (
+from src.utils.summarize import (
     calculate_percentage_change,
     calculate_trend,
     summarize_transactions,
 )
+from tests.utils import BaseUtilsTestClass
 
 
 class TestSummarizeTransactions(BaseUtilsTestClass):
