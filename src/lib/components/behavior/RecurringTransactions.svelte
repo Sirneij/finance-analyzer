@@ -84,9 +84,9 @@
 						<span class="block text-lg font-semibold text-gray-900 dark:text-white">
 							{formatCurrency(transaction.amount)}
 						</span>
-						<span class="text-xs text-gray-500 dark:text-gray-400"
-							>per {transaction.frequency.toLowerCase()}</span
-						>
+						<span class="text-xs text-gray-500 dark:text-gray-400">
+							{transaction.frequency.toLowerCase()}
+						</span>
 					</div>
 				</div>
 			{/each}
