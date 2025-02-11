@@ -398,6 +398,50 @@
 			color: #6a9955;
 		}
 	}
+	.responsive-iframe-container {
+		@apply relative w-full overflow-hidden rounded-xl border border-gray-200/10 bg-white/50 backdrop-blur-xs transition-all duration-300 dark:border-gray-700/10 dark:bg-gray-900/50;
+
+		/* Create responsive aspect ratio */
+		aspect-ratio: 16/9;
+
+		/* Collapsible functionality using checkbox hack */
+		&.collapsible {
+			@apply max-h-[600px] transition-all duration-300;
+
+			/* Add toggle button */
+			&::before {
+				@apply absolute top-3 right-3 z-10 cursor-pointer rounded-md bg-gray-100/90 px-2 py-1 text-sm text-gray-700 opacity-0 transition-opacity dark:bg-gray-800/90 dark:text-gray-200;
+				content: 'Collapse';
+			}
+
+			/* Show toggle on hover */
+			&:hover::before {
+				@apply opacity-100;
+			}
+
+			/* Collapsed state using checkbox hack */
+			&:has(input[type='checkbox']:checked) {
+				@apply max-h-12;
+
+				&::before {
+					content: 'Expand';
+				}
+
+				iframe {
+					@apply opacity-0;
+				}
+			}
+		}
+		/* Hidden checkbox for toggle */
+		input[type='checkbox'] {
+			@apply absolute top-3 right-3 z-20 h-8 w-20 cursor-pointer opacity-0;
+		}
+
+		/* iframe styling */
+		iframe {
+			@apply absolute top-0 left-0 h-full w-full border-0 transition-opacity duration-300;
+		}
+	}
 }
 @keyframes typeLine {
 	from {
