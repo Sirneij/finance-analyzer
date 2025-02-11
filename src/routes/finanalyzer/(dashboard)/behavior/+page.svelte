@@ -8,7 +8,7 @@
 	import FormError from '$lib/components/reusables/FormError.svelte';
 	import LoadingInsight from '$lib/components/reusables/LoadingInsight.svelte';
 	import FileInput from '$lib/components/transactions/FileInput.svelte';
-	import type { SpendingReport } from '$lib/types/transaction.types';
+	import type { FinancialSummary, SpendingReport } from '$lib/types/transaction.types';
 	import { getFinancialInsights } from '$lib/utils/helpers/transactions.helpers';
 	import { onDestroy, onMount } from 'svelte';
 	import type { ActionData } from './$types';
@@ -18,12 +18,17 @@
 	import { BASE_WS_URI } from '$lib/utils/contants';
 	import { page } from '$app/state';
 	import type { ProgressSteps } from '$lib/types/notification.types';
+	import RecurringTransactions from '$lib/components/behavior/RecurringTransactions.svelte';
+	import FinancialHealth from '$lib/components/behavior/FinancialHealth.svelte';
 
 	const { form }: { form: ActionData } = $props();
 
 	let transAnalysis: SpendingReport = $state({} as SpendingReport),
+		financialSummary: FinancialSummary = $state({} as FinancialSummary),
 		loadingAnalysis = $state(true),
+		loadingSummary = $state(true),
 		loadingAnalysisProgress: ProgressSteps[] = $state([]),
+		loadingSummaryProgress: ProgressSteps[] = $state([]),
 		webSocketService: WebSocketService;
 
 	onMount(() => {
@@ -41,7 +46,16 @@
 								progress: data.progress,
 								message: data.message
 							});
+						} else if (data.taskType === 'Summarize') {
+							loadingSummaryProgress.push({
+								progress: data.progress,
+								message: data.message
+							});
 						}
+						break;
+					case 'summary_complete':
+						financialSummary = data.result;
+						loadingSummary = false;
 						break;
 					case 'analysis_complete':
 						transAnalysis = data.result;
@@ -105,14 +119,29 @@
 	<AnimatedSection y={40} delay={400}>
 		<div class="grid gap-6 lg:grid-cols-2">
 			<Anomaly
-				anomalies={transAnalysis.anomalies}
-				loading={loadingAnalysis}
-				steps={loadingAnalysisProgress}
+				anomalies={financialSummary.anomalies}
+				loading={loadingSummary}
+				steps={loadingSummaryProgress}
 			/>
 			<SpendingCategories
 				categories={transAnalysis.categories}
-				loading={loadingAnalysis}
+				loading={loadingSummary}
 				steps={loadingAnalysisProgress}
+			/>
+		</div>
+	</AnimatedSection>
+
+	<AnimatedSection y={45} delay={500}>
+		<div class="grid gap-6 lg:grid-cols-2">
+			<RecurringTransactions
+				transactions={financialSummary.recurring_transactions}
+				loading={loadingSummary}
+				steps={loadingSummaryProgress}
+			/>
+			<FinancialHealth
+				health={financialSummary.financial_health}
+				loading={loadingSummary}
+				steps={loadingSummaryProgress}
 			/>
 		</div>
 	</AnimatedSection>
@@ -121,9 +150,9 @@
 	<AnimatedSection y={50} delay={600}>
 		<div class="grid gap-6 sm:grid-cols-2">
 			{#if loadingAnalysis}
-				<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
-				<LoadingInsight steps={loadingAnalysisProgress} numBoxes={1} minHeight="8rem" />
-			{:else if !transAnalysis.spending_trends}
+				<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
+				<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
+			{:else if !financialSummary.spending_trends}
 				<div class="col-span-2 flex min-h-[200px] items-center justify-center">
 					<Empty
 						title="No insights available"
@@ -131,7 +160,7 @@
 					/>
 				</div>
 			{:else}
-				{#each getFinancialInsights(transAnalysis) as insight}
+				{#each getFinancialInsights(financialSummary) as insight}
 					<Insight {insight} />
 				{/each}
 			{/if}

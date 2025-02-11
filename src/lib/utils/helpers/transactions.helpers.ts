@@ -1,4 +1,9 @@
-import type { CategoriesData, InsightMetric, SpendingReport } from '$lib/types/transaction.types';
+import type {
+	CategoriesData,
+	FinancialSummary,
+	InsightMetric,
+	SpendingReport
+} from '$lib/types/transaction.types';
 
 export function transformCategoriesToArray(categoryData: CategoriesData) {
 	return Object.entries(categoryData.expense_percentages)
@@ -70,7 +75,7 @@ export async function getTransactionAnalysis(): Promise<SpendingReport> {
 	}
 }
 
-export function getFinancialInsights(data: SpendingReport): InsightMetric[] {
+export function getFinancialInsights(data: FinancialSummary): InsightMetric[] {
 	return [
 		{
 			title: 'Spending Trend',

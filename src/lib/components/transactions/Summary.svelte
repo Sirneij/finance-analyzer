@@ -5,7 +5,7 @@
 	import CircledSum from '$lib/components/icons/CircledSum.svelte';
 	import ExpenseList from '$lib/components/icons/ExpenseList.svelte';
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
-	import { formatMoney } from '$lib/utils/helpers/money.helpers.svelte';
+	import { formatCurrency } from '$lib/utils/helpers/money.helpers.svelte';
 
 	let { financialSummaries = $bindable() }: { financialSummaries: FinancialSummary } = $props();
 </script>
@@ -13,7 +13,7 @@
 {#if financialSummaries}
 	<div class="grid gap-6 sm:grid-cols-3">
 		<div
-			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="shadow-xs rounded-lg bg-white p-6 transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -33,12 +33,12 @@
 				</div>
 			</div>
 			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-				{formatMoney(financialSummaries?.income?.total)}
+				{formatCurrency(financialSummaries?.income?.total)}
 			</p>
 		</div>
 
 		<div
-			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="shadow-xs rounded-lg bg-white p-6 transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -58,12 +58,12 @@
 				</div>
 			</div>
 			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-				{formatMoney(financialSummaries?.expenses?.total)}
+				{formatCurrency(financialSummaries?.expenses?.total)}
 			</p>
 		</div>
 
 		<div
-			class="rounded-lg bg-white p-6 shadow-xs transition-all duration-200 hover:shadow-md dark:bg-gray-800"
+			class="shadow-xs rounded-lg bg-white p-6 transition-all duration-200 hover:shadow-md dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
 				<div class="flex items-center gap-3">
@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<p class="mt-4 text-3xl font-bold text-gray-900 dark:text-white">
-				{formatMoney(financialSummaries?.savings?.total)}
+				{formatCurrency(financialSummaries?.savings?.total)}
 			</p>
 		</div>
 	</div>
@@ -92,7 +92,7 @@
 <div class="mt-6 grid gap-4 sm:grid-cols-4">
 	<!-- Transaction Counts -->
 	{#if financialSummaries.total_transactions}
-		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Total Transactions</h4>
 			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
 				{financialSummaries.total_transactions}
@@ -106,14 +106,14 @@
 
 	<!-- Averages -->
 	{#if financialSummaries.avg_income || financialSummaries.avg_expense}
-		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Average Transaction</h4>
 			<div class="mt-2 flex flex-col gap-1">
 				{#if financialSummaries.avg_income}
 					<div class="flex justify-between">
 						<span class="text-xs text-gray-500">Income</span>
 						<span class="text-sm font-semibold text-gray-900 dark:text-white">
-							{formatMoney(financialSummaries.avg_income)}
+							{formatCurrency(financialSummaries.avg_income)}
 						</span>
 					</div>
 				{/if}
@@ -122,7 +122,7 @@
 					<div class="flex justify-between">
 						<span class="text-xs text-gray-500">Expense</span>
 						<span class="text-sm font-semibold text-gray-900 dark:text-white">
-							{formatMoney(financialSummaries.avg_expense)}
+							{formatCurrency(financialSummaries.avg_expense)}
 						</span>
 					</div>
 				{/if}
@@ -131,7 +131,7 @@
 	{/if}
 	<!-- Date Range -->
 	{#if financialSummaries.start_date || financialSummaries.end_date}
-		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Period</h4>
 			<div class="mt-2 flex flex-col gap-1">
 				{#if financialSummaries.start_date}
@@ -157,7 +157,7 @@
 
 	<!-- Savings Rate -->
 	{#if financialSummaries.savings_rate}
-		<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Savings Rate</h4>
 			<p class="mt-2 text-xl font-semibold text-gray-900 dark:text-white">
 				{financialSummaries.savings_rate.toFixed(1)}%
@@ -167,19 +167,19 @@
 
 	<!-- Largest Transactions -->
 	{#if financialSummaries.largest_income}
-		<div class="col-span-2 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs col-span-2 rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Income</h4>
 			<p class="mt-2 text-xl font-semibold text-green-500">
-				{formatMoney(financialSummaries.largest_income)}
+				{formatCurrency(financialSummaries.largest_income)}
 			</p>
 		</div>
 	{/if}
 
 	{#if financialSummaries.largest_expense}
-		<div class="col-span-2 rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
+		<div class="shadow-xs col-span-2 rounded-lg bg-white p-4 dark:bg-gray-800">
 			<h4 class="text-xs font-medium text-gray-500 dark:text-gray-400">Largest Expense</h4>
 			<p class="mt-2 text-xl font-semibold text-red-500">
-				{formatMoney(financialSummaries.largest_expense)}
+				{formatCurrency(financialSummaries.largest_expense)}
 			</p>
 		</div>
 	{/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Calendar from '$lib/components/icons/Calendar.svelte';
 	import { formatDate, isSameDay } from '$lib/utils/helpers/date.helpers';
-	import { formatMoney } from '$lib/utils/helpers/money.helpers.svelte';
+	import { formatCurrency } from '$lib/utils/helpers/money.helpers.svelte';
 	import Amount from '$lib/components/icons/Amount.svelte';
 	import Balance from '$lib/components/icons/Balance.svelte';
 	import MoneyArrow from '$lib/components/icons/MoneyArrow.svelte';
@@ -167,14 +167,14 @@
 										: 'text-red-600 dark:text-red-400'
 								}`}
 							>
-								{transaction.type === 'income' ? '+' : '-'}{formatMoney(
+								{transaction.type === 'income' ? '+' : '-'}{formatCurrency(
 									Math.abs(transaction.amount)
 								)}
 							</span>
 						</td>
 						<td class="whitespace-nowrap px-6 py-4">
 							<span class="font-medium text-gray-900 dark:text-white">
-								{formatMoney(transaction.balance)}
+								{formatCurrency(transaction.balance)}
 							</span>
 						</td>
 						<td>

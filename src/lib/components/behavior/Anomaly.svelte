@@ -4,7 +4,7 @@
 	import { formatDate } from '$lib/utils/helpers/date.helpers';
 	import Empty from '$lib/components/reusables/Empty.svelte';
 	import type { ProgressSteps } from '$lib/types/notification.types';
-	import { formatMoney } from '$lib/utils/helpers/money.helpers.svelte';
+	import { formatCurrency } from '$lib/utils/helpers/money.helpers.svelte';
 	import Alert from '$lib/components/icons/Alert.svelte';
 
 	let {
@@ -37,7 +37,7 @@
 							</p>
 						</div>
 						<span class="font-semibold text-red-600 dark:text-red-400">
-							{formatMoney(Math.abs(anomaly.amount))}
+							{formatCurrency(Math.abs(anomaly.amount))}
 						</span>
 					</div>
 					<p class="mt-2 flex items-center space-x-1 text-sm text-red-600 dark:text-red-400">

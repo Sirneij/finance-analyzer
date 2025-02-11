@@ -1,4 +1,5 @@
 import type { ApexOptions } from 'apexcharts';
+import { formatCurrency } from './money.helpers.svelte';
 
 // Base configuration for all charts
 const baseOptions: ApexOptions = {
@@ -41,18 +42,6 @@ const baseOptions: ApexOptions = {
 	legend: {
 		show: false
 	}
-};
-
-// Reusable currency formatter
-const formatCurrency = (value: number): string => {
-	// Use the user's locale
-	const locale = navigator?.language || 'en-US';
-	return new Intl.NumberFormat(locale, {
-		style: 'currency',
-		currency: 'USD',
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2
-	}).format(value);
 };
 
 // Financial chart configuration

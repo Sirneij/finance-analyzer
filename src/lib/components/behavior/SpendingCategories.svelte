@@ -31,13 +31,13 @@
 		try {
 			// Dynamically import ApexCharts
 			const { default: ApexCharts } = await import('apexcharts');
-			const categoryCount = Object.keys(categories.categories).length;
+			const categoryCount = Object.keys(categories.expenses).length;
 			const { backgroundColors } = generateChartColors(categoryCount);
 
 			const options = {
 				...spendingCategoriesChartConfig,
-				series: Object.values(categories.categories),
-				labels: Object.keys(categories.categories).map(
+				series: Object.values(categories.expenses),
+				labels: Object.keys(categories.expenses).map(
 					(cat) => cat.charAt(0).toUpperCase() + cat.slice(1)
 				),
 				colors: backgroundColors,
@@ -128,7 +128,7 @@
 	<div class={`transition-all duration-300 ${isFullscreen ? 'h-[calc(100vh-8rem)]' : 'h-64'}`}>
 		{#if loading}
 			<LoadingChart {steps} />
-		{:else if !categories || !Object.keys(categories.categories).length}
+		{:else if !categories || !Object.keys(categories.expenses).length}
 			<Empty title="No data found" description="No spending categories found in your account." />
 		{:else}
 			<div bind:this={chartElement}></div>

@@ -142,9 +142,9 @@
 	<AnimatedSection y={50} delay={600} class="grid gap-6 lg:grid-cols-2">
 		<!-- Financial Charts -->
 		<FinanceChart
-			loading={loadingAnalysis}
-			spending_analysis={transAnalysis.spending_analysis}
-			steps={loadingAnalysisProgress}
+			loading={loadingSummary}
+			spending_analysis={finance.spending_analysis}
+			steps={loadingSummaryProgress}
 		/>
 
 		<!-- Recent Transactions -->
