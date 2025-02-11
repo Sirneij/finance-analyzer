@@ -1,4 +1,5 @@
 import { baseConfig } from "$config/base.config.js";
+import { extractRequestState } from "$utils/auth.utils";
 import type { Request, Response } from "express";
 
 export class AuthController {
@@ -11,22 +12,8 @@ export class AuthController {
           user: req.user,
         });
       } else {
-        const state = req.query.state as string | undefined;
-        let redirectPath = "/";
+        const redirectPath = extractRequestState(req, "/");
 
-        if (state) {
-          try {
-            // Validate if the state is Base64
-            const base64Regex = /^[A-Za-z0-9+/=]+$/;
-            if (base64Regex.test(state)) {
-              redirectPath = Buffer.from(state, "base64").toString();
-            } else {
-              throw new Error("Invalid Base64 input");
-            }
-          } catch (error) {
-            baseConfig.logger.error("Failed to decode state parameter:", error);
-          }
-        }
         baseConfig.logger.info(
           `Redirecting to ${baseConfig.frontendUrl}${redirectPath}`
         );
@@ -44,10 +31,11 @@ export class AuthController {
 
   async handleLogout(req: Request, res: Response) {
     req.logout(() => {
+      const redirectPath = req.query.next || "/finanalyzer/auth/login";
       baseConfig.logger.info(
-        `Redirecting to ${baseConfig.frontendUrl}/finanalyzer/auth/login`
+        `Redirecting to ${baseConfig.frontendUrl}${redirectPath}`
       );
-      res.redirect(`${baseConfig.frontendUrl}/finanalyzer/auth/login`);
+      res.redirect(`${baseConfig.frontendUrl}${redirectPath}`);
     });
   }
 }
