@@ -79,9 +79,20 @@ interface SpendingTrends {
 
 export interface SpendingReport {
   categories: CategoriesData;
-  anomalies: Anomaly[];
-  spending_analysis: SpendingAnalysis;
-  spending_trends: SpendingTrends;
+}
+
+export interface RecurringTransaction {
+  description: string;
+  amount: number;
+  frequency: string;
+  confidence: string;
+}
+
+export interface FinancialHealth {
+  debt_to_income_ratio: number;
+  savings_rate: number;
+  balance_growth_rate: number;
+  financial_health_score: number;
 }
 
 export interface FinancialSummary {
@@ -99,4 +110,9 @@ export interface FinancialSummary {
   largest_income: number;
   savings_rate: number;
   monthly_summary: Record<string, any>;
+  anomalies: Anomaly[];
+  spending_analysis: SpendingAnalysis;
+  spending_trends: SpendingTrends;
+  recurring_transactions: RecurringTransaction[];
+  financial_health: FinancialHealth;
 }
