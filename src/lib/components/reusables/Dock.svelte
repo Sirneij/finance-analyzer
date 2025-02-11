@@ -25,7 +25,7 @@
 		{ title: 'Write', href: '/blog/create' },
 		{ title: 'Manage', href: '/blog/admin' },
 		{ title: 'Articles', href: '/blog/admin/articles' },
-		{ title: 'Logout', href: `${BASE_API_URI}/v1/auth/logout` }
+		{ title: 'Logout', href: `${BASE_API_URI}/v1/auth/logout?next=${page.url.pathname}` }
 	];
 
 	const adminIcons = {
