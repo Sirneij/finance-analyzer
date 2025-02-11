@@ -21,6 +21,12 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Dashboard | Admin</title>
+	<meta name="description" content="Manage content, tags, and series" />
+	<meta name="robots" content="noindex, nofollow" />
+</svelte:head>
+
 <AnimatedContainer class="container mx-auto min-h-screen p-6">
 	<!-- Header Section -->
 	<AnimatedSection y={20} class="mb-8 mt-20 md:mt-0">

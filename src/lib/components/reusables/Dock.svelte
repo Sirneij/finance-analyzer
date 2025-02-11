@@ -56,7 +56,10 @@
 		<div
 			in:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
 			out:fly={{ x: -300, duration: SLIDE_DURATION, easing: elasticOut }}
-			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl transition-all duration-300 hover:shadow-2xl lg:bg-transparent dark:bg-gray-900 lg:dark:bg-transparent"
+			class="max-w-64 rounded-r-lg bg-white/90 shadow-xl transition-all duration-300 hover:shadow-2xl lg:bg-transparent dark:bg-gray-900 lg:dark:bg-transparent {page
+				.data.url.pathname === '/'
+				? 'backdrop-blur-xs'
+				: ''}"
 		>
 			<div class="max-h-[80vh] overflow-y-auto p-4">
 				<div class="mb-4 flex items-center justify-between">

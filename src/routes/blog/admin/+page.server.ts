@@ -115,7 +115,7 @@ export const actions: Actions = {
 
 		return { ...response };
 	},
-	deleteSeries: async ({ request }) => {
+	deleteSeries: async ({ request, fetch }) => {
 		const formData = await request.formData();
 		const ids = (formData.get('ids') as string).split(',');
 

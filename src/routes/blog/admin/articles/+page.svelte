@@ -59,6 +59,12 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Articles | Admin</title>
+	<meta name="description" content="Manage your blog articles" />
+	<meta name="robots" content="noindex, nofollow" />
+</svelte:head>
+
 <AnimatedContainer class="container mx-auto min-h-screen w-full space-y-4 p-6">
 	<AnimatedSection y={30} identifier={data.metadata.page}>
 		<!-- Header Card with Actions -->
