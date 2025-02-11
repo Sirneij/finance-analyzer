@@ -6,3 +6,4 @@ source = src
 omit =
     */tests/*
     */virtualenv/*
+    */__pycache__/*

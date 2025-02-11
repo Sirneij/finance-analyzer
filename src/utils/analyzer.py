@@ -4,10 +4,10 @@ import os
 import torch
 from transformers import pipeline
 
-from models.base import Transaction
-from utils.base import get_device, validate_and_convert_transactions
-from utils.settings import base_settings as settings
-from utils.websocket import WebSocketManager
+from src.models.base import Transaction
+from src.utils.base import get_device, validate_and_convert_transactions
+from src.utils.settings import base_settings as settings
+from src.utils.websocket import WebSocketManager
 
 
 async def analyze_transactions(transactions: list[dict], ws_manager: WebSocketManager = None) -> dict:

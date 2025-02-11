@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from models.base import Transaction
+from src.models.base import Transaction
 
 
 async def validate_and_convert_transactions(transactions: list[dict]) -> List[Transaction]:

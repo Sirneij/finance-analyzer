@@ -1,16 +1,15 @@
 import asyncio
-import os
 import weakref
 
 from aiohttp import WSCloseCode, WSMsgType, web
 from aiohttp.web import Request, Response, WebSocketResponse
 
-from utils.analyzer import analyze_transactions
-from utils.extract_text import extract_text_from_pdf
-from utils.resume_parser import extract_text_with_pymupdf, parse_resume_text
-from utils.settings import base_settings
-from utils.summarize import summarize_transactions
-from utils.websocket import WebSocketManager
+from src.utils.analyzer import analyze_transactions
+from src.utils.extract_text import extract_text_from_pdf
+from src.utils.resume_parser import extract_text_with_pymupdf, parse_resume_text
+from src.utils.settings import base_settings
+from src.utils.summarize import summarize_transactions
+from src.utils.websocket import WebSocketManager
 
 # Replace global ws_connections with typed version
 WEBSOCKETS = web.AppKey("websockets", weakref.WeakSet)
@@ -237,6 +236,7 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
 
 
 def init_app() -> web.Application:
+    """Initialize the application."""
     app = web.Application()
 
     # Add routes
@@ -251,19 +251,3 @@ def init_app() -> web.Application:
     app.on_shutdown.append(cleanup_ws)
 
     return app
-
-
-if __name__ == '__main__':
-    app = init_app()
-    try:
-        web.run_app(
-            app,
-            host='0.0.0.0',
-            port=int(os.environ.get('PORT', 5173)),
-        )
-    except KeyboardInterrupt:
-        base_settings.logger.info('Received keyboard interrupt...')
-    except Exception as e:
-        base_settings.logger.error(f'Server error: {e}')
-    finally:
-        base_settings.logger.info('Server shutdown complete.')

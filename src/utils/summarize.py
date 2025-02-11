@@ -3,8 +3,8 @@ from datetime import datetime
 
 import pandas as pd
 
-from models.base import Transaction
-from utils.base import (
+from src.models.base import Transaction
+from src.utils.base import (
     analyze_recurring_transactions,
     analyze_spending,
     calculate_financial_health,
@@ -15,8 +15,8 @@ from utils.base import (
     predict_trends,
     validate_and_convert_transactions,
 )
-from utils.settings import base_settings as settings
-from utils.websocket import WebSocketManager
+from src.utils.settings import base_settings as settings
+from src.utils.websocket import WebSocketManager
 
 
 def calculate_metrics(

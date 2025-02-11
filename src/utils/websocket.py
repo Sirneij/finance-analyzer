@@ -1,6 +1,6 @@
 from aiohttp import web
 
-from utils.settings import base_settings
+from src.utils.settings import base_settings
 
 
 class WebSocketManager:
