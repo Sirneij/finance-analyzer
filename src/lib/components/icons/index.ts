@@ -29,6 +29,9 @@ import ResumeIcon from '$lib/components/icons/Resume.svelte';
 import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 import Platform from '$lib/components/icons/Platform.svelte';
 import Devto from '$lib/components/icons/Devto.svelte';
+import MonthlyExpense from '$lib/components/icons/MonthlyExpense.svelte';
+import WeeklyExpense from '$lib/components/icons/WeeklyExpense.svelte';
+import DailyExpense from '$lib/components/icons/DailyExpense.svelte';
 
 export const icons = {
 	repo: Repo,
@@ -73,4 +76,10 @@ export const SectionIcons = {
 	DEVArticles: Devto,
 	Platform: Platform,
 	Repos: Repo
+} as const;
+
+export const RecurringTxnIcons = {
+	monthly: MonthlyExpense,
+	weekly: WeeklyExpense,
+	daily: DailyExpense
 } as const;

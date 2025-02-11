@@ -16,7 +16,7 @@
 
 <div class="shadow-xs rounded-lg bg-white p-6 dark:bg-gray-800">
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Suspicious Transactions</h2>
-	<div class="max-h-64 space-y-4 overflow-y-auto">
+	<div class="max-h-64 space-y-3 overflow-y-auto">
 		{#if loading}
 			<LoadingInsight {steps} numBoxes={4} />
 		{:else if !anomalies}
@@ -40,9 +40,9 @@
 							{formatCurrency(Math.abs(anomaly.amount))}
 						</span>
 					</div>
-					<p class="mt-2 flex items-center space-x-1 text-sm text-red-600 dark:text-red-400">
-						<Alert class="h-4 w-4" />
-						{anomaly.reason}
+					<p class="mt-2 flex items-center text-sm text-red-600 dark:text-red-400">
+						<Alert class="mr-1 h-4 w-4" />
+						<small>{anomaly.reason}</small>
 					</p>
 				</div>
 			{/each}
