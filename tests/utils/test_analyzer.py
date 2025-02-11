@@ -15,7 +15,9 @@ from tests.utils import BaseUtilsTestClass
 
 
 class TestAnalyzer(BaseUtilsTestClass):
-    @patch('src.utils.analyzer.pipeline', return_value=lambda *args, **kwargs: [{'labels': ['groceries'], 'scores': [1.0]}])
+    @patch(
+        'src.utils.analyzer.pipeline', return_value=lambda *args, **kwargs: [{'labels': ['groceries'], 'scores': [1.0]}]
+    )
     async def test_analyze_transactions_valid(self, mock_pipeline):
         tx_data = [
             {
