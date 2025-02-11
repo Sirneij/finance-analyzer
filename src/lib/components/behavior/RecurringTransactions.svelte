@@ -40,16 +40,15 @@
 			</span>
 		{/if}
 	</div>
-
-	{#if loading}
-		<LoadingInsight {steps} numBoxes={3} />
-	{:else if !transactions?.length}
-		<Empty
-			title="No recurring transactions"
-			description="We haven't detected any recurring transactions yet."
-		/>
-	{:else}
-		<div class="max-h-32 space-y-3 overflow-y-auto pr-2">
+	<div class="max-h-32 space-y-3 overflow-y-auto pr-2">
+		{#if loading}
+			<LoadingInsight {steps} numBoxes={3} />
+		{:else if !transactions?.length}
+			<Empty
+				title="No recurring transactions"
+				description="We haven't detected any recurring transactions yet."
+			/>
+		{:else}
 			{#each transactions as transaction}
 				{@const Icon =
 					RecurringTxnIcons[transaction.frequency.toLowerCase() as keyof typeof RecurringTxnIcons]}
@@ -91,6 +90,6 @@
 					</div>
 				</div>
 			{/each}
-		</div>
-	{/if}
+		{/if}
+	</div>
 </div>
