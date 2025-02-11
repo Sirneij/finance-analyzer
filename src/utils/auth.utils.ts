@@ -1,4 +1,4 @@
-import { baseConfig } from "$config/base.config";
+import { baseConfig } from "$config/base.config.js";
 import type { Request } from "express";
 
 export const extractRequestState = (req: Request, defaultNext = "/") => {
