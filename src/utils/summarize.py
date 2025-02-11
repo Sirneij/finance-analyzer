@@ -128,19 +128,19 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
 
         # Step 5: Offload heavy synchronous computations concurrently.
         if ws_manager:
-            await ws_manager.send_progress('Detecting anomalies...', 0.75, 'Analysis')
+            await ws_manager.send_progress('Detecting anomalies...', 0.75, 'Summarize')
         anomalies_future = asyncio.to_thread(detect_anomalies, tx_objects)
         if ws_manager:
-            await ws_manager.send_progress('Analyzing spending...', 0.80, 'Analysis')
+            await ws_manager.send_progress('Analyzing spending...', 0.80, 'Summarize')
         spending_analysis_future = asyncio.to_thread(analyze_spending, tx_objects)
         if ws_manager:
-            await ws_manager.send_progress('Predicting spending trends...', 0.85, 'Analysis')
+            await ws_manager.send_progress('Predicting spending trends...', 0.85, 'Summarize')
         spending_trends_future = asyncio.to_thread(predict_trends, tx_objects)
         if ws_manager:
-            await ws_manager.send_progress('Analyzing recurring transactions...', 0.88, 'Analysis')
+            await ws_manager.send_progress('Analyzing recurring transactions...', 0.88, 'Summarize')
         recurring_transactions_future = asyncio.to_thread(analyze_recurring_transactions, tx_objects)
         if ws_manager:
-            await ws_manager.send_progress('Calculating financial health...', 0.92, 'Analysis')
+            await ws_manager.send_progress('Calculating financial health...', 0.92, 'Summarize')
         financial_health_future = asyncio.to_thread(calculate_financial_health, tx_objects)
 
         # Await offloaded tasks concurrently.
