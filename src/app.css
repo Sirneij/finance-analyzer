@@ -410,7 +410,7 @@
 
 			/* Add toggle button */
 			&::before {
-				@apply absolute top-0 right-3 z-10 cursor-pointer rounded-md bg-gray-100/90 px-2 py-1 text-sm text-gray-700 opacity-0 transition-opacity dark:bg-gray-800/90 dark:text-gray-200;
+				@apply absolute -top-3 right-3 z-10 cursor-pointer rounded-md bg-gray-100/90 px-2 py-1 text-sm text-gray-700 opacity-0 transition-opacity dark:bg-gray-800/90 dark:text-gray-200;
 				content: 'Collapse';
 			}
 
@@ -434,7 +434,7 @@
 		}
 		/* Hidden checkbox for toggle */
 		input[type='checkbox'] {
-			@apply absolute top-0 right-3 z-20 h-8 w-20 cursor-pointer opacity-0;
+			@apply absolute -top-3 right-3 z-20 h-8 w-20 cursor-pointer opacity-0;
 		}
 
 		/* iframe styling */
