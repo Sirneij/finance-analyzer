@@ -116,6 +116,22 @@
 		</div>
 	</AnimatedSection>
 
+	<!-- Summary Section -->
+	<AnimatedSection y={45} delay={500}>
+		<div class="grid gap-6 lg:grid-cols-2">
+			<RecurringTransactions
+				transactions={financialSummary.recurring_transactions}
+				loading={loadingSummary}
+				steps={loadingSummaryProgress}
+			/>
+			<FinancialHealth
+				health={financialSummary.financial_health}
+				loading={loadingSummary}
+				steps={loadingSummaryProgress}
+			/>
+		</div>
+	</AnimatedSection>
+
 	<!-- Charts Section -->
 	<AnimatedSection y={40} delay={400}>
 		<div class="grid gap-6 lg:grid-cols-2">
@@ -132,26 +148,10 @@
 		</div>
 	</AnimatedSection>
 
-	<AnimatedSection y={45} delay={500}>
-		<div class="grid gap-6 lg:grid-cols-2">
-			<RecurringTransactions
-				transactions={financialSummary.recurring_transactions}
-				loading={loadingSummary}
-				steps={loadingSummaryProgress}
-			/>
-			<FinancialHealth
-				health={financialSummary.financial_health}
-				loading={loadingSummary}
-				steps={loadingSummaryProgress}
-			/>
-		</div>
-	</AnimatedSection>
-
 	<!-- Insights Section -->
 	<AnimatedSection y={50} delay={600}>
-		<div class="grid gap-6 sm:grid-cols-2">
+		<div class="relative grid gap-6 sm:grid-cols-2">
 			{#if loadingAnalysis}
-				<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
 				<LoadingInsight steps={loadingSummaryProgress} numBoxes={1} minHeight="8rem" />
 			{:else if !financialSummary.spending_trends}
 				<div class="col-span-2 flex min-h-[200px] items-center justify-center">

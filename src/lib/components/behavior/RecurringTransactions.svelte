@@ -49,7 +49,7 @@
 			description="We haven't detected any recurring transactions yet."
 		/>
 	{:else}
-		<div class="max-h-64 space-y-3 overflow-y-auto pr-2">
+		<div class="max-h-32 space-y-3 overflow-y-auto pr-2">
 			{#each transactions as transaction}
 				{@const Icon =
 					RecurringTxnIcons[transaction.frequency.toLowerCase() as keyof typeof RecurringTxnIcons]}
