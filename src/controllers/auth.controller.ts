@@ -1,5 +1,5 @@
 import { baseConfig } from "$config/base.config.js";
-import { extractRequestState } from "$utils/auth.utils";
+import { extractRequestState } from "$utils/auth.utils.js";
 import type { Request, Response } from "express";
 
 export class AuthController {
