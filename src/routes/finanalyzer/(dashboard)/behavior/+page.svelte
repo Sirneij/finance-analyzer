@@ -70,7 +70,13 @@
 	});
 
 	onDestroy(() => {
-		if (webSocketService) webSocketService.close();
+		if (
+			webSocketService &&
+			(webSocketService.socket.readyState === WebSocket.OPEN ||
+				webSocketService.socket.readyState === WebSocket.CONNECTING)
+		) {
+			webSocketService.close();
+		}
 	});
 </script>
 

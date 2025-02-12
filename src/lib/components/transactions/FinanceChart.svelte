@@ -37,6 +37,16 @@
 
 			const options = {
 				...financialChartConfig,
+				title: {
+					text: 'Daily Financial Summary',
+					align: 'center',
+					margin: 10,
+					style: {
+						fontWeight: 'bold',
+						fontFamily: 'inherit',
+						color: '#263238'
+					}
+				},
 				series: [
 					{
 						name: 'Income',
