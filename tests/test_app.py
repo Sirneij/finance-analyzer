@@ -12,6 +12,7 @@ class TestPDFExtractor(AioHTTPTestCase):
         return init_app()
 
     def setUp(self):
+        """Create a sample PDF file for testing"""
         super().setUp()
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self.fixtures_dir = os.path.join(current_dir, 'fixtures')
@@ -20,6 +21,7 @@ class TestPDFExtractor(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_extract_text_success(self):
+        """Test extracting text from a PDF file"""
         with open(self.sample_pdf, 'rb') as f:
             data = aiohttp.FormData()
             data.add_field('file', f, filename='sample.pdf', content_type='application/pdf')
@@ -33,6 +35,7 @@ class TestPDFExtractor(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_missing_file(self):
+        """Test handling a request with no file uploaded"""
         # Create empty form data with proper headers
         data = aiohttp.FormData()
         resp = await self.client.post(
@@ -48,6 +51,7 @@ class TestPDFExtractor(AioHTTPTestCase):
 
     @unittest_run_loop
     async def test_invalid_file(self):
+        """Test handling a request with an invalid file"""
         data = aiohttp.FormData()
         data.add_field(
             'file',
@@ -63,4 +67,5 @@ class TestPDFExtractor(AioHTTPTestCase):
 
 
 if __name__ == '__main__':
+
     unittest.main()

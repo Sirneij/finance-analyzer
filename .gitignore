@@ -8,3 +8,4 @@ __pycache__/
 htmlcov
 .coverage
 test.json
+test.py

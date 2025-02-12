@@ -8,10 +8,10 @@ from src.utils.summarize import (
     calculate_trend,
     summarize_transactions,
 )
-from tests.utils import BaseUtilsTestClass
+from tests import BaseAsyncTestClass
 
 
-class TestSummarizeTransactions(BaseUtilsTestClass):
+class TestSummarizeTransactions(BaseAsyncTestClass):
     async def test_empty_transactions(self):
         # Should return an error if no transactions are provided.
         result = await summarize_transactions([])

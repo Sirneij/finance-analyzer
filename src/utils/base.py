@@ -1,3 +1,4 @@
+import difflib
 from datetime import datetime
 from typing import List
 
@@ -6,6 +7,7 @@ import pandas as pd
 import torch
 
 from src.models.base import Transaction
+from src.utils.websocket import WebSocketManager
 
 
 async def validate_and_convert_transactions(transactions: list[dict]) -> List[Transaction]:
@@ -38,12 +40,13 @@ async def validate_and_convert_transactions(transactions: list[dict]) -> List[Tr
             data['balance'] = float(data['balance'])
 
             # Convert date fields if they are strings
-            if isinstance(data['date'], str):
-                data['date'] = datetime.fromisoformat(data['date'])
-            if isinstance(data['createdAt'], str):
-                data['createdAt'] = datetime.fromisoformat(data['createdAt'])
-            if isinstance(data['updatedAt'], str):
-                data['updatedAt'] = datetime.fromisoformat(data['updatedAt'])
+            data['date'] = datetime.fromisoformat(data['date']) if isinstance(data['date'], str) else data['date']
+            data['createdAt'] = (
+                datetime.fromisoformat(data['createdAt']) if isinstance(data['createdAt'], str) else data['createdAt']
+            )
+            data['updatedAt'] = (
+                datetime.fromisoformat(data['updatedAt']) if isinstance(data['updatedAt'], str) else data['updatedAt']
+            )
 
             # Create the Transaction dataclass instance
             transaction_obj = Transaction(
@@ -75,40 +78,50 @@ def get_device() -> tuple[torch.device, str]:
         return torch.device('cpu'), 'CPU'
 
 
-def detect_anomalies(
-    transactions: list[Transaction], z_threshold: float = 3.0, global_multiplier: float = 2.0
-) -> list[dict]:
-    # Group transactions by description to identify recurring patterns
-    tx_patterns = {}
-    for tx in transactions:
-        key = tx.description.lower()
-        tx_patterns.setdefault(key, []).append(tx.amount)
+def detect_anomalies(transactions: list, z_threshold: float = 3.0, global_multiplier: float = 2.0) -> list:
+    """
+    Detect anomalies in a list of transactions using fuzzy grouping for descriptions.
 
-    # Calculate statistics for each pattern
+    - Transactions are first grouped using fuzzy matching.
+    - For groups with only one transaction, a global threshold based on the median expense/income is used.
+    - For groups with multiple transactions, a z‑score is computed.
+
+    Returns a list of anomaly dictionaries.
+    """
+    # Group transactions by description using fuzzy matching.
+    tx_patterns = group_transactions_by_description(transactions)
+
+    # Compute statistics (mean, standard deviation, count) for each group.
     pattern_stats = {
-        desc: {'mean': np.mean(amounts), 'std': np.std(amounts), 'count': len(amounts)}
-        for desc, amounts in tx_patterns.items()
+        group_key: {'mean': np.mean(amounts), 'std': np.std(amounts), 'count': len(amounts)}
+        for group_key, amounts in tx_patterns.items()
     }
 
-    # Compute global medians for expenses and incomes to handle single-instance groups
+    # Compute global medians to handle single-instance groups.
     expense_values = [abs(tx.amount) for tx in transactions if tx.amount < 0]
     income_values = [tx.amount for tx in transactions if tx.amount > 0]
     global_median_expense = np.median(expense_values) if expense_values else 0
     global_median_income = np.median(income_values) if income_values else 0
 
     anomalies = []
-    for tx in transactions:
-        desc_key = tx.description.lower()
-        stats = pattern_stats[desc_key]
+    # Prepare list of group keys for fuzzy lookup.
+    group_keys = list(pattern_stats.keys())
 
-        # Skip regular transactions with many similar occurrences
+    for tx in transactions:
+        # Determine the group key for the current transaction using fuzzy matching.
+        group_key = find_group_key(tx.description, group_keys, cutoff=0.9)
+        stats = pattern_stats.get(group_key)
+        if stats is None:
+            continue
+
+        # Skip regular transactions with many similar occurrences.
         if stats['count'] > 3 and stats['std'] < 0.1 * abs(stats['mean']):
             continue
 
         is_anomaly = False
         reason = ""
 
-        # For single-instance transactions, use a global threshold check
+        # For single-instance groups, apply a global threshold check.
         if stats['count'] == 1:
             if tx.amount < 0 and abs(tx.amount) > global_multiplier * global_median_expense:
                 is_anomaly = True
@@ -116,7 +129,6 @@ def detect_anomalies(
             elif tx.amount > 0 and tx.amount > global_multiplier * global_median_income:
                 is_anomaly = True
                 reason = f"Unusual income of {tx.amount:.2f}"
-
             if is_anomaly:
                 anomalies.append(
                     {
@@ -128,18 +140,18 @@ def detect_anomalies(
                 )
             continue
 
-        # For groups with more than one transaction, compute the z-score normally
+        # For groups with more than one transaction, compute a z-score.
         z_score = (tx.amount - stats['mean']) / (stats['std'] if stats['std'] > 0 else 1)
         if abs(z_score) > z_threshold:
+            # Optionally, you can exclude typical items (e.g., salary, rent) from anomaly detection.
             if tx.amount > 0:
-                if "salary" not in desc_key and "deposit" not in desc_key:
+                if "salary" not in tx.description.lower() and "deposit" not in tx.description.lower():
                     is_anomaly = True
                     reason = f"Unusual income of {tx.amount:.2f}"
             else:
-                if "tuition" not in desc_key and "rent" not in desc_key:
+                if "tuition" not in tx.description.lower() and "rent" not in tx.description.lower():
                     is_anomaly = True
                     reason = f"Unusual expense of {tx.amount:.2f}"
-
         if is_anomaly:
             anomalies.append(
                 {
@@ -329,3 +341,51 @@ async def calculate_percentage_change(monthly_data: pd.Series) -> float:
     recent_avg = monthly_data[-2:].mean()
 
     return ((recent_avg - highest_value) / highest_value) * 100 if highest_value != 0 else 0
+
+
+async def update_progress(
+    ws_manager: WebSocketManager | None, message: str, progress: float, task: str = 'Analysis'
+) -> None:
+    """Helper function to handle progress updates via websocket if available."""
+    if ws_manager:
+        await ws_manager.send_progress(message, progress, task)
+
+
+def group_transactions_by_description(transactions: list[Transaction], cutoff=0.69) -> dict:
+    """
+    Group transactions by description using fuzzy matching with difflib.
+
+    Returns a dictionary mapping a representative description (the group key)
+    to a list of transaction amounts. Two descriptions are grouped together if
+    their similarity is above a certain threshold.
+    """
+    groups = {}
+
+    for tx in transactions:
+        desc = tx.description.lower().strip()
+        # Try to find an existing key similar to desc.
+        # difflib.get_close_matches returns a list of close matches.
+        close_matches = difflib.get_close_matches(desc, groups.keys(), n=1, cutoff=cutoff)
+        if close_matches:
+            matched_key = close_matches[0]
+        else:
+            matched_key = None
+
+        if matched_key:
+            groups[matched_key].append(tx.amount)
+        else:
+            groups[desc] = [tx.amount]
+
+    return groups
+
+
+def find_group_key(description: str, group_keys: list, cutoff: float = 0.69) -> str:
+    """
+    Find the best matching key from group_keys for the given description using difflib.
+    Returns the matched key if similarity is above cutoff; otherwise, returns the description.
+    """
+    desc = description.lower().strip()
+    matches = difflib.get_close_matches(desc, group_keys, n=1, cutoff=cutoff)
+    if matches:
+        return matches[0]
+    return desc

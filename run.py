@@ -1,5 +1,7 @@
-from aiohttp import web
 import os
+
+from aiohttp import web
+
 from src.app.app_instance import init_app
 from src.utils.settings import base_settings
 

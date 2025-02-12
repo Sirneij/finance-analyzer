@@ -2,6 +2,8 @@ import uuid
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+import torch
+
 from src.utils.analyzer import analyze_transactions, classify_transactions
 from src.utils.base import (
     analyze_recurring_transactions,
@@ -11,10 +13,10 @@ from src.utils.base import (
     predict_trends,
     validate_and_convert_transactions,
 )
-from tests.utils import BaseUtilsTestClass
+from tests import BaseAsyncTestClass
 
 
-class TestAnalyzer(BaseUtilsTestClass):
+class TestAnalyzer(BaseAsyncTestClass):
     @patch(
         'src.utils.analyzer.pipeline', return_value=lambda *args, **kwargs: [{'labels': ['groceries'], 'scores': [1.0]}]
     )
@@ -234,3 +236,92 @@ class TestAnalyzer(BaseUtilsTestClass):
         self.assertIn('savings_rate', health)
         self.assertIn('balance_growth_rate', health)
         self.assertIn('financial_health_score', health)
+
+    async def test_not_transaction_analyzer(self):
+        """
+        Ensure that functions gracefully handle invalid transaction data.
+        """
+        analysis = await analyze_transactions(None, self.websocket_manager)
+        self.assertIn('error', analysis)
+        self.assertEqual(analysis['error'], 'No transactions provided')
+        self.assertTrue(self.fake_ws.messages)
+
+    async def test_analyze_transactions_with_websocket(self):
+        """Test the analyze_transactions function with a WebSocketManager."""
+        # Create an invalid transaction
+        tx_1 = [
+            {
+                '_id': str(uuid.uuid4()),
+                'date': '2024-01-01T00:00:00',
+                'createdAt': '2024-01-01T00:00:00',
+                'updatedAt': '2024-01-01T00:00:00',
+                'description': 'Test expense',
+                'amount': -100,
+                'type': 'expense',
+                'userId': '1',
+            }
+        ]
+
+        result = await analyze_transactions(tx_1, self.websocket_manager)
+        self.assertIn('error', result)
+        self.assertEqual(result['error'], 'No valid transactions provided')
+        # Check that progress messages were sent
+        self.assertTrue(self.fake_ws.messages)
+
+        # Create valid transactions
+        tx_2 = self.create_transaction_dict('2024-01-01T00:00:00', 'Salary', 2000, 2900, 'income')
+        result = await analyze_transactions([tx_2], self.websocket_manager)
+        self.assertIn('categories', result)
+        # Check that progress messages were sent
+        self.assertTrue(self.fake_ws.messages)
+
+    @patch('src.utils.analyzer.validate_and_convert_transactions')
+    async def test_analyze_transactions_classification_exception(self, mock_validate):
+        """Test analyze_transactions handling when classification fails"""
+        valid_tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Salary', 2000, 2900, 'income')
+        mock_validate.side_effect = ValueError('Mock classification error')
+        result = await analyze_transactions(valid_tx, self.websocket_manager)
+        self.assertIn('error', result)
+        msg = self.fake_ws.messages[-1]
+        self.assertEqual(msg['action'], 'progress')
+        self.assertEqual(msg['message'], 'Analysis failed')
+        self.assertEqual(msg['taskType'], 'Analysis')
+
+    @patch('src.utils.analyzer.pipeline')
+    async def test_classify_transactions_exception(self, mock_pipeline):
+        """Test classify_transactions handling when pipeline fails"""
+        tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Test expense', -100, 900, 'expense')
+        transactions = await validate_and_convert_transactions([tx])
+        mock_pipeline.side_effect = RuntimeError('Mock pipeline error')
+
+        result = await classify_transactions(transactions, self.websocket_manager)
+
+        # Check error response
+        self.assertIn('error', result)
+        self.assertTrue('Classification failed' in result['error'])
+
+        # Check websocket message
+        msg = self.fake_ws.messages[-1]
+        self.assertEqual(msg['action'], 'progress')
+        self.assertEqual(msg['message'], 'Analysis failed')
+        self.assertEqual(msg['taskType'], 'Analysis')
+
+    @patch('src.utils.analyzer.get_device')
+    @patch('src.utils.analyzer.pipeline')
+    async def test_classify_transactions_device_cpu(self, mock_pipeline, mock_device):
+        """Test that classify_transactions uses CPU device for the pipeline."""
+        tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Test expense', -100, 900, 'expense')
+        transactions = await validate_and_convert_transactions([tx])
+        mock_device.return_value = (torch.device('cpu'), 'CPU')
+        await classify_transactions(transactions, self.websocket_manager)
+        mock_pipeline.assert_called_once_with('zero-shot-classification', model='facebook/bart-large-mnli', device=-1)
+
+    @patch('src.utils.analyzer.get_device')
+    @patch('src.utils.analyzer.pipeline')
+    async def test_classify_transactions_device_gpu(self, mock_pipeline, mock_device):
+        """Test that classify_transactions uses GPU device for the pipeline."""
+        tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Test expense', -100, 900, 'expense')
+        transactions = await validate_and_convert_transactions([tx])
+        mock_device.return_value = (torch.device('cuda'), 'GPU')
+        await classify_transactions(transactions, self.websocket_manager)
+        mock_pipeline.assert_called_once_with('zero-shot-classification', model='facebook/bart-large-mnli', device=0)

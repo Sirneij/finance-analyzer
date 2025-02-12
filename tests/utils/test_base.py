@@ -4,10 +4,10 @@ from unittest.mock import patch
 
 from src.models.base import Transaction
 from src.utils.base import get_device, validate_and_convert_transactions
-from tests.utils import BaseUtilsTestClass
+from tests import BaseAsyncTestClass
 
 
-class TestValidateAndConvertTransactions(BaseUtilsTestClass):
+class TestValidateAndConvertTransactions(BaseAsyncTestClass):
     async def test_empty_list(self):
         # If an empty list is provided, expect an empty list in return.
         result: list[Transaction] = await validate_and_convert_transactions([])
