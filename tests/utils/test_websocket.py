@@ -61,8 +61,24 @@ class TestWebSocketManager(BaseAsyncTestClass):
         await self.websocket_manager.send_result(result_data, 'TestTask', 'result_complete')
         self.assertEqual(len(self.fake_ws.messages), 0)
 
-    async def test_close(self):
+    async def test_send_result_exception(self):
+        # If send_json raises an exception, send_result should return False.
+        await self.websocket_manager.prepare()
+        self.fake_ws.raise_on_send = True
+        result_data = {'foo': 'bar'}
+        await self.websocket_manager.send_result(result_data, 'TestTask', 'result_complete')
+        self.assertEqual(len(self.fake_ws.messages), 0)
+
+    async def test_close_already_closed(self):
+        self.fake_ws.closed = True
         # Call close and check that _closing is True and that the ws.close method was called.
+        await self.websocket_manager.close()
+        self.assertTrue(self.websocket_manager._closing)
+        self.assertTrue(self.fake_ws.closed)
+
+    async def test_close_success(self):
+        # Call close when the WebSocket is open.
+        await self.websocket_manager.prepare()
         await self.websocket_manager.close()
         self.assertTrue(self.websocket_manager._closing)
         self.assertTrue(self.fake_ws.closed)

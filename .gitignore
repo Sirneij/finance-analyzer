@@ -9,3 +9,4 @@ htmlcov
 .coverage
 test.json
 test.py
+.coverage.*

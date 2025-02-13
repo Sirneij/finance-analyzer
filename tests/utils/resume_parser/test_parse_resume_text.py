@@ -1,6 +1,3 @@
-import asyncio
-import unittest
-
 from src.utils.resume_parser import parse_resume_text
 from tests import BaseAsyncTestClass
 

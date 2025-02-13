@@ -13,6 +13,7 @@ from src.utils.base import (
     calculate_trend,
     detect_anomalies,
     predict_trends,
+    update_progress,
     validate_and_convert_transactions,
 )
 from src.utils.settings import base_settings as settings
@@ -75,72 +76,64 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
     """Summarize transaction data."""
     try:
         # Step 0: Validate and convert transactions.
-        if ws_manager:
-            await ws_manager.send_progress('Validating transactions...', 0.0, 'Summarize')
+        await update_progress(ws_manager, 'Validating transactions...', 0.0, 'Summarize')
         if not transactions:
-            if ws_manager:
-                await ws_manager.send_progress('No transactions provided', 1.0, 'Summarize')
+            await update_progress(ws_manager, 'No transactions provided', 1.0, 'Summarize')
             return {'error': 'No transactions provided'}
         tx_objects = await validate_and_convert_transactions(transactions)
         if not tx_objects:
             settings.logger.warning('No valid transactions provided')
-            if ws_manager:
-                await ws_manager.send_progress('No valid transactions provided', 1.0, 'Summarize')
+            await update_progress(ws_manager, 'No valid transactions provided', 1.0, 'Summarize')
             return {'error': 'No valid transactions provided'}
-        if ws_manager:
-            await ws_manager.send_progress('Transactions validated', 0.10, 'Summarize')
+
+        await update_progress(ws_manager, 'Transactions validated', 0.10, 'Summarize')
 
         # Step 1: Calculate totals.
         total_spent, total_income = calculate_totals(tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Totals calculated', 0.20, 'Summarize')
+        await update_progress(ws_manager, 'Totals calculated', 0.20, 'Summarize')
 
         # Step 2: Calculate additional metrics.
         total_savings, total_transactions, expense_count, income_count, avg_expense, avg_income = calculate_metrics(
             tx_objects, total_spent, total_income
         )
-        if ws_manager:
-            await ws_manager.send_progress('Additional metrics calculated', 0.35, 'Summarize')
+        await update_progress(ws_manager, 'Additional metrics calculated', 0.35, 'Summarize')
 
         # Step 3: Determine date range and largest transactions.
         start_date, end_date, largest_expense, largest_income = calculate_date_range_and_largest(tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Date range and largest transactions identified', 0.50, 'Summarize')
+        await update_progress(ws_manager, 'Date range and largest transactions identified', 0.50, 'Summarize')
 
         # Step 4: Generate monthly summary and calculate trends.
-        if ws_manager:
-            await ws_manager.send_progress('Generating monthly summaries...', 0.60, 'Summarize')
+        await update_progress(ws_manager, 'Generating monthly summaries...', 0.60, 'Summarize')
         monthly_summary, monthly_income, monthly_expense, monthly_savings = generate_monthly_summary_and_trends(
             tx_objects
         )
-        if ws_manager:
-            await ws_manager.send_progress('Calculating trends...', 0.65, 'Summarize')
+
+        await update_progress(ws_manager, 'Calculating trends...', 0.65, 'Summarize')
         income_trend = await calculate_trend(monthly_income)
         expense_trend = await calculate_trend(monthly_expense)
         savings_trend = await calculate_trend(monthly_savings)
         income_change = await calculate_percentage_change(monthly_income)
         expense_change = await calculate_percentage_change(monthly_expense)
         savings_change = await calculate_percentage_change(monthly_savings)
-        if ws_manager:
-            await ws_manager.send_progress('Monthly summaries and trends calculated', 0.70, 'Summarize')
+
+        await update_progress(ws_manager, 'Monthly summaries and trends calculated', 0.70, 'Summarize')
 
         savings_rate = ((total_income + total_spent) / total_income) * 100 if total_income else 0
 
         # Step 5: Offload heavy synchronous computations concurrently.
-        if ws_manager:
-            await ws_manager.send_progress('Detecting anomalies...', 0.75, 'Summarize')
+        await update_progress(ws_manager, 'Detecting anomalies...', 0.75, 'Summarize')
         anomalies_future = asyncio.to_thread(detect_anomalies, tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Analyzing spending...', 0.80, 'Summarize')
+
+        await update_progress(ws_manager, 'Analyzing spending...', 0.80, 'Summarize')
         spending_analysis_future = asyncio.to_thread(analyze_spending, tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Predicting spending trends...', 0.85, 'Summarize')
+
+        await update_progress(ws_manager, 'Predicting spending trends...', 0.85, 'Summarize')
         spending_trends_future = asyncio.to_thread(predict_trends, tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Analyzing recurring transactions...', 0.88, 'Summarize')
+
+        await update_progress(ws_manager, 'Analyzing recurring transactions...', 0.88, 'Summarize')
         recurring_transactions_future = asyncio.to_thread(analyze_recurring_transactions, tx_objects)
-        if ws_manager:
-            await ws_manager.send_progress('Calculating financial health...', 0.92, 'Summarize')
+
+        await update_progress(ws_manager, 'Calculating financial health...', 0.92, 'Summarize')
         financial_health_future = asyncio.to_thread(calculate_financial_health, tx_objects)
 
         # Await offloaded tasks concurrently.
@@ -152,8 +145,7 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
             financial_health_future,
         )
 
-        if ws_manager:
-            await ws_manager.send_progress('Transaction summarization completed', 1.0, 'Summarize')
+        await update_progress(ws_manager, 'Finalizing summary...', 0.95, 'Summarize')
 
         # Compile the summary dictionary.
         summary = {
@@ -193,6 +185,5 @@ async def summarize_transactions(transactions: list[dict], ws_manager: WebSocket
         return summary
     except Exception as e:
         settings.logger.error(f'Error summarizing transactions: {str(e)}')
-        if ws_manager:
-            await ws_manager.send_progress('100% - Summarization failed', 1.0, 'Summarize')
+        await update_progress(ws_manager, 'Summarization failed', 1.0, 'Summarize')
         return {'error': f'Summarization failed: {str(e)}'}

@@ -276,10 +276,10 @@ class TestAnalyzer(BaseAsyncTestClass):
         self.assertTrue(self.fake_ws.messages)
 
     @patch('src.utils.analyzer.validate_and_convert_transactions')
-    async def test_analyze_transactions_classification_exception(self, mock_validate):
-        """Test analyze_transactions handling when classification fails"""
+    async def test_analyze_transactions_validation_exception(self, mock_validate):
+        """Test analyze_transactions handling when validation fails"""
         valid_tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Salary', 2000, 2900, 'income')
-        mock_validate.side_effect = ValueError('Mock classification error')
+        mock_validate.side_effect = ValueError('Mock validation error')
         result = await analyze_transactions(valid_tx, self.websocket_manager)
         self.assertIn('error', result)
         msg = self.fake_ws.messages[-1]

@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime, timedelta
+from unittest.mock import patch
 
 import pandas as pd
 
@@ -181,3 +182,15 @@ class TestSummarizeTransactions(BaseAsyncTestClass):
         series_single = pd.Series([100])
         change_single = await calculate_percentage_change(series_single)
         self.assertEqual(change_single, 0)
+
+    @patch('src.utils.summarize.validate_and_convert_transactions')
+    async def test_summarize_transactions_validation_exception(self, mock_validate):
+        """Test summarize_transactions handling when validation fails"""
+        valid_tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Salary', 2000, 2900, 'income')
+        mock_validate.side_effect = ValueError('Mock validation error')
+        result = await summarize_transactions(valid_tx, self.websocket_manager)
+        self.assertIn('error', result)
+        msg = self.fake_ws.messages[-1]
+        self.assertEqual(msg['action'], 'progress')
+        self.assertEqual(msg['message'], 'Summarization failed')
+        self.assertEqual(msg['taskType'], 'Summarize')

@@ -8,7 +8,6 @@ class WebSocketManager:
         self.ws = ws
         self._ready = False
         self._closing = False
-        base_settings.logger.info(f'Initializing WebSocket manager: {ws}')
 
     async def prepare(self):
         """Initialize the WebSocket manager"""

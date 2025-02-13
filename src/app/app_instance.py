@@ -39,7 +39,7 @@ async def parse_resume(request: Request) -> Response:
 
         if field.name != 'file':
             base_settings.logger.warning('No file field in request')
-            return web.json_response({'error': 'No file uploaded'}, status=400)
+            return web.json_response({'error': 'No file field in request'}, status=400)
 
         # Read the file content as bytes directly
         base_settings.logger.info('Reading uploaded file')
@@ -76,7 +76,7 @@ async def extract_text(request: Request) -> Response:
 
         if not field or field.name != 'file':
             base_settings.logger.warning('No file field in request')
-            return web.json_response({'error': 'No file uploaded'}, status=400)
+            return web.json_response({'error': 'No file field in request'}, status=400)
 
         # Read the file content
         base_settings.logger.info('Reading uploaded file')
