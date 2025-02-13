@@ -19,7 +19,7 @@
 				name: 'John Owolabi Idogun',
 				logo: {
 					'@type': 'ImageObject',
-					url: `${WEBSITE_URL}/logo.png`
+					url: `${WEBSITE_URL}/JI.png`
 				}
 			},
 			dateModified: article.updatedAt,

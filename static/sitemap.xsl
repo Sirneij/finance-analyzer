@@ -9,7 +9,25 @@
     <xsl:template match="/">
         <html>
             <head>
-                <title>XML Sitemap</title>
+                <title>XML Sitemap | John Owolabi Idogun</title>
+                <meta name="description" content="This is the sitemap for John Owolabi Idogun"/>
+                <meta name="author" content="John Owolabi Idogun"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <meta name="robots" content="index, follow"/>
+                <meta name="theme-color" content="#000"/>
+                <meta name="twitter:card" content="summary"/>
+                <meta name="twitter:site" content="@sirneij"/>
+                <meta name="twitter:creator" content="@sirneij"/>
+                <meta property="og:title" content="XML Sitemap | John Owolabi Idogun"/>
+                <meta property="og:description" content="This is the sitemap for John Owolabi Idogun"/>
+                <meta property="og:type" content="website"/>
+                <meta property="og:url" content="https://johnowolabiidogun.dev/sitemap.xml"/>
+                <meta property="og:image" content="https://johnowolabiidogun.dev/JI.png"/>
+                <meta property="og:site_name" content="John Owolabi Idogun"/>
+                <meta property="og:locale" content="en_US"/>
+                <meta property="og:locale:alternate" content="en_GB"/>
+
+                <link rel="canonical" href="https://johnowolabiidogun.dev/sitemap.xml"/>
                 <style>
                     body { font-family: system-ui, -apple-system, sans-serif; max-width: 80ch; margin: 2rem auto; line-height: 1.5; }
                     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
