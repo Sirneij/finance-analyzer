@@ -22,10 +22,9 @@ jobs:
           sudo apt-get install -y \
             poppler-utils \
             tesseract-ocr \
-            tesseract-ocr-eng \
-            libgl1-mesa-glx \
+            libtesseract-dev \
             libglib2.0-0
-            
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
