@@ -33,6 +33,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.dev.txt
+      - name: Debug Environment
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -c "import platform; print(platform.platform())"
+          env | sort
       - name: Run static analysis
         run: ./scripts/test_app.sh
       - name: Run Tests
@@ -41,4 +46,4 @@ jobs:
           LANG: en_NG.UTF-8
           LABELS: groceries,school,housing,transportation,gadgets,entertainment,utilities,credit cards,other,dining out,healthcare,insurance,savings,investments,childcare,travel,personal care,debts,charity,taxes,subscriptions,streaming services,home maintenance,shopping,pets,fitness,hobbies,gifts
         run: |
-          coverage run --parallel-mode -m unittest discover --quiet tests && coverage combine && coverage report && coverage html
+          coverage run --parallel-mode -m unittest discover tests && coverage combine && coverage report -m && coverage html
