@@ -8,7 +8,9 @@ Crawl-delay: 1
 # Allow public sections
 Allow: /
 Allow: /blog/
+Allow: /blog?
 Allow: /blogs/
+Allow: /blogs?
 Allow: /finanalyzer/docs/
 Allow: /sitemap.xml
 
