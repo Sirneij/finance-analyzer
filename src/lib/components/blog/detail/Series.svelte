@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { IArticlePopulated } from '$lib/types/articles.types';
+	import { WEBSITE_URL } from '$lib/utils/contants';
 	import {
 		capitalize,
 		truncateSeriesArticles,
@@ -37,9 +38,14 @@
 
 {#if article.series && seriesArticles.length > 1}
 	<div class="mt-8 rounded-lg border border-gray-200 p-4 dark:border-gray-800" {...props}>
-		<h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+		<a
+			href="{WEBSITE_URL}/blog?series={article.series._id}"
+			class="block text-lg font-semibold text-gray-900 dark:text-white"
+			title="View all articles in this series"
+			aria-label="View all articles in this series"
+		>
 			{capitalize(article.series.title)} Series
-		</h2>
+		</a>
 		<div class="mt-4 space-y-2">
 			{#each seriesDisplay as sArticle, i}
 				{#if sArticle._id === 'ellipsis'}

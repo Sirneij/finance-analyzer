@@ -16,13 +16,7 @@ export const getEditorState = (): EditorState => {
 	const state = localStorage.getItem(EDITOR_STORAGE_KEY);
 	return state
 		? JSON.parse(state)
-		: {
-				content: '',
-				title: '',
-				foreImage: '',
-				selectedSeries: '',
-				tags: []
-			};
+		: { content: '', title: '', foreImage: '', selectedSeries: '', tags: [] };
 };
 
 export const setEditorState = (state: Partial<EditorState>) => {
@@ -30,11 +24,7 @@ export const setEditorState = (state: Partial<EditorState>) => {
 	localStorage.setItem(EDITOR_STORAGE_KEY, JSON.stringify({ ...currentState, ...state }));
 };
 
-type TOCItem = {
-	level: number;
-	text: string;
-	id: string;
-};
+type TOCItem = { level: number; text: string; id: string };
 
 export const generateTOC = (content: string) => {
 	// Split and clean content
@@ -85,11 +75,7 @@ export const truncateSeriesArticles = <T extends { _id: string; title: string; s
 		const start = seriesArticles.slice(0, 2);
 		const end = seriesArticles.slice(-2);
 		const hidden = seriesArticles.length - 4;
-		const ellipsis: IEllipsisArticle = {
-			_id: 'ellipsis',
-			title: `${hidden} more parts`,
-			slug: ''
-		};
+		const ellipsis: IEllipsisArticle = { _id: 'ellipsis', title: `${hidden} more parts`, slug: '' };
 		return [...start, ellipsis, ...end];
 	}
 	return seriesArticles;
@@ -129,9 +115,7 @@ export const tocObserver = (setActiveId: (id: string) => void) => {
 				}
 			});
 		},
-		{
-			rootMargin: '-20% 0px -80% 0px'
-		}
+		{ rootMargin: '-20% 0px -80% 0px' }
 	);
 	return observer;
 };
@@ -194,7 +178,40 @@ export async function shareContent(data: {
 	}
 }
 
-export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (str: string) => {
+	const abbreviations = ['ai', 'html', 'css', 'api', 'url', 'id']; // Add more as needed
+	const articles = ['a', 'an', 'the'];
+
+	const words = str.split(' ');
+	const capitalizedWords = words.map((word, index) => {
+		const lowerCaseWord = word.toLowerCase();
+
+		if (abbreviations.includes(lowerCaseWord)) {
+			return word.toUpperCase();
+		}
+
+		if (index > 0 && articles.includes(lowerCaseWord)) {
+			return word;
+		}
+
+		// Handle hyphenated words
+		if (word.includes('-')) {
+			const hyphenatedParts = word.split('-');
+			const capitalizedParts = hyphenatedParts.map((part) => {
+				const lowerCasePart = part.toLowerCase();
+				if (abbreviations.includes(lowerCasePart)) {
+					return part.toUpperCase();
+				}
+				return part.charAt(0).toUpperCase() + part.slice(1);
+			});
+			return capitalizedParts.join('-');
+		}
+
+		return word.charAt(0).toUpperCase() + word.slice(1);
+	});
+
+	return capitalizedWords.join(' ');
+};
 
 const TIME_UNITS = {
 	SECOND: { singular: 'sec', plural: 'secs' },
