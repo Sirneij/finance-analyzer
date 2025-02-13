@@ -8,6 +8,10 @@ from src.utils.settings import base_settings as settings
 
 
 async def extract_text_from_pdf(pdf_file: bytes) -> str:
+    """
+    Extract text from a PDF file using OCR.
+    The PDF is first converted to images and then text is extracted. The text is returned as a single string.
+    """
     settings.logger.info('Starting PDF text extraction')
     # Create temporary file to store uploaded PDF
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_pdf:

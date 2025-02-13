@@ -1,6 +1,6 @@
 import difflib
 from datetime import datetime
-from typing import List
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,7 @@ from src.models.base import Transaction
 from src.utils.websocket import WebSocketManager
 
 
-async def validate_and_convert_transactions(transactions: list[dict]) -> List[Transaction]:
+async def validate_and_convert_transactions(transactions: list[dict[str, str]]) -> list[Transaction]:
     """
     Validate a list of transaction dictionaries and return a list of Transaction objects.
 
@@ -33,7 +33,7 @@ async def validate_and_convert_transactions(transactions: list[dict]) -> List[Tr
 
         try:
             # Create a filtered copy that removes the '__v' field, if present.
-            data = {k: v for k, v in t.items() if k != '__v'}
+            data: dict[str, Any] = {k: v for k, v in t.items() if k != '__v'}
 
             # Convert numeric fields
             data['amount'] = float(data['amount'])
@@ -78,7 +78,9 @@ def get_device() -> tuple[torch.device, str]:
         return torch.device('cpu'), 'CPU'
 
 
-def detect_anomalies(transactions: list, z_threshold: float = 3.0, global_multiplier: float = 2.0) -> list:
+def detect_anomalies(
+    transactions: list[Transaction], z_threshold: float = 3.0, global_multiplier: float = 2.0
+) -> list[dict[str, Any]]:
     """
     Detect anomalies in a list of transactions using fuzzy grouping for descriptions.
 
@@ -115,7 +117,7 @@ def detect_anomalies(transactions: list, z_threshold: float = 3.0, global_multip
             continue
 
         # Skip regular transactions with many similar occurrences.
-        if stats['count'] > 3 and stats['std'] < 0.1 * abs(stats['mean']):
+        if stats['count'] > 3 and stats['std'] < 0.1 * abs(stats['mean']):  # type: ignore
             continue
 
         is_anomaly = False
@@ -141,7 +143,7 @@ def detect_anomalies(transactions: list, z_threshold: float = 3.0, global_multip
             continue
 
         # For groups with more than one transaction, compute a z-score.
-        z_score = (tx.amount - stats['mean']) / (stats['std'] if stats['std'] > 0 else 1)
+        z_score = (tx.amount - stats['mean']) / (stats['std'] if stats['std'] > 0 else 1)  # type: ignore
         if abs(z_score) > z_threshold:
             # Optionally, you can exclude typical items (e.g., salary, rent) from anomaly detection.
             if tx.amount > 0:
@@ -165,7 +167,7 @@ def detect_anomalies(transactions: list, z_threshold: float = 3.0, global_multip
     return anomalies
 
 
-def analyze_spending(transactions: list[Transaction]) -> dict:
+def analyze_spending(transactions: list[Transaction]) -> dict[str, Any]:
     total_spent = sum(tx.amount for tx in transactions if tx.amount < 0)
     total_income = sum(tx.amount for tx in transactions if tx.amount > 0)
     df = pd.DataFrame([t.__dict__ for t in transactions])
@@ -185,7 +187,7 @@ def analyze_spending(transactions: list[Transaction]) -> dict:
     }
 
 
-def predict_trends(transactions: list[Transaction]) -> dict:
+def predict_trends(transactions: list[Transaction]) -> dict[str, Any]:
     if len(transactions) < 2:
         return {'trend': 'Not enough data'}
 
@@ -207,10 +209,10 @@ def predict_trends(transactions: list[Transaction]) -> dict:
     }
 
 
-def analyze_recurring_transactions(transactions: list[Transaction]) -> dict:
+def analyze_recurring_transactions(transactions: list[Transaction]) -> list[dict[str, Any]]:
     """Identify potential recurring transactions based on amount and frequency."""
     # Group transactions by description and amount
-    recurring_candidates = {}
+    recurring_candidates: dict[tuple[str, float], Any] = {}
 
     for tx in transactions:
         # Create a key combining description and amount
@@ -251,7 +253,7 @@ def analyze_recurring_transactions(transactions: list[Transaction]) -> dict:
     return recurring
 
 
-def calculate_financial_health(transactions: list[Transaction]) -> dict:
+def calculate_financial_health(transactions: list[Transaction]) -> dict[str, float]:
     """Calculate various financial health indicators."""
     if not transactions:
         return {
@@ -351,7 +353,7 @@ async def update_progress(
         await ws_manager.send_progress(message, progress, task)
 
 
-def group_transactions_by_description(transactions: list[Transaction], cutoff=0.69) -> dict:
+def group_transactions_by_description(transactions: list[Transaction], cutoff: float = 0.69) -> dict[str, list[float]]:
     """
     Group transactions by description using fuzzy matching with difflib.
 
@@ -359,7 +361,7 @@ def group_transactions_by_description(transactions: list[Transaction], cutoff=0.
     to a list of transaction amounts. Two descriptions are grouped together if
     their similarity is above a certain threshold.
     """
-    groups = {}
+    groups: dict[str, list[float]] = {}
 
     for tx in transactions:
         desc = tx.description.lower().strip()
@@ -379,7 +381,7 @@ def group_transactions_by_description(transactions: list[Transaction], cutoff=0.
     return groups
 
 
-def find_group_key(description: str, group_keys: list, cutoff: float = 0.69) -> str:
+def find_group_key(description: str, group_keys: list[str], cutoff: float = 0.69) -> str:
     """
     Find the best matching key from group_keys for the given description using difflib.
     Returns the matched key if similarity is above cutoff; otherwise, returns the description.

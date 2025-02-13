@@ -31,7 +31,7 @@ class TestAppLifecycle(BaseAioHTTPTestCase):
             self.fake_ws.close_code, WSCloseCode.GOING_AWAY, "Fake websocket was not closed with expected code."
         )
         self.assertEqual(
-            self.fake_ws.close_message, 'Server shutdown', "Fake websocket was not closed with expected message."
+            self.fake_ws.close_message, b'Server shutdown', "Fake websocket was not closed with expected message."
         )
 
     async def test_cleanup_background_tasks(self):
@@ -41,4 +41,4 @@ class TestAppLifecycle(BaseAioHTTPTestCase):
         await cleanup_background_tasks(self.app)
         self.assertTrue(self.fake_ws.closed, "Fake websocket was not closed via cleanup_background_tasks.")
         self.assertEqual(self.fake_ws.close_code, WSCloseCode.GOING_AWAY)
-        self.assertEqual(self.fake_ws.close_message, 'Server shutdown')
+        self.assertEqual(self.fake_ws.close_message, b'Server shutdown')

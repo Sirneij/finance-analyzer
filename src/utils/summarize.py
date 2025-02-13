@@ -1,5 +1,6 @@
 import asyncio
 from datetime import datetime
+from typing import Any
 
 import pandas as pd
 
@@ -48,7 +49,9 @@ def calculate_date_range_and_largest(tx_objects: list[Transaction]) -> tuple[dat
     return start_date, end_date, largest_expense, largest_income
 
 
-def generate_monthly_summary_and_trends(tx_objects: list[Transaction]) -> tuple[dict, pd.Series, pd.Series, pd.Series]:
+def generate_monthly_summary_and_trends(
+    tx_objects: list[Transaction],
+) -> tuple[dict[str, dict[str, float]], pd.Series, pd.Series, pd.Series]:
     """
     Generate monthly summaries and return:
       - monthly_summary: dict mapping month to income, expenses, and savings
@@ -72,7 +75,9 @@ def generate_monthly_summary_and_trends(tx_objects: list[Transaction]) -> tuple[
     return monthly_summary, monthly_income, monthly_expense, monthly_savings
 
 
-async def summarize_transactions(transactions: list[dict], ws_manager: WebSocketManager = None) -> dict:
+async def summarize_transactions(
+    transactions: list[dict[str, Any]], ws_manager: WebSocketManager | None = None
+) -> dict[str, Any]:
     """Summarize transaction data."""
     try:
         # Step 0: Validate and convert transactions.

@@ -1,3 +1,5 @@
+from typing import Any
+
 from aiohttp import web
 
 from src.utils.settings import base_settings
@@ -9,7 +11,7 @@ class WebSocketManager:
         self._ready = False
         self._closing = False
 
-    async def prepare(self):
+    async def prepare(self) -> None:
         """Initialize the WebSocket manager"""
         if self._ready:
             return
@@ -17,7 +19,7 @@ class WebSocketManager:
         self._ready = True
         base_settings.logger.info('WebSocket manager ready')
 
-    async def send_progress(self, message: str, progress: float, task_type: str = None):
+    async def send_progress(self, message: str, progress: float, task_type: str | None = None) -> bool:
         """Send progress updates"""
         if self.ws.closed or self._closing:
             base_settings.logger.warning('WebSocket closed - cannot send progress')
@@ -32,7 +34,7 @@ class WebSocketManager:
             base_settings.logger.error(f'Error sending progress: {str(e)}')
             return False
 
-    async def send_result(self, result: dict, task_type: str, action: str):
+    async def send_result(self, result: dict[str, Any], task_type: str, action: str) -> None:
         if not self._ready or self.ws.closed:
             base_settings.logger.warning('Cannot send result - WebSocket not ready/closed')
             return
@@ -48,7 +50,7 @@ class WebSocketManager:
         except Exception as e:
             base_settings.logger.error(f'Error sending result: {str(e)}')
 
-    async def close(self):
+    async def close(self) -> None:
         """Clean up resources"""
         self._closing = True
         if not self.ws.closed:

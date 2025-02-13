@@ -1,5 +1,5 @@
 import re
-from typing import Union
+from typing import Any, Union
 
 import fitz  # PyMuPDF
 
@@ -26,7 +26,7 @@ async def extract_text_with_pymupdf(file_content: Union[str, bytes]) -> str:
     return text.strip()
 
 
-async def parse_contact_info(lines: list) -> dict[str, dict[str, str]]:
+async def parse_contact_info(lines: list[str]) -> dict[str, dict[str, Any | str] | Any | str]:
     """Parse basic contact information from first few lines."""
     contact = {
         'name': lines[0] if len(lines) > 0 else '',
@@ -77,7 +77,7 @@ async def parse_skills(section_lines: list[str]) -> dict[str, list[str]]:
     return skills_dict
 
 
-async def parse_single_experience(exp_lines: list[str], start_idx: int) -> tuple[dict[str, str], int]:
+async def parse_single_experience(exp_lines: list[str], start_idx: int) -> tuple[dict[str, Any], int]:
     """Parse a single experience entry."""
     company_name = exp_lines[start_idx].replace('• ', '').strip()
     location = exp_lines[start_idx + 1] if start_idx + 1 < len(exp_lines) else ''
@@ -137,7 +137,7 @@ async def parse_experiences(section_lines: list[str]) -> list[dict[str, str]]:
     return experiences
 
 
-async def parse_single_education(edu_lines: list[str], start_idx: int) -> tuple[dict[str, str], int]:
+async def parse_single_education(edu_lines: list[str], start_idx: int) -> tuple[dict[str, Any], int]:
     """Parse a single education entry."""
     school_name = edu_lines[start_idx].replace('• ', '').strip()
     location = edu_lines[start_idx + 1] if start_idx + 1 < len(edu_lines) else ''
@@ -184,7 +184,7 @@ async def parse_education(section_lines: list[str]) -> list[dict[str, str]]:
     return education_list
 
 
-async def parse_resume_text(text: str) -> dict[str, dict[str, str]]:
+async def parse_resume_text(text: str) -> dict[str, Any]:
     """Parse raw text from resume into structured JSON-like dictionary."""
     lines = [line.strip() for line in text.split("\n") if line.strip()]
 
@@ -198,7 +198,7 @@ async def parse_resume_text(text: str) -> dict[str, dict[str, str]]:
     }
 
     # Organize lines into sections
-    section_lines = {k: [] for k in headings.values()}
+    section_lines: dict[str, list[str]] = {k: [] for k in headings.values()}
     current_section = None
     for line in lines[8:]:
         if line in headings:

@@ -1,7 +1,8 @@
 import asyncio
-import weakref
+from weakref import WeakSet
 
 from aiohttp import WSCloseCode, WSMsgType, web
+from aiohttp.multipart import BodyPartReader
 from aiohttp.web import Request, Response, WebSocketResponse
 
 from src.utils.analyzer import analyze_transactions
@@ -12,32 +13,33 @@ from src.utils.summarize import summarize_transactions
 from src.utils.websocket import WebSocketManager
 
 # Replace global ws_connections with typed version
-WEBSOCKETS = web.AppKey("websockets", weakref.WeakSet)
+WEBSOCKETS = web.AppKey("websockets", WeakSet[WebSocketResponse])
 
 
-async def start_background_tasks(app):
+async def start_background_tasks(app: web.Application) -> None:
     """Initialize application background tasks."""
-    app[WEBSOCKETS] = weakref.WeakSet()
+    app[WEBSOCKETS] = WeakSet()
 
 
-async def cleanup_background_tasks(app):
+async def cleanup_background_tasks(app: web.Application) -> None:
     """Cleanup application resources."""
     await cleanup_ws(app)
 
 
-async def cleanup_ws(app):
+async def cleanup_ws(app: web.Application) -> None:
     """Cleanup WebSocket connections on shutdown."""
-    for ws in set(app[WEBSOCKETS]):
-        await ws.close(code=WSCloseCode.GOING_AWAY, message='Server shutdown')
+    for websocket in set(app[WEBSOCKETS]):  # type: ignore
+        await websocket.close(code=WSCloseCode.GOING_AWAY, message=b'Server shutdown')
 
 
 async def parse_resume(request: Request) -> Response:
+    """Parse a resume PDF file and extract relevant information."""
     try:
         base_settings.logger.info('Received resume parsing request')
         reader = await request.multipart()
         field = await reader.next()
 
-        if field.name != 'file':
+        if not field or not isinstance(field, BodyPartReader) or field.name != 'file':
             base_settings.logger.warning('No file field in request')
             return web.json_response({'error': 'No file field in request'}, status=400)
 
@@ -53,12 +55,13 @@ async def parse_resume(request: Request) -> Response:
         resume_data = await parse_resume_text(text)
         base_settings.logger.info('Successfully processed request')
         return web.json_response(resume_data)
-    except Exception as e:
-        base_settings.logger.error(f'Request processing failed: {str(e)}', exc_info=True)
-        return web.json_response({'error': str(e)}, status=500)
+    except Exception as error:
+        base_settings.logger.error(f'Request processing failed: {str(error)}', exc_info=True)
+        return web.json_response({'error': str(error)}, status=500)
 
 
 async def extract_text(request: Request) -> Response:
+    """Extract text from a PDF file using OCR."""
     try:
         base_settings.logger.info('Received text extraction request')
 
@@ -70,11 +73,13 @@ async def extract_text(request: Request) -> Response:
         try:
             reader = await request.multipart()
             field = await reader.next()
-        except ValueError as e:
-            base_settings.logger.warning('No file uploaded or invalid multipart form data')
+        except ValueError as value_error:
+            base_settings.logger.warning(
+                f'No file uploaded or invalid multipart form data {value_error}', exc_info=True
+            )
             return web.json_response({'error': 'No file uploaded'}, status=400)
 
-        if not field or field.name != 'file':
+        if not field or not isinstance(field, BodyPartReader) or field.name != 'file':
             base_settings.logger.warning('No file field in request')
             return web.json_response({'error': 'No file field in request'}, status=400)
 
@@ -91,6 +96,7 @@ async def extract_text(request: Request) -> Response:
 
 
 async def analyze(request: web.Request) -> web.Response:
+    """Analyze a list of transactions."""
     try:
         data = await request.json()
         base_settings.logger.info('Received analysis request')
@@ -115,6 +121,7 @@ async def analyze(request: web.Request) -> web.Response:
 
 
 async def summarize(request: web.Request) -> web.Response:
+    """Summarize a list of transactions."""
     try:
         data = await request.json()
         base_settings.logger.info('Received summarization request')
@@ -151,7 +158,7 @@ async def websocket_handler(request: Request) -> WebSocketResponse:
     ws_manager = WebSocketManager(ws)
     await ws_manager.prepare()
 
-    async def ping_server(ws):
+    async def ping_server(ws: WebSocketResponse) -> None:
         try:
             while True:
                 await ws.ping()

@@ -1,5 +1,6 @@
 import asyncio
 import os
+from typing import Any
 
 import torch
 from transformers import pipeline
@@ -14,7 +15,9 @@ from src.utils.settings import base_settings as settings
 from src.utils.websocket import WebSocketManager
 
 
-async def analyze_transactions(transactions: list[dict], ws_manager: WebSocketManager | None = None) -> dict:
+async def analyze_transactions(
+    transactions: list[dict[str, Any]], ws_manager: WebSocketManager | None = None
+) -> dict[str, Any]:
     """
     Validate transactions, classify them into expense/income categories,
     and report progress. Overall progress is updated with percentage labels.
@@ -48,7 +51,9 @@ async def analyze_transactions(transactions: list[dict], ws_manager: WebSocketMa
         return {'error': f'Analysis failed: {str(e)}'}
 
 
-async def classify_transactions(transactions: list[Transaction], ws_manager: WebSocketManager = None) -> dict:
+async def classify_transactions(
+    transactions: list[Transaction], ws_manager: WebSocketManager | None = None
+) -> dict[str, Any]:
     """
     Classify transactions into expense categories (and accumulate income) using
     pattern matching and a zero-shot classifier for unmatched transactions.
@@ -94,7 +99,7 @@ async def classify_transactions(transactions: list[Transaction], ws_manager: Web
 
     try:
 
-        def match_pattern(description: str) -> str:
+        def match_pattern(description: str) -> str | None:
             desc_lower = description.lower()
             for category, patterns in COMMON_PATTERNS.items():
                 if any(pattern in desc_lower for pattern in patterns):
@@ -107,8 +112,8 @@ async def classify_transactions(transactions: list[Transaction], ws_manager: Web
         # Use environment-specified expense labels or fallback to defaults.
         base_labels = 'groceries,housing,transportation,entertainment,utilities,education,credit_cards,insurance,other'
         expense_labels = os.getenv('LABELS', base_labels).split(',')
-        expense_categories = {label: 0 for label in expense_labels}
-        income_total = 0
+        expense_categories: dict[str, float] = {label: 0 for label in expense_labels}
+        income_total = 0.0
 
         BATCH_SIZE = 32
         total_batches = (len(transactions) + BATCH_SIZE - 1) // BATCH_SIZE
