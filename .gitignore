@@ -10,3 +10,4 @@ htmlcov
 test.json
 test.py
 .coverage.*
+.mypy_cache
