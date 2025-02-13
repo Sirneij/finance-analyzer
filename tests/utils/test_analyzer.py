@@ -325,3 +325,13 @@ class TestAnalyzer(BaseAsyncTestClass):
         mock_device.return_value = (torch.device('cuda'), 'GPU')
         await classify_transactions(transactions, self.websocket_manager)
         mock_pipeline.assert_called_once_with('zero-shot-classification', model='facebook/bart-large-mnli', device=0)
+
+    @patch('src.utils.analyzer.get_device')
+    @patch('src.utils.analyzer.pipeline')
+    async def test_classify_transactions_device_mps(self, mock_pipeline, mock_device):
+        """Test that classify_transactions uses MPS (Apple Metal) device for the pipeline."""
+        tx = self.create_transaction_dict('2024-01-01T00:00:00', 'Test expense', -100, 900, 'expense')
+        transactions = await validate_and_convert_transactions([tx])
+        mock_device.return_value = (torch.device('mps'), 'MPS (Apple Metal)')
+        await classify_transactions(transactions, self.websocket_manager)
+        mock_pipeline.assert_called_once_with('zero-shot-classification', model='facebook/bart-large-mnli', device=0)
