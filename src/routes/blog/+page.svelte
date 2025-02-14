@@ -115,7 +115,7 @@
 	<meta name="twitter:image" content={`${WEBSITE_URL}/JI.png`} />
 </svelte:head>
 
-<AnimatedContainer class="container mx-auto min-h-screen min-w-0 max-w-[75rem] p-4">
+<AnimatedContainer class="container mx-auto min-h-screen max-w-[75rem] min-w-0 p-4">
 	<Breadcrumbs {crumbs} />
 	<div class="mb-10 space-y-8">
 		<h1 class="text-center text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
@@ -139,12 +139,12 @@
 		{#if !isSearching && data.articles.length === 0}
 			<div class="flex justify-center px-4">
 				<div
-					class="backdrop-blur-xs group relative w-full max-w-2xl animate-[fade-in_0.2s,scale-in_0.2s] rounded-xl bg-amber-50/80 p-6 shadow-lg transition-all duration-300 hover:bg-amber-50/90 hover:shadow-xl dark:bg-amber-900/20 dark:hover:bg-amber-900/30"
+					class="group relative w-full max-w-2xl animate-[fade-in_0.2s,scale-in_0.2s] rounded-xl bg-amber-50/80 p-6 shadow-lg backdrop-blur-xs transition-all duration-300 hover:bg-amber-50/90 hover:shadow-xl dark:bg-amber-900/20 dark:hover:bg-amber-900/30"
 					role="alert"
 				>
 					<div class="flex items-center gap-3">
 						<Warning
-							class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"
+							class="h-5 w-5 text-amber-400 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
 						/>
 						<p class="text-sm font-medium text-amber-700 dark:text-amber-200">
 							{#if searchResponse}
@@ -168,7 +168,7 @@
 			<article
 				in:fly|local={{ y: 20, duration: SLIDE_DURATION, delay: i * 50 }}
 				out:fade|local
-				class="shadow-xs group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+				class="group relative flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-xs transition-all hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
 				aria-label="Article"
 			>
 				<div class="space-y-4">
@@ -178,7 +178,7 @@
 					>
 						<a
 							href="/blog/{article.slug}/{article._id}"
-							class="focus:outline-hidden inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 group-hover/title:translate-x-0.5 dark:text-gray-100"
+							class="inline-block rounded-sm text-gray-900 decoration-blue-500 decoration-2 underline-offset-4 transition-all duration-200 ease-in-out group-hover/title:translate-x-0.5 hover:text-blue-500 hover:underline focus:ring-2 focus:ring-blue-500/50 focus:outline-hidden dark:text-gray-100"
 							aria-label={article.title}
 						>
 							{article.title}

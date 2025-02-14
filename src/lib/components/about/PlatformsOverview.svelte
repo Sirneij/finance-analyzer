@@ -104,17 +104,17 @@
 		{#each githubStats as stat}
 			{@const Icon = icons[stat.iconName as keyof typeof icons]}
 			<div
-				class="bg-linear-to-br group relative rounded-xl from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl hover:shadow-indigo-500/20"
+				class="group relative rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl hover:shadow-indigo-500/20"
 			>
 				<div class="relative h-full rounded-xl bg-gray-100 p-6 text-center dark:bg-gray-800/50">
 					<div
-						class="bg-linear-to-r absolute -top-4 left-1/2 -translate-x-1/2 transform rounded-full from-indigo-600 to-teal-600 p-3 text-white shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-xl dark:from-indigo-400 dark:to-teal-400"
+						class="absolute -top-4 left-1/2 -translate-x-1/2 transform rounded-full bg-linear-to-r from-indigo-600 to-teal-600 p-3 text-white shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-xl dark:from-indigo-400 dark:to-teal-400"
 					>
 						<Icon class="h-6 w-6 text-white" stroke="#fff" />
 					</div>
 					<h4 class="mt-4 text-sm text-gray-600 dark:text-gray-400">{stat.label}</h4>
 					<p
-						class="bg-linear-to-r mt-2 from-indigo-600 to-teal-600 bg-clip-text text-2xl font-bold text-transparent transition-all duration-300 group-hover:scale-110 dark:from-indigo-400 dark:to-teal-400"
+						class="mt-2 bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-2xl font-bold text-transparent transition-all duration-300 group-hover:scale-110 dark:from-indigo-400 dark:to-teal-400"
 					>
 						{stat.value}
 					</p>
@@ -133,17 +133,17 @@
 		{#each devToStats as stat}
 			{@const Icon = icons[stat.iconName as keyof typeof icons]}
 			<div
-				class="bg-linear-to-br group relative rounded-xl from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl hover:shadow-indigo-500/20"
+				class="group relative rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 ease-out hover:-translate-y-1 hover:scale-110 hover:shadow-xl hover:shadow-indigo-500/20"
 			>
 				<div class="relative h-full rounded-xl bg-gray-100 p-6 text-center dark:bg-gray-800/50">
 					<div
-						class="bg-linear-to-r absolute -top-4 left-1/2 -translate-x-1/2 transform rounded-full from-indigo-600 to-teal-600 p-3 text-white shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-xl dark:from-indigo-400 dark:to-teal-400"
+						class="absolute -top-4 left-1/2 -translate-x-1/2 transform rounded-full bg-linear-to-r from-indigo-600 to-teal-600 p-3 text-white shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:rotate-12 group-hover:shadow-xl dark:from-indigo-400 dark:to-teal-400"
 					>
 						<Icon class="h-6 w-6 text-white" stroke="#fff" />
 					</div>
 					<h4 class="mt-4 text-sm text-gray-600 dark:text-gray-400">{stat.label}</h4>
 					<p
-						class="bg-linear-to-r mt-2 from-indigo-600 to-teal-600 bg-clip-text text-2xl font-bold text-transparent transition-all duration-300 group-hover:scale-110 dark:from-indigo-400 dark:to-teal-400"
+						class="mt-2 bg-linear-to-r from-indigo-600 to-teal-600 bg-clip-text text-2xl font-bold text-transparent transition-all duration-300 group-hover:scale-110 dark:from-indigo-400 dark:to-teal-400"
 					>
 						{stat.value}
 					</p>

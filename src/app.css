@@ -88,7 +88,8 @@
 		border-radius: 50%;
 		padding: 1px; /* get rid of bad outlines */
 		background: conic-gradient(#0000, var(--c)) content-box;
-		--_m: /* we use +/-1deg between colors to avoid jagged edges */ repeating-conic-gradient(
+		--_m: /* we use +/-1deg between colors to avoid jagged edges */
+			repeating-conic-gradient(
 				#0000 0deg,
 				#000 1deg calc(360deg / var(--n) - var(--g) - 1deg),
 				#0000 calc(360deg / var(--n) - var(--g)) calc(360deg / var(--n))

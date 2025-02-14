@@ -109,7 +109,7 @@
 		{/if}
 	</div>
 
-	<div class="shadow-xs rounded-lg bg-white p-6 dark:bg-gray-800">
+	<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 		{#if page.data.series?.length}
 			<div class="space-y-4">
 				{#each page.data.series as series}

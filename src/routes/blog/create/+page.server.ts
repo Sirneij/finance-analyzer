@@ -17,10 +17,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		fetch(`${BASE_API_URI}/v1/series?page=1&limit=-1`).then((res) => res.json())
 	]);
 
-	return {
-		tags: tagData.tags as ITag[],
-		series: seriesData.series as IArticleSeries[]
-	};
+	return { tags: tagData.tags as ITag[], series: seriesData.series as IArticleSeries[] };
 };
 
 export const actions: Actions = {
@@ -42,13 +39,7 @@ export const actions: Actions = {
 		// Process content
 		content = await processGithubEmbeds(content);
 
-		const createData: CreateArticleInput = {
-			title,
-			content,
-			tags,
-			foreImage,
-			isPublished
-		};
+		const createData: CreateArticleInput = { title, content, tags, foreImage, isPublished };
 
 		if (series) {
 			createData.series = series;
@@ -58,9 +49,7 @@ export const actions: Actions = {
 
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(createData)
 		};
 
@@ -85,9 +74,7 @@ export const actions: Actions = {
 
 		// Validate input
 		if (!seriesTitle?.trim()) {
-			return fail(400, {
-				errors: [{ error: 'Series title is required', id: Date.now() }]
-			});
+			return fail(400, { errors: [{ error: 'Series title is required', id: Date.now() }] });
 		}
 
 		const data = [{ title: seriesTitle }];
@@ -96,9 +83,7 @@ export const actions: Actions = {
 
 		const requestInitOptions: RequestInit = {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data)
 		};
 

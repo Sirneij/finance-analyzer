@@ -16,22 +16,10 @@ export const GITHUB_AUTH_TOKEN: string = import.meta.env.VITE_GITHUB_AUTH_TOKEN;
 export const GITHUB_USERNAME: string = import.meta.env.VITE_GITHUB_USERNAME;
 
 export const COLORS = {
-	income: {
-		chart: '#22C55E',
-		background: 'bg-green-500'
-	},
-	expense: {
-		chart: '#EF4444',
-		background: 'bg-red-500'
-	},
-	savings: {
-		chart: '#4F46E5',
-		background: 'bg-indigo-500'
-	},
-	balance: {
-		chart: '#6B7280',
-		background: 'bg-gray-500'
-	}
+	income: { chart: '#22C55E', background: 'bg-green-500' },
+	expense: { chart: '#EF4444', background: 'bg-red-500' },
+	savings: { chart: '#4F46E5', background: 'bg-indigo-500' },
+	balance: { chart: '#6B7280', background: 'bg-gray-500' }
 };
 
 export const LANGUAGES: SupportedLanguage[] = ['nodejs', 'python', 'go', 'rust'];
@@ -262,6 +250,13 @@ export const COMMANDS: Command[] = [
 		shortcut: {
 			display: '', //`${modKey}+Shift+W`,
 			combo: { key: 'w', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
+		}
+	},
+	{
+		title: 'Embed',
+		shortcut: {
+			display: `${modKey}+Shift+E`,
+			combo: { key: 'e', [modKey === '⌘' ? 'cmd' : 'ctrl']: true, shift: true }
 		}
 	}
 ];

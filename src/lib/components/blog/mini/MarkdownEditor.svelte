@@ -194,7 +194,7 @@
 					use:showInfo={{ container: container, infoId: 'editor-info' }}
 					use:useKeyCombinations
 					use:editorAutoComplete
-					class="outline-hidden h-full w-full resize-none bg-transparent font-mono text-gray-800 dark:text-gray-200"
+					class="h-full w-full resize-none bg-transparent font-mono text-gray-800 outline-hidden dark:text-gray-200"
 					placeholder="Write your markdown content here..."
 				></textarea>
 			{/if}

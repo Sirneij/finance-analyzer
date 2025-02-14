@@ -20,25 +20,25 @@
 </svelte:head>
 
 <div
-	class="bg-linear-to-br relative min-h-screen from-gray-100 to-gray-200 transition-colors duration-300 dark:from-gray-900 dark:to-gray-800"
+	class="relative min-h-screen bg-linear-to-br from-gray-100 to-gray-200 transition-colors duration-300 dark:from-gray-900 dark:to-gray-800"
 >
 	<!-- Theme Toggle -->
 	<ThemeSwitcher
-		class="dark:ring-black-500/50 absolute right-4 top-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
+		class="dark:ring-black-500/50 absolute top-4 right-4 z-50 cursor-pointer rounded-full bg-white p-2 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-700 dark:ring-2"
 	/>
 
 	<!-- Decorative background elements -->
 	<div class="absolute inset-0 z-0 overflow-hidden">
 		<!-- AI Network Nodes -->
-		<div class="floating-icons absolute left-10 top-10 opacity-20 dark:opacity-30">
+		<div class="floating-icons absolute top-10 left-10 opacity-20 dark:opacity-30">
 			<AiNode />
 		</div>
 		<!-- Financial Chart -->
-		<div class="floating-icons absolute bottom-32 right-20 opacity-20 dark:opacity-30">
+		<div class="floating-icons absolute right-20 bottom-32 opacity-20 dark:opacity-30">
 			<FinChart />
 		</div>
 		<!-- Calculator Icon -->
-		<div class="floating-icons absolute right-10 top-20 opacity-20 dark:opacity-30">
+		<div class="floating-icons absolute top-20 right-10 opacity-20 dark:opacity-30">
 			<Calculator />
 		</div>
 	</div>
@@ -47,7 +47,7 @@
 	<div class="relative z-10 flex min-h-screen items-center justify-center">
 		<div
 			in:fade={{ duration: 300 }}
-			class="backdrop-blur-xs w-full max-w-md space-y-8 rounded-xl bg-white/80 p-8 shadow-lg transition-all duration-300 dark:bg-gray-800/90 dark:shadow-gray-900/30"
+			class="w-full max-w-md space-y-8 rounded-xl bg-white/80 p-8 shadow-lg backdrop-blur-xs transition-all duration-300 dark:bg-gray-800/90 dark:shadow-gray-900/30"
 		>
 			<!-- Logo -->
 			<div class="logo-container flex justify-center">
@@ -71,7 +71,7 @@
 				<!-- GitHub Login Button -->
 				<a
 					href={`${BASE_API_URI}/v1/auth/github?next=${next}`}
-					class="shadow-xs flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+					class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-xs transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
 				>
 					<GitHub />
 					Continue with GitHub
@@ -79,7 +79,7 @@
 				<!-- Google Login Button -->
 				<a
 					href="/auth/google"
-					class="shadow-xs pointer-events-none flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 opacity-50 transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+					class="pointer-events-none flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 opacity-50 shadow-xs transition-all duration-300 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
 					aria-disabled="true"
 				>
 					<Google />

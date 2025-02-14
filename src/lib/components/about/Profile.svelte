@@ -19,13 +19,13 @@
 				<!-- Floating Avatar -->
 				<div class="perspective-1000">
 					<div
-						class="hover:rotate-y-180 group relative h-56 w-56 transform-gpu transition-all duration-500"
+						class="group relative h-56 w-56 transform-gpu transition-all duration-500 hover:rotate-y-180"
 					>
 						<div class="absolute inset-0">
 							<!-- Front -->
 							<div class="relative h-full w-full rounded-2xl backdrop-blur-xl">
 								<div
-									class="animate-float bg-linear-to-tr absolute inset-0 rounded-2xl from-indigo-600/20 to-teal-600/20 p-1"
+									class="animate-float absolute inset-0 rounded-2xl bg-linear-to-tr from-indigo-600/20 to-teal-600/20 p-1"
 								>
 									<div class="h-full w-full rounded-2xl bg-white/90 p-1 dark:bg-gray-900/90">
 										<img
@@ -41,7 +41,7 @@
 							</div>
 							<!-- Back -->
 							<div
-								class="rotate-y-180 bg-linear-to-br absolute inset-0 rounded-2xl from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								class="absolute inset-0 rotate-y-180 rounded-2xl bg-linear-to-br from-indigo-600 to-teal-600 p-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 							>
 								<div class="flex h-full flex-col justify-center text-center">
 									<h2 class="text-xl font-bold">{githubData.user.name}</h2>
@@ -70,7 +70,7 @@
 					{#each [{ name: 'GitHub', url: `https://github.com/sirneij` }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/john-owolabi-idogun/' }] as link}
 						<a
 							href={link.url}
-							class="bg-linear-to-tr group relative rounded-xl from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
+							class="group relative rounded-xl bg-linear-to-tr from-indigo-600 to-teal-600 p-[1px] transition-all duration-300 hover:scale-110"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Link to {link.name}"
@@ -120,7 +120,7 @@
 									/>
 								</div>
 								<span
-									class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white
+									class="absolute -top-8 left-1/2 -translate-x-1/2 rounded bg-gray-800 px-2 py-1 text-xs whitespace-nowrap text-white
 						 opacity-0 transition-opacity group-hover:opacity-100"
 								>
 									{tool.name}

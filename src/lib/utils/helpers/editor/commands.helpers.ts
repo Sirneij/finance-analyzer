@@ -21,7 +21,9 @@ const MARKDOWN_PATTERNS = {
 	QUOTE: '\n> Quote here\n',
 	INLINE_CODE: '`code here`',
 	TABLE: '\n| Header 1 | Header 2 |\n| --- | --- |\n| Row 1 | Row 2 |\n',
-	TASK: '- [ ] Task 1\n- [x] Task 2\n'
+	TASK: '- [ ] Task 1\n- [x] Task 2\n',
+	EMBED:
+		'\n<div class="responsive-iframe-container collapsible">\n\t<input type="checkbox" aria-label="Toggle iframe visibility" />\n\t<iframe\n\t\tsrc="https://example.com"\n\t\tframeborder="0"\n\t\tallowfullscreen\n\t\tloading="lazy"\n\t\ttitle="Live preview of the finished dashboard"\n\t>\n\t</iframe>\n</div>'
 };
 
 const setCaretPosition = (ctrl: HTMLTextAreaElement, startPos: number, endPos: number) => {
@@ -123,24 +125,17 @@ export const Handlers: HandlersType = {
 		startOffset: 55,
 		selectionLength: 0
 	}),
-	task: createCommandHandler({
-		text: MARKDOWN_PATTERNS.TASK,
-		startOffset: 6,
-		selectionLength: 6
-	}),
-	note: createCommandHandler({
-		text: MARKDOWN_PATTERNS.NOTE,
-		startOffset: 6,
-		selectionLength: 6
-	}),
-	tip: createCommandHandler({
-		text: MARKDOWN_PATTERNS.TIP,
-		startOffset: 6,
-		selectionLength: 6
-	}),
+	task: createCommandHandler({ text: MARKDOWN_PATTERNS.TASK, startOffset: 6, selectionLength: 6 }),
+	note: createCommandHandler({ text: MARKDOWN_PATTERNS.NOTE, startOffset: 6, selectionLength: 6 }),
+	tip: createCommandHandler({ text: MARKDOWN_PATTERNS.TIP, startOffset: 6, selectionLength: 6 }),
 	warning: createCommandHandler({
 		text: MARKDOWN_PATTERNS.WARNING,
 		startOffset: 6,
 		selectionLength: 6
+	}),
+	embed: createCommandHandler({
+		text: MARKDOWN_PATTERNS.EMBED,
+		startOffset: 136,
+		selectionLength: 19
 	})
 };

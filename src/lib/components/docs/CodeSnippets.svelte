@@ -71,7 +71,7 @@
 		<div class="group relative">
 			<button
 				onclick={() => copyCode(currentExample.code)}
-				class="absolute right-2 top-2 flex items-center gap-1 rounded-sm bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all hover:bg-gray-800/50 group-hover:opacity-100"
+				class="absolute top-2 right-2 flex items-center gap-1 rounded-sm bg-gray-800/30 px-2 py-1 text-xs text-white opacity-0 transition-all group-hover:opacity-100 hover:bg-gray-800/50"
 				aria-label={copied ? 'Copied!' : 'Copy code'}
 			>
 				{#if copied}
@@ -86,7 +86,7 @@
 			<div class="flex">
 				<!-- Line Numbers -->
 				<div
-					class="hidden select-none flex-col items-end border-r border-gray-200 bg-gray-50/50 px-4 py-4 font-mono text-gray-400 sm:flex dark:border-gray-700 dark:bg-gray-800/50"
+					class="hidden flex-col items-end border-r border-gray-200 bg-gray-50/50 px-4 py-4 font-mono text-gray-400 select-none sm:flex dark:border-gray-700 dark:bg-gray-800/50"
 				>
 					{#each getCodeLines(currentExample.code) as line, i}
 						<span class="hidden">{line}</span>

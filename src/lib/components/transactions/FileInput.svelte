@@ -51,7 +51,7 @@
 	};
 </script>
 
-<div class="shadow-xs rounded-lg bg-white p-6 dark:bg-gray-800">
+<div class="rounded-lg bg-white p-6 shadow-xs dark:bg-gray-800">
 	{#if header}
 		<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">{header}</h2>
 	{/if}
@@ -67,7 +67,7 @@
 			{#if isUploading}
 				<Loader width={20} message="Parsing data..." />
 			{:else}
-				<div class="flex flex-col items-center justify-center pb-6 pt-5">
+				<div class="flex flex-col items-center justify-center pt-5 pb-6">
 					<Upload />
 					<p
 						class="mb-2 text-sm text-gray-500 transition-colors group-hover:text-indigo-500 dark:text-gray-400"

@@ -41,7 +41,7 @@
 	{#if articles.length > 0}
 		<div class="group relative" aria-label="Featured Article">
 			<div
-				class="bg-linear-to-r absolute inset-0 rounded-2xl from-indigo-600 to-teal-600 opacity-20 transition duration-300 group-hover:opacity-50"
+				class="absolute inset-0 rounded-2xl bg-linear-to-r from-indigo-600 to-teal-600 opacity-20 transition duration-300 group-hover:opacity-50"
 				aria-label="Background"
 			></div>
 			<a
@@ -84,7 +84,7 @@
 			{#each articles.slice(1) as article}
 				<a
 					href="/blog/{article.slug}/{article._id}"
-					class="focus:outline-hidden -ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
+					class="-ml-4 w-[300px] flex-none transform snap-start rounded-xl bg-gray-100 p-6 transition-all duration-300 first:ml-0 hover:z-10 hover:-translate-y-2 hover:scale-105 hover:bg-gray-200 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-4 focus:outline-hidden dark:bg-gray-800/50 dark:hover:bg-gray-800/70 dark:focus:ring-indigo-400 dark:focus:ring-offset-gray-800"
 					style="scroll-snap-align: start;"
 					aria-label="Article"
 				>
@@ -133,11 +133,11 @@
 
 		<!-- Gradient fades for scroll indication -->
 		<div
-			class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
+			class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 			aria-label="Gradient"
 		></div>
 		<div
-			class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
+			class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 			aria-label="Gradient"
 		></div>
 	</div>

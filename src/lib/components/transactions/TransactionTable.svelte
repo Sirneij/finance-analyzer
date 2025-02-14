@@ -45,7 +45,7 @@
 </script>
 
 <!-- Header Card with Delete Action -->
-<div class="shadow-xs rounded-lg bg-white p-4 dark:bg-gray-800">
+<div class="rounded-lg bg-white p-4 shadow-xs dark:bg-gray-800">
 	<div class="flex items-center justify-between">
 		<div>
 			<h2 class="text-xl font-semibold text-gray-900 dark:text-white">Transaction History</h2>
@@ -79,7 +79,7 @@
 </div>
 
 <!-- Table Container -->
-<div class="shadow-xs rounded-lg bg-white dark:bg-gray-800">
+<div class="rounded-lg bg-white shadow-xs dark:bg-gray-800">
 	<div class="w-full overflow-x-auto">
 		<table class="w-full text-left text-sm">
 			<thead class="sticky top-0 bg-gray-50 text-center text-xs uppercase dark:bg-gray-700">
@@ -129,7 +129,7 @@
 								onchange={() => toggleSelection(transaction._id)}
 							/>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-400">
+						<td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
 							<div class="flex items-center space-x-2">
 								<div
 									class={`h-2 w-2 rounded-full ${
@@ -159,7 +159,7 @@
 								</span>
 							</div>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4">
+						<td class="px-6 py-4 whitespace-nowrap">
 							<span
 								class={`font-medium ${
 									transaction.type === 'income'
@@ -172,7 +172,7 @@
 								)}
 							</span>
 						</td>
-						<td class="whitespace-nowrap px-6 py-4">
+						<td class="px-6 py-4 whitespace-nowrap">
 							<span class="font-medium text-gray-900 dark:text-white">
 								{formatCurrency(transaction.balance)}
 							</span>
@@ -186,7 +186,7 @@
 								>
 									<input type="hidden" name="transactions" value={transaction._id} />
 									<button
-										class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity hover:bg-gray-100 hover:text-gray-600 group-hover:opacity-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+										class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
 										type="submit"
 										aria-label="Delete transaction"
 									>

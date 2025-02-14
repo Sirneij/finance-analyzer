@@ -47,6 +47,6 @@
 		</svg>
 	</div>
 	{#if showLabel}
-		<span class="select-none text-sm text-gray-700 dark:text-gray-300">{label}</span>
+		<span class="text-sm text-gray-700 select-none dark:text-gray-300">{label}</span>
 	{/if}
 </label>

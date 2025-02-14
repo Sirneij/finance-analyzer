@@ -29,7 +29,7 @@
 
 <AnimatedContainer class="container mx-auto min-h-screen p-6">
 	<!-- Header Section -->
-	<AnimatedSection y={20} class="mb-8 mt-20 md:mt-0">
+	<AnimatedSection y={20} class="mt-20 mb-8 md:mt-0">
 		<h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
 		<p class="text-gray-600 dark:text-gray-400">Manage content, tags, and series</p>
 	</AnimatedSection>
@@ -39,7 +39,7 @@
 		{#each Object.entries(metrics) as [key, value]}
 			{@const Icon = MetricsIcons[key as keyof typeof MetricsIcons]}
 			<div
-				class="shadow-xs rounded-lg bg-white p-6 transition-all hover:shadow-md dark:bg-gray-800"
+				class="rounded-lg bg-white p-6 shadow-xs transition-all hover:shadow-md dark:bg-gray-800"
 			>
 				<div class="flex items-center justify-between">
 					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">

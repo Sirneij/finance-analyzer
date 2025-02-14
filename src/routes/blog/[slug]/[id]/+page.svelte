@@ -102,7 +102,7 @@
 	<!-- Back to top button -->
 	{#if showBackToTop}
 		<button
-			class="fixed bottom-20 right-4 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
+			class="fixed right-4 bottom-20 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
 			onclick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 			aria-label="Back to top"
 			transition:fade
@@ -116,7 +116,7 @@
 	{/if}
 
 	<!-- Main Content -->
-	<main class="mx-auto min-w-0 max-w-4xl p-4" transition:fade>
+	<main class="mx-auto max-w-4xl min-w-0 p-4" transition:fade>
 		<Breadcrumbs {crumbs} />
 		<!-- Skip to content link -->
 		<a href="#content" class="sr-only focus:not-sr-only"> Skip to content </a>
@@ -126,14 +126,14 @@
 		<!-- Enhanced reading progress -->
 		{#if browser}
 			<div
-				class="fixed left-0 top-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
+				class="fixed top-0 left-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
 			>
 				<div
 					class="h-full bg-indigo-600 transition-all duration-150 dark:bg-indigo-500"
 					style="width: {scrollProgress}%"
 				></div>
 				<div
-					class="absolute -bottom-6 right-0 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
+					class="absolute right-0 -bottom-6 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
 				>
 					{scrollProgress}% read
 				</div>

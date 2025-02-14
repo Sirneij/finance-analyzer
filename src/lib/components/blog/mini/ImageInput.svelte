@@ -164,7 +164,7 @@
 			<div class="group relative h-36 w-72">
 				<img src={foreImage} alt="Cover" class="h-full w-full rounded-lg object-cover" />
 				<div
-					class="backdrop-blur-xs absolute inset-0 flex items-center justify-center gap-4 rounded-lg bg-black/60 opacity-0 transition-opacity group-hover:opacity-100"
+					class="absolute inset-0 flex items-center justify-center gap-4 rounded-lg bg-black/60 opacity-0 backdrop-blur-xs transition-opacity group-hover:opacity-100"
 				>
 					<button
 						type="button"

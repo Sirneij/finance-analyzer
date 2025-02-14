@@ -22,14 +22,14 @@
 	>
 		{#each skillEntries as [category, categorySkills]}
 			<div
-				class="shadow-xs group rounded-xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/30"
+				class="group rounded-xl border border-gray-200 bg-white p-6 shadow-xs transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/30"
 			>
 				<h3 class="mb-4 font-bold text-gray-900 dark:text-white">{category}</h3>
 				<div class="flex flex-wrap gap-3">
 					{#each categorySkills as skill}
 						<div class="group/skill relative">
 							<span
-								class="bg-linear-to-r inline-flex items-center gap-2 rounded-sm from-indigo-50 to-teal-50 px-2 py-0.5 font-medium text-indigo-800 transition-all duration-300 hover:-translate-y-0.5 hover:from-indigo-100 hover:to-teal-100 hover:shadow-md dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200 dark:hover:from-indigo-800/40 dark:hover:to-teal-800/40"
+								class="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-indigo-50 to-teal-50 px-2 py-0.5 font-medium text-indigo-800 transition-all duration-300 hover:-translate-y-0.5 hover:from-indigo-100 hover:to-teal-100 hover:shadow-md dark:from-indigo-900/30 dark:to-teal-900/30 dark:text-indigo-200 dark:hover:from-indigo-800/40 dark:hover:to-teal-800/40"
 							>
 								{#if normalizeTechnologyNameAndGetIcon(skill)}
 									<img

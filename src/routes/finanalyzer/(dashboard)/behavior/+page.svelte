@@ -90,9 +90,9 @@
 	<!-- Hero Section -->
 	<AnimatedSection
 		y={20}
-		class="shadow-xs flex flex-col space-y-4 rounded-lg bg-white p-4 sm:p-6 dark:bg-gray-800"
+		class="flex flex-col space-y-4 rounded-lg bg-white p-4 shadow-xs sm:p-6 dark:bg-gray-800"
 	>
-		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+		<div class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
 			<img
 				src={page.data.user?.avatar}
 				alt={page.data.user?.name}

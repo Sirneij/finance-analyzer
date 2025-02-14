@@ -32,6 +32,7 @@ import Devto from '$lib/components/icons/Devto.svelte';
 import MonthlyExpense from '$lib/components/icons/MonthlyExpense.svelte';
 import WeeklyExpense from '$lib/components/icons/WeeklyExpense.svelte';
 import DailyExpense from '$lib/components/icons/DailyExpense.svelte';
+import Embed from './Embed.svelte';
 
 export const icons = {
 	repo: Repo,
@@ -58,7 +59,8 @@ export const EditorIcons = {
 	github: GitHub,
 	note: Note,
 	tip: Tip,
-	warning: Warning
+	warning: Warning,
+	embed: Embed
 } as const;
 
 export const MetricsIcons = {

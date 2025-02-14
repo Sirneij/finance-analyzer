@@ -22,7 +22,7 @@
 <!-- Enhanced Mobile TOC Toggle -->
 <button
 	id="toc-toggle"
-	class="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
+	class="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
 	onclick={() => (showTocMobile = !showTocMobile)}
 	aria-label="Toggle table of contents"
 	aria-expanded={showTocMobile}

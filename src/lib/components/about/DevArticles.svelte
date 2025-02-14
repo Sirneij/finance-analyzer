@@ -102,10 +102,10 @@
 								</div>
 								<!-- Gradient fades -->
 								<div
-									class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
+									class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 								></div>
 								<div
-									class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
+									class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 								></div>
 							</div>
 						{/if}
@@ -124,16 +124,16 @@
 					{#each properDevtoArticles.standalone as article}
 						<Article
 							{article}
-							class="bg-linear-to-br group w-[350px] flex-none transform snap-start rounded-xl from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
+							class="group w-[350px] flex-none transform snap-start rounded-xl bg-linear-to-br from-indigo-500/30 to-teal-500/30 p-[1px] transition-all duration-500 hover:-translate-y-1 hover:scale-105"
 						/>
 					{/each}
 				</div>
 				<!-- Gradient fades -->
 				<div
-					class="bg-linear-to-r pointer-events-none absolute inset-y-0 left-0 w-20 from-white dark:from-gray-800"
+					class="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-white dark:from-gray-800"
 				></div>
 				<div
-					class="bg-linear-to-l pointer-events-none absolute inset-y-0 right-0 w-20 from-white dark:from-gray-800"
+					class="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-white dark:from-gray-800"
 				></div>
 			</div>
 		</div>

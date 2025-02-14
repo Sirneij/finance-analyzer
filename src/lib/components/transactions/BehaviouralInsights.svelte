@@ -24,7 +24,7 @@
 	});
 </script>
 
-<div class="shadow-xs group relative rounded-xl bg-white p-6 dark:bg-gray-800">
+<div class="group relative rounded-xl bg-white p-6 shadow-xs dark:bg-gray-800">
 	<h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Behavioral Insights</h3>
 
 	<div class="h-64 overflow-y-auto">
