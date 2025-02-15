@@ -1,4 +1,10 @@
-[![codecov](https://codecov.io/gh/Sirneij/finance-analyzer/branch/utility/graph/badge.svg)](https://codecov.io/gh/Sirneij/finance-analyzer)
+[![GitHub Actions](https://github.com/Sirneij/finance-analyzer/actions/workflows/aiohttp.yml/badge.svg)](https://github.com/Sirneij/finance-analyzer/actions)
+[![codecov](https://codecov.io/github/Sirneij/finance-analyzer/branch/utility/graph/badge.svg?token=YW6QCWDAGI)](https://codecov.io/github/Sirneij/finance-analyzer)
+[![Python Version](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pepy.tech/project/isort)
+[![Downloads](https://static.pepy.tech/badge/finance-analyzer)](https://pepy.tech/project/finance-analyzer)
 
 # Utility
 
