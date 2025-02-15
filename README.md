@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/Sirneij/finance-analyzer/branch/utility/graph/badge.svg)](https://codecov.io/gh/Sirneij/finance-analyzer)
+
 # Utility
 
 Utility is a collection of asynchronous tools for resume processing and real-time transaction communication. It provides robust parsers to transform raw resume file into structured JSON-like data and a WebSocket interface for live analysis and summary of financial transaction data.

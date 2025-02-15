@@ -47,3 +47,7 @@ jobs:
           LABELS: groceries,school,housing,transportation,gadgets,entertainment,utilities,credit cards,other,dining out,healthcare,insurance,savings,investments,childcare,travel,personal care,debts,charity,taxes,subscriptions,streaming services,home maintenance,shopping,pets,fitness,hobbies,gifts
         run: |
           coverage run --parallel-mode -m unittest discover tests && coverage combine && coverage report -m && coverage html
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
