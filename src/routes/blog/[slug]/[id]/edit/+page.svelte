@@ -3,12 +3,19 @@
 	import AnimatedSection from '$lib/components/animations/AnimatedSection.svelte';
 	import Info from '$lib/components/blog/mini/Info.svelte';
 	import MarkdownEditor from '$lib/components/blog/mini/MarkdownEditor.svelte';
+	import type { ITag } from '$lib/types/articles.types.js';
 
 	let { data } = $props();
 
+	const { article } = data;
+
 	let container = $state<HTMLDivElement>(),
 		textArea = $state<HTMLTextAreaElement>(),
-		selectedSeries = $state('');
+		title = $state(article.title),
+		foreImage = $state<string>(article.foreImage || ''),
+		selectedSeries = $state(article.series?._id || ''),
+		textAreaContent = $state(article.content),
+		selectedTags = $state<ITag[]>(article.tags);
 
 	$effect(() => {
 		if (data.article.series) {
@@ -27,11 +34,11 @@
 					<MarkdownEditor
 						bind:container
 						textArea={textArea as HTMLTextAreaElement}
-						bind:title={data.article.title}
-						bind:textAreaContent={data.article.content}
-						bind:foreImage={data.article.foreImage as string}
+						bind:title
+						bind:textAreaContent
+						bind:foreImage
 						bind:selectedSeries
-						bind:selectedTags={data.article.tags}
+						bind:selectedTags
 						formActionURL={`/blog/${data.article.slug}/${data.article._id}/edit`}
 					/>
 				</div>
