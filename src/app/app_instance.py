@@ -21,11 +21,6 @@ async def start_background_tasks(app: web.Application) -> None:
     app[WEBSOCKETS] = WeakSet()
 
 
-async def cleanup_background_tasks(app: web.Application) -> None:
-    """Cleanup application resources."""
-    await cleanup_ws(app)
-
-
 async def cleanup_ws(app: web.Application) -> None:
     """Cleanup WebSocket connections on shutdown."""
     for websocket in set(app[WEBSOCKETS]):  # type: ignore

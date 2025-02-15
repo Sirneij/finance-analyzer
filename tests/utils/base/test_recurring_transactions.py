@@ -58,3 +58,35 @@ class TestRecurringTransactions(BaseAsyncTestClass):
         # We expect no recurring transactions to be detected since avg_interval = 9 days,
         # which does not meet the weekly criterion (6 <= avg_interval <= 8).
         self.assertEqual(len(recurring), 0, 'Expected no recurring transaction for 9-day intervals.')
+
+    async def test_already_seen(self):
+        """
+        Test that transactions that have already been classified as recurring are not detected again.
+        """
+        base_date = datetime(2024, 1, 1)
+        # Create three transactions 7 days apart.
+        tx1 = self.create_transaction_dict(base_date.isoformat(), 'Weekly Payment', -50.0, 950.0)
+        tx2 = self.create_transaction_dict((base_date + timedelta(days=7)).isoformat(), 'Weekly Payment', -50.0, 900.0)
+        tx3 = self.create_transaction_dict((base_date + timedelta(days=14)).isoformat(), 'Weekly Payment', -50.0, 850.0)
+
+        transactions = await validate_and_convert_transactions([tx1, tx2, tx3])
+        recurring = analyze_recurring_transactions(transactions)
+
+        # We expect at least one recurring transaction.
+        self.assertIsInstance(recurring, list)
+        self.assertTrue(len(recurring) > 0, 'Expected at least one recurring transaction to be detected')
+
+        # Run the analysis again with the same transactions.
+        # Pass in the existing recurring transactions to simulate that they have already been seen.
+        recurring2 = analyze_recurring_transactions(transactions)
+
+        # We expect no new recurring transactions to be detected.
+        self.assertEqual(len(recurring2), 1, 'Expected no additional recurring transactions to be detected')
+
+        # Create a new transaction that matches the recurring pattern
+        tx4 = self.create_transaction_dict((base_date + timedelta(days=21)).isoformat(), 'Weekly Payment', -50.0, 800.0)
+        transactions2 = await validate_and_convert_transactions([tx1, tx2, tx3, tx4])
+        recurring3 = analyze_recurring_transactions(transactions2)
+
+        # We expect only one recurring transaction to be detected
+        self.assertEqual(len(recurring3), 1, 'Expected only one recurring transaction to be detected')

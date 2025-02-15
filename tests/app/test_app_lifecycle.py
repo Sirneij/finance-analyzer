@@ -4,7 +4,6 @@ from aiohttp import WSCloseCode
 
 from src.app.app_instance import (
     WEBSOCKETS,
-    cleanup_background_tasks,
     cleanup_ws,
     start_background_tasks,
 )
@@ -33,12 +32,3 @@ class TestAppLifecycle(BaseAioHTTPTestCase):
         self.assertEqual(
             self.fake_ws.close_message, b'Server shutdown', "Fake websocket was not closed with expected message."
         )
-
-    async def test_cleanup_background_tasks(self):
-        """Test that cleanup_background_tasks calls cleanup_ws appropriately."""
-        self.app[WEBSOCKETS] = weakref.WeakSet()
-        self.app[WEBSOCKETS].add(self.fake_ws)
-        await cleanup_background_tasks(self.app)
-        self.assertTrue(self.fake_ws.closed, "Fake websocket was not closed via cleanup_background_tasks.")
-        self.assertEqual(self.fake_ws.close_code, WSCloseCode.GOING_AWAY)
-        self.assertEqual(self.fake_ws.close_message, b'Server shutdown')

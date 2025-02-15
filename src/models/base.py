@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import TypedDict
 
 
 @dataclass
@@ -13,3 +14,10 @@ class Transaction:
     type: str
     updatedAt: datetime
     userId: str
+
+
+class RecurringTransaction(TypedDict):
+    description: str
+    amount: float
+    frequency: str
+    confidence: str

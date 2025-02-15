@@ -8,6 +8,35 @@ from src.app.app_instance import init_app
 from src.utils.websocket import WebSocketManager
 
 
+class Base:
+    """Base class for tests."""
+
+    def create_transaction_dict(
+        self,
+        date: datetime | str,
+        description: str,
+        amount: float,
+        balance: float,
+        type_str='expense',
+        include_v: bool = True,
+    ) -> dict:
+        txn = {
+            '_id': str(uuid.uuid4()),
+            'date': date.isoformat() if isinstance(date, datetime) else date,
+            'createdAt': date.isoformat() if isinstance(date, datetime) else date,
+            'updatedAt': date.isoformat() if isinstance(date, datetime) else date,
+            'description': description,
+            'amount': amount,
+            'balance': balance,
+            'type': type_str,
+            'userId': '1',
+        }
+        if include_v:
+            txn['__v'] = 0
+
+        return txn
+
+
 # A simple fake WebSocketResponse to simulate aiohttp behavior.
 class FakeWebSocket:
     def __init__(self, raise_on_send=False):
@@ -28,7 +57,7 @@ class FakeWebSocket:
         self.close_message = message
 
 
-class BaseAsyncTestClass(unittest.IsolatedAsyncioTestCase):
+class BaseAsyncTestClass(Base, unittest.IsolatedAsyncioTestCase):
     """Base class for async tests."""
 
     async def asyncSetUp(self):
@@ -36,62 +65,12 @@ class BaseAsyncTestClass(unittest.IsolatedAsyncioTestCase):
         self.fake_ws = FakeWebSocket()
         self.websocket_manager = WebSocketManager(self.fake_ws)
 
-    def create_transaction_dict(
-        self,
-        date: datetime | str,
-        description: str,
-        amount: float,
-        balance: float,
-        type_str='expense',
-        include_v: bool = True,
-    ) -> dict:
-        txn = {
-            '_id': str(uuid.uuid4()),
-            'date': date.isoformat() if isinstance(date, datetime) else date,
-            'createdAt': date.isoformat() if isinstance(date, datetime) else date,
-            'updatedAt': date.isoformat() if isinstance(date, datetime) else date,
-            'description': description,
-            'amount': amount,
-            'balance': balance,
-            'type': type_str,
-            'userId': '1',
-        }
-        if include_v:
-            txn['__v'] = 0
 
-        return txn
-
-
-class BaseTestClass(unittest.TestCase):
+class BaseTestClass(Base, unittest.TestCase):
     """Base class for sync tests."""
 
-    def create_transaction_dict(
-        self,
-        date: datetime | str,
-        description: str,
-        amount: float,
-        balance: float,
-        type_str='expense',
-        include_v: bool = True,
-    ) -> dict:
-        txn = {
-            '_id': str(uuid.uuid4()),
-            'date': date.isoformat() if isinstance(date, datetime) else date,
-            'createdAt': date.isoformat() if isinstance(date, datetime) else date,
-            'updatedAt': date.isoformat() if isinstance(date, datetime) else date,
-            'description': description,
-            'amount': amount,
-            'balance': balance,
-            'type': type_str,
-            'userId': '1',
-        }
-        if include_v:
-            txn['__v'] = 0
 
-        return txn
-
-
-class BaseAioHTTPTestCase(AioHTTPTestCase):
+class BaseAioHTTPTestCase(Base, AioHTTPTestCase):
     """Base class for aiohttp tests."""
 
     async def get_application(self):
@@ -102,31 +81,6 @@ class BaseAioHTTPTestCase(AioHTTPTestCase):
         # Create a FakeWebSocket for each test.
         self.fake_ws = FakeWebSocket()
         self.websocket_manager = WebSocketManager(self.fake_ws)
-
-    def create_transaction_dict(
-        self,
-        date: datetime | str,
-        description: str,
-        amount: float,
-        balance: float,
-        type_str='expense',
-        include_v: bool = True,
-    ) -> dict:
-        txn = {
-            '_id': str(uuid.uuid4()),
-            'date': date.isoformat() if isinstance(date, datetime) else date,
-            'createdAt': date.isoformat() if isinstance(date, datetime) else date,
-            'updatedAt': date.isoformat() if isinstance(date, datetime) else date,
-            'description': description,
-            'amount': amount,
-            'balance': balance,
-            'type': type_str,
-            'userId': '1',
-        }
-        if include_v:
-            txn['__v'] = 0
-
-        return txn
 
 
 if __name__ == '__main__':
