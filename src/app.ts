@@ -187,7 +187,7 @@ app.get("/api/docs", (req, res) => {
   res.json(docs);
 });
 
-const startServer = async () => {
+export const startServer = async () => {
   try {
     const server: HttpServer = createServer(app);
     const wss = new WebSocketServer({

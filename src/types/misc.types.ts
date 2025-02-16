@@ -10,10 +10,10 @@ export enum Providers {
 export interface BaseConfig {
   auth: AuthConfig;
   db: DbConfig;
-  frontendUrl: string;
+  frontendUrl: string | undefined;
   logger: winston.Logger;
-  utilityServiceUrl: string;
-  redisUrl: string;
-  cookieDomain: string;
-  cloudinaryURL: string;
+  utilityServiceUrl: string | undefined;
+  redisUrl: string | undefined;
+  cookieDomain: string | undefined;
+  cloudinaryURL: string | undefined;
 }

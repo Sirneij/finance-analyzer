@@ -8,6 +8,15 @@ const MAX_RETRIES = 3;
 const RETRY_INTERVAL = 5000;
 
 export async function connectToCluster(retryCount = 0) {
+  // If already connected, return the existing connection.
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+
+  if (!baseConfig.db.uri) {
+    throw new Error("MongoDB URI is not provided");
+  }
+
   try {
     const options = {
       dbName: baseConfig.db.dbName,
@@ -18,6 +27,7 @@ export async function connectToCluster(retryCount = 0) {
       retryWrites: true,
       retryReads: true,
     };
+
     await mongoose.connect(baseConfig.db.uri, options);
 
     mongoose.connection.on("error", (err) => {

@@ -1,8 +1,8 @@
 import { MongoClient, Db } from "mongodb";
 
 export interface DbConfig {
-  uri: string;
-  dbName: string;
+  uri: string | undefined;
+  dbName: string | undefined;
 }
 
 export interface DatabaseConnection {
