@@ -4,7 +4,7 @@ import { authConfig } from "../../src/config/internal/auth.config";
 import { dbConfig } from "../../src/config/internal/db.config";
 import { logger } from "../../src/config/internal/logger.config";
 
-describe("baseConfig", () => {
+describe.concurrent("baseConfig", () => {
   const originalEnv = process.env;
 
   beforeEach(() => {

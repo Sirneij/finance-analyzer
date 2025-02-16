@@ -2,6 +2,7 @@ import { ResumeService } from "$services/resume.service.js";
 import type { Request, Response, NextFunction } from "express";
 import busboy from "busboy";
 import { baseConfig } from "$config/base.config.js";
+import { processFileUpload } from "$utils/upload.utils.js";
 
 export class ResumeController {
   async handleGetResume(
@@ -27,40 +28,15 @@ export class ResumeController {
     next: NextFunction
   ): Promise<void> {
     try {
-      await new Promise<void>((resolve, reject) => {
-        const bb = busboy({ headers: req.headers });
-        const chunks: Buffer[] = [];
-        let isFileProcessed = false;
-
-        bb.on("file", (name, file, info) => {
-          if (!info.mimeType.includes("pdf")) {
-            reject(new Error("Only PDF files are supported"));
-            return;
-          }
-
-          file.on("data", (chunk) => chunks.push(chunk));
-
-          file.on("end", async () => {
-            try {
-              if (!isFileProcessed) {
-                isFileProcessed = true;
-                const fileBuffer = Buffer.concat(chunks);
-                const resume = await ResumeService.createResume(fileBuffer);
-                res.json({
-                  success: true,
-                  data: resume,
-                });
-                resolve();
-              }
-            } catch (err) {
-              baseConfig.logger.error(`Catch: ${err}`);
-              reject(err);
-            }
-          });
-        });
-
-        bb.on("error", reject);
-        req.pipe(bb);
+      const resume = await processFileUpload(req, async (buffer, info) => {
+        if (!info.mimeType.includes("pdf")) {
+          throw new Error("Only PDF files are supported");
+        }
+        return await ResumeService.createResume(buffer);
+      });
+      res.json({
+        success: true,
+        data: resume,
       });
     } catch (error) {
       baseConfig.logger.error(`Outter Catch: ${error}`);

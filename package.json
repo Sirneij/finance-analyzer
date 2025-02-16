@@ -15,6 +15,7 @@
   "author": "John Owolabi Idogun",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^9.5.0",
     "@types/busboy": "^1.5.4",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",

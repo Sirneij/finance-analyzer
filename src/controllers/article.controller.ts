@@ -9,6 +9,7 @@ import {
   processSeriesTitle,
   processTags,
 } from "$utils/article.utils.js";
+import { processFileUpload } from "$utils/upload.utils.js";
 import busboy from "busboy";
 import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import type { Request, Response, NextFunction } from "express";
@@ -21,83 +22,45 @@ export class ArticleController {
     next: NextFunction
   ): Promise<void> {
     try {
-      await new Promise<void>((resolve, reject) => {
-        const bb = busboy({ headers: req.headers });
-
-        bb.on("file", (name, file, info) => {
-          const chunks: Buffer[] = [];
-
-          file.on("data", (chunk) => chunks.push(chunk));
-
-          file.on("end", async () => {
-            try {
-              const buffer = Buffer.concat(chunks);
-              const cloudinary = cloudinaryService.getCloudinary();
-              try {
-                const uploadResult = await new Promise<UploadApiResponse>(
-                  (resolve, reject) => {
-                    const uploadStream = cloudinary.uploader.upload_stream(
-                      {
-                        folder: `media/johnowolabiidogun`,
-                        transformation: [
-                          {
-                            width: 1000,
-                            height: 420,
-                            crop: "fill",
-                            gravity: "auto",
-                            quality: "auto:best",
-                            fetch_format: "auto",
-                            flags: ["progressive", "preserve_transparency"],
-                            dpr: "auto",
-                          },
-                        ],
-                      },
-                      (
-                        error: UploadApiErrorResponse | undefined,
-                        result: UploadApiResponse | undefined
-                      ) => {
-                        if (error) {
-                          baseConfig.logger.error(
-                            "Error uploading file: ",
-                            error
-                          );
-                          return reject(error);
-                        }
-                        if (!result) {
-                          return reject(new Error("Upload failed"));
-                        }
-                        resolve(result);
-                      }
-                    );
-                    uploadStream.end(buffer);
-                  }
-                );
-
-                res.json({ success: true, uploadResult });
-              } catch (error) {
-                baseConfig.logger.error("Error uploading file: ", error);
-                next(error);
+      const uploadResult = await processFileUpload(
+        req,
+        async (buffer, info) => {
+          const cloudinary = cloudinaryService.getCloudinary();
+          return new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              {
+                folder: `media/johnowolabiidogun`,
+                transformation: [
+                  {
+                    width: 1000,
+                    height: 420,
+                    crop: "fill",
+                    gravity: "auto",
+                    quality: "auto:best",
+                    fetch_format: "auto",
+                    flags: ["progressive", "preserve_transparency"],
+                    dpr: "auto",
+                  },
+                ],
+              },
+              (error, result) => {
+                if (error) {
+                  baseConfig.logger.error("Error uploading file: ", error);
+                  return reject(error);
+                }
+                if (!result) {
+                  return reject(new Error("Upload failed"));
+                }
+                resolve(result);
               }
-            } catch (err) {
-              baseConfig.logger.error(`Catch: ${err}`);
-              reject(err);
-            }
+            );
+            uploadStream.end(buffer);
           });
-        });
-
-        bb.on("error", (err) => {
-          baseConfig.logger.error(`OnError: ${err}`);
-          reject(err);
-        });
-
-        req.pipe(bb);
-      });
+        }
+      );
+      res.json({ success: true, uploadResult });
     } catch (error) {
-      res.status(400).json({
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to upload file",
-      });
+      next(error);
     }
   }
 

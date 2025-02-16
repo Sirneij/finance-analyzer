@@ -1,6 +1,5 @@
-import { baseConfig } from "$config/base.config.js";
 import { TransactionService } from "$services/transaction.service.js";
-import busboy from "busboy";
+import { processFileUpload } from "$utils/upload.utils.js";
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -8,59 +7,20 @@ export class TransactionController {
   async handleFileUpload(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?._id as mongoose.Types.ObjectId;
-
-      await new Promise<void>((resolve, reject) => {
-        const bb = busboy({ headers: req.headers });
-        let isFileProcessed = false;
-
-        bb.on("file", (name, file, info) => {
-          // TODO: Handle multiple files and excel files later
-          // But for now, we only handle one file and csv or pdf file
-          // so reject if there are multiple files or non-csv/pdf files
-          if (isFileProcessed) {
-            reject(new Error("Only one file is allowed"));
-            return;
-          }
-          if (
-            info.mimeType !== "text/csv" &&
-            info.mimeType !== "application/pdf"
-          ) {
-            reject(new Error("Only CSV and PDF files are allowed"));
-            return;
-          }
-
-          const chunks: Buffer[] = [];
-
-          file.on("data", (chunk) => chunks.push(chunk));
-
-          file.on("end", async () => {
-            try {
-              const buffer = Buffer.concat(chunks);
-              const result = await TransactionService.processFile(
-                buffer,
-                info.mimeType,
-                userId
-              );
-              baseConfig.logger.info(`Result: ${JSON.stringify(result)}`);
-              if (!isFileProcessed) {
-                isFileProcessed = true;
-                res.json({ success: true, ...result });
-                resolve();
-              }
-            } catch (err) {
-              baseConfig.logger.error(`Catch: ${err}`);
-              reject(err);
-            }
-          });
-        });
-
-        bb.on("error", (err) => {
-          baseConfig.logger.error(`OnError: ${err}`);
-          reject(err);
-        });
-
-        req.pipe(bb);
+      const result = await processFileUpload(req, async (buffer, info) => {
+        if (
+          info.mimeType !== "text/csv" &&
+          info.mimeType !== "application/pdf"
+        ) {
+          throw new Error("Only CSV and PDF files are allowed");
+        }
+        return await TransactionService.processFile(
+          buffer,
+          info.mimeType,
+          userId
+        );
       });
+      res.json({ success: true, ...result });
     } catch (error) {
       res.status(400).json({
         success: false,
