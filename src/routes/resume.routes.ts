@@ -8,7 +8,7 @@ const resumeController = new ResumeController();
 resumeRouters.get("/:id", resumeController.handleGetResume);
 resumeRouters.post(
   "/",
-  isJohnOwolabiIdogun,
+  // isJohnOwolabiIdogun,
   resumeController.handleCreateOrUpdateResume
 );
 

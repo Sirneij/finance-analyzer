@@ -10,8 +10,6 @@ import {
   processTags,
 } from "$utils/article.utils.js";
 import { processFileUpload } from "$utils/upload.utils.js";
-import busboy from "busboy";
-import type { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
 import type { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 

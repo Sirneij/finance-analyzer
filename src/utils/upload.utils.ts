@@ -1,8 +1,5 @@
 import type { Request } from "express";
-import * as Busboy_ from "busboy";
-
-// Fallback to the default export if it exists.
-const Busboy = (Busboy_ as any).default || Busboy_;
+import Busboy from "busboy";
 
 export interface UploadFileInfo {
   filename: string;
@@ -31,7 +28,7 @@ export async function processFileUpload<T>(
   req: Request,
   fileHandler: UploadFileHandler<T>,
   busboyFactory: BusboyFactory = (headers) =>
-    new Busboy({ headers }) as NodeJS.WritableStream
+    Busboy({ headers }) as NodeJS.WritableStream
 ): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     const bb = busboyFactory(req.headers);
