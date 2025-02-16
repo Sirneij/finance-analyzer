@@ -156,6 +156,14 @@ export class TransactionService {
     transactions: ITransaction[],
     frontendWs: WebSocket
   ) {
+    if (!baseConfig.utilityServiceUrl) {
+      sendError(
+        frontendWs,
+        "Utility service URL is not set. Please set the UTILITY_SERVICE_URL environment variable.",
+        action
+      );
+      return;
+    }
     const wsUrl = baseConfig.utilityServiceUrl.replace(/^http/, "ws");
     const ws = new WebSocket(`${wsUrl}/ws`);
 

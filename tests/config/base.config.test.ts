@@ -5,15 +5,17 @@ import { dbConfig } from "../../src/config/internal/db.config";
 import { logger } from "../../src/config/internal/logger.config";
 
 describe("baseConfig", () => {
-  // const originalEnv = process.env;
+  const originalEnv = process.env;
 
-  // beforeEach(() => {
-  //   process.env = { ...originalEnv };
-  // });
+  beforeEach(() => {
+    // Create a fresh copy of process.env for each test
+    process.env = {};
+  });
 
-  // afterEach(() => {
-  //   process.env = originalEnv;
-  // });
+  afterEach(() => {
+    // Restore original process.env after each test
+    process.env = originalEnv;
+  });
 
   describe("environment variable getters", () => {
     it("should return frontendUrl from environment", () => {

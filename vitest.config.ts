@@ -7,6 +7,17 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "v8",
+      reporter: ["text", "html"],
+      exclude: [
+        "tests/**/*",
+        "node_modules/**/*",
+        "dist/**/*",
+        "coverage/**/*",
+        "src/types/**/*",
+        "./create-test-structure.ts",
+        "./setup.node.ts",
+        "./vitest.config.ts",
+      ],
     },
     globals: true,
     environment: "node",
