@@ -54,6 +54,9 @@ export { generateSlug };
 export const processTags = async (
   tags: string | Types.ObjectId[] | string[]
 ): Promise<Types.ObjectId[]> => {
+  if (!tags) {
+    return [];
+  }
   // Normalize input to string array
   const normalizedTags: string[] = Array.isArray(tags)
     ? tags.map((tag) => tag.toString().toLowerCase())

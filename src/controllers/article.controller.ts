@@ -275,10 +275,10 @@ export class ArticleController {
   async handleSearchArticles(req: Request, res: Response): Promise<void> {
     try {
       const params = parseQueryParams(req.query);
-      let tags: string[] | mongoose.Types.ObjectId[] = [];
-      if (params.tags) {
-        tags = await processTags(params.tags);
-      }
+      let tags: string[] | mongoose.Types.ObjectId[] = await processTags(
+        params.tags || ""
+      );
+
       // Validate sortBy parameter
       const sortBy = params.sortBy === "popular" ? "popular" : "recent";
 

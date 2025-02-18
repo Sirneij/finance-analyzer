@@ -11,6 +11,7 @@ import {
   createArticleInput,
   createPaginatedArticleResponse,
 } from "../factories/article.factory";
+import mongoose from "mongoose";
 
 // Mock Busboy so that processFileUpload returns a controlled instance.
 vi.mock("busboy", () => {
@@ -85,6 +86,19 @@ describe("ArticleController - Comprehensive Tests", () => {
         message: "Article not found",
       });
     });
+
+    it("should handle errors that are not instances of Error", async () => {
+      req.params = { id: "articleId" };
+      vi.spyOn(ArticleService, "getArticleById").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleGetArticle(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to fetch article",
+      });
+    });
   });
 
   describe("handleGetArticles", () => {
@@ -130,6 +144,32 @@ describe("ArticleController - Comprehensive Tests", () => {
         },
       });
     });
+
+    it("should handle errors during fetching articles", async () => {
+      req.query = { page: "1", limit: "12" };
+      vi.spyOn(ArticleService, "getPublishedArticles").mockRejectedValue(
+        new Error("Fetch failed")
+      );
+      await controller.handleGetArticles(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Fetch failed",
+      });
+    });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.query = { page: "1", limit: "12" };
+      vi.spyOn(ArticleService, "getPublishedArticles").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleGetArticles(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to fetch articles",
+      });
+    });
   });
 
   describe("handleArticleCreate", () => {
@@ -156,6 +196,19 @@ describe("ArticleController - Comprehensive Tests", () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         message: "Title, content, tags, and foreImage are required",
+      });
+    });
+
+    it("should handle errors that are not instances of Error", async () => {
+      req.body = createArticleInput();
+      vi.spyOn(ArticleService, "createArticle").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleArticleCreate(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to create article",
       });
     });
   });
@@ -255,6 +308,40 @@ describe("ArticleController - Comprehensive Tests", () => {
 
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
+
+    it("should handle upload with null result but no error", async () => {
+      // Mock Cloudinary to return null result without error
+
+      vi.spyOn(cloudinaryService, "getCloudinary").mockReturnValue({
+        uploader: {
+          upload_stream: vi.fn().mockImplementation((options, callback) => {
+            callback(null, null);
+            return { end: vi.fn() };
+          }),
+        },
+      } as any);
+
+      req.pipe = vi.fn((dest: any) => {
+        const fakeFile = new PassThrough();
+        const info = {
+          filename: "image.jpg",
+          mimeType: "image/jpeg",
+          encoding: "7bit",
+        };
+        dest.emit("file", "file", fakeFile, info);
+        fakeFile.write(Buffer.from("image data"));
+        fakeFile.end();
+        return dest;
+      });
+
+      await controller.handleFileUpload(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: "Upload failed",
+        })
+      );
+    });
   });
 
   describe("handleArticleDelete", () => {
@@ -276,6 +363,19 @@ describe("ArticleController - Comprehensive Tests", () => {
         message: "Article ID is required",
       });
     });
+
+    it("should handle errors that are not instances of Error", async () => {
+      req.params = { id: "articleId" };
+      vi.spyOn(ArticleService, "deleteArticle").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleArticleDelete(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to delete article",
+      });
+    });
   });
 
   describe("handleSearchArticles", () => {
@@ -292,7 +392,7 @@ describe("ArticleController - Comprehensive Tests", () => {
     });
 
     it("should search articles with given parameters", async () => {
-      req.query = { search: "test", page: "1", limit: "10" };
+      req.query = { search: "test", page: "1", limit: "10", sortBy: "recent" };
       const mockResult = createPaginatedArticleResponse(2) as any;
       vi.spyOn(ArticleService, "searchArticles").mockResolvedValue(mockResult);
 
@@ -310,8 +410,18 @@ describe("ArticleController - Comprehensive Tests", () => {
       });
     });
 
-    it("should search articles with tags", async () => {
-      req.query = { tags: ["tag1", "tag2"], page: "1", limit: "10" };
+    it("should search articles with user whose role is isJohnOwolabiIdogun", async () => {
+      req.query = { search: "test", page: "1", limit: "10", sortBy: "popular" };
+      req.user = {
+        isJohnOwolabiIdogun: true,
+        _id: new mongoose.Types.ObjectId(),
+        email: "",
+        provider: "",
+        providerId: 2,
+        avatar: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
       const mockResult = createPaginatedArticleResponse(2) as any;
       vi.spyOn(ArticleService, "searchArticles").mockResolvedValue(mockResult);
 
@@ -326,6 +436,37 @@ describe("ArticleController - Comprehensive Tests", () => {
           limit: mockResult.limit,
           totalPages: Math.ceil(mockResult.total / mockResult.limit),
         },
+      });
+    });
+
+    // Add test for invalid tags
+    it("should handle invalid tags", async () => {
+      req.query = {
+        tags: ["invalid-tag-1", "invalid-tag-2"],
+        page: "1",
+        limit: "10",
+        sortBy: "popular",
+      };
+
+      await controller.handleSearchArticles(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Invalid or missing tags: invalid-tag-1, invalid-tag-2",
+      });
+    });
+
+    it("should handle errors that are not instances of Error", async () => {
+      req.query = { search: "test", page: "1", limit: "10", sortBy: "recent" };
+      vi.spyOn(ArticleService, "searchArticles").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleSearchArticles(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to fetch articles",
       });
     });
   });
@@ -369,6 +510,34 @@ describe("ArticleController - Comprehensive Tests", () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         message: "Delete failed",
+      });
+    });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.query = { url: "http://example.com/image.jpg" };
+      vi.spyOn(articleUtils, "deleteFilesFromCloudinary").mockRejectedValue(
+        "Custom error"
+      );
+
+      await controller.handleFileDelete(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to delete file",
+      });
+    });
+
+    it("should handle errors when the error is not an instance of Error", async () => {
+      req.query = { url: "http://example.com/image.jpg" };
+      vi.spyOn(articleUtils, "deleteFilesFromCloudinary").mockRejectedValue(
+        "Custom error"
+      );
+
+      await controller.handleFileDelete(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to delete file",
       });
     });
   });
@@ -433,6 +602,22 @@ describe("ArticleController - Comprehensive Tests", () => {
         message: "Update failed",
       });
     });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.params = { id: "articleId" };
+      req.body = { title: "New Title" };
+      vi.spyOn(ArticleService, "updateArticle").mockRejectedValue(
+        "Custom error"
+      );
+
+      await controller.handleArticleUpdate(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to update article",
+      });
+    });
   });
 
   // Tests for handleBatchArticleDelete
@@ -474,6 +659,19 @@ describe("ArticleController - Comprehensive Tests", () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         message: "Batch delete failed",
+      });
+    });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.body = { ids: ["id1", "id2"] };
+      vi.spyOn(ArticleService, "deleteManyArticles").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleBatchArticleDelete(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to delete articles",
       });
     });
   });
@@ -519,6 +717,19 @@ describe("ArticleController - Comprehensive Tests", () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         message: "Toggle failed",
+      });
+    });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.body = { ids: ["id1", "id2"] };
+      vi.spyOn(ArticleService, "togglePublishManyArticles").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleTogglePublish(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to toggle publish articles",
       });
     });
   });
@@ -578,6 +789,19 @@ describe("ArticleController - Comprehensive Tests", () => {
         message: "Fetch failed",
       });
     });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      req.query = { page: "1", limit: "12" };
+      vi.spyOn(ArticleService, "getAllArticles").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleGetAllArticles(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to fetch articles",
+      });
+    });
   });
 
   // Tests for handleGetArticleStats
@@ -603,6 +827,18 @@ describe("ArticleController - Comprehensive Tests", () => {
       expect(res.json).toHaveBeenCalledWith({
         success: false,
         message: "Stats failed",
+      });
+    });
+
+    it("should handle custom error that is not an instance of Error", async () => {
+      vi.spyOn(ArticleService, "getArticleStats").mockRejectedValue(
+        "Custom error"
+      );
+      await controller.handleGetArticleStats(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Failed to fetch article stats",
       });
     });
   });
