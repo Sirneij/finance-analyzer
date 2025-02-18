@@ -2,17 +2,26 @@ import { faker } from "@faker-js/faker";
 import type { CreateArticleInput } from "$types/article.types";
 import mongoose from "mongoose";
 
+export const createTag = (override: Partial<any> = {}) => {
+  return {
+    _id: new mongoose.Types.ObjectId(),
+    name: faker.lorem.word(),
+    ...override,
+  };
+};
+
 export const createArticleInput = (
   override: Partial<CreateArticleInput> = {}
 ): CreateArticleInput => {
   const title = faker.lorem.sentence();
   const slug = faker.helpers.slugify(title).toLowerCase();
+  const tags = createTag();
   return {
     title: title,
     slug: slug,
     foreImage: faker.image.url(),
     content: faker.lorem.paragraphs(3),
-    tags: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
+    tags: [tags._id],
     series: new mongoose.Types.ObjectId(),
     isPublished: faker.datatype.boolean(),
     ...override,
