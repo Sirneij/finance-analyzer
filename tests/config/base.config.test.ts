@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { baseConfig } from "../../src/config/base.config";
-import { authConfig } from "../../src/config/internal/auth.config";
-import { dbConfig } from "../../src/config/internal/db.config";
-import { logger } from "../../src/config/internal/logger.config";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { baseConfig } from "$config/base.config";
+import { authConfig } from "$config/internal/auth.config";
+import { dbConfig } from "$config/internal/db.config";
+import { logger } from "$config/internal/logger.config";
 
 describe.concurrent("baseConfig", () => {
   const originalEnv = process.env;
@@ -63,6 +63,27 @@ describe.concurrent("baseConfig", () => {
 
     it("should have correct logger config", () => {
       expect(baseConfig.logger).toBe(logger);
+    });
+    it("should have correct logger config", () => {
+      expect(baseConfig.logger).toBe(logger);
+    });
+    it("should handle logger in development", async () => {
+      // Store original NODE_ENV
+      const originalNodeEnv = process.env.NODE_ENV;
+
+      // Reset module imports to trigger logger recreation
+      vi.resetModules();
+
+      // Set environment before importing logger
+      process.env.NODE_ENV = "development";
+
+      // Re-import logger using dynamic import
+      const { logger } = await import("$config/internal/logger.config");
+
+      expect(logger.level).toBe("debug");
+
+      // Restore original NODE_ENV
+      process.env.NODE_ENV = originalNodeEnv;
     });
   });
 });

@@ -4,7 +4,8 @@ import { afterAll, beforeAll } from "vitest";
 import { baseConfig } from "$config/base.config";
 
 // Load the test environment variables from .env.test
-config({ path: [".env.test"] });
+const result = config({ path: ".env.test" });
+console.log("Loaded env file:", result.parsed);
 
 beforeAll(async () => {
   // Start the in-memory MongoDB
