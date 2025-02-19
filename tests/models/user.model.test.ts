@@ -1,14 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { User } from "$models/user.model";
-import mongoose from "mongoose";
+import { clearDatabase } from "../setupMongo";
 
 describe("User Model", () => {
   beforeEach(async () => {
     // Clear all collections before each test
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key].deleteMany({});
-    }
+    await clearDatabase();
   });
 
   describe("Schema Validation", () => {

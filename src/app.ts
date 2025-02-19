@@ -25,7 +25,6 @@ import articleRoutes from "$routes/article.routes.js";
 import tagsRoutes from "$routes/tags.routes.js";
 import seriesRoutes from "$routes/series.routes.js";
 import compression from "compression";
-import { getCertificates } from "$utils/certs.utils.js";
 
 const app: Application = express();
 
@@ -220,3 +219,5 @@ export const startServer = async () => {
   }
 };
 startServer();
+
+export default app;

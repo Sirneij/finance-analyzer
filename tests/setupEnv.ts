@@ -4,13 +4,16 @@ import { afterAll, beforeAll } from "vitest";
 import { baseConfig } from "$config/base.config";
 
 // Load the test environment variables from .env.test
-const result = config({ path: ".env.test" });
-console.log("Loaded env file:", result.parsed);
+config({ path: ".env.test" });
+
+export const BASE_URL = `/api/v1`;
 
 beforeAll(async () => {
+  // Ensure clean state before starting
+  await stopInMemoryMongo();
   // Start the in-memory MongoDB
   await startInMemoryMongo();
-  // Ensure that the connection string used in tests is the in-memory URI
+  // Update config after connection is established
   baseConfig.db.uri = process.env.DB_URI;
 });
 
