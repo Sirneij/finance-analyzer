@@ -40,8 +40,8 @@ Utility is a collection of asynchronous tools for resume processing and real-tim
 
 1. **Clone the Repository:**
    ```bash
-   git clone -b utility https://github.com/Sirneij/finance-analyzer.git
-   cd finance-analyzer
+   git clone -b utility https://github.com/Sirneij/finance-analyzer.git utility
+   cd utility
    ```
 2. **Set Up the Environment:**
    ```bash
