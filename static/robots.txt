@@ -21,7 +21,7 @@ Disallow: /blogs/admin
 Disallow: /api/
 Disallow: /drafts/
 Disallow: /*.json$
-Disallow: /*?*
+Disallow: /finanalyzer/*?*
 
 # Sitemaps
 Sitemap: https://johnowolabiidogun.dev/sitemap.xml
