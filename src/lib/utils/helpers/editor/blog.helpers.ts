@@ -90,7 +90,7 @@ export function truncateTitle(title: string, width?: number, maxLength?: number)
 		(vw >= 1440
 			? 120 // Large desktop
 			: vw >= 1024
-				? 95 // Desktop
+				? 90 // Desktop
 				: vw >= 768
 					? 70 // Tablet
 					: 50); // Mobile

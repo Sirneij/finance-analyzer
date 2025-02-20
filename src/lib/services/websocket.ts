@@ -1,5 +1,3 @@
-// src/lib/services/websocket.ts
-
 export enum NEEDEDDATA {
 	ANALYSIS = 'analyze',
 	SUMMARY = 'summary'
