@@ -93,7 +93,7 @@
 <Head article={data.article} />
 
 <article
-	class="detail relative"
+	class="detail grid-cols-only-content lg:grid-cols-sidebar-content 2xl:grid-cols-sidebar-content-toc relative grid gap-8 px-4"
 	transition:fade
 	bind:this={articlElement}
 	itemscope
@@ -102,7 +102,7 @@
 	<!-- Back to top button -->
 	{#if showBackToTop}
 		<button
-			class="fixed right-4 bottom-20 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
+			class="fixed bottom-20 right-4 z-50 rounded-full bg-indigo-600 p-3 text-white shadow-lg transition-opacity duration-200 hover:bg-indigo-700 lg:bottom-8"
 			onclick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 			aria-label="Back to top"
 			transition:fade
@@ -110,61 +110,62 @@
 			<BackToTop class="h-6 w-6" />
 		</button>
 	{/if}
-	<!-- Only show TOC component on mobile -->
-	{#if windowWidth < MOBILE_BREAKPOINT}
-		<TOC {activeId} bind:showTocMobile article={data.article} bind:articlElement />
-	{/if}
+
+	<TOC {activeId} bind:showTocMobile article={data.article} bind:articlElement />
 
 	<!-- Main Content -->
-	<main class="mx-auto max-w-4xl min-w-0 p-4" transition:fade>
-		<Breadcrumbs {crumbs} />
-		<!-- Skip to content link -->
-		<a href="#content" class="sr-only focus:not-sr-only"> Skip to content </a>
-		<!-- Cover Image -->
-		<ArticleImage article={data.article} />
-
+	<main class="isolate min-w-0" transition:fade>
 		<!-- Enhanced reading progress -->
 		{#if browser}
 			<div
-				class="fixed top-0 left-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
+				class="fixed left-0 top-0 z-50 flex h-1 w-full items-center bg-gray-200 dark:bg-gray-800"
 			>
 				<div
 					class="h-full bg-indigo-600 transition-all duration-150 dark:bg-indigo-500"
 					style="width: {scrollProgress}%"
 				></div>
 				<div
-					class="absolute right-0 -bottom-6 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-gray-900"
+					class="absolute -bottom-6 right-0 rounded-sm bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity hover:opacity-100 dark:bg-white dark:text-[#171717]"
 				>
 					{scrollProgress}% read
 				</div>
 			</div>
 		{/if}
+		<div class="mt-8 ps-0">
+			<div class="px-5 sm:px-12">
+				<div class="mx-auto max-w-7xl">
+					<div class="ms-0 max-w-4xl 2xl:mx-auto">
+						<Breadcrumbs {crumbs} />
+						<!-- Skip to content link -->
+						<a href="#content" class="sr-only focus:not-sr-only"> Skip to content </a>
+						<!-- Cover Image -->
+						<ArticleImage article={data.article} />
 
-		<!-- Title and Meta -->
-		<Header article={data.article} />
+						<!-- Title and Meta -->
+						<Header article={data.article} />
 
-		<!-- Series List -->
-		<Series article={data.article} id="series-top" />
+						<!-- Series List -->
+						<Series article={data.article} id="series-top" />
 
-		<!-- Content -->
-		<div
-			id="content"
-			class="article-content prose prose-lg dark:prose-invert mt-12 max-w-none"
-			bind:this={contentContainer}
-			itemprop="articleBody"
-			role="main"
-		>
-			{@html marked.parse(data.article.content)}
+						<!-- Content -->
+						<div
+							id="content"
+							class="article-content prose prose-lg dark:prose-invert mt-12 max-w-none"
+							bind:this={contentContainer}
+							itemprop="articleBody"
+							role="main"
+						>
+							{@html marked.parse(data.article.content)}
+						</div>
+
+						<!-- Series List -->
+						<Series article={data.article} id="series-bottom" />
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<!-- Series List -->
-		<Series article={data.article} id="series-bottom" />
 	</main>
 </article>
-{#if (data.user && data.user.isJohnOwolabiIdogun) || windowWidth >= MOBILE_BREAKPOINT}
-	<Dock title="Navigation">
-		{#if windowWidth >= MOBILE_BREAKPOINT}
-			<TOC {activeId} bind:showTocMobile article={data.article} bind:articlElement />
-		{/if}
-	</Dock>
+{#if data.user && data.user.isJohnOwolabiIdogun}
+	<Dock title="Navigation" />
 {/if}

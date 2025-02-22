@@ -22,7 +22,7 @@
 <!-- Enhanced Mobile TOC Toggle -->
 <button
 	id="toc-toggle"
-	class="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
+	class="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg lg:hidden"
 	onclick={() => (showTocMobile = !showTocMobile)}
 	aria-label="Toggle table of contents"
 	aria-expanded={showTocMobile}
@@ -38,12 +38,12 @@
 
 <!-- TOC Sidebar -->
 <nav
-	class="fixed inset-y-0 right-0 z-40 w-64 transform overflow-y-auto bg-white p-6 shadow-xl transition-transform lg:sticky lg:block lg:w-auto lg:p-2 dark:bg-gray-900
+	class="fixed inset-y-0 right-0 z-10 transform overflow-y-auto bg-white p-4 shadow-xl transition-transform lg:sticky lg:top-20 lg:mt-12 lg:block lg:h-[calc(100vh-4rem)] lg:w-auto lg:transform-none lg:bg-transparent lg:shadow-none dark:bg-[#0a0a0a] lg:dark:bg-transparent
     {showTocMobile ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}"
 	aria-label="Table of Contents"
 >
 	<h2
-		class="mb-6 text-lg font-semibold text-gray-900 lg:mb-2 dark:text-white"
+		class="mb-6 text-lg font-semibold text-[#171717] lg:mb-2 dark:text-[#ededed]"
 		title="On this page"
 		aria-label="On this page"
 	>

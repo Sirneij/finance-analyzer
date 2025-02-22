@@ -44,8 +44,9 @@
 		}
 	}
 
-	button {
-		@apply cursor-pointer;
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
 	}
 
 	:root {
@@ -66,6 +67,21 @@
 }
 
 @layer utilities {
+	.grid-cols-only-content {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	@media (min-width: 1024px) {
+		.lg\:grid-cols-sidebar-content {
+			grid-template-columns: 20rem minmax(0, 1fr);
+		}
+	}
+
+	@media (min-width: 1536px) {
+		.\32xl\:grid-cols-sidebar-content-toc {
+			grid-template-columns: 20rem minmax(0, 1fr) 20rem;
+		}
+	}
 	.animate-pulse {
 		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	}
